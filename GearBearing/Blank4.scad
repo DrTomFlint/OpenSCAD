@@ -14,7 +14,7 @@ inset=1;    // inset for gear blanks
 
 // width of sun hole
 w=18.0;
-s=200;
+s=20;
 axle=3;
 // planet holes
 w2=4.0;
@@ -40,7 +40,7 @@ echo("helix angle"); echo(helix_angle);
 
 phi=$t*360/m;           // $t index loops over 0 to 1
 
-
+//======================================
 
 difference(){
 
@@ -49,7 +49,7 @@ translate([0,0,T/2]){
 	
     // The ring gear
     difference(){
-        ring2(D/2-2,T);
+        ring4(D/2-2,T);
 		herringbone(nr,pitch,P,DR,-tol,helix_angle,T+0.2);
 	}
 
@@ -122,27 +122,27 @@ translate([0,0,T/2]){
  
 
                     
-/*
-translate([0,0,60]) color("red") ring2(D/2-2,T);
-ring3(D/2-2,T);
-*/
+
+//translate([0,0,60]) color("red") ring4(D/2-2,T);
+//ring3(D/2-2,T);
 
 
-color("red") 
+
 union(){
     // finger hole in the sun
-    translate([7,0,T/2])
+    translate([7,0,T/2])color("red") 
     rotate_extrude($fn=99)
     translate([11,0,0])
         fillet(r=-0.8) square([2,T],center=true);
 
-    translate([7,14,T/2])
-        rotate_extrude(angle=45, convexity=10, $fn=99)
+    translate([7.5,14,T/2]) rotate([0,0,-90])color("green") 
+        rotate_extrude(angle=160, convexity=10, $fn=99)
         translate([3,0,0])
             fillet(r=-0.8) square([2,T],center=true);
 
-    translate([7,-14,T/2])
-        rotate_extrude(angle=45, convexity=10, $fn=99)
+    translate([7.5,-14,T/2]) rotate([0,0,-70])color("blue") 
+
+        rotate_extrude(angle=160, convexity=10, $fn=99)
         translate([3,0,0])
             fillet(r=-0.8) square([2,T],center=true);
 
@@ -167,7 +167,7 @@ module ring2 (
     union(){
         
     difference(){
-        rotate_extrude($fn=500)
+        rotate_extrude($fn=160)
         translate([radius,0,0]) 
         scale([0.5,1.0]) circle(r=thick*0.5);
         
@@ -188,7 +188,20 @@ module ring2 (
     }
 }
 }   
+//----------------------    
+module ring4 (
+    radius=10,
+    thick=5){
+        
+        
+        rotate_extrude($fn=160)
+        translate([radius,0,0]) 
+        scale([0.5,1.0]) circle(r=thick*0.5);
+        
     
+  
+}   
+
 module gear3 (
 	number_of_teeth=15,
 	circular_pitch=10,
