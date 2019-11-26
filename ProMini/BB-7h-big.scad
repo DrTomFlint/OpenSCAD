@@ -95,8 +95,8 @@ for(i=[0:5]){
     rotate([0,0,60*i]) translate([R+2,0,-H/2]) 
     cylinder(r=2.5,h=5*H,$fn=6);
 }
-//for(i=[0:5]){
-for(i=[0:1]){
+for(i=[0:5]){
+//for(i=[0:1]){
     rotate([0,0,60*i]) translate([R+8,0,-H/2]) 
     cylinder(r=1,h=5*H,$fn=6);
 }

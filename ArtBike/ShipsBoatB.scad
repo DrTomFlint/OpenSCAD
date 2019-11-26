@@ -34,14 +34,9 @@ difference(){
     offset(r=4)
     square(size=[10,12]);
 
-/*
-    color("purple")    
-    translate([8.5-11,6-9,0]) rotate([0,0,75])
-    linear_extrude(height=H+0.1) square(size=[6,13]);
-    */
 }
 
-
+/*
     hull(){
         color("red")    
         translate([-3.5,-36,0]) 
@@ -61,7 +56,7 @@ difference(){
         translate([7,-5,0]) 
         cylinder(r=4,h=H);
     }
-
+*/
     difference(){
     hull(){
         color("red")    
