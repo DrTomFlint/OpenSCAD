@@ -1,14 +1,15 @@
 // Base part
 use <servo1.scad>
-use <singleArm.scad>
+use <arm1.scad>
 
 //----------------------------
 module base1(){
 difference(){
     // boss
-    translate([20,0,0])
+    translate([10,0,0])
     linear_extrude(height=11)
-    square([80,40],center=true);
+    offset(r=3,$fn=22)
+    square([60-6,40-6],center=true);
 
     // servocut
     translate([0,0,-16.2])
@@ -19,6 +20,10 @@ difference(){
 color("cyan")
 base1();
 
+/*
 // show how servo would fit
 translate([0,0,-16.2])
 servo1();
+*/
+
+
