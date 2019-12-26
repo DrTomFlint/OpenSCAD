@@ -16,14 +16,29 @@ difference(){
     servo1cut();
 }
 } //-------- end module base1 -------------
+module base2(){
+difference(){
+    // boss
+    translate([0,0,0])
+    linear_extrude(height=11)
+    offset(r=2,$fn=22)
+    square([40-6,20-6],center=true);
+
+    // servocut
+    translate([0,0,-16.2])
+    servo1cut();
+}
+} //-------- end module base1 -------------
 
 color("cyan")
-base1();
+//base1();
 
-/*
+
 // show how servo would fit
 translate([0,0,-16.2])
 servo1();
-*/
 
+//
+color("pink")
+base2();
 

@@ -2,9 +2,12 @@
 // second try at the camera bracket
 
 use <top1.scad>
-use <servo1.scad>
 use <arm1.scad>
-use <cam1.scad>
+
+use <../Parts/servo1.scad>
+use <../Parts/cam1.scad>
+use <../Parts/cambase1.scad>
+use <../Parts/camlid1.scad>
 
 //--------------------------
 module active1(tol=0.1){    
@@ -168,8 +171,39 @@ difference(){
 }
 } //---- end module plate1 ----
 
+module plate2(tol=0.1){
 
-plate1();
+
+difference(){
+    // plate
+    color("yellow")
+    translate([-31,-18,11-4/2+0.65-2])
+    linear_extrude(height=4)
+    offset(r=4,$fn=44)
+    square([13,36]);
+
+    active1cut();
+    passive1cut();
+
+    // cut for cambase and camlid
+    translate([-34,0,12])
+    cube([44,28,10],center=true);
+
+    
+}
+
+translate([-28-2,12.5,13.5-2]){
+rotate([0,180,90]){
+    cambase2();
+//    camlid1();
+}}
+
+} //---- end module plate2 ----
+
+
+//plate1();
+
+plate2();
 
 /*
     // camera
@@ -189,16 +223,16 @@ difference(){
 }    
 */
 
-//active1();
+/*
+active1();
 //passive1();
 
-
 // top 
-//top1();
+top1();
 
 // servo
-//translate([0,12,11-0.1])
-//rotate([90,0,0])
-//servo1();
-
+translate([0,12,11-0.1])
+rotate([90,0,0])
+servo1();
+*/
 
