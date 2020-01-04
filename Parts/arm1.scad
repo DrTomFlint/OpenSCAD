@@ -5,7 +5,6 @@
 module arm1(
 holes=1
 ){
-
 difference(){
     union(){
         // Boss
@@ -159,7 +158,8 @@ difference(){
     // bottom cut if needed
 //    cylinder(r=2.2-tol/2,h=3.0-tol,$fn=22);
 }
-} // ---------- end module arm1cut -------
+} 
+
 //---------------------------
 module disk3(tol=0.0){
 difference(){
@@ -190,7 +190,6 @@ union(){
 
 //---------------------------
 // DEPRECATED
-
 module disk3cut(tol=0.1){
     translate([0,0,-4-tol])
     cylinder(r1=8+tol,r2=8.5+tol,h=4+tol,$fn=180);
@@ -218,7 +217,6 @@ translate([0,15,0])
 arm1cut();
 
 translate([0,40,0])
-*/
 //translate([0,-30,0])
 //disk3();
 
@@ -232,3 +230,10 @@ disk3();
 */
 
 
+disk3();
+
+//translate([0,70,0])
+//difference(){
+//disk3cut();
+//disk3();
+//}

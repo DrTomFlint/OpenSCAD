@@ -133,3 +133,8 @@ module cambase3(){
 //cambase2();
 
 cambase3();
+
+//cambase1();
+
+//translate([0,0,30])
+//cambase2();
