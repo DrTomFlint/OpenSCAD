@@ -256,8 +256,17 @@ union(){
         12.4/2,h=0.6,$fn=22);    
     }    
     translate([0,0,-12])
-    cylinder(r1=8.2/2,r2=7.2/2,h=1,$fn=22);    
+    cylinder(r1=8.2/2,r2=7.2/2,h=1,$fn=22);  
+  
+    // track to match tires
+    for(i=[0:181-1]){
+        rotate([0,0,360/181*i])
+        translate([23,0,-18])
+        rotate([0,90,0])
+        cylinder(r=0.3,h=6,$fn=12);
+    }
 }
+
     // six holes
     for(i=[0:Nrib-1]){
         rotate([0,0,360/Nrib*i+180/Nrib])
@@ -299,11 +308,18 @@ F1=200;
         difference(){
             // boss
             union(){
-                cylinder(r1=23.6/2+1.5,r2=23.6/2+2.5,h=1,$fn=F1);
+                cylinder(r1=23.6/2+2.5,r2=23.6/2+3.5,h=1,$fn=F1);
                 translate([0,0,1])
-                cylinder(r=23.6/2+2.5,h=4,$fn=F1);
+                cylinder(r=23.6/2+3.5,h=4,$fn=F1);
                 translate([0,0,5])
-                cylinder(r1=23.6/2+2.5,r2=23.6/2+1.5,h=1,$fn=F1);
+                cylinder(r1=23.6/2+3.5,r2=23.6/2+2.5,h=1,$fn=F1);
+                
+                // treads?
+                Ntread=100;
+                for(i=[0:Ntread-1])
+                rotate([0,0,360/Ntread*i])
+                #translate([23.6/2+3.4,0,1])
+                cylinder(r=0.3,h=4,$fn=10);
             }
             
             // center hole
@@ -326,10 +342,46 @@ F1=200;
     }
     
 }
+
+//------------------------------
+module hubcap1(tol=0){
+
+cylinder(r=23.6/2+tol,h=1.6+tol,$fn=44);
+translate([0,0,1.6])    
+    difference(){
+color("red")
+cylinder(r1=10.5+tol,r2=10+tol,h=1+tol,$fn=44);
+        
+        N=6;
+        for(i=[0:N-1]){
+            hull(){
+            rotate([0,0,360/N*i])
+            translate([6,0,0])
+            cylinder(r1=2,r2=2.5,h=2,$fn=22);
+
+            rotate([0,0,360/N*i])
+            translate([3.5,0,0])
+            cylinder(r1=1,r2=1.5,h=2,$fn=22);
+            }
+        }
+        cylinder(r1=1,r2=1.5,h=2,$fn=22);
+
+    }
+    
+/*    
+translate ([0,0,1.4]) color("cyan") 
+    linear_extrude(height=1.5){
+    text("Nine", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.2);
+    }
+*/
+    
+}
+
     
 //===========================
 
-
+//translate([0,0,6])
+//hubcap1();
 //tire1();
 
 if(0){
