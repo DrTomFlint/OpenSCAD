@@ -50,6 +50,68 @@ y2=y1/2;    // 165
     translate([-x2,yoff,15+z1+15])
     rotate([0,90,0])
     tslot1(type=2,len=x1);
+    
+    // right front corner
+    color("green")
+    translate([-x2+60,y2,0])
+    rotate([0,0,-90])
+    tbrace();
+    
+    // left front corner
+    color("red")
+    translate([x2-60,y2,0])
+    rotate([0,0,-180])
+    tbrace();
+    
+    // right rear corner
+    color("gray")
+    translate([-x2+60,-y2,0])
+    rotate([0,0,0])
+    tbrace();
+    
+    // left rear corner
+    color("gray")
+    translate([x2-60,-y2,0])
+    rotate([0,0,-270])
+    tbrace();
+    
+    // left top corner 1
+    color("gray")
+    translate([x2-60,yoff+15,z1+15])
+    rotate([90,180,0])
+    tbrace();
+    
+    // left top corner 2
+    color("gray")
+    translate([x2-60,yoff-15,z1+15])
+    rotate([90,180,0])
+    tbrace();
+    
+    // right top corner 1
+    color("gray")
+    translate([-x2+60,yoff+15,z1+15])
+    rotate([90,90,0])
+    tbrace();
+    
+    // right top corner 2
+    color("gray")
+    translate([-x2+60,yoff-15,z1+15])
+    rotate([90,90,0])
+    tbrace();
+    
+    // left tower corner 
+    color("gray")
+    translate([x2-45,yoff-30,15])
+    rotate([90,0,-90])
+    tbrace();
+    
+    // right tower corner 
+    color("gray")
+    translate([-x2+45,yoff-30,15])
+    rotate([90,0,-90])
+    tbrace();
+    
+
 
 }
 

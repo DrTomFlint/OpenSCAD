@@ -83,12 +83,12 @@ if(type==3){
 
 //--------------------------------------
 module tbrace(
-tol=0.0,
-type=1
+tol=0.0
 ){
 
 F2=22;
  
+translate([0,0,2-15])    
 difference(){    
 union(){
         cube([4.8,60,26]);
