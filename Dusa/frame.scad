@@ -15,14 +15,14 @@ x2=x1/2;    // 240
 y2=y1/2;    // 165
     
     // front rail
-    translate([-x2,y2+15,0])
-    rotate([0,90,0])
-    tslot1(type=1,len=x1);
+    translate([-x2,y2+15,15])
+    rotate([90,0,90])
+    tslot1(type=2,len=x1);
 
     // back rail
-    translate([-x2,-y2-15,0])
-    rotate([0,90,0])
-    tslot1(type=1,len=x1);
+    translate([-x2,-y2-15,15])
+    rotate([90,0,90])
+    tslot1(type=2,len=x1);
 
     // left rail
     translate([x2-30,-y2,0])
@@ -97,18 +97,32 @@ y2=y1/2;    // 165
     rotate([90,90,0])
     tbrace();
     
-    // left tower corner 
+    // left tower corner 1
     color("gray")
     translate([x2-45,yoff-30,15])
     rotate([90,0,-90])
     tbrace();
     
-    // right tower corner 
+    // left tower corner 2
+    color("gray")
+    translate([x2-15,yoff-30,15])
+    rotate([90,0,-90])
+    tbrace();
+    
+    // right tower corner 1
     color("gray")
     translate([-x2+45,yoff-30,15])
     rotate([90,0,-90])
     tbrace();
+
+    // right tower corner 2
+    color("gray")
+    translate([-x2+15,yoff-30,15])
+    rotate([90,0,-90])
+    tbrace();
     
+    
+/*
     // left front L top
     color("gray")
     translate([x2,y2+30,15])
@@ -120,19 +134,7 @@ y2=y1/2;    // 165
     translate([-x2,y2+30,15])
     rotate([0,0,-90])
     lbrace();
-    
-    // left front L bottom
-    color("gray")
-    translate([-x2,y2+30,-15])
-    rotate([180,0,0])
-    lbrace();
-    
-    // left front L bottom
-    color("gray")
-    translate([x2,y2+30,-15])
-    rotate([180,0,-90])
-    lbrace();
-    
+
     // left rear L top
     color("gray")
     translate([x2,-y2-30,15])
@@ -143,6 +145,19 @@ y2=y1/2;    // 165
     color("gray")
     translate([-x2,-y2-30,15])
     rotate([0,0,0])
+    lbrace();
+    
+*/    
+    // left front L bottom
+    color("gray")
+    translate([-x2,y2+30,-15])
+    rotate([180,0,0])
+    lbrace();
+    
+    // left front L bottom
+    color("gray")
+    translate([x2,y2+30,-15])
+    rotate([180,0,-90])
     lbrace();
     
     // left rear L bottom
