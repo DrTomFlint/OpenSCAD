@@ -2,121 +2,67 @@
 // assembly level file for Prusa Dusa 3D printer
 
 use <../Parts/tslot.scad>
+use <../Parts/motors.scad>
+use <frame.scad>
 
-
-
-//--------------------------------------
-module frame(
-yoff=-20,       // tower and top offset from center
-x1=480,         // length front, back, top rails
-y1=330,         // length side rails
-z1=380          // height of towers
-){
-    
-x2=x1/2;    // 240
-y2=y1/2;    // 165
-    
-    // front rail
-    translate([-x2,y2+15,0])
-    rotate([0,90,0])
-    tslot1(type=1,len=x1);
-
-    // back rail
-    translate([-x2,-y2-15,0])
-    rotate([0,90,0])
-    tslot1(type=1,len=x1);
-
-    // left rail
-    translate([x2-30,-y2,0])
-    rotate([0,90,90])
-    tslot1(type=2,len=y1);
-
-    // right rail
-    translate([-x2+30,-y2,0])
-    rotate([0,90,90])
-    tslot1(type=2,len=y1);
-
-    // left tower
-    translate([x2-30,yoff,15])
-    rotate([0,0,0])
-    tslot1(type=3,len=z1);
-
-    // right tower
-    translate([-x2+30,yoff,15])
-    rotate([0,0,0])
-    tslot1(type=3,len=z1);
-
-    // top rail
-    translate([-x2,yoff,15+z1+15])
-    rotate([0,90,0])
-    tslot1(type=2,len=x1);
-    
-    // right front corner
-    color("green")
-    translate([-x2+60,y2,0])
-    rotate([0,0,-90])
-    tbrace();
-    
-    // left front corner
-    color("red")
-    translate([x2-60,y2,0])
-    rotate([0,0,-180])
-    tbrace();
-    
-    // right rear corner
-    color("gray")
-    translate([-x2+60,-y2,0])
-    rotate([0,0,0])
-    tbrace();
-    
-    // left rear corner
-    color("gray")
-    translate([x2-60,-y2,0])
-    rotate([0,0,-270])
-    tbrace();
-    
-    // left top corner 1
-    color("gray")
-    translate([x2-60,yoff+15,z1+15])
-    rotate([90,180,0])
-    tbrace();
-    
-    // left top corner 2
-    color("gray")
-    translate([x2-60,yoff-15,z1+15])
-    rotate([90,180,0])
-    tbrace();
-    
-    // right top corner 1
-    color("gray")
-    translate([-x2+60,yoff+15,z1+15])
-    rotate([90,90,0])
-    tbrace();
-    
-    // right top corner 2
-    color("gray")
-    translate([-x2+60,yoff-15,z1+15])
-    rotate([90,90,0])
-    tbrace();
-    
-    // left tower corner 
-    color("gray")
-    translate([x2-45,yoff-30,15])
-    rotate([90,0,-90])
-    tbrace();
-    
-    // right tower corner 
-    color("gray")
-    translate([-x2+45,yoff-30,15])
-    rotate([90,0,-90])
-    tbrace();
-    
-
-
-}
 
 //======================================
+yoff=-62;       // tower and top offset from center
+x1=480;         // length front, back, top rails
+y1=330;         // length side rails
+z1=380;         // height of towers
 
-frame();
+x2=x1/2;
+y2=y1/2;
+F2=88;
+
+// main frame
+frame(yoff=yoff,x1=x1,y1=y1,z1=z1);
+
+// left z motor
+color("red")
+translate([x2-30,yoff+30+21,15])
+rotate([0,0,180])
+zmotor();
+
+// left z rod
+color("red")
+translate([x2-12,yoff+30+21,15+50])
+cylinder(r=5,h=330,$fn=F2);
+
+// lower left lm10u bearing
+color("cyan")
+translate([x2-12,yoff+30+21,15+60])
+cylinder(r=19.2/2,h=29,$fn=F2);
+// upper left lm10u bearing
+color("cyan")
+translate([x2-12,yoff+30+21,15+60+40])
+cylinder(r=19.2/2,h=29,$fn=F2);
+
+// right z motor
+color("green")
+translate([-x2-12+42.4,yoff+30+21,15])
+zmotor();
+
+// right z rod
+color("green")
+translate([-x2+12,yoff+30+21,15+50])
+cylinder(r=5,h=330,$fn=F2);
+
+// right left lm10u bearing
+color("cyan")
+translate([-x2+12,yoff+30+21,15+60])
+cylinder(r=19.2/2,h=29,$fn=F2);
+// right left lm10u bearing
+color("cyan")
+translate([-x2+12,yoff+30+21,15+60+40])
+cylinder(r=19.2/2,h=29,$fn=F2);
+
+
+// spare lm8u bearing
+color("cyan")
+translate([0,yoff+30+21,15+60])
+cylinder(r=15/2,h=24,$fn=F2);
+
 
 //========================================

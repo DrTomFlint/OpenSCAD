@@ -119,9 +119,59 @@ union(){
 }
 }
 
+//----------------------------------------
+module lbrace(
+tol=0,
+holes=1,
+nuts=1
+){
+
+F2=22;
+    
+pts1=[ [5,0], [80,0], [85,5], [85,22], [80,28],
+    [28,28], [28,80], [22,85], [5,85], [0,80], [0,5] ];
+    
+    if(holes==1){
+    difference(){
+        linear_extrude(height=3.25)
+        polygon(points=pts1);
+        
+        translate([16+30,14,-1])
+        cylinder(r=3.25,h=5,$fn=F2);
+        translate([16+60,14,-1])
+        cylinder(r=3.25,h=5,$fn=F2);
+
+        translate([14,16+30,-1])
+        cylinder(r=3.25,h=5,$fn=F2);
+        translate([14,16+60,-1])
+        cylinder(r=3.25,h=5,$fn=F2);
+    }
+}else{
+        linear_extrude(height=3.25)
+        polygon(points=pts1);
+}
+
+if(nuts==1){
+    
+        translate([16+30,14,0])
+        cylinder(r=5,h=6+3.25,$fn=F2);
+        translate([16+60,14,0])
+        cylinder(r=5,h=6+3.25,$fn=F2);
+
+        translate([14,16+30,0])
+        cylinder(r=5,h=6+3.25,$fn=F2);
+        translate([14,16+60,0])
+        cylinder(r=5,h=6+3.25,$fn=F2);
+}
+
+}
+
+
 //=======================================
 
-tbrace();
+lbrace();
+
+//tbrace();
 
 /*
 color("cyan")
