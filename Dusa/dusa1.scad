@@ -8,8 +8,8 @@ use <zaxis.scad>
 
 
 //======================================
-yoff=-(30+42.3/2+5); // tower offset from center
-yoff2=30+42.3/2+5;   // offset of z motor, leadscrew, shaft
+yoff=-(30+42.3/2+13); // tower offset from center
+yoff2=30+42.3/2+13;   // offset of z motor, leadscrew, shaft
 zoff=43+0;         // z offset of the x-rods
 zoff2=43;           // z offset of y=rods
 
@@ -62,12 +62,12 @@ color("pink")
 translate([x2-30,yoff+yoff2,15])
 zleft1();
 
-/*
+
 // left z bracket upper
 color("pink")
 translate([x2-30,yoff+yoff2,15])
 zleft2();
-*/
+
 // ----- green ---------
 // right z motor
 color("green")
@@ -101,33 +101,33 @@ translate([-x2+30,yoff+yoff2,15])
 mirror([1,0,0])
 zleft1();
 
-/*
-// left z bracket upper
+
+// right z bracket upper
 color("pink")
 translate([-x2+30,yoff+yoff2,15])
 mirror([1,0,0])
 zleft2();
-*/
+
 
 
 //-------orange-----------------
 
 // upper x rod
 color("orange")
-translate([-480/2,yoff+yoff2-15,zoff+z4+16])
+translate([-480/2,yoff+yoff2-21,zoff+z4+20])
 rotate([0,90,0])
 cylinder(r=4,h=480,$fn=F2);
 
 // lower x rod
 color("orange")
-translate([-480/2,yoff+yoff2-15,zoff+48])
+translate([-480/2,yoff+yoff2-21,zoff+48])
 rotate([0,90,0])
 cylinder(r=4,h=480,$fn=F2);
 
 // right x motor
 color("blue")
 translate([-480/2-25,yoff+yoff2+28,zoff+z4])
-rotate([90,-90,0])
+rotate([90,90,0])
 xymotor();
 
 color("blue")
@@ -189,32 +189,70 @@ difference(){
 }
 
 // left extruder
+xextL=150;
 color("gray")
-translate([+480/2-200,yoff+yoff2+5,zoff+60])
+translate([+480/2-xextL,yoff+yoff2+5,zoff+60])
 rotate([90,0,180])
 import("aqua5.stl");
 // left emotor
 color("gray")
-translate([+480/2-200+67,yoff+yoff2-57,zoff+77])
+translate([+480/2-xextL+67,yoff+yoff2-57,zoff+77])
 rotate([90,-90,180])
 emotor();
 
+// x rod lm8u bearing
+color("gray")
+translate([+480/2-xextL+79,yoff+yoff2-21,zoff+48])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
+
+// x rod lm8u bearing hi 
+color("gray")
+translate([+480/2-xextL+80+18,yoff+yoff2-21,zoff+z4+20])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
+
+// x rod lm8u bearing hi 
+color("gray")
+translate([+480/2-xextL+80-18,yoff+yoff2-21,zoff+z4+20])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
+
+xextR=82;
 // right extruder
 color("blue")
-translate([+480/2-200,yoff+yoff2+5,zoff+60])
+translate([+480/2-xextR,yoff+yoff2+5,zoff+60])
 rotate([90,0,180])
 mirror([1,0,0])
 import("aqua5.stl");
 // right emotor
 color("blue")
-translate([+480/2-335+67,yoff+yoff2-57,zoff+77])
+translate([+480/2-xextR-68,yoff+yoff2-57,zoff+77])
 rotate([90,-90,180])
 emotor();
+
+// x rod lm8u bearing low
+color("blue")
+translate([+480/2-xextR-56,yoff+yoff2-21,zoff+48])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
+
+// x rod lm8u bearing hi 
+color("blue")
+translate([+480/2-xextR-56+18,yoff+yoff2-21,zoff+z4+20])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
+
+// x rod lm8u bearing hi 
+color("blue")
+translate([+480/2-xextR-56-18,yoff+yoff2-21,zoff+z4+20])
+rotate([-90,0,90])
+cylinder(r=15/2,h=24,$fn=F2);
 
 
 
 // ----- cyan ---------
-if(0){
+if(1){
 // Y motor
 // ??? Where is center of belt when pulley is on shaft
 color("cyan")

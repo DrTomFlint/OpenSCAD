@@ -29,15 +29,18 @@ union(){
     circle(r=16,$fn=88);
 
     color("orange")
-    translate([0,-23,38])
+    translate([0,-29,38])
     linear_extrude(height=28)
     square([56,10],center=true);
+
+    translate([0,0,48])
+    cylinder(r=7,h=2,$fn=F3);
 }
 sphere(r=2,$fs=0.1);
 }
 
 // left tower
-translate([0,-30-42.3/2-5,0])
+translate([0,-30-42.3/2-13,0])
 tslot1(type=3,len=100,tol=0.15);
 
 // left z motor
@@ -70,41 +73,25 @@ cylinder(r=5+0.1,h=350,$fn=F2);
     translate([-15.5,-15.5,46])
     cylinder(r=2.8,h=4,$fn=F3);
 
-    // access to motor mount screws
-    color("pink")
-    translate([15.5,-15.5,40+10])
-    rotate([-16,0,0])
-    cylinder(r1=4,r2=5,h=40,$fn=F3);
-
-    translate([-15.5,-15.5,40+10])
-    rotate([-16,0,0])
-    cylinder(r1=4,r2=5,h=40,$fn=F3);
-
-    color("pink")
-    translate([15.5,-15.5,38+10])
-    cylinder(r=2.8,h=6,$fn=F3);
-
-    translate([-15.5,-15.5,38+10])
-    cylinder(r=2.8,h=6,$fn=F3);
 
     // extra clearance for leadscrew
     translate([0,0,38])
     cylinder(r=5,h=20,$fn=F3);
 
     // tslot mounts
-    translate([15,-42.3/2-10,58])
+    translate([15,-42.3/2-18,58])
     rotate([-90,0,0])
     cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([15,-42.3/2+0.5,58])
+    translate([15,-42.3/2+0.5-8,58])
     rotate([-90,0,0])
     cylinder(r=5,h=5,$fn=F2);
 
-    translate([-15,-42.3/2-10,58])
+    translate([-15,-42.3/2-18,58])
     rotate([-90,0,0])
     cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([-15,-42.3/2+0.5,58])
+    translate([-15,-42.3/2+0.5-8,58])
     rotate([-90,0,0])
     cylinder(r=5,h=5,$fn=F2);
 }
@@ -127,17 +114,17 @@ translate([0,0,342])
 minkowski(){    
 union(){
     color("orange")
-    translate([0,-1,38])
-    linear_extrude(height=26)
-    square([56,34],center=true);
+    translate([0,-6,38])
+    linear_extrude(height=22)
+    square([56,44],center=true);
 
     color("orange")
     translate([x3+2,0,38])
-    linear_extrude(height=26)
+    linear_extrude(height=22)
     circle(r=16.0,$fn=88);
 
     color("orange")
-    translate([0,-23,20])
+    translate([0,-31,16])
     linear_extrude(height=44)
     square([56,10],center=true);
 }
@@ -145,11 +132,11 @@ sphere(r=2,$fs=0.1);
 }
 
 // left tower
-translate([0,-30-42.3/2-5,0])
+translate([0,-30-42.3/2-13,0])
 tslot1(type=3,len=380,tol=0.15);
 
 // top rail
-translate([-30,-30-42.3/2-5,380+15])
+translate([-30,-30-42.3/2-13,380+15])
 rotate([0,90,0])
 tslot1(type=2,len=60,tol=0.15);
 
@@ -168,19 +155,19 @@ cylinder(r=5+0.1,h=350,$fn=F2);
     cylinder(r=5,h=20,$fn=F3);
 
     // tslot mounts
-    translate([15,-42.3/2-10,370])
+    translate([15,-42.3/2-18,365])
     rotate([-90,0,0])
     cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([15,-42.3/2+0.5,370])
+    translate([15,-42.3/2+0.5-8,365])
     rotate([-90,0,0])
     cylinder(r=5,h=5,$fn=F2);
 
-    translate([-15,-42.3/2-10,370])
+    translate([-15,-42.3/2-18,365])
     rotate([-90,0,0])
     cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([-15,-42.3/2+0.5,370])
+    translate([-15,-42.3/2+0.5-8,365])
     rotate([-90,0,0])
     cylinder(r=5,h=5,$fn=F2);
 }
@@ -196,12 +183,12 @@ zleft2();
 if(1){
 // left tower
 color("gray")
-translate([0,-30-42.3/2-5,0])
+translate([0,-30-42.3/2-13,0])
 tslot1(type=3,len=380,tol=0.15);
 
 // top rail
 color("gray")
-translate([-30,-30-42.3/2-5,380+15])
+translate([-30,-30-42.3/2-13,380+15])
 rotate([0,90,0])
 tslot1(type=2,len=60,tol=0.15);
 
