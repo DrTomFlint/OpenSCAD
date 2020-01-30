@@ -20,6 +20,8 @@ z1=380;         // height of towers
 x3=25;      // distance zrod to zscrew
 z3=20;      // distance between x motors
 
+z4=125;     // height of motors and belts
+
 x2=x1/2;
 y2=y1/2;
 F2=88;
@@ -60,11 +62,12 @@ color("pink")
 translate([x2-30,yoff+yoff2,15])
 zleft1();
 
+/*
 // left z bracket upper
 color("pink")
 translate([x2-30,yoff+yoff2,15])
 zleft2();
-
+*/
 // ----- green ---------
 // right z motor
 color("green")
@@ -92,22 +95,126 @@ translate([-x2+30,yoff+yoff2,zoff+98+22])
 rotate([180,0,0])
 znut();
 
-
 // right z-motor bracket 
 color("pink")
 translate([-x2+30,yoff+yoff2,15])
 mirror([1,0,0])
 zleft1();
 
+/*
 // left z bracket upper
 color("pink")
 translate([-x2+30,yoff+yoff2,15])
 mirror([1,0,0])
 zleft2();
+*/
+
+
+//-------orange-----------------
+
+// upper x rod
+color("orange")
+translate([-480/2,yoff+yoff2-15,zoff+z4+16])
+rotate([0,90,0])
+cylinder(r=4,h=480,$fn=F2);
+
+// lower x rod
+color("orange")
+translate([-480/2,yoff+yoff2-15,zoff+48])
+rotate([0,90,0])
+cylinder(r=4,h=480,$fn=F2);
+
+// right x motor
+color("blue")
+translate([-480/2-25,yoff+yoff2+28,zoff+z4])
+rotate([90,-90,0])
+xymotor();
+
+color("blue")
+difference(){
+    hull(){
+        // pulley
+        translate([-480/2-25,yoff+yoff2-32,zoff+z4])
+        rotate([-90,-90,0])
+        cylinder(r=5.0,h=10,$fn=F2);
+
+        // idler
+        translate([480/2-20,yoff+yoff2-32,zoff+z4+2.5])
+        rotate([-90,-90,0])
+        cylinder(r=7.5,h=10,$fn=F2);
+    }
+    hull(){
+        // pulley
+        translate([-480/2-25,yoff+yoff2-32-1,zoff+z4])
+        rotate([-90,-90,0])
+        cylinder(r=3.5,h=12,$fn=F2);
+
+        // idler
+        translate([480/2-20,yoff+yoff2-32-1,zoff+z4+2.5])
+        rotate([-90,-90,0])
+        cylinder(r=6.0,h=12,$fn=F2);
+    }
+}
+
+// left x motor
+color("gray")
+translate([480/2+25,yoff+yoff2+42,zoff+z4])
+rotate([90,90,0])
+xymotor();
+
+color("gray")
+difference(){
+    hull(){
+        // right x idler
+        translate([-480/2+20,yoff+yoff2-20,zoff+z4+2.5])
+        rotate([-90,-90,0])
+        cylinder(r=7.5,h=10,$fn=F2);
+
+        // left x pulley
+        translate([+480/2+25,yoff+yoff2-20,zoff+z4])
+        rotate([-90,-90,0])
+        cylinder(r=5.0,h=10,$fn=F2);
+    }
+    hull(){
+        // right x idler
+        translate([-480/2+20,yoff+yoff2-20-1,zoff+z4+2.5])
+        rotate([-90,-90,0])
+        cylinder(r=6.1,h=12,$fn=F2);
+
+        // left x pulley
+        translate([+480/2+25,yoff+yoff2-20-1,zoff+z4])
+        rotate([-90,-90,0])
+        cylinder(r=3.5,h=12,$fn=F2);
+    }
+}
+
+// left extruder
+color("gray")
+translate([+480/2-200,yoff+yoff2+5,zoff+60])
+rotate([90,0,180])
+import("aqua5.stl");
+// left emotor
+color("gray")
+translate([+480/2-200+67,yoff+yoff2-57,zoff+77])
+rotate([90,-90,180])
+emotor();
+
+// right extruder
+color("blue")
+translate([+480/2-200,yoff+yoff2+5,zoff+60])
+rotate([90,0,180])
+mirror([1,0,0])
+import("aqua5.stl");
+// right emotor
+color("blue")
+translate([+480/2-335+67,yoff+yoff2-57,zoff+77])
+rotate([90,-90,180])
+emotor();
+
 
 
 // ----- cyan ---------
-if(1){
+if(0){
 // Y motor
 // ??? Where is center of belt when pulley is on shaft
 color("cyan")
@@ -156,92 +263,5 @@ translate([0,0,zoff2+8.4+10.25])
 cube([254,245,3.15],center=true);
 
 }
-
-//-------orange-----------------
-
-// upper x rod
-color("orange")
-translate([-480/2,yoff+yoff2-15,zoff+105])
-rotate([0,90,0])
-cylinder(r=4,h=480,$fn=F2);
-
-// lower x rod
-color("orange")
-translate([-480/2,yoff+yoff2-15,zoff+48])
-rotate([0,90,0])
-cylinder(r=4,h=480,$fn=F2);
-
-// right x motor
-color("orange")
-translate([-480/2-25,yoff+yoff2-75,zoff+65])
-rotate([-90,-90,0])
-xymotor();
-
-color("orange")
-difference(){
-hull(){
-// right x pulley
-color("cyan")
-translate([-480/2-25,yoff+yoff2-20,zoff+65])
-rotate([-90,-90,0])
-cylinder(r=6,h=10,$fn=F2);
-
-// left x idler
-color("cyan")
-translate([480/2+25,yoff+yoff2-20,zoff+65])
-rotate([-90,-90,0])
-cylinder(r=6,h=10,$fn=F2);
-}
-hull(){
-// right x pulley
-color("cyan")
-translate([-480/2-25,yoff+yoff2-20-1,zoff+65])
-rotate([-90,-90,0])
-cylinder(r=4,h=12,$fn=F2);
-
-// left x idler
-color("cyan")
-translate([480/2+25,yoff+yoff2-20-1,zoff+65])
-rotate([-90,-90,0])
-cylinder(r=4,h=12,$fn=F2);
-}
-}
-
-// left x motor
-color("orange")
-translate([480/2+25,yoff+yoff2-75,zoff+65+20])
-rotate([-90,-90,0])
-xymotor();
-
-color("orange")
-difference(){
-hull(){
-// right x idler
-color("cyan")
-translate([-480/2-25,yoff+yoff2-20,zoff+65+20])
-rotate([-90,-90,0])
-cylinder(r=6,h=10,$fn=F2);
-
-// left x pulley
-color("cyan")
-translate([+480/2+25,yoff+yoff2-20,zoff+65+20])
-rotate([-90,-90,0])
-cylinder(r=6,h=10,$fn=F2);
-}
-hull(){
-// right x idler
-color("cyan")
-translate([-480/2-25,yoff+yoff2-20-1,zoff+65+20])
-rotate([-90,-90,0])
-cylinder(r=4,h=12,$fn=F2);
-
-// left x pulley
-color("cyan")
-translate([+480/2+25,yoff+yoff2-20-1,zoff+65+20])
-rotate([-90,-90,0])
-cylinder(r=4,h=12,$fn=F2);
-}
-}
-
 
 //========================================

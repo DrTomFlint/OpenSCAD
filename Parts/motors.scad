@@ -85,6 +85,53 @@ F3=22;
     cylinder(r=2.5,h=20,$fn=F3);
     
 }
+//-------------------------------------
+module emotor(tol=0){
+F2=88;
+F3=22;
+    z1=39.0;
+    
+    difference(){
+    // boss
+    translate([0,0,z1/2])
+    intersection(){
+        cube([42.4,42.4,z1],center=true);
+        cylinder(r=53/2,h=z1,center=true,$fn=F2);
+    }
+
+    // stator stack smaller than end plates
+    translate([0,0,z1/2]){
+        difference(){
+            cube([60,60,14.2],center=true);
+            cylinder(r=50/2,h=30.2,center=true,$fn=F2);
+        }
+    }
+    
+    // mounting holes
+    translate([15.5,15.5,z1-5])
+    cylinder(r=1.5,h=10,$fn=F3);
+    translate([-15.5,15.5,z1-5])
+    cylinder(r=1.5,h=10,$fn=F3);
+    translate([15.5,-15.5,z1-5])
+    cylinder(r=1.5,h=10,$fn=F3);
+    translate([-15.5,-15.5,z1-5])
+    cylinder(r=1.5,h=10,$fn=F3);
+    
+    }
+    
+    // top cylinder
+    translate([0,0,z1])
+    cylinder(r=11,h=1.85,$fn=F2);
+    
+    // wiring box
+    translate([42.4/2,-8.25,0])
+    cube([8+tol,16.5+tol,11+tol]);
+    
+    // main shaft
+    translate([0,0,z1])
+    cylinder(r=2.5,h=20,$fn=F3);
+    
+}
 //-----------------------------------
 module znut(holes=1,tol=0){
     F2=88;
@@ -112,8 +159,8 @@ module znut(holes=1,tol=0){
 
 //zmotor();
 
-znut();
-
+//znut();
+emotor();
 //xymotor();
 
 //========================================

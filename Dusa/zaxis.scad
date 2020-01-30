@@ -190,10 +190,10 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
 //===============================
 
-//zleft1();
+zleft1();
 zleft2();
 
-if(0){
+if(1){
 // left tower
 color("gray")
 translate([0,-30-42.3/2-5,0])
