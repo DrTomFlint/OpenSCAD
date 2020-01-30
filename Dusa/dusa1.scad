@@ -49,10 +49,21 @@ color("red")
 translate([x2-30+x3,yoff+yoff2,zoff+98])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
-// left z-motor bracket 
+// left znut
+color("red")
+translate([x2-30,yoff+yoff2,zoff+98+22])
+rotate([180,0,0])
+znut();
+
+// left z-motor bracket lower
 color("pink")
 translate([x2-30,yoff+yoff2,15])
 zleft1();
+
+// left z bracket upper
+color("pink")
+translate([x2-30,yoff+yoff2,15])
+zleft2();
 
 // ----- green ---------
 // right z motor
@@ -75,11 +86,24 @@ color("green")
 translate([-x2+30-x3,yoff+yoff2,zoff+98])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
+// right znut
+color("green")
+translate([-x2+30,yoff+yoff2,zoff+98+22])
+rotate([180,0,0])
+znut();
+
+
 // right z-motor bracket 
 color("pink")
 translate([-x2+30,yoff+yoff2,15])
 mirror([1,0,0])
 zleft1();
+
+// left z bracket upper
+color("pink")
+translate([-x2+30,yoff+yoff2,15])
+mirror([1,0,0])
+zleft2();
 
 
 // ----- cyan ---------

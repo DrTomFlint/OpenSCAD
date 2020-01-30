@@ -85,9 +85,34 @@ F3=22;
     cylinder(r=2.5,h=20,$fn=F3);
     
 }
+//-----------------------------------
+module znut(holes=1,tol=0){
+    F2=88;
+    
+    cylinder(r=9.95/2+tol,h=10.45+tol,$fn=F2);
+    
+    difference(){
+        translate([0,0,2])
+        cylinder(r=21.9/2+tol,h=3.55,$fn=F2);
+
+        if(holes==1){
+            translate([7.75,0,0])
+            cylinder(r=1.5,h=6,$fn=F2);
+            translate([0,7.75,0])
+            cylinder(r=1.5,h=6,$fn=F2);
+            translate([-7.75,0,0])
+            cylinder(r=1.5,h=6,$fn=F2);
+            translate([0,-7.75,0])
+            cylinder(r=1.5,h=6,$fn=F2);
+        }
+    }
+
+}
 //======================================
 
-zmotor();
+//zmotor();
+
+znut();
 
 //xymotor();
 
