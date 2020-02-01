@@ -155,12 +155,61 @@ module znut(holes=1,tol=0){
     }
 
 }
+//------------------------------
+module pulley(tol=0){
+    F2=88;
+
+    difference(){
+    union(){
+        cylinder(r=7,h=1,$fn=F2);
+        
+        translate([0,0,1])
+        cylinder(r=4.5,h=7,$fn=F2);
+        
+        translate([0,0,8])
+        cylinder(r=7,h=7,$fn=F2);
+    }
+    
+    translate([0,0,-1])
+    cylinder(r=2.5,h=17,$fn=F2);
+        
+}
+    
+}
+
+//------------------------------
+module idler(tol=0){
+    F2=88;
+
+    difference(){
+    union(){
+        cylinder(r=17.8/2,h=1,$fn=F2);
+        
+        translate([0,0,1])
+        cylinder(r=14/2,h=7,$fn=F2);
+        
+        translate([0,0,8])
+        cylinder(r=17.8/2,h=1,$fn=F2);
+    }
+    
+    translate([0,0,-1])
+    cylinder(r=1.5,h=17,$fn=F2);
+        
+}
+    
+}
+
 //======================================
+
+translate([20,0,0])
+pulley();
+
+idler();
 
 //zmotor();
 
 //znut();
-emotor();
+//emotor();
 //xymotor();
 
 //========================================

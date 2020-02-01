@@ -3,6 +3,26 @@
 
 use <../Parts/tslot.scad>
 
+
+
+//-----------------------------------------------------------------
+// Customizer Values:
+// These must be at the top of the main file, cannot contain any
+// computations, and should have a comment above to provide text
+
+// Tower offset from center 
+yoff=-57.2; 
+
+// Length front, back, top rail 
+x1=480;         
+
+// Length side rails
+y1=330;      
+
+// Length of towers
+z1=380;       
+
+
 //--------------------------------------
 module frame(
 yoff=-62,       // tower and top offset from center
@@ -72,25 +92,29 @@ y2=y1/2;    // 165
     translate([x2-60,-y2,0])
     rotate([0,0,-270])
     tbrace();
-    
+  
+// Removed two triangle braces too increase Z axis
+// range of motion
+/*
     // left top corner 1
     color("gray")
     translate([x2-60,yoff+15,z1+15])
     rotate([90,180,0])
     tbrace();
-    
+*/    
     // left top corner 2
     color("gray")
     translate([x2-60,yoff-15,z1+15])
     rotate([90,180,0])
     tbrace();
-    
+
+/*    
     // right top corner 1
     color("gray")
     translate([-x2+60,yoff+15,z1+15])
     rotate([90,90,0])
     tbrace();
-    
+*/    
     // right top corner 2
     color("gray")
     translate([-x2+60,yoff-15,z1+15])
@@ -204,6 +228,7 @@ y2=y1/2;    // 165
 
 //====================================
 
-frame();
+frame(yoff=yoff,x1=x1,y1=y1,z1=z1);
+//cylinder(r=10,h=180);
  
 //=====================================
