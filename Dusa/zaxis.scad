@@ -3,12 +3,23 @@
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 
-x3=25;
+// Center to motor screw
+x1=-8; 
+
+// Center to rod
+x3=17;
+
+// Label?
+yoff3=6;
+
+// sides2
 F2=88;
+
 
 //------------------------------
 module zleft1(
-x3=25,
+x1=-10,
+x3=15,
 yoff3=6
 ){
 
@@ -24,21 +35,24 @@ union(){
     linear_extrude(height=10)
     square([56,48],center=true);
 
-    color("orange")
-    translate([x3,0,38])
-    linear_extrude(height=10)
-    circle(r=16,$fn=88);
+    difference(){
+        color("orange")
+        translate([0,-24,38])
+        linear_extrude(height=24)
+        square([56,10],center=true);
 
-    color("orange")
-    translate([0,-24,38])
-    linear_extrude(height=24)
-    square([56,10],center=true);
+        // corner cutout for extruder body
+        translate([x1-19,-10,62])
+        rotate([90,0,0])
+        cylinder(r=8,h=30,$fn=F2);
+    }
 
-    translate([0,0,48])
-    cylinder(r=7,h=2,$fn=F3);
+    translate([x1,0,48])
+    cylinder(r=7,h=2,$fn=F2);
 }
 sphere(r=2,$fs=0.1);
 }
+
 
 // left tower
 translate([0,-30-42.3/2-yoff3,0])
@@ -46,6 +60,7 @@ tslot1(type=3,len=100,tol=0.15);
 
 // left z motor
 color("red")
+translate([x1,0,0])
 rotate([0,0,180])
 zmotor(tol=0.15);
 
@@ -55,28 +70,28 @@ translate([x3,0,42])
 cylinder(r=5+0.1,h=350,$fn=F2);
     
     // mounting holes,
-    translate([15.5,15.5,30])
+    translate([15.5+x1,15.5,30])
     cylinder(r=1.6,h=30,$fn=F3);
-    translate([-15.5,15.5,30])
+    translate([-15.5+x1,15.5,30])
     cylinder(r=1.6,h=30,$fn=F3);
-    translate([15.5,-15.5,30])
+    translate([15.5+x1,-15.5,30])
     cylinder(r=1.6,h=20,$fn=F3);
-    translate([-15.5,-15.5,30])
+    translate([-15.5+x1,-15.5,30])
     cylinder(r=1.6,h=20,$fn=F3);
 
     // countersink for the heads
-    translate([15.5,15.5,46])
+    translate([15.5+x1,15.5,46])
     cylinder(r=2.8,h=4,$fn=F3);
-    translate([-15.5,15.5,46])
+    translate([-15.5+x1,15.5,46])
     cylinder(r=2.8,h=4,$fn=F3);
-    translate([15.5,-15.5,46])
+    translate([15.5+x1,-15.5,46])
     cylinder(r=2.8,h=30,$fn=F3);
-    translate([-15.5,-15.5,46])
+    translate([-15.5+x1,-15.5,46])
     cylinder(r=2.8,h=30,$fn=F3);
 
 
     // extra clearance for leadscrew
-    translate([0,0,38])
+    translate([x1,0,38])
     cylinder(r=5,h=20,$fn=F3);
 
     // tslot mounts
@@ -102,7 +117,8 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
 //------------------------------
 module zleft2(
-x3=25,
+x1=-8,
+x3=17,
 yoff3=6
 ){
 
@@ -120,18 +136,27 @@ union(){
     linear_extrude(height=22)
     square([56,44],center=true);
 
-    color("orange")
-    translate([x3+2,0,38])
-    linear_extrude(height=22)
-    circle(r=16.0,$fn=88);
-
+    difference(){
     color("orange")
     translate([0,-24,16])
     linear_extrude(height=44)
     square([56,10],center=true);
+
+    // corner cutout for extruder body
+    hull(){
+        translate([x1-19,-10,370-342])
+        rotate([90,0,0])
+        cylinder(r=8,h=30,$fn=F2);
+        translate([x1-19,-10,350-342])
+        rotate([90,0,0])
+        cylinder(r=8,h=30,$fn=F2);
+    }
+}
+
 }
 sphere(r=2,$fs=0.1);
 }
+
 
 // left tower
 translate([0,-30-42.3/2-yoff3,0])
@@ -144,6 +169,7 @@ tslot1(type=2,len=60,tol=0.15);
 
 // left z motor
 color("red")
+translate([x1,0,0])
 rotate([0,0,180])
 zmotor(tol=0.15);
 
@@ -153,7 +179,7 @@ translate([x3,0,42])
 cylinder(r=5+0.1,h=350,$fn=F2);
     
     // extra clearance for leadscrew
-    translate([0,0,330+40])
+    translate([x1,0,330+40])
     cylinder(r=5,h=20,$fn=F3);
 
     // tslot mounts
@@ -179,11 +205,10 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
 //===============================
 
-zleft1();
-zleft2();
-yoff3=6;
+zleft1(x1=x1,x3=x3,yoff3=yoff3);
+zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
-if(1){
+if(0){
 // left tower
 color("gray")
 translate([0,-30-42.3/2-yoff3,0])
@@ -197,6 +222,7 @@ tslot1(type=2,len=60,tol=0.15);
 
 // left z motor
 color("red")
+translate([x1,0,0])
 rotate([0,0,180])
 zmotor(tol=0.15);
 
