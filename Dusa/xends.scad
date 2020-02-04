@@ -110,6 +110,12 @@ translate([x2-30+zscrew,0,High0+90-1])
 rotate([180,0,0])
 znut(holes=0,tol=0.05);
 
+// clearance for left znut
+color("red")
+translate([x2-30+zscrew,0,High0+90-1])
+rotate([180,0,0])
+cylinder(r=11.1,h=4,$fn=F2);
+
 // cut left znut top clearance
 color("red")
 translate([x2-30+zscrew,0,High0+90-1])
@@ -199,8 +205,15 @@ rotate([90,0,0]){
 
 // main cut for belt, pulley, and idler
 color("cyan")
-translate([480/2-80,0+9.5,High0+36])
-cube([90,9.5,38]);
+translate([480/2-80,0+9.5,High0+37])
+cube([90,9.5,37]);
+
+// 
+color("cyan")
+translate([480/2-80,14.25,High0+39])
+rotate([0,90,0])
+scale([0.9,1,1])
+cylinder(r=9.5/2,h=90,$fn=F2);
 
 // clearance for pulley
 translate([480/2-30-xmot0,9.5,High0+zmotor1])
@@ -241,7 +254,13 @@ rotate([180,0,0]){
 
 //=======================================================
 
-xleft1();
+ //xleft1();
+
+
+// This is a printing support
+translate([x2-30+zscrew+xrodscrew,0,High0+60-3])
+cylinder(r=19.2/2-2,h=32,$fn=12);
+
 
 
 if(0){
