@@ -49,10 +49,10 @@ ybracket=6;
 zoff2=43;   
 
 // Distance zrod to zscrew
-xrodscrew=29;     
+xrodscrew=26;     
 
 // Offset of zscrew
-zscrew = -8;
+zscrew = -7;
 
 // Height of bottom x motor
 zmotor1=45;    
@@ -160,8 +160,8 @@ zleft1(yoff3=ybracket,x1=zscrew,x3=xrodscrew+zscrew);
 if(tops==1){
     color("pink")
     translate([-x2+30,0,15])
-    mirror([1,0,0])
-    zleft2(yoff3=ybracket,x1=zscrew,x3=xrodscrew+zscrew);
+    //mirror([1,0,0])
+    zright2(yoff3=ybracket,x1=zscrew,x3=xrodscrew+zscrew);
 }
 
 //-------orange-----------------

@@ -4,10 +4,10 @@ use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 
 // Center to motor screw
-x1=-8; 
+x1=-7; 
 
 // Center to rod
-x3=17;
+x3=19;
 
 // Label?
 yoff3=6;
@@ -24,22 +24,44 @@ yoff3=6
 ){
 
 F2=88;
-F3=22;
+F3=88;
+
+z4=41;  // translate 38
+z5=6;  // thick 10
 
 difference(){
 // boss
 minkowski(){    
 union(){
-    color("orange")
-    translate([0,0,38])
-    linear_extrude(height=10)
-    square([56,48],center=true);
+    // over motor
+    color("gray")
+    translate([-6,-2,z4])
+    linear_extrude(height=z5)
+    square([44,48],center=true);
+
+    // back corner
+    color("pink")
+    translate([20,-13,z4])
+    linear_extrude(height=z5)
+    square([16,24],center=true);
+
+    // rounded corner
+    color("green")
+    translate([16,-2,z4])
+    scale([1,2,1])
+    cylinder(r=12,h=z5,$fn=F2);
+
+    // collar around rod
+    color("red")
+    translate([x3,0,z4+z5])
+    cylinder(r=7,h=2,$fn=F2);
 
     difference(){
+        // vertical tab
         color("orange")
-        translate([0,-24,38])
-        linear_extrude(height=24)
-        square([56,10],center=true);
+        translate([0,-22,z4])
+        linear_extrude(height=21)
+        square([56,8],center=true);
 
         // corner cutout for extruder body
         translate([x1-19,-10,62])
@@ -47,10 +69,18 @@ union(){
         cylinder(r=8,h=30,$fn=F2);
     }
 
-    translate([x1,0,48])
+    // fillet
+    color("blue")
+    translate([0,-16.0,z4+3])
+    rotate([45,0,0])
+    linear_extrude(height=6)
+    square([56,6],center=true);
+
+    // collar around screw
+    translate([x1,0,z4+z5])
     cylinder(r=7,h=2,$fn=F2);
 }
-sphere(r=2,$fs=0.1);
+sphere(r=2,$fs=0.2);
 }
 
 
@@ -67,7 +97,7 @@ zmotor(tol=0.15);
 // left z rod, add some tolerance
 color("red")
 translate([x3,0,42])
-cylinder(r=5+0.1,h=350,$fn=F2);
+cylinder(r=5+0.05,h=350,$fn=F2);
     
     // mounting holes,
     translate([15.5+x1,15.5,30])
@@ -91,8 +121,8 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
 
     // extra clearance for leadscrew
-    translate([x1,0,38])
-    cylinder(r=5,h=20,$fn=F3);
+    translate([x1,0,z4-5])
+    cylinder(r=5,h=20,$fn=F2);
 
     // tslot mounts
     translate([15,-42.3/2-5-yoff3,56])
@@ -101,7 +131,7 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
     translate([15,-42.3/2+0.5-yoff3+5,56])
     rotate([-90,0,0])
-    cylinder(r=5,h=5,$fn=F2);
+    cylinder(r=5,h=6,$fn=F2);
 
     translate([-15,-42.3/2-5-yoff3,56])
     rotate([-90,0,0])
@@ -109,14 +139,14 @@ cylinder(r=5+0.1,h=350,$fn=F2);
 
     translate([-15,-42.3/2+0.5-yoff3+5,56])
     rotate([-90,0,0])
-    cylinder(r=5,h=5,$fn=F2);
+    cylinder(r=5,h=6,$fn=F2);
 }
 
     
 }
 
 //------------------------------
-module zleft2(
+module zleft2a(
 x1=-8,
 x3=17,
 yoff3=6
@@ -129,20 +159,49 @@ F3=22;
 difference(){
 // boss
 translate([0,0,342])
+union(){
 minkowski(){    
 union(){
-    color("orange")
-    translate([0,-6,38])
-    linear_extrude(height=22)
-    square([56,44],center=true);
+    // over rods
+    color("gray")
+    translate([4.5,-7,38+4])
+    linear_extrude(height=20)
+    square([47,38],center=true);
 
+    // fillet
+    color("blue")
+    translate([4.5,-16,38+2])
+    rotate([45,0,0])
+    linear_extrude(height=6)
+    square([47,6],center=true);
+
+    // collar around rod
+    color("red")
+    translate([x3,0,38+2])
+    cylinder(r=7,h=2,$fn=F2);
+
+    // collar around screw
+    translate([x1,0,38+2])
+    cylinder(r=7,h=2,$fn=F2);
+
+    // vertical tab
     difference(){
     color("orange")
-    translate([0,-24,16])
+    translate([4.5,-22,16])
     linear_extrude(height=44)
-    square([56,10],center=true);
+    square([47,8],center=true);
 
+
+}
+
+}
+sphere(r=2,$fs=0.2);
+}
+}
+
+/*
     // corner cutout for extruder body
+    translate([-2,0,342])
     hull(){
         translate([x1-19,-10,370-342])
         rotate([90,0,0])
@@ -151,12 +210,7 @@ union(){
         rotate([90,0,0])
         cylinder(r=8,h=30,$fn=F2);
     }
-}
-
-}
-sphere(r=2,$fs=0.1);
-}
-
+  */  
 
 // left tower
 translate([0,-30-42.3/2-yoff3,0])
@@ -177,36 +231,118 @@ zmotor(tol=0.15);
 color("red")
 translate([x3,0,42])
 cylinder(r=5+0.1,h=350,$fn=F2);
+
     
-    // extra clearance for leadscrew
-    translate([x1,0,330+40])
-    cylinder(r=5,h=20,$fn=F3);
+// extra clearance for leadscrew
+translate([x1,0,330+40])
+cylinder(r=5,h=20,$fn=F3);
 
-    // tslot mounts
-    translate([15,-42.3/2-yoff3-5,365])
-    rotate([-90,0,0])
-    cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([15,-42.3/2+0.5-yoff3+5,365])
-    rotate([-90,0,0])
-    cylinder(r=5,h=5,$fn=F2);
+// tslot mounts
+translate([15,-42.3/2-yoff3-5,365])
+rotate([-90,0,0])
+cylinder(r=5.9/2,h=20,$fn=F2);
 
-    translate([-15,-42.3/2-yoff3-5,365])
-    rotate([-90,0,0])
-    cylinder(r=5.9/2,h=20,$fn=F2);
+translate([15,-42.3/2+0.5-yoff3+5,365])
+rotate([-90,0,0])
+cylinder(r=5,h=6,$fn=F2);
 
-    translate([-15,-42.3/2+0.5-yoff3+5,365])
-    rotate([-90,0,0])
-    cylinder(r=5,h=5,$fn=F2);
+translate([-15,-42.3/2-yoff3-5,365])
+rotate([-90,0,0])
+cylinder(r=5.9/2,h=20,$fn=F2);
+
+
+translate([-15,-42.3/2+0.5-yoff3+5,365])
+rotate([-90,0,0])
+cylinder(r=5,h=6,$fn=F2);
+
+// third hole
+translate([5,-42.3/2-yoff3-5,380+15])
+rotate([-90,0,0])
+cylinder(r=5.9/2,h=20,$fn=F2);
+
+translate([5,-42.3/2+0.5-yoff3+5,380+15])
+rotate([-90,0,0])
+cylinder(r=5,h=60,$fn=F2);
+
+// extra clearance for inserting screw
+translate([5,-42.3/2+0.5+6-yoff3+5,380+15])
+rotate([-90,0,0])
+cylinder(r1=5.0,r2=6.5,h=40,$fn=F2);
+  
+    
 }
 
     
 }
+//---------------------------------
+module zleft2(
+x1=-8,
+x3=17,
+yoff3=6
+){
+
+F2=88;
+F3=22;
+    
+    zleft2a(x1=x1,x3=x3,yoff3=yoff3);
+    
+    // text labels
+    color("red")
+    translate([5+15,-42.3/2+0.5-yoff3+40,380+15])
+    rotate([90,0,180])
+    linear_extrude(height=1,scale=1)
+    text("D", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([5-15,-42.3/2+0.5-yoff3+40,380+15])
+    rotate([90,0,180])
+    linear_extrude(height=1,scale=1)
+    text("U", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
+
+
+    
+}
+//---------------------------------
+module zright2(
+x1=-8,
+x3=17,
+yoff3=6
+){
+
+F2=88;
+F3=22;
+    
+    mirror([1,0,0])
+    zleft2a(x1=x1,x3=x3,yoff3=yoff3);
+    
+    // text labels
+    color("red")
+    translate([-5+15,-42.3/2+0.5-yoff3+40,380+15])
+    rotate([90,0,180])
+    linear_extrude(height=1,scale=1)
+    text("S", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([-5-15,-42.3/2+0.5-yoff3+40,380+15])
+    rotate([90,0,180])
+    linear_extrude(height=1,scale=1)
+    text("A", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
+
+
+    
+}
+
 
 //===============================
 
-zleft1(x1=x1,x3=x3,yoff3=yoff3);
-zleft2(x1=x1,x3=x3,yoff3=yoff3);
+
+//mirror([1,0,0])
+//zleft1(x1=x1,x3=x3,yoff3=yoff3);
+
+//zleft2(x1=x1,x3=x3,yoff3=yoff3);
+
+zright2(x1=x1,x3=x3,yoff3=yoff3);
 
 if(0){
 // left tower
