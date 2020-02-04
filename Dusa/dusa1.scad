@@ -5,6 +5,7 @@ use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <frame.scad>
 use <zaxis.scad>
+use <xends.scad>
 
 
 //======================================
@@ -82,6 +83,9 @@ if(frameOn==1){
 frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
+translate([0,0,High0-150])
+xleft1();
+
 //----------- red-----------
 // left z motor
 color("red")
@@ -106,7 +110,7 @@ cylinder(r=19.2/2,h=29,$fn=F2);
 
 // left znut
 color("red")
-translate([x2-30+zscrew,0,High0+90])
+translate([x2-30+zscrew,0,High0+90-1])
 rotate([180,0,0])
 znut();
 
@@ -145,7 +149,7 @@ cylinder(r=19.2/2,h=29,$fn=F2);
 
 // right znut
 color("green")
-translate([-x2+30-zscrew,0,High0+90])
+translate([-x2+30-zscrew,0,High0+90-1])
 rotate([180,0,0])
 znut();
 
@@ -165,7 +169,6 @@ if(tops==1){
 }
 
 //-------orange-----------------
-
 
 // upper x rod
 color("orange")
@@ -192,7 +195,7 @@ rotate([90,90,0])
 pulley();
 
 color("orange")
-translate([-480/2+30+xmot0,0+24,High0+zmotor1])
+translate([-480/2+30+xmot0,0+24-5,High0+zmotor1])
 rotate([90,90,0])
 idler();
 
@@ -201,23 +204,23 @@ color("blue")
 difference(){
     hull(){
         // pulley
-        translate([-480/2+30+xmot0,0+17,High0+zmotor2])
+        translate([-480/2+30+xmot0,0+17-5,High0+zmotor2])
         rotate([-90,-90,0])
         cylinder(r=5.0,h=6,$fn=F2);
 
         // idler
-        translate([480/2-30-xmot0,0+17,High0+zmotor2])
+        translate([480/2-30-xmot0,0+17-5,High0+zmotor2])
         rotate([-90,-90,0])
         cylinder(r=7.5,h=6,$fn=F2);
     }
     hull(){
         // pulley
-        translate([-480/2+30+xmot0,0+17-1,High0+zmotor2])
+        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor2])
         rotate([-90,-90,0])
         cylinder(r=3.5,h=8,$fn=F2);
 
         // idler
-        translate([480/2-30-xmot0,0+17-1,High0+zmotor2])
+        translate([480/2-30-xmot0,0+17-1-5,High0+zmotor2])
         rotate([-90,-90,0])
         cylinder(r=6.0,h=8,$fn=F2);
     }
@@ -235,7 +238,7 @@ rotate([90,90,0])
 pulley();
 
 color("orange")
-translate([480/2-30-xmot0,0+24,High0+zmotor2])
+translate([480/2-30-xmot0,0+24-5,High0+zmotor2])
 rotate([90,90,0])
 idler();
 
@@ -244,28 +247,30 @@ color("gray")
 difference(){
     hull(){
         // right x idler
-        translate([-480/2+30+xmot0,0+17,High0+zmotor1])
+        translate([-480/2+30+xmot0,0+17-5,High0+zmotor1])
         rotate([-90,-90,0])
         cylinder(r=7.5,h=6,$fn=F2);
 
         // left x pulley
-        translate([+480/2-30-xmot0,0+17,High0+zmotor1])
+        translate([+480/2-30-xmot0,0+17-5,High0+zmotor1])
         rotate([-90,-90,0])
         cylinder(r=5.0,h=6,$fn=F2);
     }
     hull(){
         // right x idler
-        translate([-480/2+30+xmot0,0+17-1,High0+zmotor1])
+        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor1])
         rotate([-90,-90,0])
         cylinder(r=6.1,h=8,$fn=F2);
 
         // left x pulley
-        translate([+480/2-30-xmot0,0+17-1,High0+zmotor1])
+        translate([+480/2-30-xmot0,0+17-1-5,High0+zmotor1])
         rotate([-90,-90,0])
         cylinder(r=3.5,h=8,$fn=F2);
     }
 }
 
+
+if(0){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,0+4,High0+26])
@@ -300,7 +305,8 @@ color("gray")
 translate([+480/2-LeftX0+80-18,0+16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
-
+}
+if(0){
 // right extruder
 color("blue")
 translate([+480/2-RightX0,0+4,High0+26])
@@ -331,7 +337,7 @@ translate([+480/2-RightX0-56-18,0+16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
 
-
+}
 
 // ----- cyan ---------
 if(ybed){

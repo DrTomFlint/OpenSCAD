@@ -161,13 +161,13 @@ module pulley(tol=0){
 
     difference(){
     union(){
-        cylinder(r=7,h=1,$fn=F2);
+        cylinder(r=7,h=6,$fn=F2);
         
-        translate([0,0,1])
+        translate([0,0,6])
         cylinder(r=4.5,h=7,$fn=F2);
         
-        translate([0,0,8])
-        cylinder(r=7,h=7,$fn=F2);
+        translate([0,0,13])
+        cylinder(r=7,h=1,$fn=F2);
     }
     
     translate([0,0,-1])
