@@ -252,15 +252,202 @@ rotate([180,0,0]){
 
 }
 
+//------------------------------------------------------------------------
+module xright1(
+
+){
+  
+difference(){
+// boss
+translate([-x2,-13,High0+18])
+minkowski() {
+  difference(){
+    cube([50,40,69]);    
+    translate([50-29,-1,-1])
+    cube([29,22,51]);
+}
+
+  sphere(r=2,$fs=0.2);
+}
+
+// cut for right z rod plus clearance
+translate([-(x2-30+zscrew+xrodscrew),0,15+42])
+cylinder(r=5.2,h=350,$fn=F2);
+
+// cut for right lm10u bearing lower plus clearance
+translate([-(x2-30+zscrew+xrodscrew),0,High0+16])
+cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+
+// cut for right lm10u bearing upper plus clearance
+translate([-(x2-30+zscrew+xrodscrew),0,High0+60])
+cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+
+// strain relief cut for M10 and bearings
+translate([-(x2-30+zscrew+xrodscrew-0.5),-18,High0+16])
+cube([1,15,80]);
+
+// cut right znut
+color("red")
+translate([-(x2-30+zscrew),0,High0+90-1])
+rotate([180,0,0])
+znut(holes=0,tol=0.05);
+
+// clearance for right znut
+color("red")
+translate([-(x2-30+zscrew),0,High0+90-1])
+rotate([180,0,0])
+cylinder(r=11.1,h=4,$fn=F2);
+
+// cut right znut top clearance
+color("red")
+translate([-(x2-30+zscrew),0,High0+90-1])
+rotate([180,0,0])
+cylinder(r=10,h=4,$fn=F2);
+
+// cut for znut mounting screws M3x20
+translate([-(x2-30+zscrew),0,High0+90-1])
+rotate([180,0,0]){
+  translate([7.75,0,0])
+  cylinder(r=1.5,h=20,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=1.5,h=20,$fn=F2);
+}
+
+// cut for M3x29 screw heads
+color("pink")
+translate([-(x2-30+zscrew),0,High0+90-21])
+rotate([180,0,0]){
+  translate([7.75,0,0])
+  cylinder(r=4.5/2,h=3,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=4.5/2,h=3,$fn=F2);
+}
+
+// cut right z screw
+translate([-(x2-30+zscrew),0,15])
+rotate([0,0,180])
+zmotor(tol=0.15);
+
+// cut for upper x rod plus clearance
+translate([-480/2,0+16,High0+zmotor1+34])
+rotate([0,90,0])
+cylinder(r=4+0.05,h=480,$fn=F2);
+
+// check hole for upper x rod
+translate([-(480/2-2.25),33,High0+zmotor1+34])
+rotate([90,30,0])
+cylinder(r=3,h=15,$fn=6);
+
+// cut for lower x rod plus clearance
+translate([-480/2,0+16,High0+30])
+rotate([0,90,0])
+cylinder(r=4+0.05,h=480,$fn=F2);
+
+// check hole for lower x rod
+translate([-(480/2-2.25),33,High0+30])
+rotate([90,30,0])
+cylinder(r=3,h=15,$fn=6);
+
+
+// cut for right x motor
+translate([-(480/2-30-xmot0),0+76,High0+zmotor2])
+rotate([90,90,0])
+xymotor(tol=0.15);
+
+// cut for right x motor shaft
+translate([-(480/2-30-xmot0),20,High0+zmotor2])
+rotate([90,90,0])
+cylinder(r=3,h=14,$fn=F2);
+
+F3=22;
+
+translate([-x2+28,65,High0+zmotor2])
+rotate([90,0,0]){
+    // x motor mounting holes,
+    translate([15.5,15.5,30])
+    cylinder(r=1.6,h=30,$fn=F3);
+    translate([-15.5,15.5,30])
+    cylinder(r=1.6,h=30,$fn=F3);
+    translate([15.5,-15.5,30])
+    cylinder(r=1.6,h=30,$fn=F3);
+    translate([-15.5,-15.5,30])
+    cylinder(r=1.6,h=30,$fn=F3);
+
+    // countersink for the heads
+    translate([15.5,15.5,41])
+    cylinder(r=2.8,h=40,$fn=F3);
+    translate([-15.5,15.5,41])
+    cylinder(r=2.8,h=40,$fn=F3);
+    translate([15.5,-15.5,41])
+    cylinder(r=2.8,h=40,$fn=F3);
+    translate([-15.5,-15.5,41])
+    cylinder(r=2.8,h=40,$fn=F3);
+}
+
+// main cut for belt, pulley, and idler
+color("cyan")
+translate([-(480/2+10),0+9.5,High0+37])
+cube([90,9.5,37]);
+
+// arch for printability
+color("cyan")
+translate([-(480/2+10),14.25,High0+39])
+rotate([0,90,0])
+scale([0.9,1,1])
+cylinder(r=9.5/2,h=90,$fn=F2);
+
+// clearance for pulley
+translate([-(480/2-30-xmot0),9.5,High0+zmotor2])
+rotate([-90,90,0])
+cylinder(r=8,h=20,$fn=F2);
+
+// idler attachment M3x20 screw
+translate([-(480/2-30-xmot0),25,High0+zmotor1])
+rotate([90,90,0])
+cylinder(r=1.55,h=20,$fn=F2);
+// M3x30 head
+translate([-(480/2-30-xmot0),29,High0+zmotor1])
+rotate([90,90,0])
+cylinder(r=2.8,h=5,$fn=F2);
+// M3 nut clearance
+translate([-(480/2-30-xmot0),6,High0+zmotor1])
+rotate([90,90,0])
+cylinder(r=4,h=3.5,$fn=F2);
+
+
+}// end diff
+
+
+if(0){
+// M3x20 screws for Z-nut
+color("pink")
+translate([x2-30+zscrew,0,High0+90-21])
+rotate([180,0,0]){
+  translate([7.75,0,0])
+  cylinder(r=4.5/2,h=3,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=4.5/2,h=3,$fn=F2);
+}
+}
+
+
+}
+
 //=======================================================
 
- //xleft1();
-
-
-// This is a printing support
+//xleft1();
+if(0){
+// This is a printing support for xleft1
 translate([x2-30+zscrew+xrodscrew,0,High0+60-3])
 cylinder(r=19.2/2-2,h=32,$fn=12);
+}
 
+xright1();
+if(0){
+// This is a printing support for xright1
+translate([-(x2-30+zscrew+xrodscrew),0,High0+60-3])
+cylinder(r=19.2/2-2,h=32,$fn=12);
+}
 
 
 if(0){
@@ -349,12 +536,16 @@ znut();
 
 //-------orange-----------------
 
+if(0){
 // right x motor
 color("blue")
 translate([-480/2+30+xmot0,0+76,High0+zmotor2])
 rotate([90,90,0])
 xymotor();
+}
 
+
+if(1){
 // right x motor pulley
 color("orange")
 translate([-480/2+30+xmot0,0+24,High0+zmotor2])
@@ -362,9 +553,11 @@ rotate([90,90,0])
 pulley();
 
 color("orange")
-translate([-480/2+30+xmot0,0+24,High0+zmotor1])
+translate([-480/2+30+xmot0,0+24-5,High0+zmotor1])
 rotate([90,90,0])
 idler();
+}
+
 
 }
 

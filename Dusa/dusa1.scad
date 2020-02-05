@@ -86,6 +86,9 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 translate([0,0,High0-150])
 xleft1();
 
+translate([0,0,High0-150])
+xright1();
+
 //----------- red-----------
 // left z motor
 color("red")
