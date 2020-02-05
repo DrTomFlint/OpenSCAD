@@ -103,7 +103,7 @@ cylinder(r=5,h=350,$fn=F2);
 
 // left lm10u bearing lower
 color("red")
-translate([x2-30+zscrew+xrodscrew,0,High0+16])
+translate([x2-30+zscrew+xrodscrew,0,High0+20])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
 // left lm10u bearing upper
@@ -142,7 +142,7 @@ cylinder(r=5,h=350,$fn=F2);
 
 // right  lm10u bearing lower
 color("green")
-translate([-x2+30-zscrew-xrodscrew,0,High0+16])
+translate([-x2+30-zscrew-xrodscrew,0,High0+20])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
 // right  lm10u bearing upper

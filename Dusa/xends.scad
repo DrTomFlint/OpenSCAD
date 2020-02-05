@@ -77,31 +77,45 @@ module xleft1(
   
 difference(){
 // boss
-translate([x2-50,-13,High0+18])
+translate([x2-50,-13,High0+22])
 minkowski() {
   difference(){
-    cube([50,40,69]);    
+    translate([0,2,0])
+    cube([50,40-2,65]);    
     translate([-1,-1,-1])
-    cube([29,22,51]);
+    cube([29,22,55]);
+    
+    translate([-3,-15,50])
+    rotate([0,0,45])
+    cube([20,20,30]);
+    translate([54,-15,-1])
+    rotate([0,0,45])
+    cube([20,20,70]);
+    translate([25,-15,-1])
+    rotate([0,0,45])
+    cube([20,20,55]);
 }
 
   sphere(r=2,$fs=0.2);
 }
 
+if(1){  // all the cuts
+  
 // cut for left z rod plus clearance
 translate([x2-30+zscrew+xrodscrew,0,15+42])
-cylinder(r=5.2,h=350,$fn=F2);
+cylinder(r=5.3,h=350,$fn=F2);
 
-// cut for left lm10u bearing lower plus clearance
-translate([x2-30+zscrew+xrodscrew,0,High0+16])
-cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+// cut for left lm10u bearing lower plus clearance 
+translate([x2-30+zscrew+xrodscrew,0,High0+20])
+cylinder(r=19.01/2,h=29,$fn=F2);
 
 // cut for left lm10u bearing upper plus clearance
 translate([x2-30+zscrew+xrodscrew,0,High0+60])
-cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+cylinder(r=19.01/2,h=29,$fn=F2);
 
 // strain relief cut for M10 and bearings
-translate([x2-30+zscrew+xrodscrew-0.5,-18,High0+16])
+translate([x2-30+zscrew+xrodscrew+10,-11,High0+16])
+rotate([0,0,45])
 cube([1,15,80]);
 
 // cut left znut
@@ -122,29 +136,34 @@ translate([x2-30+zscrew,0,High0+90-1])
 rotate([180,0,0])
 cylinder(r=10,h=4,$fn=F2);
 
-// cut for znut mounting screws M3x20
-translate([x2-30+zscrew,0,High0+90-1])
+// cut for znut mounting screws M3x10
+translate([x2-30+zscrew,0,High0+87])
 rotate([180,0,0]){
   translate([7.75,0,0])
-  cylinder(r=1.5,h=20,$fn=F2);
+  cylinder(r=1.5,h=10,$fn=F2);
   translate([-7.75,0,0])
-  cylinder(r=1.5,h=20,$fn=F2);
+  cylinder(r=1.5,h=10,$fn=F2);
 }
 
-// cut for M3x29 screw heads
+// cut for M3 screw heads
 color("pink")
-translate([x2-30+zscrew,0,High0+90-21])
+translate([x2-30+zscrew,0,High0+77])
 rotate([180,0,0]){
   translate([7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
+  cylinder(r=5.6/2,h=3,$fn=F2);
   translate([-7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
+  cylinder(r=5.6/2,h=3,$fn=F2);
 }
 
 // cut left z screw
 translate([x2-30+zscrew,0,15])
 rotate([0,0,180])
 zmotor(tol=0.15);
+
+// extra clearance left z screw
+translate([x2-30+zscrew,0,15])
+rotate([0,0,180])
+cylinder(r=4.5,h=350,$fn=F2);
 
 // cut for upper x rod plus clearance
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -232,7 +251,7 @@ cylinder(r=2.8,h=5,$fn=F2);
 translate([480/2-30-xmot0,6,High0+zmotor2])
 rotate([90,90,0])
 cylinder(r=4,h=3.5,$fn=F2);
-
+}
 
 }// end diff
 
@@ -248,6 +267,20 @@ rotate([180,0,0]){
   cylinder(r=4.5/2,h=3,$fn=F2);
 }
 }
+
+
+  // text labels
+  color("red")
+  translate([x2-28,28,High0+81])
+  rotate([90,0,180])
+  linear_extrude(height=2,scale=1)
+  text("PRUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+  color("red")
+  translate([x2-28,28,High0+72])
+  rotate([90,0,180])
+  linear_extrude(height=2,scale=1)
+  text("DUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
 
 
 }
@@ -435,14 +468,14 @@ rotate([180,0,0]){
 
 //=======================================================
 
-//xleft1();
+xleft1();
 if(0){
 // This is a printing support for xleft1
-translate([x2-30+zscrew+xrodscrew,0,High0+60-3])
-cylinder(r=19.2/2-2,h=32,$fn=12);
+translate([x2-30+zscrew+xrodscrew,0,High0+60-1])
+cylinder(r=19.2/2-2,h=30,$fn=12);
 }
 
-xright1();
+//xright1();
 if(0){
 // This is a printing support for xright1
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-3])
