@@ -284,7 +284,12 @@ rotate([180,0,0]){
 
 
 }
+/*
+    translate([x2-30+zscrew+xrodscrew+10,-11,High0+16])
+rotate([0,0,45])
+cube([1,15,80]);
 
+*/
 //------------------------------------------------------------------------
 module xright1(
 
@@ -292,32 +297,47 @@ module xright1(
   
 difference(){
 // boss
-translate([-x2,-13,High0+18])
+translate([-x2,-13,High0+22])
 minkowski() {
   difference(){
-    cube([50,40,69]);    
-    translate([50-29,-1,-1])
-    cube([29,22,51]);
+    translate([0,2,0])
+    cube([50,40-2,65]);
+        
+    translate([50-28,-1,-1])
+    cube([29,22,55]);
+    
+    translate([-3+56,-15,50])
+    rotate([0,0,45])
+    cube([20,20,30]);
+    translate([-4,-15,-1])
+    rotate([0,0,45])
+    cube([20,20,70]);
+    translate([25,-15,-1])
+    rotate([0,0,45])
+    cube([20,20,55]);
 }
 
   sphere(r=2,$fs=0.2);
 }
 
+if(1){   // all the cuts
+  
 // cut for right z rod plus clearance
 translate([-(x2-30+zscrew+xrodscrew),0,15+42])
 cylinder(r=5.2,h=350,$fn=F2);
 
 // cut for right lm10u bearing lower plus clearance
 translate([-(x2-30+zscrew+xrodscrew),0,High0+16])
-cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+cylinder(r=19.01/2,h=29,$fn=F2);
 
 // cut for right lm10u bearing upper plus clearance
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60])
-cylinder(r=19.2/2+0.05,h=29,$fn=F2);
+cylinder(r=19.01/2,h=29,$fn=F2);
 
 // strain relief cut for M10 and bearings
-translate([-(x2-30+zscrew+xrodscrew-0.5),-18,High0+16])
-cube([1,15,80]);
+translate([-(x2-30+zscrew+xrodscrew-0.5)-12,-10,High0+16])
+rotate([0,0,-45])
+cube([1,15,71]);
 
 // cut right znut
 color("red")
@@ -337,7 +357,7 @@ translate([-(x2-30+zscrew),0,High0+90-1])
 rotate([180,0,0])
 cylinder(r=10,h=4,$fn=F2);
 
-// cut for znut mounting screws M3x20
+// cut for znut mounting screws M3x10
 translate([-(x2-30+zscrew),0,High0+90-1])
 rotate([180,0,0]){
   translate([7.75,0,0])
@@ -346,20 +366,25 @@ rotate([180,0,0]){
   cylinder(r=1.5,h=20,$fn=F2);
 }
 
-// cut for M3x29 screw heads
+// cut for M3x10 screw heads
 color("pink")
 translate([-(x2-30+zscrew),0,High0+90-21])
 rotate([180,0,0]){
   translate([7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
+  cylinder(r=5.6/2,h=3,$fn=F2);
   translate([-7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
+  cylinder(r=5.6/2,h=3,$fn=F2);
 }
 
 // cut right z screw
 translate([-(x2-30+zscrew),0,15])
 rotate([0,0,180])
 zmotor(tol=0.15);
+
+// extra clearance right z screw
+translate([-(x2-30+zscrew),0,15])
+rotate([0,0,180])
+cylinder(r=4.5,h=350,$fn=F2);
 
 // cut for upper x rod plus clearance
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -408,13 +433,13 @@ rotate([90,0,0]){
 
     // countersink for the heads
     translate([15.5,15.5,41])
-    cylinder(r=2.8,h=40,$fn=F3);
+    cylinder(r=5.6/2,h=40,$fn=F3);
     translate([-15.5,15.5,41])
-    cylinder(r=2.8,h=40,$fn=F3);
+    cylinder(r=5.6/2,h=40,$fn=F3);
     translate([15.5,-15.5,41])
-    cylinder(r=2.8,h=40,$fn=F3);
+    cylinder(r=5.6/2,h=40,$fn=F3);
     translate([-15.5,-15.5,41])
-    cylinder(r=2.8,h=40,$fn=F3);
+    cylinder(r=5.6/2,h=40,$fn=F3);
 }
 
 // main cut for belt, pulley, and idler
@@ -441,12 +466,13 @@ cylinder(r=1.55,h=20,$fn=F2);
 // M3x30 head
 translate([-(480/2-30-xmot0),29,High0+zmotor1])
 rotate([90,90,0])
-cylinder(r=2.8,h=5,$fn=F2);
-// M3 nut clearance
-translate([-(480/2-30-xmot0),6,High0+zmotor1])
-rotate([90,90,0])
-cylinder(r=4,h=3.5,$fn=F2);
+cylinder(r=5.6/2,h=5,$fn=F2);
 
+// Idler need some extra clearance
+translate([-(480/2-30-xmot0),19,High0+zmotor1])
+rotate([90,90,0])
+cylinder(r=19/2,h=9.5,$fn=F2);
+}
 
 }// end diff
 
@@ -463,23 +489,46 @@ rotate([180,0,0]){
 }
 }
 
+  // text labels
+  color("red")
+  translate([-x2+28,28,High0+36])
+  rotate([90,0,180])
+  linear_extrude(height=2,scale=1)
+  text("Tom Flint", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  color("red")
+  translate([-x2+28,28,High0+28])
+  rotate([90,0,180])
+  linear_extrude(height=2,scale=1)
+  text("Feb 2020", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+
 
 }
 
 //=======================================================
 
-xleft1();
+//translate([-350,0,0])
+//xleft1();
 if(0){
 // This is a printing support for xleft1
 translate([x2-30+zscrew+xrodscrew,0,High0+60-1])
 cylinder(r=19.2/2-2,h=30,$fn=12);
+
+color("orange")
+translate([x2-30+zscrew,0,High0+76-1])
+cylinder(r=10,h=14,$fn=12);
+
 }
 
 //xright1();
-if(0){
+if(1){
 // This is a printing support for xright1
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-3])
 cylinder(r=19.2/2-2,h=32,$fn=12);
+
+color("orange")
+translate([-(x2-30+zscrew),0,High0+83-1])
+cylinder(r=10,h=7,$fn=12);
+
 }
 
 
