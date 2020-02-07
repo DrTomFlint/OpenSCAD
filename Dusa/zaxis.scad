@@ -161,12 +161,13 @@ difference(){
 translate([0,0,342])
 union(){
 minkowski(){    
+difference(){
 union(){
     // over rods
     color("gray")
     translate([4.5,-7,38+4])
     linear_extrude(height=20)
-    square([47,38],center=true);
+    square([47,32],center=true);
 
     // fillet
     color("blue")
@@ -185,33 +186,30 @@ union(){
     cylinder(r=7,h=2,$fn=F2);
 
     // vertical tab
-    difference(){
     color("orange")
     translate([4.5,-22,16])
-    linear_extrude(height=44)
+    linear_extrude(height=46)
     square([47,8],center=true);
 
+}
+    // corner cuts
+    color("pink")
+    translate([31,0,35])
+    rotate([0,0,45])
+    cube([20,20,30]);
 
+    // corner cuts
+    color("pink")
+    translate([-19,0,35])
+    rotate([0,0,45])
+    cube([20,20,30]);
 }
 
-}
 sphere(r=2,$fs=0.2);
 }
 }
 
-/*
-    // corner cutout for extruder body
-    translate([-2,0,342])
-    hull(){
-        translate([x1-19,-10,370-342])
-        rotate([90,0,0])
-        cylinder(r=8,h=30,$fn=F2);
-        translate([x1-19,-10,350-342])
-        rotate([90,0,0])
-        cylinder(r=8,h=30,$fn=F2);
-    }
-  */  
-
+    
 // left tower
 translate([0,-30-42.3/2-yoff3,0])
 tslot1(type=3,len=380,tol=0.15);
@@ -229,7 +227,7 @@ zmotor(tol=0.15);
 
 // left z rod, add some tolerance
 color("red")
-translate([x3,0,42])
+translate([x3,0,42+1])
 cylinder(r=5+0.1,h=350,$fn=F2);
 
     
@@ -286,7 +284,8 @@ F2=88;
 F3=22;
     
     zleft2a(x1=x1,x3=x3,yoff3=yoff3);
-    
+
+/*    
     // text labels
     color("red")
     translate([5+15,-42.3/2+0.5-yoff3+40,380+15])
@@ -299,7 +298,7 @@ F3=22;
     rotate([90,0,180])
     linear_extrude(height=1,scale=1)
     text("U", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-
+*/
 
     
 }
@@ -315,7 +314,7 @@ F3=22;
     
     mirror([1,0,0])
     zleft2a(x1=x1,x3=x3,yoff3=yoff3);
-    
+/*    
     // text labels
     color("red")
     translate([-5+15,-42.3/2+0.5-yoff3+40,380+15])
@@ -328,7 +327,7 @@ F3=22;
     rotate([90,0,180])
     linear_extrude(height=1,scale=1)
     text("A", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-
+*/
 
     
 }
@@ -340,7 +339,8 @@ F3=22;
 //mirror([1,0,0])
 //zleft1(x1=x1,x3=x3,yoff3=yoff3);
 
-//zleft2(x1=x1,x3=x3,yoff3=yoff3);
+translate([70,0,0])
+zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
 zright2(x1=x1,x3=x3,yoff3=yoff3);
 
