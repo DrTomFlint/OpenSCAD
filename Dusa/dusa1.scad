@@ -6,6 +6,8 @@ use <../Parts/motors.scad>
 use <frame.scad>
 use <zaxis.scad>
 use <xends.scad>
+use <yaxis.scad>
+use <y-belt-holder.scad>
 
 
 //======================================
@@ -22,11 +24,20 @@ LeftX0=150;
 // Right extruder position, 82+
 RightX0=82;
 
+// Bed position, +95 -119
+Bed0=0;
+
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
-tops=1;  
+tops=0;  
+
+// Show xz
+xzOn=0;
+
+// Show extruders
+extruders=0;
 
 // Show ybed ------------------
 ybed=1;    
@@ -83,6 +94,8 @@ if(frameOn==1){
 frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
+if(xzOn){
+        
 translate([0,0,High0-150])
 xleft1();
 
@@ -272,8 +285,9 @@ difference(){
     }
 }
 
+} // end of if xzOn
 
-if(0){
+if(extruders){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,0+4,High0+26])
@@ -308,8 +322,7 @@ color("gray")
 translate([+480/2-LeftX0+80-18,0+16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
-}
-if(0){
+
 // right extruder
 color("blue")
 translate([+480/2-RightX0,0+4,High0+26])
@@ -345,11 +358,17 @@ cylinder(r=15/2,h=24,$fn=F2);
 // ----- cyan ---------
 if(ybed){
 // Y motor
-// ??? Where is center of belt when pulley is on shaft
 color("cyan")
-translate([47.3+10.0,-y2+42.3/2,zoff2-20])
+translate([47.3+13.0,-y2+42.3/2,zoff2-20])
 rotate([-90,0,90])
 xymotor();
+
+color("orange")
+translate([9.5,-y2+42.3/2,zoff2-20])
+rotate([-90,0,90])
+pulley();
+
+ymotorbracket();
 
 // left Y rod
 color("cyan")
@@ -357,39 +376,60 @@ translate([170/2,-330/2,zoff2])
 rotate([-90,0,0])
 cylinder(r=4,h=330,$fn=F2);
 
+// left rear
+ybar1();
+
+// right rear
+translate([-170,0,0])
+ybar1();
+
+// left front
+translate([170,0,0])
+rotate([0,0,180])
+ybar1();
+
+// right front
+rotate([0,0,180])
+ybar1();
+
 // right Y rod
 color("cyan")
 translate([-170/2,-330/2,zoff2])
 rotate([-90,0,0])
 cylinder(r=4,h=330,$fn=F2);
 
+
+
 // y rod lm8u bearing left
 color("cyan")
-translate([170/2,0,zoff2])
+translate([170/2,Bed0,zoff2])
 rotate([-90,0,0])
 cylinder(r=15/2,h=24,$fn=F2);
 
 // y rod lm8u bearing right front
 color("cyan")
-translate([-170/2,70/2,zoff2])
+translate([-170/2,70/2+Bed0,zoff2])
 rotate([-90,0,0])
 cylinder(r=15/2,h=24,$fn=F2);
 
 // y rod lm8u bearing right rear
 color("cyan")
-translate([-170/2,-70/2,zoff2])
+translate([-170/2,-70/2+Bed0,zoff2])
 rotate([-90,0,0])
 cylinder(r=15/2,h=24,$fn=F2);
 
 // spider
 #color("cyan")
-translate([0,0,zoff2+8.4])
+translate([0,Bed0,zoff2+8.4])
 cube([227,222,6.2],center=true);
 
 // hotbed
 #color("cyan")
-translate([0,0,zoff2+8.4+10.25])
+translate([0,Bed0,zoff2+8.4+10.25])
 cube([254,245,3.15],center=true);
+
+// belt holder
+y_belt_holder();
 
 }
 
