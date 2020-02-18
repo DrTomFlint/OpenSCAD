@@ -10,7 +10,7 @@ type = 1
     
 // 30x30     
 if(type==1){
-    linear_extrude(height=len)
+    linear_extrude(height=len,convexity=10)
     difference(){
         offset(r=2.0+tol,$fn=20)
         square([26,26],center=true);
@@ -28,7 +28,7 @@ if(type==1){
     
 // 30x60
 if(type==2){
-    linear_extrude(height=len)
+    linear_extrude(height=len,convexity=10)
     difference(){
         offset(r=2.0+tol,$fn=20)
         square([26,56],center=true);
@@ -52,7 +52,7 @@ if(type==2){
     
 // 36x60
 if(type==3){
-    linear_extrude(height=len)
+    linear_extrude(height=len,convexity=10)
     difference(){
         offset(r=2.0+tol,$fn=20)
         square([56,56],center=true);
@@ -133,7 +133,7 @@ pts1=[ [5,0], [80,0], [85,5], [85,22], [80,28],
     
     if(holes==1){
     difference(){
-        linear_extrude(height=3.25)
+        linear_extrude(height=3.25,convexity=10)
         polygon(points=pts1);
         
         translate([16+30,14,-1])
@@ -147,7 +147,7 @@ pts1=[ [5,0], [80,0], [85,5], [85,22], [80,28],
         cylinder(r=3.25,h=5,$fn=F2);
     }
 }else{
-        linear_extrude(height=3.25)
+        linear_extrude(height=3.25,convexity=10)
         polygon(points=pts1);
 }
 

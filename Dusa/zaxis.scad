@@ -36,13 +36,13 @@ union(){
     // over motor
     color("gray")
     translate([-6,-2,z4])
-    linear_extrude(height=z5)
+    linear_extrude(height=z5,convexity=10)
     square([44,48],center=true);
 
     // back corner
     color("pink")
     translate([20,-13,z4])
-    linear_extrude(height=z5)
+    linear_extrude(height=z5,convexity=10)
     square([16,24],center=true);
 
     // rounded corner
@@ -60,7 +60,7 @@ union(){
         // vertical tab
         color("orange")
         translate([0,-22,z4])
-        linear_extrude(height=21)
+        linear_extrude(height=21,convexity=10)
         square([56,8],center=true);
 
         // corner cutout for extruder body
@@ -73,7 +73,7 @@ union(){
     color("blue")
     translate([0,-16.0,z4+3])
     rotate([45,0,0])
-    linear_extrude(height=6)
+    linear_extrude(height=6,convexity=10)
     square([56,6],center=true);
 
     // collar around screw
@@ -160,20 +160,20 @@ difference(){
 // boss
 translate([0,0,342])
 union(){
-minkowski(){    
+minkowski(convexity=10){    
 difference(){
 union(){
     // over rods
     color("gray")
     translate([4.5,-7,38+4])
-    linear_extrude(height=20)
+    linear_extrude(height=20,convexity=10)
     square([47,32],center=true);
 
     // fillet
     color("blue")
     translate([4.5,-16,38+2])
     rotate([45,0,0])
-    linear_extrude(height=6)
+    linear_extrude(height=6,convexity=10)
     square([47,6],center=true);
 
     // collar around rod
@@ -285,21 +285,6 @@ F3=22;
     
     zleft2a(x1=x1,x3=x3,yoff3=yoff3);
 
-/*    
-    // text labels
-    color("red")
-    translate([5+15,-42.3/2+0.5-yoff3+40,380+15])
-    rotate([90,0,180])
-    linear_extrude(height=1,scale=1)
-    text("D", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-
-    color("red")
-    translate([5-15,-42.3/2+0.5-yoff3+40,380+15])
-    rotate([90,0,180])
-    linear_extrude(height=1,scale=1)
-    text("U", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-*/
-
     
 }
 //---------------------------------
@@ -314,21 +299,6 @@ F3=22;
     
     mirror([1,0,0])
     zleft2a(x1=x1,x3=x3,yoff3=yoff3);
-/*    
-    // text labels
-    color("red")
-    translate([-5+15,-42.3/2+0.5-yoff3+40,380+15])
-    rotate([90,0,180])
-    linear_extrude(height=1,scale=1)
-    text("S", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-
-    color("red")
-    translate([-5-15,-42.3/2+0.5-yoff3+40,380+15])
-    rotate([90,0,180])
-    linear_extrude(height=1,scale=1)
-    text("A", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
-*/
-
     
 }
 
@@ -342,7 +312,7 @@ F3=22;
 translate([70,0,0])
 zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
-zright2(x1=x1,x3=x3,yoff3=yoff3);
+//zright2(x1=x1,x3=x3,yoff3=yoff3);
 
 if(0){
 // left tower

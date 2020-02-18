@@ -1,5 +1,5 @@
-// dusa1
-// assembly level file for Prusa Dusa 3D printer
+// dusa2
+// This copy of dusa1 made 14 Feb 2020 for animation tests
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
@@ -9,23 +9,22 @@ use <xends.scad>
 use <yaxis.scad>
 use <y-belt-holder.scad>
 
-
 //======================================
 // Customizer Values:
 // These must be at the top of the main file, cannot contain any
 // computations, and should have a comment above to provide text
 
 // Height of x rods, +62, +304
-High0=62;        
+High0=150;        
 
 // Left extruder position, +151, +398
 LeftX0=151; 
 
 // Right extruder position, +82, +329
-RightX0=82;
+RightX0=329;
 
 // Bed position, +95 -119
-Bed0=0;
+//Bed0=0;
 
 // Show frame
 frameOn=1;
@@ -80,12 +79,102 @@ xmot0=-2;
 module dummy(){
         }
 //---------------------------------
+function ease(t) = (
+    t < .5
+        ? 2 * pow(t, 2)
+        : -1 + (4 - 2 * t) * t
+);
+
+//------------------------------
 // Computed values based on parameters
 zmotor2=zmotor1+zmotorD;
 
 x2=x1/2;
 y2=y1/2;
 F2=88;
+
+//================================================
+
+// zoom in
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 203];
+//$vpd = 10000-(ease($t)*8000);
+
+// spin around once in place, ending at angle 180
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 203-383*ease($t)];
+//$vpd = 2000;
+
+// move z from 150 to 300, comment out High0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//High0=150+150*ease($t);
+
+// move z from 300 to 65 comment out High0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//High0=300-235*ease($t);
+
+// move z from 65 to 150 comment out High0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//High0=65+85*ease($t);
+
+// move left extruder from 151 to 398 comment out LeftX0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//LeftX0=151+247*ease($t);
+
+// move left extruder from 398 to 151 comment out LeftX0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//LeftX0=398-247*ease($t);
+
+// move left extruder from 329 to 82 comment out RightX0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//RightX0=329-246*ease($t);
+
+// move left extruder from 82 to 329comment out RightX0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//RightX0=82+246*ease($t);
+
+// 95, -119
+// move bed from 0 to 95 comment out Bed0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//Bed0=0+95*ease($t);
+
+// move bed from 95 to -119 comment out Bed0 in params to use this
+$vpt = [-0.63, -70, 155];
+$vpr = [71, 0, 180];
+$vpd = 2000;
+Bed0=95-214*ease($t);
+
+// move bed from -119 to 0 comment out Bed0 in params to use this
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//Bed0=-119+119*ease($t);
+
+// rotate to show bottom side, angleX +71 to +180
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71+109*ease($t), 0, 180];
+//$vpd = 2000;
+
+// screw out
+//$vpt = [-0.63, -70, 155];
+//$vpr = [180, 0, 180-5*360*ease($t)];
+//$vpd = 2000+18000*ease($t);
 
 //=================================================
 

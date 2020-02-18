@@ -209,9 +209,100 @@ F3=22;
     
 }  
 
+//--------------------------------------
+module yidlebracket(
+zaxle=0
+){
+
+difference(){
+  // Boss
+  union(){
+    hull(){
+      translate([7.5,330/2-2,27])
+      cube([5,2,35],center=true);
+      
+      translate([7.5,330/2-11,zaxle])
+      rotate([90,0,90])
+      cylinder(r=10,h=5,$fn=F2,center=true);
+    }
+
+    hull(){
+      translate([-7.5,330/2-2,27])
+      cube([5,2,35],center=true);
+      
+      translate([-7.5,330/2-11,zaxle])
+      rotate([90,0,90])
+      cylinder(r=10,h=5,$fn=F2,center=true);
+    }
+
+    color("pink")
+    translate([16,330/2-3,30])
+    cube([14,8,20],center=true);
+
+    color("pink")
+    translate([-16,330/2-3,30])
+    cube([14,8,20],center=true);
+
+    color("green")
+    translate([0,330/2,27])
+    cube([20,2,35],center=true);
+  }
+
+    // M3x20 axle
+    translate([-3,330/2-11,zaxle])
+    rotate([90,0,90])
+    cylinder(r=1.6,h=20,$fn=22,center=true);
+
+    // countersink  
+    translate([7,330/2-11,zaxle])
+    rotate([90,0,90])
+    cylinder(r=2.8,h=4,$fn=22);
+
+    
+    // front rail
+    translate([-x2,y2+15,15])
+    rotate([90,0,90])
+    tslot1(type=2,len=x1);
+
+
+  // cut for t-slot attach, want about 5 mm of plastic
+  translate([16,330/2-10,30])
+    rotate([-90,0,0])
+    cylinder(r=5.9/2,h=20,$fn=F2);
+  // countersink
+  translate([16,330/2-10,30])
+    rotate([-90,0,0])
+    cylinder(r=5,h=6.1,$fn=F2);
+    
+  // cut for t-slot attach, want about 5 mm of plastic
+  translate([-16,330/2-10,30])
+    rotate([-90,0,0])
+    cylinder(r=5.9/2,h=20,$fn=F2);
+  // countersink
+  translate([-16,330/2-10,30])
+    rotate([-90,0,0])
+    cylinder(r=5,h=6.1,$fn=F2);
+    
+
+}  // end diff
+
+    
+}  
+
 
 //==========================================
 
+zaxle1=21.5;
+
+yidlebracket(zaxle=zaxle1);
+
+if(0){
+// y axis idler
+color("orange")
+translate([-4.5,330/2-11,zaxle1])
+rotate([0,90,0])
+idler();
+}
 
 //ybar1();
 
@@ -224,7 +315,7 @@ if(0){
 
 //ymotorbracket();
 
-if(1){
+if(0){
 // support for printing ymotorbracket:
   color("pink")
   translate([13,-330/2+21,23.0])
