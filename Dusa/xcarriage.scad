@@ -74,90 +74,93 @@ F2=88;
 // this should contain only parts common to both left and right
 // carriages
 module xmain1(
-
+X0=150
 ){
 
   difference(){
+    
+  // Boss  
   union(){
-    // leg to extruder
-    color("orange")
-    translate([+480/2-LeftX0+36,-11,High0+31])
-    cube([10,22,18]);
 
-    // leg to extruder
-    color("pink")
-    translate([+480/2-LeftX0+36+53,-11,High0+31])
-    cube([10,22,18]);
+    // four legs to attach extruder
+    translate([+480/2-X0+41.1,-9.4,High0+89.9])
+    rotate([-90,0,0])
+    cylinder(r=5.5,h=26.4,$fn=44);    
+    translate([+480/2-X0+41.1+53,-9.4,High0+89.9])
+    rotate([-90,0,0])
+    cylinder(r=5.5,h=26.4,$fn=44);
+    translate([+480/2-X0+41.1,-9.4,High0+89.9-53])
+    rotate([-90,0,0])
+    cylinder(r=5.5,h=26.4,$fn=44);
+    translate([+480/2-X0+41.1+53,-9.4,High0+89.9-53])
+    rotate([-90,0,0])
+    cylinder(r=5.5,h=26.4,$fn=44);
 
-    // leg to extruder
-    color("red")
-    translate([+480/2-LeftX0+36,-11,High0+85])
-    cube([14,22,11]);
-
-    // leg to extruder
-    color("green")
-    translate([+480/2-LeftX0+36+49,-11,High0+85])
-    cube([14,22,11]);
-
-    // top block
+    // vertical block
     color("cyan")
-    translate([+480/2-LeftX0+36,8,High0+72-50])
-    cube([63,18,74]);
-  }
+    translate([+480/2-X0+35,7,High0+72-46])
+    cube([65,10,70]);
+        
+    // surround upper rail and lm8us
+    translate([+480/2-X0+100,16,High0+zmotor1+34])
+    rotate([-90,0,90])
+    cylinder(r=15/2+2,h=65,$fn=F2);
+    
+    // surround lower rail and lm8us
+    translate([+480/2-X0+100,0+16,High0+30])
+    rotate([-90,0,90])
+    cylinder(r=15/2+2,h=65,$fn=F2);
+        
+  } // end Boss union
+
+    // trim vertical block
+    translate([+480/2-X0+34,18,High0+zmotor1+44])
+    rotate([45,0,0])
+    cube([67,20,20]);
 
     // extruder mounting, M4x12,14,16,18 in stock
-    translate([+480/2-LeftX0+41.1,-25,High0+89.9])
+    translate([+480/2-X0+41.1,-25,High0+89.9])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
-    translate([+480/2-LeftX0+41.1+53,-25,High0+89.9])
+    translate([+480/2-X0+41.1+53,-25,High0+89.9])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
-    translate([+480/2-LeftX0+41.1,-25,High0+89.9-53])
+    translate([+480/2-X0+41.1,-25,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
-    translate([+480/2-LeftX0+41.1+53,-25,High0+89.9-53])
+    translate([+480/2-X0+41.1+53,-25,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
   
     // countersink, M4 heads are 4.2 high, 7 diam
-    translate([+480/2-LeftX0+41.1,0,High0+89.9])
+    translate([+480/2-X0+41.1,0,High0+89.9])
     rotate([-90,0,0])
     cylinder(r=4,h=30,$fn=44);
-    translate([+480/2-LeftX0+41.1+53,0,High0+89.9])
+    translate([+480/2-X0+41.1+53,0,High0+89.9])
     rotate([-90,0,0])
     cylinder(r=4,h=30,$fn=44);
-    translate([+480/2-LeftX0+41.1,0,High0+89.9-53])
+    translate([+480/2-X0+41.1,0,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=4,h=30,$fn=44);
-    translate([+480/2-LeftX0+41.1+53,0,High0+89.9-53])
+    translate([+480/2-X0+41.1+53,0,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=4,h=30,$fn=44);
   
-
-    // Four cuts to make lips that extruder sits on
-    color("red")
-    translate([+480/2-LeftX0+35,-12,High0+32])
-    cube([12,2,18]);
-    color("red")
-    translate([+480/2-LeftX0+35+53,-12,High0+32])
-    cube([12,2,18]);
-    color("orange")
-    translate([+480/2-LeftX0+35,-12,High0+84])
-    cube([16,2,11]);
-    color("orange")
-    translate([+480/2-LeftX0+35+49,-12,High0+84])
-    cube([16,2,11]);
-  
+    // cut for upper rail and lm8us
+    translate([+480/2-X0+80+22,0+16,High0+zmotor1+34])
+    rotate([-90,0,90])
+    cylinder(r=15/2+0.1,h=68,$fn=F2);
+    
+    // cut for lower rail and lm8us
+    translate([+480/2-X0+80+22,0+16,High0+30])
+    rotate([-90,0,90])
+    cylinder(r=15/2+0.1,h=68,$fn=F2);
+      
     // cut for belts
     color("green")
-    translate([+480/2-LeftX0+31,10,High0+72-35])
-    cube([73,10,35]);
-
-    // belt attach access 
-    color("green")
-    translate([+480/2-LeftX0+47,10,High0+72-35])
-    cube([40,30,35]);
-
+    translate([+480/2-X0+31,11,High0+72-35])
+//    cube([73,9,35]);
+    cube([73,15,35]);
 
 } // end diff
 
@@ -165,13 +168,27 @@ module xmain1(
 
 }
 
+//--------------------------------------------
+module xcarL(
+X1=150
+){
+  
+xmain1(X0=X1);
 
+}
 
 //==============================================
 
-xmain1();
+//xmain1(X0=LeftX0);
+xcarL();
 
-if(1){
+  color("orange")
+  translate([+480/2-LeftX0+41.1,11,High0+89.9-53])
+  rotate([-90,0,0])
+  cylinder(r=3.5,h=4.2,$fn=44);
+
+
+if(0){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,0+4,High0+26+10])
@@ -187,6 +204,7 @@ rotate([90,-90,180])
 emotor();
 }
 
+if(0){
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-LeftX0+79,0+16,High0+30])
@@ -204,7 +222,7 @@ color("gray")
 translate([+480/2-LeftX0+80-12.1,0+16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
-
+}
 
 // main frame
 if(0){
@@ -223,6 +241,8 @@ rotate([90,90,0])
 xymotor();
 }
 
+// left pulley and idler
+if(0){
 color("pink")
 translate([480/2-30-xmot0,0+24,High0+zmotor1])
 rotate([90,90,0])
@@ -232,6 +252,7 @@ color("yellow")
 translate([480/2-30-xmot0,0+24-5,High0+zmotor2-1.5])
 rotate([90,90,0])
 idler();
+}
 
 //translate([0,0,High0-150])
 //xright1();
@@ -245,6 +266,7 @@ rotate([90,90,0])
 xymotor();
 }
 
+if(0){
 // right x motor pulley
 color("orange")
 translate([-480/2+30+xmot0,0+24,High0+zmotor2])
@@ -255,9 +277,9 @@ color("orange")
 translate([-480/2+30+xmot0,0+24-5,High0+zmotor1+1.5])
 rotate([90,90,0])
 idler();
+}
 
-
-
+if(1){
 // belt upper right
 color("blue")
 difference(){
@@ -284,7 +306,8 @@ difference(){
         cylinder(r=14.8/2-1.4,h=8,$fn=F2);
     }
 }
-
+}
+if(1){
 // belt lower left
 color("gray")
 difference(){
@@ -311,7 +334,7 @@ difference(){
         cylinder(r=11.3/2-1.4,h=8,$fn=F2);
     }
 }
-
+}
 
 if(0){
 // upper x rod
