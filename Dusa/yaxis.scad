@@ -235,14 +235,34 @@ difference(){
       cylinder(r=10,h=5,$fn=F2,center=true);
     }
 
-    color("pink")
-    translate([16,330/2-3,30])
-    cube([14,8,20],center=true);
+    hull(){
+      color("orange")
+      translate([16,330/2-3,30])
+      cube([14,8,16],center=true);
 
-    color("pink")
-    translate([-16,330/2-3,30])
-    cube([14,8,20],center=true);
+      color("red")
+      translate([11,330/2-1,10.5])
+      cube([2,2,2],center=true);
 
+      color("red")
+      translate([11,330/2-1,43.5])
+      cube([2,3,2],center=true);
+    }
+
+    hull(){
+      color("pink")
+      translate([-16,330/2-3,30])
+      cube([14,8,16],center=true);
+
+      color("red")
+      translate([-11,330/2-1,10.5])
+      cube([2,2,2],center=true);
+
+      color("red")
+      translate([-11,330/2-1,43.5])
+      cube([2,3,2],center=true);
+    }
+    
     color("green")
     translate([0,330/2,27])
     cube([20,2,35],center=true);
@@ -258,12 +278,15 @@ difference(){
     rotate([90,0,90])
     cylinder(r=2.8,h=4,$fn=22);
 
+    // countersink  for nut
+    translate([-11,330/2-11,zaxle])
+    rotate([90,0,90])
+    cylinder(r=3.1,h=4,$fn=6);
     
     // front rail
     translate([-x2,y2+15,15])
     rotate([90,0,90])
     tslot1(type=2,len=x1);
-
 
   // cut for t-slot attach, want about 5 mm of plastic
   translate([16,330/2-10,30])
@@ -292,9 +315,18 @@ difference(){
 
 //==========================================
 
-zaxle1=21.5;
+zaxle1=26.5;
 
 yidlebracket(zaxle=zaxle1);
+if(0){
+  // idler support
+  color("green")
+  translate([5,330/2-18,9.5])
+  cube([5,10,10]);
+  color("green")
+  translate([-10,330/2-18,9.5])
+  cube([5,10,10]);
+}
 
 if(0){
 // y axis idler

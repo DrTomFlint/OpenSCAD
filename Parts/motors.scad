@@ -129,7 +129,7 @@ F3=22;
     
     // main shaft
     translate([0,0,z1])
-    cylinder(r=2.5,h=20,$fn=F3);
+    cylinder(r=2.5,h=28,$fn=F3);
     
 }
 //-----------------------------------
@@ -161,18 +161,27 @@ module pulley(tol=0){
 
     difference(){
     union(){
-        cylinder(r=7,h=6,$fn=F2);
+        cylinder(r=13/2,h=6,$fn=F2);
         
         translate([0,0,6])
-        cylinder(r=4.5,h=7,$fn=F2);
+        cylinder(r=9.6/2,h=7,$fn=F2);
         
         translate([0,0,13])
-        cylinder(r=7,h=1,$fn=F2);
+        cylinder(r=13/2,h=1,$fn=F2);
     }
     
     translate([0,0,-1])
     cylinder(r=2.5,h=17,$fn=F2);
         
+    // grub screws
+    translate([0,0,3.25])
+    rotate([0,90,0])
+    cylinder(r=1.2,h=17,$fn=F2);
+
+    translate([0,0,3.25])
+    rotate([-90,90,0])
+    cylinder(r=1.2,h=17,$fn=F2);
+    
 }
     
 }
@@ -183,13 +192,13 @@ module idler(tol=0){
 
     difference(){
     union(){
-        cylinder(r=17.8/2,h=1,$fn=F2);
+        cylinder(r=17.85/2,h=1,$fn=F2);
         
         translate([0,0,1])
         cylinder(r=14/2,h=7,$fn=F2);
         
         translate([0,0,8])
-        cylinder(r=17.8/2,h=1,$fn=F2);
+        cylinder(r=17.85/2,h=1,$fn=F2);
     }
     
     translate([0,0,-1])

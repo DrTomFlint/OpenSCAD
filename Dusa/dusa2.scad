@@ -5,7 +5,7 @@ use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <frame.scad>
 use <zaxis.scad>
-use <xends.scad>
+use <xends2.scad>
 use <yaxis.scad>
 use <y-belt-holder.scad>
 
@@ -14,8 +14,8 @@ use <y-belt-holder.scad>
 // These must be at the top of the main file, cannot contain any
 // computations, and should have a comment above to provide text
 
-// Height of x rods, +62, +304
-High0=150;        
+// Height of x rods, +47, +304
+High0=47;        
 
 // Left extruder position, +151, +398
 LeftX0=151; 
@@ -24,10 +24,10 @@ LeftX0=151;
 RightX0=329;
 
 // Bed position, +95 -119
-//Bed0=0;
+Bed0=0;
 
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
 tops=1;  
@@ -155,10 +155,10 @@ F2=88;
 //Bed0=0+95*ease($t);
 
 // move bed from 95 to -119 comment out Bed0 in params to use this
-$vpt = [-0.63, -70, 155];
-$vpr = [71, 0, 180];
-$vpd = 2000;
-Bed0=95-214*ease($t);
+//$vpt = [-0.63, -70, 155];
+//$vpr = [71, 0, 180];
+//$vpd = 2000;
+//Bed0=95-214*ease($t);
 
 // move bed from -119 to 0 comment out Bed0 in params to use this
 //$vpt = [-0.63, -70, 155];
@@ -299,35 +299,36 @@ translate([-480/2+30+xmot0,0+24,High0+zmotor2])
 rotate([90,90,0])
 pulley();
 
+// idler
 color("orange")
-translate([-480/2+30+xmot0,0+24-5,High0+zmotor1])
+translate([-480/2+30+xmot0,0+24-5,High0+zmotor1+1.5])
 rotate([90,90,0])
 idler();
 
-// belt
+// belt upper right
 color("blue")
 difference(){
-    hull(){
+    hull(){ // outer
         // pulley
         translate([-480/2+30+xmot0,0+17-5,High0+zmotor2])
         rotate([-90,-90,0])
-        cylinder(r=5.0,h=6,$fn=F2);
+        cylinder(r=11.3/2,h=6,$fn=F2);
 
         // idler
-        translate([480/2-30-xmot0,0+17-5,High0+zmotor2])
+        translate([480/2-30-xmot0,0+17-5,High0+zmotor2-1.5])
         rotate([-90,-90,0])
-        cylinder(r=7.5,h=6,$fn=F2);
+        cylinder(r=14.8/2,h=6,$fn=F2);
     }
-    hull(){
+    hull(){  // inner
         // pulley
         translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor2])
         rotate([-90,-90,0])
-        cylinder(r=3.5,h=8,$fn=F2);
+        cylinder(r=11.3/2-1.4,h=8,$fn=F2);
 
         // idler
-        translate([480/2-30-xmot0,0+17-1-5,High0+zmotor2])
+        translate([480/2-30-xmot0,0+17-1-5,High0+zmotor2-1.5])
         rotate([-90,-90,0])
-        cylinder(r=6.0,h=8,$fn=F2);
+        cylinder(r=14.8/2-1.4,h=8,$fn=F2);
     }
 }
 
@@ -343,36 +344,37 @@ rotate([90,90,0])
 pulley();
 
 color("orange")
-translate([480/2-30-xmot0,0+24-5,High0+zmotor2])
+translate([480/2-30-xmot0,0+24-5,High0+zmotor2-1.5])
 rotate([90,90,0])
 idler();
 
 // belt
 color("gray")
 difference(){
-    hull(){
+    hull(){  // outer
         // right x idler
-        translate([-480/2+30+xmot0,0+17-5,High0+zmotor1])
+        translate([-480/2+30+xmot0,0+17-5,High0+zmotor1+1.5])
         rotate([-90,-90,0])
-        cylinder(r=7.5,h=6,$fn=F2);
+        cylinder(r=14.8/2,h=6,$fn=F2);
 
         // left x pulley
         translate([+480/2-30-xmot0,0+17-5,High0+zmotor1])
         rotate([-90,-90,0])
-        cylinder(r=5.0,h=6,$fn=F2);
+        cylinder(r=11.3/2,h=6,$fn=F2);
     }
     hull(){
         // right x idler
-        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor1])
+        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor1+1.5])
         rotate([-90,-90,0])
-        cylinder(r=6.1,h=8,$fn=F2);
+        cylinder(r=14.8/2-1.4,h=8,$fn=F2);
 
         // left x pulley
         translate([+480/2-30-xmot0,0+17-1-5,High0+zmotor1])
         rotate([-90,-90,0])
-        cylinder(r=3.5,h=8,$fn=F2);
+        cylinder(r=11.3/2-1.4,h=8,$fn=F2);
     }
 }
+
 
 } // end of if xzOn
 
@@ -460,7 +462,7 @@ pulley();
 ymotorbracket();
 
 // y axis idler
-zaxle1=21.5;
+zaxle1=26.5;
 
 yidlebracket(zaxle=zaxle1);
 
@@ -554,9 +556,10 @@ translate([0,0,-4.2])
 y_belt_holder();
 
 // Vertical offset test
-color("red")
-translate([0,-y2+42.3/2,zoff2-16+4])
-cube([10,10,17.5]);
+//color("red")
+//translate([0,-y2+42.3/2,zoff2-16+4])
+//cube([10,10,17.5]);
+
 }
 
 //========================================
