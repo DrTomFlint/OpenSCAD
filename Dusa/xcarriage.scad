@@ -12,8 +12,8 @@ use <xends2.scad>
 // Height of x rods, 62-304
 High0=150;        
 
-// Left extruder position, 150+
-LeftX0=150; 
+// Left extruder position, 153+
+LeftX0=153+50; 
 
 // Right extruder position, 82+
 RightX0=82+50;
@@ -90,7 +90,7 @@ type=1
     // surround upper rail and lm8us
     translate([+480/2-X0+100,16,High0+zmotor1+34])
     rotate([-90,0,90])
-    cylinder(r=15/2+3,h=65,$fn=F2);
+    cylinder(r=15/2+4,h=65,$fn=F2);
     
     // surround lower rail and lm8us
     if(type==1){
@@ -108,7 +108,7 @@ type=1
   } // end Boss union
 
     // trim front vertical block
-    translate([+480/2-X0+34,17,High0+zmotor1+45])
+    translate([+480/2-X0+34,16.5,High0+zmotor1+45.5])
     rotate([45,0,0])
     cube([67,20,20]);
 
@@ -181,10 +181,16 @@ type=1
     translate([+480/2-X0+41.1,11,High0+89.9-53])
     rotate([90,0,0])
     cylinder(r1=4,r2=2,h=2.1,$fn=44);
+    translate([+480/2-X0+41.1,13,High0+89.9-53])
+    rotate([90,0,0])
+    cylinder(r=4,h=2.1,$fn=44);
     
     translate([+480/2-X0+41.1+53,11,High0+89.9-53])
     rotate([90,0,0])
     cylinder(r1=4,r2=2,h=2.1,$fn=44);
+    translate([+480/2-X0+41.1+53,13,High0+89.9-53])
+    rotate([90,0,0])
+    cylinder(r=4,h=2.1,$fn=44);
   
     // cut for upper rail and lm8us
     translate([+480/2-X0+80+22,0+16,High0+zmotor1+34])
@@ -198,15 +204,21 @@ type=1
       
     // cut for belts
     color("green")
-    translate([+480/2-X0+31,11,High0+36])
-    cube([73,16,38]);
+    translate([+480/2-X0+31,11,High0+33])
+    cube([73,18,43]);
     
     // slot for movable part of belt attach
     if(type==1){
       translate([+480/2-X0+57,14.5,High0+74])
       rotate([0,180,90])
       belt3();
-    }
+    }    
+    if(type==2){      
+      translate([+480/2-X0-57+135,14.5,High0+34.8])
+      rotate([0,0,-90])
+      belt3();
+    }  
+
 
 } // end diff
 
@@ -224,20 +236,38 @@ type=1
         
       }
 
-    /*
+    }
+    if(type==2){
+      // belt attach solid
       difference(){
-      // belt attach movable
-        translate([+480/2-X0+57,14.5,High0+74])
-        rotate([0,180,90])
-        belt2();  
-      // cut for lm8u clearance
-        translate([+480/2-X0+70,0+16,High0+30])
+        translate([+480/2-X0+53,14.5,High0+34.8])
+        rotate([0,0,-90])
+        belt1();  
+        
+        // cut for the lm8u
+        translate([+480/2-RightX0-35,16,High0+zmotor1+34])
         rotate([-90,0,90])
-        cylinder(r=15/2+0.1,h=10,$fn=F2);
+        cylinder(r=15/2,h=65,$fn=F2);
       }
-    */
+
     }
   
+    // add rounding to the lm8u surrounds
+    translate([+480/2-X0+100,25,High0+zmotor1+31])
+    rotate([-90,0,90])
+    cylinder(r=2,h=65,$fn=F2);
+    
+    if(type==1){
+      translate([+480/2-X0+90,25,High0+33])
+      rotate([-90,0,90])
+      cylinder(r=2,h=24,$fn=F2);
+    }
+    if(type==2){
+      translate([+480/2-X0+69,25,High0+33])
+      rotate([-90,0,90])
+      cylinder(r=2,h=24,$fn=F2);
+    }
+
 
 }
 
@@ -318,14 +348,27 @@ module belt3(){
 
 }
 
+//--------------------
+module standoff(){
+
+  rotate([0,0,180/8])
+    difference(){
+      cylinder(r=5.3,h=16,$fn=8);        
+      translate([0,0,-0.5])
+      cylinder(r=2.2,h=17,$fn=8);        
+    }
+  
+}
 
 //==============================================
 
+standoff();
+
 // left extruder belt slider
-if(1){
+if(0){
 X5=LeftX0;
 difference(){
-// belt attach movable
+// left belt attach movable
   translate([+480/2-X5+57,14.5,High0+74])
   rotate([0,180,90])
   belt2();  
@@ -336,15 +379,62 @@ difference(){
 }
 }
 
-// test tension screw
-  color("orange")
-  translate([+480/2-LeftX0+88,15.5,High0+46])
-  rotate([-90,0,90])
-  cylinder(r=1.5,h=40,$fn=22);
+// support for printing left belt slider 
+if(0){
+  X5=LeftX0;
+  color("pink")
+  translate([+480/2-X5+45,9.5,High0+44])
+  cube([21,2,5]);
+}
 
+// Left x carriage
+//xmain1(X0=LeftX0,type=1);
 
-xmain1(X0=LeftX0,type=1);
+// support for printing Left xmain1
+if(0){
+  // upper rail and lm8us
+  translate([+480/2-LeftX0+35,4.5,High0+zmotor1+29])
+  color("pink")
+  cube([65,20,11]);
+  
+  // lower rail and lm8us
+  color("pink")
+  translate([+480/2-LeftX0+66,4.5,High0+18])
+  cube([24,20,16.5]);
+}
+
+// Right x carriage
 //xmain1(X0=RightX0+135,type=2);
+
+// support for printing Right xmain1
+if(0){
+  // upper rail and lm8us
+  translate([+480/2-RightX0+35-135,4.5,High0+zmotor1+29])
+  color("pink")
+  cube([65,20,11]);
+  
+  // lower rail and lm8us
+  color("pink")
+  translate([+480/2-RightX0+45-135,4.5,High0+18])
+  cube([24,20,16.5]);
+}
+
+// right belt attach movable
+if(0){
+  X6=RightX0;
+  color("pink")
+  difference(){
+    translate([+480/2-X6-56,14.5,High0+34.8])
+    rotate([0,0,-90])
+    belt2();  
+    
+    translate([+480/2-RightX0-35,16,High0+zmotor1+34])
+    rotate([-90,0,90])
+    cylinder(r=15/2,h=65,$fn=F2);
+  }
+
+}
+
 
 // standoffs are no longer part of the carriage
 if(0){ // left side
@@ -353,16 +443,16 @@ if(0){ // left side
     color("pink")
     translate([+480/2-X3+41.1,-11.4,High0+89.9])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);        
+    standoff();
     translate([+480/2-X3+41.1+53,-11.4,High0+89.9])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
     translate([+480/2-X3+41.1,-11.4,High0+89.9-53])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
     translate([+480/2-X3+41.1+53,-11.4,High0+89.9-53])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
 }
 if(0){  // right side
   X4=RightX0+135;
@@ -370,16 +460,16 @@ if(0){  // right side
     color("pink")
     translate([+480/2-X4+41.1,-11.4,High0+89.9])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);        
+    standoff();
     translate([+480/2-X4+41.1+53,-11.4,High0+89.9])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
     translate([+480/2-X4+41.1,-11.4,High0+89.9-53])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
     translate([+480/2-X4+41.1+53,-11.4,High0+89.9-53])
     rotate([-90,0,0])
-    cylinder(r=5.5,h=15.9,$fn=44);
+    standoff();
 }
 
 if(0){
@@ -398,7 +488,7 @@ rotate([90,-90,180])
 emotor();
 }
 
-if(1){  // left side bearings
+if(0){  // left side bearings
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-LeftX0+90,0+16,High0+30])
@@ -423,6 +513,7 @@ if(0){
 frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
+// left x-end "Prusa Dusa"
 //translate([0,0,High0-150])
 //xleft1();
 
@@ -447,9 +538,9 @@ rotate([90,90,0])
 idler();
 }
 
+// right x-end "Tom Flint"
 //translate([0,0,High0-150])
 //xright1();
-
 
 // right x motor
 if(0){
@@ -489,18 +580,18 @@ difference(){
     }
     hull(){  // inner
         // pulley
-        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor2])
+        translate([-480/2+30+xmot0,0+17-0.5-5,High0+zmotor2])
         rotate([-90,-90,0])
-        cylinder(r=11.3/2-1.4,h=8,$fn=F2);
+        cylinder(r=11.3/2-1.4,h=7,$fn=F2);
 
         // idler
-        translate([480/2-30-xmot0,0+17-1-5,High0+zmotor2-1.5])
+        translate([480/2-30-xmot0,0+17-0.5-5,High0+zmotor2-1.5])
         rotate([-90,-90,0])
-        cylinder(r=14.8/2-1.4,h=8,$fn=F2);
+        cylinder(r=14.8/2-1.4,h=7,$fn=F2);
     }
 }
 }
-if(1){
+if(0){
 // belt lower left
 color("gray")
 difference(){
@@ -517,14 +608,14 @@ difference(){
     }
     hull(){
         // right x idler
-        translate([-480/2+30+xmot0,0+17-1-5,High0+zmotor1+1.5])
+        translate([-480/2+30+xmot0,0+17-0.5-5,High0+zmotor1+1.5])
         rotate([-90,-90,0])
-        cylinder(r=14.8/2-1.4,h=8,$fn=F2);
+        cylinder(r=14.8/2-1.4,h=7,$fn=F2);
 
         // left x pulley
-        translate([+480/2-30-xmot0,0+17-1-5,High0+zmotor1])
+        translate([+480/2-30-xmot0,0+17-0.5-5,High0+zmotor1])
         rotate([-90,-90,0])
-        cylinder(r=11.3/2-1.4,h=8,$fn=F2);
+        cylinder(r=11.3/2-1.4,h=7,$fn=F2);
     }
 }
 }

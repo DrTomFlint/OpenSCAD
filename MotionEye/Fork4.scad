@@ -1,8 +1,6 @@
-// Mcam3b.scad
-// This is the forks, rework for no 
-// support
-use <Mcam2a.scad>
-use <Mcam3c.scad>
+// Fork4.scad
+use <Base4.scad>
+use <Lid4.scad>
 
 
 
@@ -84,11 +82,13 @@ shell();
 
 } // end module fork1()
 
-fork1();
+//===================================
 
-translate([0,1,0])
-shell();
+//fork1();
 
-translate([0,1,0])
+//translate([0,1,0])
+//shell();
+
+//translate([0,1,0])
 lid1();
 
