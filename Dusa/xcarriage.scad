@@ -362,10 +362,10 @@ module standoff(){
 
 //==============================================
 
-standoff();
+//standoff();
 
 // left extruder belt slider
-if(0){
+if(1){
 X5=LeftX0;
 difference(){
 // left belt attach movable
@@ -375,7 +375,7 @@ difference(){
 // cut for lm8u clearance
   translate([+480/2-X5+70,0+16,High0+30])
   rotate([-90,0,90])
-  cylinder(r=15/2+0.1,h=10,$fn=F2);
+  cylinder(r=15/2+0.1,h=40,$fn=F2);
 }
 }
 

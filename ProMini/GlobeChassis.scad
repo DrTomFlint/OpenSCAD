@@ -283,7 +283,7 @@ cylinder(r=3,h=14,$fn=16,center=true);
 // add text for Version
 translate ([40,45,3.5]) color("red") 
     linear_extrude(height=1.5){
-    text("8A", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    text("V9", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
     }
 
     
@@ -409,17 +409,34 @@ rotate([90,0,0]) cylinder(r=2.8,h=4,$fn=16,center=true);
 
 
 //  cutting box, CHOOSE EITHER INTER OR DIFF
-//intersection(){
+// TODO check the clearance between the 2 parts
+// leaves enough material in the right places
+// probably look at slicer to be sure
+
+if(1){
 difference(){
     
     chassis1();
 
     color("pink")
-    translate([0,0,1])
+    translate([-4,-4,1-0.2])
     cube([80,100,20]);
 
 }
+}
 
+translate([0,0,40])
+if(1){
+intersection(){
+    
+    chassis1();
+
+    color("pink")
+    translate([-4,-4,1])
+    cube([80,100,20]);
+
+}
+}
 //===========================================
 
 

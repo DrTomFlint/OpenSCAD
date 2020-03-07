@@ -13,8 +13,8 @@ color("pink")
 intersection(){
 translate([0,0,-40])
 difference(){
-    sphere(50, $fa=5, $fs=0.1); 
-    sphere(50-3*H, $fa=5, $fs=0.1); 
+    sphere(50, $fa=5, $fs=0.25); 
+    sphere(50-3*H, $fa=5, $fs=0.25); 
 }
     // Round ends on the star
     union(){
@@ -34,8 +34,8 @@ color("red")
 intersection(){
 translate([0,0,-40])
 difference(){
-    sphere(50+tol, $fa=5, $fs=0.1); 
-    sphere(50-H-tol, $fa=5, $fs=0.1); 
+    sphere(50+tol, $fa=5, $fs=0.25); 
+    sphere(50-H-tol, $fa=5, $fs=0.25); 
 }
     linear_extrude(height=10) 
     square(size=[12+2*tol,80],center=true);
@@ -45,8 +45,8 @@ color("green")
 intersection(){
 translate([0,0,-40])
 difference(){
-    sphere(50+tol, $fa=5, $fs=0.1); 
-    sphere(50-2*H-tol, $fa=5, $fs=0.1); 
+    sphere(50+tol, $fa=5, $fs=0.25); 
+    sphere(50-2*H-tol, $fa=5, $fs=0.25); 
 }
     rotate([0,0,120])
     translate([0,40,0])
@@ -58,8 +58,8 @@ color("green")
 intersection(){
 translate([0,0,-40])
 difference(){
-    sphere(50-H+tol, $fa=5, $fs=0.1); 
-    sphere(50-3*H-tol, $fa=5, $fs=0.1); 
+    sphere(50-H+tol, $fa=5, $fs=0.25); 
+    sphere(50-3*H-tol, $fa=5, $fs=0.25); 
 }
     rotate([0,0,120])
     translate([0,-40,0])
@@ -71,8 +71,8 @@ color("blue")
 intersection(){
 translate([0,0,-40])
 difference(){
-    sphere(50-2*H+tol, $fa=5, $fs=0.1); 
-    sphere(50-3*H-tol, $fa=5, $fs=0.1); 
+    sphere(50-2*H+tol, $fa=5, $fs=0.25); 
+    sphere(50-3*H-tol, $fa=5, $fs=0.25); 
 }
     rotate([0,0,-120])
     linear_extrude(height=10) 

@@ -120,7 +120,7 @@ N=4;
 
 //----------------
 // LED support
-translate([0,10.5,-13.5]) //rotate([-90,0,0])
+translate([0,10.5,-14.5]) //rotate([-90,0,0])
 difference(){
     union(){
         // Main bar
@@ -133,24 +133,38 @@ difference(){
         offset(r=2,$fn=16) offset(r=-2,$fn=16)
         square(size=[33,14.5],center=true);
         
-    translate([16.5/2,0,4]) cylinder(r1=4,r2=2.5,h=4,$fn=22);
-    translate([-16.5/2,0,4]) cylinder(r1=4,r2=2.5,h=4,$fn=22);
+    translate([16.5/2,0,4]) cylinder(r1=5,r2=2.5,h=6,$fn=22);
+    translate([-16.5/2,0,4]) cylinder(r1=5,r2=2.5,h=6,$fn=22);
     
     }
     
     // Channel for tape
-    translate([0,0,0])
-    linear_extrude(height=1) square(size=[54,12.5],center=true);
+    translate([0,0,-1])
+    linear_extrude(height=2) square(size=[54,12.5],center=true);
     
     // Cutouts for LED bodies and fibers
-    translate([16.5/2,0,1]){
-        linear_extrude(height=2) square(size=[6,8],center=true);
-        cylinder(r1=1.5,r2=1.8,h=8,$fn=22);
+    translate([16.5/2,0,0]){
+        linear_extrude(height=3) square(size=[6,8],center=true);
+        cylinder(r1=1.5,r2=2,h=11,$fn=22);
     }
 
-    translate([-16.5/2,0,1]){
-        linear_extrude(height=2) square(size=[6,8],center=true);
-        cylinder(r1=1.5,r2=1.8,h=8,$fn=22);
+    translate([-16.5/2,0,0]){
+        linear_extrude(height=3) square(size=[6,8],center=true);
+        cylinder(r1=1.5,r2=2,h=11,$fn=22);
     }
 
 }
+
+// add support for the wires off the strip
+    color("pink")
+    translate([-21,1,-13])
+    rotate([-90,0,0])
+    scale([1.5,1,1])
+    cylinder(r=1.5,h=14,$fn=12);
+
+    color("pink")
+    translate([21,1,-13])
+    rotate([-90,0,0])
+    scale([1.5,1,1])
+    cylinder(r=1.5,h=14,$fn=12);
+

@@ -8,12 +8,12 @@ difference(){
 // Base boss
     union(){
         translate([0,0,0]) color("yellow")
-        linear_extrude(height=8)  circle(r=30,center=true,$fn=200);
+        linear_extrude(height=8)  circle(r=30,$fn=200);
 
 
     }
     translate([0,0,3]) color("yellow")
-    linear_extrude(height=8,scale=1.1)  circle(r=26,center=true,$fn=200);
+    linear_extrude(height=8,scale=1.1)  circle(r=26,$fn=200);
     
     translate([-27,-3.5,2]) rotate([90,0,0]){
     // Simplified version of BB1a
@@ -118,11 +118,12 @@ difference(){
 
 
 } // end of top boss difference cuts   
+
     
-// add text for Brights
+// add text 
 translate ([0,13,2.4]) rotate([0,0,180]) color("red") 
     linear_extrude(height=1.2){
-    text("7B", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    text("V9", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
     }
 
 
