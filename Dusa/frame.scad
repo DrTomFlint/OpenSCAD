@@ -11,7 +11,7 @@ use <../Parts/tslot.scad>
 // computations, and should have a comment above to provide text
 
 // Tower offset from center 
-yoff=-57.2; 
+yoff=-50; 
 
 // Length front, back, top rail 
 x1=480;         
@@ -33,6 +33,7 @@ z1=380          // height of towers
     
 x2=x1/2;    // 240
 y2=y1/2;    // 165
+    //---------- rails ----------------
     
     // front rail
     translate([-x2,y2+15,15])
@@ -69,6 +70,8 @@ y2=y1/2;    // 165
     rotate([0,90,0])
     tslot1(type=2,len=x1);
     
+    //--------- triangle corners in base ------------
+    
     // right front corner
     color("green")
     translate([-x2+60,y2,0])
@@ -92,9 +95,11 @@ y2=y1/2;    // 165
     translate([x2-60,-y2,0])
     rotate([0,0,-270])
     tbrace();
-  
-// Removed two triangle braces too increase Z axis
-// range of motion
+
+    //--------- triangle corners top beam ----------  
+
+    // Removed two triangle corners for extruder clearance
+    
 /*
     // left top corner 1
     color("gray")
@@ -121,6 +126,8 @@ y2=y1/2;    // 165
     rotate([90,90,0])
     tbrace();
     
+   //------------- triangle corners back of towers -------------
+   
     // left tower corner 1
     color("gray")
     translate([x2-45,yoff-30,15])
@@ -145,7 +152,7 @@ y2=y1/2;    // 165
     rotate([90,0,-90])
     tbrace();
     
-    
+    // ----------- L braces in the base ----------------
 /*
     // left front L top
     color("gray")
@@ -196,6 +203,7 @@ y2=y1/2;    // 165
     rotate([180,0,-180])
     lbrace();
     
+    // ------------ L braces top rail --------------
 /*    // left top L front
     color("gray")
     translate([x2-30,yoff+30,z1+45])
@@ -204,7 +212,7 @@ y2=y1/2;    // 165
   */  
     // left top L rear
     color("gray")
-    translate([x2,yoff-30,z1+45])
+    translate([x2-30,yoff-30,z1+45])
     rotate([90,180,0])
     lbrace();
     
@@ -217,13 +225,67 @@ y2=y1/2;    // 165
     
     // right top L rear
     color("gray")
-    translate([-x2,yoff-30,z1+45])
+    translate([-x2+30,yoff-30,z1+45])
     rotate([90,90,0])
     lbrace();
     
+    //------------ shelf -----------------
+    
+    // left side rail
+    translate([x2-15,yoff-30,15+z1+15])
+    rotate([0,90,-90])
+    tslot1(type=1,len=120);
+    
+    // left side rail
+    translate([-x2+15,yoff-30,15+z1+15])
+    rotate([0,90,-90])
+    tslot1(type=1,len=120);
+    
+    // back rail
+    translate([-x2,yoff-165,15+z1+15])
+    rotate([0,90,0])
+    tslot1(type=1,len=x1);
 
+    //---------- triangle corners shelf ---------------
 
+    // left shelf corner
+    color("red")
+    translate([x2-15,yoff-30,z1+15])
+    rotate([-90,0,-90])
+    tbrace();
 
+    // right shelf corner
+    color("green")
+    translate([-x2+15,yoff-30,z1+15])
+    rotate([-90,0,-90])
+    tbrace();
+    
+    //---------- L braces shelf ------------------
+
+    // tower to shelf left
+    color("gray")
+    translate([x2,yoff,z1+45])
+    rotate([-90,0,-90])
+    lbrace();
+    
+    // tower to shelf right
+    color("gray")
+    translate([-x2,yoff,z1+45])
+    rotate([90,90,-90])
+    lbrace();
+    
+    // left side rail to back rail
+    color("gray")
+    translate([x2,yoff-180,z1+15])
+    rotate([0,180,0])
+    lbrace();
+    
+    // right side rail to back rail
+    color("gray")
+    translate([-x2,yoff-180,z1+15])
+    rotate([0,180,-90])
+    lbrace();
+    
 }
 
 //====================================

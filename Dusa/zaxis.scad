@@ -307,14 +307,14 @@ F3=22;
 
 
 //mirror([1,0,0])
-//zleft1(x1=x1,x3=x3,yoff3=yoff3);
+zleft1(x1=x1,x3=x3,yoff3=yoff3);
 
-translate([70,0,0])
+//translate([70,0,0])
 zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
 //zright2(x1=x1,x3=x3,yoff3=yoff3);
 
-if(0){
+if(1){
 // left tower
 color("gray")
 translate([0,-30-42.3/2-yoff3,0])

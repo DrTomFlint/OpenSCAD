@@ -337,7 +337,7 @@ translate([-(x2-30+zscrew+xrodscrew),0,15+42])
 cylinder(r=5.2,h=350,$fn=F2);
 
 // cut for right lm10u bearing lower plus clearance
-translate([-(x2-30+zscrew+xrodscrew),0,High0+16])
+translate([-(x2-30+zscrew+xrodscrew),0,High0+20])
 cylinder(r=19.01/2,h=29,$fn=F2);
 
 // cut for right lm10u bearing upper plus clearance
