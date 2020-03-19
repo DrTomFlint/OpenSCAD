@@ -3,6 +3,7 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/switch.scad>
 use <frame.scad>
 use <y-belt-holder.scad>
 
@@ -312,8 +313,98 @@ difference(){
     
 }  
 
+//------------ yswitchbracket ------------------
+
+module yswitchbracket(){
+
+difference(){
+  
+  // boss
+  color("gray")
+  minkowski(convexity=10){
+  union(){
+    difference(){
+      translate([-28.5,-y2-0.5,20])
+      cube([16,54,23.5]);
+      
+      translate([-29.5,-y2+63,-65])
+      rotate([45,0,0])
+      cube([18,80,80]);
+    }
+
+    translate([-45,-y2-0.5,20])
+    cube([25,10,23.5]);
+
+    color("red")
+    translate([-28,-y2+2,20])
+    rotate([0,0,45])
+    cube([10,10,23.5]);
+  }
+  sphere(1,$fn=22);
+}
+  // cutout for the switch
+  Tol1=0.4;
+  translate([-26,-y2+50,zoff2-4])
+  rotate([0,0,-90])
+  translate([-Tol1/2,-Tol1/2,-Tol1/2])
+  switch(ang1=0,tol=Tol1);
+   
+  // back rail
+  translate([-x2,-y2-15,15])
+  rotate([90,0,90])
+  tslot1(type=2,len=x1);
+  
+  // clearance for the lever arm
+  translate([-15,-y2+26,zoff2-4.45])
+  cube([7,8,10]);  
+  translate([-16,-y2+31.5,zoff2-4.45])
+  cube([7,17,10]);  
+
+  // clearance for wiring
+  translate([-35,-y2+30.5,zoff2-5])
+  cube([9,3,10]);  
+  translate([-35,-y2+37.8,zoff2-5])
+  cube([9,3,10]);  
+  translate([-35,-y2+46.5,zoff2-5])
+  cube([9,3,10]);  
+  translate([-26,-y2+34,zoff2-3.0])
+  cube([9,14,10]);  
+
+  // cutout for stringing the wire and reduce mass
+  translate([-35,-y2+38,zoff2-12.5])
+  rotate([90,0,90])
+  cylinder(r=5,h=25,$fn=4);
+  translate([-35,-y2+26,zoff2-12.5])
+  rotate([90,0,90])
+  cylinder(r=5,h=25,$fn=4);
+
+  // upper cut for t-slot attach, want about 5 mm of plastic
+  translate([-35,-330/2-5,30])
+    rotate([-90,0,0])
+    cylinder(r=5.9/2,h=20,$fn=F2);
+  // countersink
+  translate([-35,-330/2+5,30])
+    rotate([-90,0,0])
+    cylinder(r=5,h=14,$fn=F2);
+    
+  // lower cut for t-slot attach, want about 5 mm of plastic
+  translate([-35,-330/2-5,0])
+    rotate([-90,0,0])
+    cylinder(r=5.9/2,h=20,$fn=F2);
+  // countersink
+  translate([-35,-330/2+5,0])
+    rotate([-90,0,0])
+    cylinder(r=5,h=14,$fn=F2);
+
+
+
+}
+
+
+}  
 
 //==========================================
+
 
 zaxle1=26.5;
 
@@ -345,7 +436,6 @@ if(0){
     cylinder(r=4.5,h=6.0,$fn=12);
 }
 
-//ymotorbracket();
 
 if(0){
 // support for printing ymotorbracket:
@@ -372,6 +462,35 @@ translate([9.5,-y2+42.3/2,zoff2-20])
 rotate([-90,0,90])
 pulley();
 }
+
+if(1){
+
+// Y switch bracket
+yswitchbracket();
+
+// Y motor
+color("cyan")
+translate([47.3+16.0,-y2+42.3/2,zoff2-20])
+rotate([-90,0,90])
+xymotor();
+
+color("orange")
+translate([9.5,-y2+42.3/2,zoff2-20])
+rotate([-90,0,90])
+pulley();
+
+translate([3,0,0])
+ymotorbracket();
+
+// Y axis limit switch
+if(1){
+  color("pink")
+  translate([-26,-y2+50,zoff2-3])
+  rotate([0,0,-90])
+  switch(ang1=0);
+ }
+}
+
 
 if(ybed){
 

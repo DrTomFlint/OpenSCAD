@@ -3,6 +3,7 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/switch.scad>
 use <frame.scad>
 use <zaxis.scad>
 use <xends2.scad>
@@ -24,22 +25,22 @@ LeftX0=151;
 RightX0=329;
 
 // Bed position, +95 -119
-Bed0=0;
+Bed0=-118;
 
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
 tops=1;  
 
 // Show xz
-xzOn=1;
+xzOn=0;
 
 // Show extruders
 extruders=0;
 
 // Show ybed 
-ybed=0;    
+ybed=1;    
 
 // Length front, back, top rail
 x1=480;         
@@ -381,6 +382,8 @@ difference(){
 
 } // end of if xzOn
 
+//------------------ extruders -------------------------
+
 if(extruders){
 // left extruder
 color("gray")
@@ -447,32 +450,57 @@ translate([+480/2-RightX0-56-18,ytoz+16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
 
-}
+} // end extruders
 
-// ----- cyan ---------
+// ---------------- Y Bed ------------------
 if(ybed){
 // Y motor
 color("cyan")
-translate([47.3+13.0,-y2+42.3/2,zoff2-20])
+translate([47.3+16.0,-y2+42.3/2,zoff2-20])
 rotate([-90,0,90])
 xymotor();
 
+// Y pulley
 color("orange")
 translate([9.5,-y2+42.3/2,zoff2-20])
 rotate([-90,0,90])
 pulley();
 
+// Y motor bracket
+translate([3,0,0])
 ymotorbracket();
+
+// Y endstop switch
+if(1){
+color("red")
+translate([-26,-y2+50,zoff2-4])
+rotate([0,0,-90])
+switch(ang1=0);
+
+color("cyan")
+translate([-26,-y2+50,zoff2-4])
+rotate([0,0,-90])
+switch(ang1=16);
+}
+
+// Y switch bracket
+color("pink")
+translate([0,0,0])
+rotate([0,0,-0])
+yswitchbracket();
 
 // y axis idler
 zaxle1=26.5;
-
 yidlebracket(zaxle=zaxle1);
 
 color("orange")
 translate([-4.5,330/2-11,zaxle1])
 rotate([0,90,0])
 idler();
+
+// belt holder
+translate([0,Bed0,-4.2])
+y_belt_holder();
 
 // Belt
 color("gray")
@@ -496,6 +524,7 @@ hull(){
         cylinder(r=12/2,h=7,$fn=22,center=true);
 }
 }
+
 // left Y rod
 color("cyan")
 translate([170/2,-330/2,zoff2])
@@ -524,8 +553,6 @@ translate([-170/2,-330/2,zoff2])
 rotate([-90,0,0])
 cylinder(r=4,h=330,$fn=F2);
 
-
-
 // y rod lm8u bearing left
 color("cyan")
 translate([170/2,Bed0,zoff2])
@@ -544,6 +571,7 @@ translate([-170/2,-70/2+Bed0,zoff2])
 rotate([-90,0,0])
 cylinder(r=15/2,h=24,$fn=F2);
 
+if(0){
 // spider
 color("cyan")
 translate([0,Bed0,zoff2+8.4])
@@ -553,15 +581,7 @@ cube([227,222,6.2],center=true);
 color("cyan")
 translate([0,Bed0,zoff2+8.4+10.25])
 cube([254,245,3.15],center=true);
-
-// belt holder
-translate([0,0,-4.2])
-y_belt_holder();
-
-// Vertical offset test
-//color("red")
-//translate([0,-y2+42.3/2,zoff2-16+4])
-//cube([10,10,17.5]);
+}
 
 }
 
