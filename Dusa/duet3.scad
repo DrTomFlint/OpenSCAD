@@ -1,0 +1,162 @@
+// duet3.scad
+// controller board, simple model for mounting
+
+// backside thru holes stick out 2.5 mm
+// note the thermal vias mean the hot parts could be water cooled from
+// the backside of the pcb, these are marked in pink
+
+
+//----------------------------------
+module duet3(
+tol=0,
+type=0
+){
+  
+  // ---- PCB ----------
+  difference(){
+    // PCB,
+    color("blue")
+    cube([134+tol,140+tol,1.5+tol]);
+    
+    // mounting holes
+    translate([4.5,4.5,-1])
+    cylinder(r=4.2/2-tol/2,h=4,$fn=22);
+    translate([4.5,140-4.5,-1])
+    cylinder(r=4.2/2-tol/2,h=4,$fn=22);
+    translate([134-4.5,4.5,-1])
+    cylinder(r=4.2/2-tol/2,h=4,$fn=22);
+    translate([134-4.5,140-4.5,-1])
+    cylinder(r=4.2/2-tol/2,h=4,$fn=22);
+  
+  }
+  
+  // ------- driver connectors, tall enough to include wires
+  translate([0,55,1.5])     // 0
+  cube([11,16.5,21]);
+  translate([0,84,1.5])     // 1
+  cube([11,16.5,21]);
+  translate([0,113,1.5])    // 2
+  cube([11,16.5,21]);
+  
+  translate([32.5,55,1.5])     // 5
+  cube([11,16.5,21]);
+  translate([32.5,84,1.5])     // 4
+  cube([11,16.5,21]);
+  translate([32.5,113,1.5])    // 3
+  cube([11,16.5,21]);
+
+  // Out_x connectors
+  translate([0,10,1.5])     // 3
+  cube([11,8.5,21]);
+  translate([0,22.3,1.5])     // 2
+  cube([11,8.5,21]);
+  translate([0,35.3,1.5])     // 1
+  cube([11,8.5,21]);
+
+  // ---------- bottom edge connectors
+  translate([21,0,1.5])     // gnd v+
+  cube([5.6,6.2,19]);
+  color("red")
+  translate([27.6,-0.3,1.5])     // reset button
+  cube([4.6,4.6,2]);
+  translate([34.4,0,1.5])     // external reset
+  cube([5.6,6.2,19]);
+  
+  color("red")
+  translate([47.8,0.5,1.5])     // SD card holder
+  cube([15,15,2.3]);
+
+  color("cyan")
+  translate([48.6,-2.2,2.2])     // SD card holder
+  cube([11.2,15.6,1.3]);
+  
+  color("red")
+  translate([66.2,-0.5,1.5])     // micro USB type B
+  cube([8.5,6,3.4]);
+  
+  color("red")
+  translate([80.4,0.5,1.5])     // ethernet
+  cube([16,21.5,13.5]);
+  
+  // --------- right corner I/O 0-8
+  translate([99.3,0,1.5])     // i/o_0
+  cube([6.5,13.2,19]);
+  translate([109.3,0,1.5])     // i/o_1
+  cube([6.5,13.2,19]);
+  translate([118.5,0,1.5])     // i/o_2
+  cube([6.5,13.2,19]);
+  
+  translate([99.3,14.5,1.5])     // i/o_3
+  cube([6.5,13.2,19]);
+  translate([109.3,14.5,1.5])     // i/o_4
+  cube([6.5,13.2,19]);
+  translate([118.5,14.5,1.5])     // i/o_5
+  cube([6.5,13.2,19]);
+  translate([127.8,14.5,1.5])     // i/o_6
+  cube([6.5,13.2,19]);
+  
+  translate([118.5,28.6,1.5])     // i/o_7
+  cube([6.5,13.2,19]);
+  translate([127.8,28.6,1.5])     // i/o_8
+  cube([6.5,13.2,19]);
+  
+  translate([111.2,28.6,1.5])     // DS_LED
+  cube([6.5,10.2,19]);
+  
+  // ---------- ribbon cable
+  color("green")
+  translate([134-9.5,46,1.5])     // R-Pi ribbon
+  cube([9.5,40.6,13.5]);
+  
+  color("red")
+  translate([134-18.2,90,1.5])     // RJ45 for Canbus
+  cube([18.2,14,13.3]);
+  
+  //------------ power block
+  color("red")
+  translate([65,122,1.5])     // Power block
+  cube([58.5,16.2,18]);
+  
+  translate([65,115,1.5])     // fuse
+  cube([15,6,18.5]);
+  translate([96,115,1.5])     // fuse
+  cube([15,6,18.5]);
+  
+  //-------- hot parts with thermal vias
+  color("pink")
+  translate([19,12,-0.2])     // Out_13D4184 40 volt N channel mosfet
+  cube([7,6,2]);
+  color("pink")
+  translate([19,25,-0.2])     // Out_2 D4184 40 volt N channel mosfet
+  cube([7,6,2]);
+  color("pink")
+  translate([19,37,-0.2])     // Out_1 D4184 40 volt N channel mosfet
+  cube([7,6,2]);
+  
+  color("pink")
+  translate([23.2,60.3,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  color("pink")
+  translate([23.2,89.4,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  color("pink")
+  translate([23.2,118.5,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  
+  color("pink")
+  translate([55.3,60.3,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  color("pink")
+  translate([55.3,89.4,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  color("pink")
+  translate([55.3,118.5,-0.2])     // Stepper driver 0
+  cube([5,5,2]);
+  
+}
+
+//=================================
+
+duet3();
+
+//=================================

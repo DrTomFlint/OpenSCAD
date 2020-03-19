@@ -20,12 +20,12 @@ module y_belt_holder()
             translate([-9.5,-24,42.5]) cube([16.5,48,10]);
             translate([-5,-15,27]) cube([12,30,19]);
             
-        }
-        // cut to make ramp for endstop
+        // add ramp for endstop
         color("orange")
-        translate([-6,-30,40.5])
-        rotate([0,0,40])
-        cube([6,50,13]);
+        translate([-9.5,-24,42.5])
+        linear_extrude(height=10)
+        polygon([ [16.5,0], [16.5,-14], [6,-14], [0,-4], [0,0] ]);
+        }
 
         // lower belt entry
         translate([-7.5,-16,34.9-2.75]) rotate([0,45,0]) cube([3,32,3]);
@@ -59,12 +59,12 @@ module y_belt_holder()
         translate([0,-19.0,40]) cylinder( h=30, r=1.65, $fn=50 );
         translate([0,19.0,40]) cylinder( h=30, r=1.65, $fn=50 );
         
-        translate([0,-19.5,43.5]) cylinder( h=5, r=3.1, $fn=50 );
-        translate([0,19.5,43.5]) cylinder( h=5, r=3.1, $fn=50 );
-        translate([0,-19.25,43.5]) cylinder( h=5, r=3.1, $fn=50 );
-        translate([0,19.25,43.5]) cylinder( h=5, r=3.1, $fn=50 );
-        translate([0,-19.0,43.5]) cylinder( h=5, r=3.1, $fn=50 );
-        translate([0,19.0,43.5]) cylinder( h=5, r=3.1, $fn=50 );
+        translate([0,-19.5,42]) cylinder( h=6, r=3.1, $fn=50 );
+        translate([0,19.5,42]) cylinder( h=6, r=3.1, $fn=50 );
+        translate([0,-19.25,42]) cylinder( h=6, r=3.1, $fn=50 );
+        translate([0,19.25,42]) cylinder( h=6, r=3.1, $fn=50 );
+        translate([0,-19.0,42]) cylinder( h=6, r=3.1, $fn=50 );
+        translate([0,19.0,42]) cylinder( h=6, r=3.1, $fn=50 );
         
     
     }

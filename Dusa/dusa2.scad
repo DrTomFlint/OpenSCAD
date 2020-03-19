@@ -24,8 +24,8 @@ LeftX0=151;
 // Right extruder position, +82, +329
 RightX0=329;
 
-// Bed position, +95 -119
-Bed0=-118;
+// Bed position, +107 -107
+Bed0=107;
 
 // Show frame
 frameOn=0;
@@ -473,12 +473,12 @@ ymotorbracket();
 // Y endstop switch
 if(1){
 color("red")
-translate([-26,-y2+50,zoff2-4])
+translate([-26,-y2+50,zoff2-5])
 rotate([0,0,-90])
 switch(ang1=0);
 
 color("cyan")
-translate([-26,-y2+50,zoff2-4])
+translate([-26,-y2+50,zoff2-5])
 rotate([0,0,-90])
 switch(ang1=16);
 }
@@ -490,6 +490,7 @@ rotate([0,0,-0])
 yswitchbracket();
 
 // y axis idler
+if(0){
 zaxle1=26.5;
 yidlebracket(zaxle=zaxle1);
 
@@ -497,12 +498,15 @@ color("orange")
 translate([-4.5,330/2-11,zaxle1])
 rotate([0,90,0])
 idler();
+}
 
 // belt holder
 translate([0,Bed0,-4.2])
 y_belt_holder();
 
+
 // Belt
+if(0){
 color("gray")
 difference(){
 hull(){
@@ -524,7 +528,11 @@ hull(){
         cylinder(r=12/2,h=7,$fn=22,center=true);
 }
 }
+}
 
+
+//------------------- Y rods and supports -----------------
+if(1){
 // left Y rod
 color("cyan")
 translate([170/2,-330/2,zoff2])
@@ -557,19 +565,20 @@ cylinder(r=4,h=330,$fn=F2);
 color("cyan")
 translate([170/2,Bed0,zoff2])
 rotate([-90,0,0])
-cylinder(r=15/2,h=24,$fn=F2);
+cylinder(r=15/2,h=24,$fn=F2,center=true);
 
 // y rod lm8u bearing right front
 color("cyan")
 translate([-170/2,70/2+Bed0,zoff2])
 rotate([-90,0,0])
-cylinder(r=15/2,h=24,$fn=F2);
+cylinder(r=15/2,h=24,$fn=F2,center=true);
 
 // y rod lm8u bearing right rear
 color("cyan")
 translate([-170/2,-70/2+Bed0,zoff2])
 rotate([-90,0,0])
-cylinder(r=15/2,h=24,$fn=F2);
+cylinder(r=15/2,h=24,$fn=F2,center=true);
+}
 
 if(0){
 // spider

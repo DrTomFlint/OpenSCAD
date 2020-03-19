@@ -320,19 +320,20 @@ module yswitchbracket(){
 difference(){
   
   // boss
-  color("gray")
+  //color("gray")
   minkowski(convexity=10){
   union(){
     difference(){
-      translate([-28.5,-y2-0.5,20])
+      translate([-28.5,-y2+0.5,20])
       cube([16,54,23.5]);
       
-      translate([-29.5,-y2+63,-65])
-      rotate([45,0,0])
+      translate([-29.5,-y2+86,-65])
+      rotate([60,0,0])
       cube([18,80,80]);
     }
 
-    translate([-45,-y2-0.5,20])
+    color("cyan")
+    translate([-45,-y2+0.5,20])
     cube([25,10,23.5]);
 
     color("red")
@@ -343,8 +344,8 @@ difference(){
   sphere(1,$fn=22);
 }
   // cutout for the switch
-  Tol1=0.4;
-  translate([-26,-y2+50,zoff2-4])
+  Tol1=0.2;
+  translate([-26,-y2+50,zoff2-5])
   rotate([0,0,-90])
   translate([-Tol1/2,-Tol1/2,-Tol1/2])
   switch(ang1=0,tol=Tol1);
@@ -352,12 +353,12 @@ difference(){
   // back rail
   translate([-x2,-y2-15,15])
   rotate([90,0,90])
-  tslot1(type=2,len=x1);
+  tslot1(type=2,len=x1,tol=0.15);
   
   // clearance for the lever arm
-  translate([-15,-y2+26,zoff2-4.45])
+  translate([-15,-y2+26,zoff2-5.5])
   cube([7,8,10]);  
-  translate([-16,-y2+31.5,zoff2-4.45])
+  translate([-16.5,-y2+31.5,zoff2-5.5])
   cube([7,17,10]);  
 
   // clearance for wiring
@@ -367,16 +368,22 @@ difference(){
   cube([9,3,10]);  
   translate([-35,-y2+46.5,zoff2-5])
   cube([9,3,10]);  
-  translate([-26,-y2+34,zoff2-3.0])
+  translate([-26,-y2+34,zoff2-2])
   cube([9,14,10]);  
 
   // cutout for stringing the wire and reduce mass
-  translate([-35,-y2+38,zoff2-12.5])
+  translate([-35,-y2+37,zoff2-14])
   rotate([90,0,90])
-  cylinder(r=5,h=25,$fn=4);
-  translate([-35,-y2+26,zoff2-12.5])
+  cylinder(r=5,h=25,$fn=6);
+  translate([-35,-y2+23,zoff2-14])
   rotate([90,0,90])
-  cylinder(r=5,h=25,$fn=4);
+  cylinder(r=5,h=25,$fn=6);
+  
+  // vertical cut to reduce material
+  translate([-21,-y2+10,zoff2-30])
+  rotate([0,0,180/8])
+  cylinder(r=5,h=40,$fn=8);
+  
 
   // upper cut for t-slot attach, want about 5 mm of plastic
   translate([-35,-330/2-5,30])
@@ -408,7 +415,8 @@ difference(){
 
 zaxle1=26.5;
 
-yidlebracket(zaxle=zaxle1);
+//yidlebracket(zaxle=zaxle1);
+
 if(0){
   // idler support
   color("green")
@@ -463,7 +471,9 @@ rotate([-90,0,90])
 pulley();
 }
 
-if(1){
+yswitchbracket();
+
+if(0){
 
 // Y switch bracket
 yswitchbracket();
@@ -483,9 +493,9 @@ translate([3,0,0])
 ymotorbracket();
 
 // Y axis limit switch
-if(1){
+if(0){
   color("pink")
-  translate([-26,-y2+50,zoff2-3])
+  translate([-26,-y2+50,zoff2-5])
   rotate([0,0,-90])
   switch(ang1=0);
  }
