@@ -8,6 +8,7 @@
 // the backside of the pcb, these are marked in pink
 
 use <../Parts/tslot.scad>
+use <../Parts/pi4.scad>
 
 
 // locations for front rail of the shelf vs PCB zero
@@ -176,7 +177,7 @@ module duet3bracket(){
     union(){
       color("pink")
       translate([-8,140-10,-4])
-      cube([16,14,10]);
+      cube([18,16,10]);
 
       color("green")
       translate([134-10,140-10,-4])
@@ -189,19 +190,18 @@ module duet3bracket(){
     cube([134+tol,140+tol,1.5+tol]);
 
     // trim corner off bottom slot
-    translate([5,115,-4])
-    rotate([0,0,30])
-    cube([16,16,11]);
+    translate([11,109,-4])
+    rotate([0,0,45])
+    cube([20,20,11]);
 
     // trim corner off top slot
     translate([134-8,140-19,-4])
     rotate([0,0,45])
-    cube([10,12,5.5]);
+    cube([10,14,5.5]);
     
     // hole for M4x18 
     translate([129.5,135.5,-16.5])
     cylinder(r=2,h=18,$fn=22);
-
 
   }
   
@@ -228,9 +228,9 @@ module duet3bracket(){
 
   // foot
   difference(){
-    translate([-16+1,130+1,-40+1])
+    translate([-16+1,130+1,-45+1])
     minkowski(){
-      cube([10-2,30-2,60-2]);
+      cube([10-2,30-2,65-2]);
       sphere(r=1,$fn=22);
     }
 
@@ -244,24 +244,121 @@ module duet3bracket(){
     cylinder(r=2,h=18,$fn=22);  
 
     // cut for back M4 to rail
-    translate([-20,145,-31])
+    translate([-20,145,-35])
     rotate([0,90,0])
     cylinder(r=2,h=18,$fn=22);  
 
   }
 }
+//--------------------------------
+module pi4bracket(){
+
+  difference(){
+    union(){
+      // crossbar 
+      color("cyan")
+      translate([-8+1,-20+1,-45+1])
+      minkowski(){
+        cube([10-2,180-2,21-2]);
+        sphere(r=1,$fn=22);
+      }
+      // extra base below the picase
+      color("cyan")
+      translate([-8,18,-35])
+      cube([10,89+12,22]);
+    }
+    
+    // cut for M4x18 to back rail
+    translate([-20,145,-35])
+    rotate([0,90,0])
+    cylinder(r=2,h=18,$fn=22);  
+
+    // countersink for M4x18, otherwise not long enough
+    translate([-2.5,145,-35])
+    rotate([0,90,0])
+    cylinder(r=7.5/2,h=4.6,$fn=22);  
+
+    // cut for M4 to front rail
+    translate([-20,-5,-35])
+    rotate([0,90,0])
+    cylinder(r=2,h=18,$fn=22);  
+
+    // countersink for M4x18, otherwise not long enough
+    translate([-2.5,-5,-35])
+    rotate([0,90,0])
+    cylinder(r=7.5/2,h=4.6,$fn=22);  
+    
+    // clearance for the ribbon cable
+    translate([-2,52,-40])
+    cube([4.5,55,40]);
+    
+  }
+      
+  // back wall corner
+  color("orange")
+  translate([-8,18,-20])
+  cube([65,6,9]);
+  color("orange")
+  translate([-8,18,-14])
+  cube([65,12,5]);
+    
+  difference(){
+    color("gray")
+    translate([-8,113,-20])
+    cube([65,6,9]);
+  
+    color("blue")
+    translate([20,111,-23])
+    cube([20,16,5]);
+  }
+
+  color("pink")
+  translate([-8,107,-14])
+  cube([65,12,5]);
+  
+  
+if(1){
+  // front wall to hold picase
+  difference(){
+    color("green")
+    translate([-8,18,-44])
+    cube([26,89+12,4]);
+
+    color("blue")
+    translate([26,-6,-45])
+    rotate([0,0,45])
+    cube([30,30,6]);
+
+    color("blue")
+    translate([26,100,-45])
+    rotate([0,0,45])
+    cube([30,30,6]);
+  }
+}
+  
+}
 
 //=================================
 
-duet3();
+//pi4bracket();
 
-duet3bracket();
+if(0){
+translate([58,112.75,-15])
+rotate([0,180,90])
+pi4case();
+}
 
+//duet3();
+
+//duet3bracket();
+
+if(1){
 translate([0,140,0])
 mirror([0,1,0])
 duet3bracket();
+}
 
-if(1){
+if(0){
 // top rail
 translate([x0front,y0front,-50])
 rotate([0,0,0])
