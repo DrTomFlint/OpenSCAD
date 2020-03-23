@@ -106,25 +106,26 @@ y2=y1/2;    // 165
     translate([x2-60,yoff+15,z1+15])
     rotate([90,180,0])
     tbrace();
-*/    
+    
     // left top corner 2
     color("gray")
     translate([x2-60,yoff-15,z1+15])
     rotate([90,180,0])
     tbrace();
 
-/*    
+    
     // right top corner 1
     color("gray")
     translate([-x2+60,yoff+15,z1+15])
     rotate([90,90,0])
     tbrace();
-*/    
+    
     // right top corner 2
     color("gray")
     translate([-x2+60,yoff-15,z1+15])
     rotate([90,90,0])
     tbrace();
+*/
     
    //------------- triangle corners back of towers -------------
    

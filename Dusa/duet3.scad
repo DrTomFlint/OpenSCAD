@@ -223,6 +223,24 @@ module duet3bracket(){
     // cut a flat for M4 nylock 
     translate([123,129,-16.5])
     cube([14,14,5]);
+    
+    // indent the long walls 
+    translate([-4,140,-24])
+    rotate([1.7,85.8,0])
+    cylinder(r1=3,r2=2,h=120,$fn=44);
+
+    translate([12,140,-4])
+    rotate([1.7,90,0])
+    cylinder(r1=3,r2=2,h=104,$fn=44);
+
+    translate([-4,150,-14])
+    rotate([3,88,0])
+    cylinder(r1=3,r2=2,h=120,$fn=44);
+
+    translate([-4,130,-14])
+    rotate([0,88,0])
+    cylinder(r1=3,r2=2,h=120,$fn=44);
+
   }
 
 
@@ -266,27 +284,38 @@ module pi4bracket(){
       color("cyan")
       translate([-8,18,-35])
       cube([10,89+12,22]);
+      // extra base below the posts
+      color("blue")
+      translate([-8,12,-26])
+      cube([10,24,21]);
+      // extra base below the posts
+      color("blue")
+      translate([-8,100,-26])
+      cube([10,24,21]);
     }
     
+    // cut for the posts
+    post1(tol=0.15);
+    
     // cut for M4x18 to back rail
-    translate([-20,145,-35])
+    translate([-23,145,-35])
     rotate([0,90,0])
     cylinder(r=2,h=18,$fn=22);  
 
     // countersink for M4x18, otherwise not long enough
-    translate([-2.5,145,-35])
+    translate([-5.5,145,-35])
     rotate([0,90,0])
-    cylinder(r=7.5/2,h=4.6,$fn=22);  
+    cylinder(r=7.5/2,h=7.6,$fn=22);  
 
     // cut for M4 to front rail
-    translate([-20,-5,-35])
+    translate([-23,-5,-35])
     rotate([0,90,0])
     cylinder(r=2,h=18,$fn=22);  
 
     // countersink for M4x18, otherwise not long enough
-    translate([-2.5,-5,-35])
+    translate([-5.5,-5,-35])
     rotate([0,90,0])
-    cylinder(r=7.5/2,h=4.6,$fn=22);  
+    cylinder(r=7.5/2,h=7.6,$fn=22);  
     
     // clearance for the ribbon cable
     translate([-2,52,-40])
@@ -294,53 +323,73 @@ module pi4bracket(){
     
   }
       
-  // back wall corner
-  color("orange")
-  translate([-8,18,-20])
-  cube([65,6,9]);
-  color("orange")
-  translate([-8,18,-14])
-  cube([65,12,5]);
-    
-  difference(){
-    color("gray")
-    translate([-8,113,-20])
-    cube([65,6,9]);
-  
-    color("blue")
-    translate([20,111,-23])
-    cube([20,16,5]);
-  }
-
-  color("pink")
-  translate([-8,107,-14])
-  cube([65,12,5]);
-  
   
 if(1){
   // front wall to hold picase
   difference(){
     color("green")
-    translate([-8,18,-44])
-    cube([26,89+12,4]);
+    translate([-6,18,-45])
+    cube([24,89+12,5]);
 
     color("blue")
-    translate([26,-6,-45])
+    translate([26,-6,-46])
     rotate([0,0,45])
-    cube([30,30,6]);
+    cube([30,30,8]);
 
     color("blue")
-    translate([26,100,-45])
+    translate([26,100,-46])
     rotate([0,0,45])
-    cube([30,30,6]);
+    cube([30,30,8]);
   }
 }
   
 }
 
+//-----------------------------
+module post1(tol=0){
+
+    // back wall corner
+  color("orange")
+  translate([-8,18,-20])
+  cube([65+tol,6+tol,9+tol]);
+  color("orange")
+  translate([-8,18,-14])
+  cube([65+tol,12+tol,5+tol]);
+  // tab to limit insertion
+  color("pink")
+  translate([2,12,-20])
+  cube([6,6,11]);
+    
+}
+//-------------------------------
+module post2(tol=0){
+
+  difference(){
+    color("gray")
+    translate([-8,113,-20])
+    cube([65+tol,6+tol,9+tol]);
+  
+    color("blue")
+    translate([20,111,-23])
+    cube([20,16,5]);
+  }
+  color("pink")
+  translate([-8,107,-14])
+  cube([65+tol,12+tol,5+tol]);
+  // tab to limit insertion
+  color("orange")
+  translate([2,118,-20])
+  cube([6,6,11]);
+
+}
 //=================================
 
-//pi4bracket();
+// missed by 2 mm when making the pi shelf
+translate([2,0,0]){
+//  post1();
+  post2();
+//  pi4bracket();
+}
 
 if(0){
 translate([58,112.75,-15])
@@ -352,7 +401,7 @@ pi4case();
 
 //duet3bracket();
 
-if(1){
+if(0){
 translate([0,140,0])
 mirror([0,1,0])
 duet3bracket();

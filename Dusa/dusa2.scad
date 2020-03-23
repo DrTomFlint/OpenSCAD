@@ -17,8 +17,8 @@ use <topshelf.scad>
 // These must be at the top of the main file, cannot contain any
 // computations, and should have a comment above to provide text
 
-// Height of x rods, +47, +304
-High0=200;        
+// Height of x rods, +47, +288
+High0=250;        
 
 // Left extruder position, +151, +398
 LeftX0=151; 
@@ -27,22 +27,22 @@ LeftX0=151;
 RightX0=329;
 
 // Bed position, +107 -107
-Bed0=107;
+Bed0=0;
 
 // Show frame
-frameOn=0;
+frameOn=1;
 
 // Show top z brackets
 tops=1;  
 
 // Show xz
-xzOn=0;
+xzOn=1;
 
 // Show extruders
-extruders=0;
+extruders=1;
 
 // Show ybed 
-ybed=1;    
+ybed=0;    
 
 // Length front, back, top rail
 x1=480;         
@@ -582,7 +582,7 @@ rotate([-90,0,0])
 cylinder(r=15/2,h=24,$fn=F2,center=true);
 }
 
-if(0){
+if(1){
 // spider
 color("cyan")
 translate([0,Bed0,zoff2+8.4])

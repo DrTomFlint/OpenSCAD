@@ -2,6 +2,8 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/switch.scad>
+use <../Parts/rounder.scad>
 
 // Center to motor screw
 x1=-7; 
@@ -140,139 +142,140 @@ cylinder(r=5+0.05,h=350,$fn=F2);
     translate([-15,-42.3/2+0.5-yoff3+5,56])
     rotate([-90,0,0])
     cylinder(r=5,h=6,$fn=F2);
+}    
 }
 
-    
-}
-
-//------------------------------
+//----------------------------------------------------------------
 module zleft2a(
 x1=-8,
 x3=17,
-yoff3=6
+yoff3=6,
+endstop=1
 ){
 
 F2=88;
 F3=22;
 
-
-difference(){
 // boss
+difference(){
 translate([0,0,342])
 union(){
-minkowski(convexity=10){    
-difference(){
-union(){
     // over rods
-    color("gray")
-    translate([4.5,-7,38+4])
-    linear_extrude(height=20,convexity=10)
-    square([47,32],center=true);
+    color("cyan")
+    translate([6,-9.5,53])
+    cube([44,37,20],center=true);
 
-    // fillet
-    color("blue")
-    translate([4.5,-16,38+2])
-    rotate([45,0,0])
-    linear_extrude(height=6,convexity=10)
-    square([47,6],center=true);
+    // end stop switch block
+    color("orange")
+    translate([6,-9.5,34])
+    cube([26,37,24],center=true);
 
     // collar around rod
     color("red")
-    translate([x3,0,38+2])
-    cylinder(r=7,h=2,$fn=F2);
+    translate([x3,0,22])
+    cylinder(r=9,h=24,$fn=F2);
 
     // collar around screw
-    translate([x1,0,38+2])
-    cylinder(r=7,h=2,$fn=F2);
+    translate([x1,0,22])
+    cylinder(r=9,h=24,$fn=F2);
 
-    // vertical tab
-    color("orange")
-    translate([4.5,-22,16])
-    linear_extrude(height=46)
-    square([47,8],center=true);
 
 }
     // corner cuts
     color("pink")
-    translate([31,0,35])
-    rotate([0,0,45])
-    cube([20,20,30]);
+    translate([28,9,38+342])
+    rotate([0,0,180])
+    rounder(r=9,h=30,f=88);
 
     // corner cuts
     color("pink")
-    translate([-19,0,35])
-    rotate([0,0,45])
-    cube([20,20,30]);
-}
-
-sphere(r=2,$fs=0.2);
-}
-}
-
+    translate([-16,9,38+342])
+    rotate([0,0,-90])
+    rounder(r=9,h=30,f=88);
     
-// left tower
-translate([0,-30-42.3/2-yoff3,0])
-tslot1(type=3,len=380,tol=0.15);
+    // left tower, note extra clearance tol=0.25
+    translate([0,-30-42.3/2-yoff3,0])
+    tslot1(type=3,len=380,tol=0.25);
 
-// top rail
-translate([-30,-30-42.3/2-yoff3,380+15])
-rotate([0,90,0])
-tslot1(type=2,len=60,tol=0.15);
+    // top rail, no extra clearance tol=0.15
+    translate([-30,-30-42.3/2-yoff3,380+15])
+    rotate([0,90,0])
+    tslot1(type=2,len=60,tol=0.15);
 
-// left z motor
-color("red")
-translate([x1,0,0])
-rotate([0,0,180])
-zmotor(tol=0.15);
-
-// left z rod, add some tolerance
-color("red")
-translate([x3,0,42+1])
-cylinder(r=5+0.1,h=350,$fn=F2);
-
+    // left z rod, add some tolerance
+    color("red")
+    translate([x3,0,42])
+    cylinder(r=5+0.1,h=350.15,$fn=F2);
     
-// extra clearance for leadscrew
-translate([x1,0,330+40])
-cylinder(r=5,h=20,$fn=F3);
+    // extra clearance for leadscrew
+    translate([x1,0,360])
+    cylinder(r=5,h=30,$fn=F3);
 
+    // M5 mount to top rail
+    translate([5,-42.3/2-yoff3-4,380+15])
+    rotate([-90,0,0])
+    cylinder(r=5.9/2,h=12,$fn=F2);
 
-// tslot mounts
-translate([15,-42.3/2-yoff3-5,365])
-rotate([-90,0,0])
-cylinder(r=5.9/2,h=20,$fn=F2);
-
-translate([15,-42.3/2+0.5-yoff3+5,365])
-rotate([-90,0,0])
-cylinder(r=5,h=6,$fn=F2);
-
-translate([-15,-42.3/2-yoff3-5,365])
-rotate([-90,0,0])
-cylinder(r=5.9/2,h=20,$fn=F2);
-
-
-translate([-15,-42.3/2+0.5-yoff3+5,365])
-rotate([-90,0,0])
-cylinder(r=5,h=6,$fn=F2);
-
-// third hole
-translate([5,-42.3/2-yoff3-5,380+15])
-rotate([-90,0,0])
-cylinder(r=5.9/2,h=20,$fn=F2);
-
-translate([5,-42.3/2+0.5-yoff3+5,380+15])
-rotate([-90,0,0])
-cylinder(r=5,h=60,$fn=F2);
-
-// extra clearance for inserting screw
-translate([5,-42.3/2+0.5+6-yoff3+5,380+15])
-rotate([-90,0,0])
-cylinder(r1=5.0,r2=6.5,h=40,$fn=F2);
+    translate([5,-42.3/2+0.5-yoff3+6.5,380+15])
+    rotate([-90,0,0])
+    cylinder(r=5,h=60,$fn=F2);
   
+if(endstop==1){  
+    // cut for the end stop switch
+    Tol1=0.15;
+    translate([9,-42.3/2-yoff3+1,381])
+    rotate([-90,0,90])
+    translate([-Tol1/2,-Tol1/2,-Tol1/2])
+    switch(ang1=0,tol=Tol1);
+  
+    // cuts for the end stop switch
+    // allow insertion
+    translate([-4,-42.3/2-yoff3-3.5,352])
+    cube([8,25,30]);
+    translate([0.2,-42.3/2-yoff3+17.2,352])
+    rotate([0,0,45])
+    cube([5.2,6,20]);
+    // cut for lever arm near fulcrum
+    translate([2,-42.3/2-yoff3+3,352])
+    cube([7,15,20]);
+    // cut for lever arm near roller
+    translate([-0.5,-42.3/2-yoff3+10,352])
+    cube([11,15,18]);
+    // cut for NC
+    translate([-4,-42.3/2-yoff3+17,380])
+    cube([14,3.5,7]);
+    // cut for NO
+    translate([-4,-42.3/2-yoff3+10,380])
+    cube([14,3.5,7]);
+    // cut for C
+    translate([-4,-42.3/2-yoff3+1,380])
+    cube([14,3.5,7]);
+    // trim down the posts
+    translate([2.5,-42.3/2-yoff3+4,374])
+    cube([4,14,6]);
+
+if(0){
+    // cut for visibility, do not leave this active
+    translate([-24,-42.3/2-yoff3+0,351])
+    cube([27,20,30]);
+}    
+}  // end of if(endstop)
     
 }
 
+// show where switch will fit, both angles for the lever arm
+if(0){
+  translate([9,-42.3/2-yoff3+1,381])
+  rotate([-90,0,90]){
+    color("green")
+    switch(ang1=10);
+    color("red")
+    switch(ang1=0);
+    }
+}    
     
 }
+
 //---------------------------------
 module zleft2(
 x1=-8,
@@ -298,7 +301,7 @@ F2=88;
 F3=22;
     
     mirror([1,0,0])
-    zleft2a(x1=x1,x3=x3,yoff3=yoff3);
+    zleft2a(x1=x1,x3=x3,yoff3=yoff3,endstop=0);
     
 }
 
@@ -307,14 +310,14 @@ F3=22;
 
 
 //mirror([1,0,0])
-zleft1(x1=x1,x3=x3,yoff3=yoff3);
+//zleft1(x1=x1,x3=x3,yoff3=yoff3);
 
 //translate([70,0,0])
 zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
 //zright2(x1=x1,x3=x3,yoff3=yoff3);
 
-if(1){
+if(0){
 // left tower
 color("gray")
 translate([0,-30-42.3/2-yoff3,0])
