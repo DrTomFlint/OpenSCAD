@@ -237,7 +237,7 @@ if(endstop==1){
     cube([5.2,6,20]);
     // cut for lever arm near fulcrum
     translate([2,-42.3/2-yoff3+3,352])
-    cube([7,15,20]);
+    cube([7,17,20]);
     // cut for lever arm near roller
     translate([-0.5,-42.3/2-yoff3+10,352])
     cube([11,15,18]);
@@ -301,7 +301,7 @@ F2=88;
 F3=22;
     
     mirror([1,0,0])
-    zleft2a(x1=x1,x3=x3,yoff3=yoff3,endstop=0);
+    zleft2a(x1=x1,x3=x3,yoff3=yoff3);
     
 }
 
@@ -313,9 +313,9 @@ F3=22;
 //zleft1(x1=x1,x3=x3,yoff3=yoff3);
 
 //translate([70,0,0])
-zleft2(x1=x1,x3=x3,yoff3=yoff3);
+//zleft2(x1=x1,x3=x3,yoff3=yoff3);
 
-//zright2(x1=x1,x3=x3,yoff3=yoff3);
+zright2(x1=x1,x3=x3,yoff3=yoff3);
 
 if(0){
 // left tower
