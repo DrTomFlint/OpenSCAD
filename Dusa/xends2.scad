@@ -41,6 +41,11 @@ ytower=-57.2;
 // Tower to Z-axis, >0
 ybracket=6;            
 
+// Center to z-axis
+//ytoz=7.2;
+ytoz=0;
+
+
 // Height of z rods
 zoff2=43;   
 
@@ -513,7 +518,7 @@ cylinder(r=3,h=6,$fn=F2);
 //=======================================================
 
 //translate([-350,0,0])
-//xleft1();
+xleft1();
 if(0){
 // This is a printing support for xleft1
 color("pink")
@@ -526,7 +531,7 @@ cylinder(r=10,h=6,$fn=12);
 
 }
 
-xright1();
+//xright1();
 if(0){
 // This is a printing support for xright1
 color("pink")
@@ -560,7 +565,7 @@ if(0){
   idler();
 }
 
-if(0){
+if(1){
 // upper x rod
 color("orange")
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -574,8 +579,8 @@ rotate([0,90,0])
 cylinder(r=4,h=480,$fn=F2);
 }
 
-if(0){
-//----------- red-----------
+if(1){
+//----------- red LEFT ------------------------------------
 // left z motor
 color("red")
 translate([x2-30+zscrew,0,15])
@@ -597,7 +602,35 @@ color("red")
 translate([x2-30+zscrew+xrodscrew,0,High0+60])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
-// ----- green ---------
+// left znut
+color("red")
+translate([x2-30+zscrew,ytoz,High0+90-1])
+rotate([180,0,0])
+znut();
+
+}
+
+if(0){
+// left extruder
+color("gray")
+translate([+480/2-LeftX0,ytoz+4,High0+26])
+rotate([90,0,180])
+import("aqua5.stl");
+// left emotor
+color("gray")
+translate([+480/2-LeftX0+67,ytoz-55,High0+44])
+rotate([90,-90,180])
+emotor();
+// Add a screw head for clearance check
+color("pink")
+translate([+480/2-LeftX0+95,ytoz-22.5,High0+80])
+rotate([90,-90,180])
+cylinder(r=6.8/2,h=4);
+}
+
+
+if(0){
+// ----- green RIGHT --------------------------------------------
 // right z motor
 color("green")
 translate([-x2+30-zscrew,0,15])
