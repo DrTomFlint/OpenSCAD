@@ -210,15 +210,15 @@ module idler(tol=0){
 
 //======================================
 
-translate([20,0,0])
-pulley();
+//translate([20,0,0])
+//pulley();
 
-idler();
+//idler();
 
 //zmotor();
 
 //znut();
 //emotor();
-//xymotor();
+xymotor();
 
 //========================================

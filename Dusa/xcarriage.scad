@@ -438,8 +438,8 @@ if(0){
 
 // standoffs are no longer part of the carriage
 if(0){ // left side
-  X3=LeftX0;
     // four legs to attach extruder
+    X3=LeftX0;
     color("pink")
     translate([+480/2-X3+41.1,-11.4,High0+89.9])
     rotate([-90,0,0])
@@ -455,8 +455,8 @@ if(0){ // left side
     standoff();
 }
 if(0){  // right side
-  X4=RightX0+135;
     // four legs to attach extruder
+    X4=RightX0+135;
     color("pink")
     translate([+480/2-X4+41.1,-11.4,High0+89.9])
     rotate([-90,0,0])

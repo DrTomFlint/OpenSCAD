@@ -3,6 +3,7 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/switch.scad>
 use <frame.scad>
 use <zaxis.scad>
 
@@ -79,6 +80,7 @@ module xleft1(
 
 
 ){
+
   
 difference(){
 // boss
@@ -87,22 +89,19 @@ minkowski(convexity=8) {
   difference(){
     translate([0,2,0])
     cube([50,40-2,65]);    
-    translate([-1,-1,-1])
-    cube([29,22,55]);
+//    translate([-1,-1,-1])
+//    #cube([29,22,55]);
     
-    translate([-3,-15,50])
+    translate([-3,-15,-1])
     rotate([0,0,45])
-    cube([20,20,30]);
+    cube([20,20,70]);
     translate([54,-15,-1])
     rotate([0,0,45])
     cube([20,20,70]);
-    translate([25,-15,-1])
-    rotate([0,0,45])
-    cube([20,20,55]);
-}
-
-//  sphere(r=2,$fs=0.2);
-//  cylinder(r=2,h=2,$fs=0.2);
+//    translate([25,-15,-1])
+//    rotate([0,0,45])
+//    #cube([20,20,55]);
+  }
   cylinder(r=2,h=2,$fn=F2);
 }
 
@@ -118,7 +117,7 @@ cylinder(r=19.01/2,h=29,$fn=F2);
 
 // cut for left lm10u bearing upper plus clearance
 translate([x2-30+zscrew+xrodscrew,0,High0+60])
-cylinder(r=19.01/2,h=29,$fn=F2);
+cylinder(r=19.01/2,h=29+1,$fn=F2);
 
 // strain relief cut for M10 and bearings
 // leave a little material on the buildplate to help curling
@@ -126,12 +125,12 @@ translate([x2-30+zscrew+xrodscrew+10,-11,High0+18])
 rotate([0,0,45])
 cube([1,15,70]);
 
-// add a cut so M10 could be pushed back out if needed
+// add a cut so M10 could be pushed out if needed
 translate([x2-30+zscrew+xrodscrew+10,-13,High0+42])
 rotate([0,0,45])
 cube([4,14,24]);
 
-// arch the top to make printable
+// arch the top of push out cut to make it printable
 translate([x2-30+zscrew+xrodscrew+10,-13,High0+42])
 rotate([0,45,45])
 cube([2.8,14,2.8]);
@@ -157,9 +156,9 @@ cylinder(r1=11,r2=12,h=4,$fn=F2);
 translate([x2-30+zscrew,0,High0+87])
 rotate([180,0,0]){
   translate([7.75,0,0])
-  cylinder(r=1.5,h=15,$fn=F2);
+  cylinder(r=1.5,h=10,$fn=F2);
   translate([-7.75,0,0])
-  cylinder(r=1.5,h=15,$fn=F2);
+  cylinder(r=1.5,h=10,$fn=F2);
 }
 
 // cut left z screw
@@ -202,7 +201,6 @@ translate([480/2-2.25,33,High0+30])
 rotate([90,30,0])
 cylinder(r=3,h=15,$fn=6);
 
-
 // cut for left x motor
 translate([480/2-30-xmot0,0+76,High0+zmotor1])
 rotate([90,90,0])
@@ -238,13 +236,12 @@ rotate([90,0,0]){
     cylinder(r=3,h=40,$fn=F3);
 }
 
-
 // main cut for belt, pulley, and idler
 color("cyan")
 translate([480/2-80,0+9.5,High0+37])
 cube([90,9.5,37]);
 
-// 
+// arch the belt cut to make it printable 
 color("cyan")
 translate([480/2-80,14.25,High0+39])
 rotate([0,90,0])
@@ -257,53 +254,66 @@ rotate([-90,90,0])
 cylinder(r=8,h=20,$fn=F2);
 
 // idler attachment M3x20 screw
-translate([480/2-30-xmot0,25,High0+zmotor2-1.5])
+translate([480/2-30-xmot0,26,High0+zmotor2-1.5])
 rotate([90,90,0])
 cylinder(r=1.55,h=20,$fn=F2);
-// M3x30 head
-translate([480/2-30-xmot0,29,High0+zmotor2-1.5])
-rotate([90,90,0])
-cylinder(r=3,h=6,$fn=F2);
 
+// idler attachment M3x30 head and access
+translate([480/2-30-xmot0,6,High0+zmotor2-1.5])
+rotate([90,90,0])
+cylinder(r=3,h=30,$fn=F2);
+
+// idler attachment M3x30 nut
+translate([480/2-36-xmot0,23,High0+zmotor2-7])
+cube([12,6,9]);
+
+// cut for the limit switch 
+translate([x2-28+zscrew,-6.5,High0+90-34])
+rotate([-90,90,0])
+mirror([0,0,1])
+switchcut();
+
+// cuts for access to znut screws
+translate([x2-30+zscrew,0,High0+20]){
+  translate([7.75,0,0])
+  cylinder(r=4.5/2,h=57,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=4.5/2,h=57,$fn=F2);
 }
+
+// cut near limit switch to eliminate overhang
+translate([x2+zscrew-48,-15.5,High0+20])
+cube([9,10,14]);
+
+// cut for ooze prevention arm
+translate([x2+zscrew-31,0,High0+19])
+linear_extrude(height=6,scale=[1,1.5])
+square([32,10],center=true);
+
+
+// cut for visibility
+//translate([x2-30+zscrew-50,-40,High0+20])
+//cube([100,40,100]);
+
+
+} // end if all cuts
 
 }// end diff
-
-
-if(0){
-// M3x20 screws for Z-nut
-color("pink")
-translate([x2-30+zscrew,0,High0+90-21])
-rotate([180,0,0]){
-  translate([7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
-  translate([-7.75,0,0])
-  cylinder(r=4.5/2,h=3,$fn=F2);
-}
-}
-
-
-  // text labels
-  color("red")
-  translate([x2-28,28,High0+81])
-  rotate([90,0,180])
-  linear_extrude(height=2,scale=1)
-  text("PRUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
-  color("red")
-  translate([x2-28,28,High0+72])
-  rotate([90,0,180])
-  linear_extrude(height=2,scale=1)
-  text("DUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
-
-
+  
+// text labels
+color("red")
+translate([x2-28,28,High0+81])
+rotate([90,0,180])
+linear_extrude(height=2,scale=1)
+text("PRUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+color("red")
+translate([x2-28,28,High0+72])
+rotate([90,0,180])
+linear_extrude(height=2,scale=1)
+text("DUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
 
 }
-/*
-    translate([x2-30+zscrew+xrodscrew+10,-11,High0+16])
-rotate([0,0,45])
-cube([1,15,80]);
 
-*/
 //------------------------------------------------------------------------
 module xright1(
 
@@ -316,22 +326,13 @@ minkowski(convexity=8) {
   difference(){
     translate([0,2,0])
     cube([50,40-2,65]);
-        
-    translate([50-28,-1,-1])
-    cube([29,22,55]);
-    
-    translate([-3+56,-15,50])
+    translate([-3+56,-15,-1])
     rotate([0,0,45])
-    cube([20,20,30]);
+    cube([20,20,70]);
     translate([-4,-15,-1])
     rotate([0,0,45])
     cube([20,20,70]);
-    translate([25,-15,-1])
-    rotate([0,0,45])
-    cube([20,20,55]);
-}
-
-//  sphere(r=2,$fs=0.2);
+  }
   cylinder(r=2,h=2,$fn=F2);
 }
 
@@ -347,7 +348,7 @@ cylinder(r=19.01/2,h=29,$fn=F2);
 
 // cut for right lm10u bearing upper plus clearance
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60])
-cylinder(r=19.01/2,h=29,$fn=F2);
+cylinder(r=19.01/2,h=29+1,$fn=F2);
 
 // strain relief cut for M10 and bearings
 translate([-(x2-30+zscrew+xrodscrew-0.5)-12,-10,High0+16])
@@ -424,7 +425,6 @@ translate([-(480/2-2.25),33,High0+30])
 rotate([90,30,0])
 cylinder(r=3,h=15,$fn=6);
 
-
 // cut for right x motor
 translate([-(480/2-30-xmot0),0+76,High0+zmotor2])
 rotate([90,90,0])
@@ -436,7 +436,6 @@ rotate([90,90,0])
 cylinder(r=3,h=14,$fn=F2);
 
 F3=22;
-
 translate([-x2+28,65,High0+zmotor2])
 rotate([90,0,0]){
     // x motor mounting holes,
@@ -486,16 +485,45 @@ rotate([-90,90,0])
 cylinder(r=8,h=20,$fn=F2);
 
 // idler attachment M3x20 screw
-translate([-(480/2-30-xmot0),25,High0+zmotor1+1.5])
+//translate([480/2-30-xmot0,26,High0+zmotor2-1.5])
+translate([-(480/2-30-xmot0),26,High0+zmotor1+1.5])
 rotate([90,90,0])
 cylinder(r=1.55,h=20,$fn=F2);
 
 // M3x30 head
-translate([-(480/2-30-xmot0),29,High0+zmotor1+1.5])
+//translate([480/2-30-xmot0,6,High0+zmotor2-1.5])
+translate([-(480/2-30-xmot0),6,High0+zmotor1+1.5])
 rotate([90,90,0])
-cylinder(r=3,h=6,$fn=F2);
+cylinder(r=3,h=30,$fn=F2);
 
+// idler attachment M3x30 nut
+translate([-(480/2-24-xmot0),23,High0+zmotor1-2.0])
+cube([12,6,9]);
+
+// cuts for access to znut screws
+translate([-(x2-30+zscrew),0,High0+20]){
+  translate([7.75,0,0])
+  cylinder(r=4.5/2,h=57,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=4.5/2,h=57,$fn=F2);
 }
+
+// cut for the limit switch 
+translate([-(x2-28+zscrew),-6.5,High0+90-34])
+rotate([90,90,0])
+switchcut();
+
+
+// cut near limit switch to eliminate overhang
+translate([-(x2+zscrew-39),-15.5,High0+20])
+cube([9,10,14]);
+
+// cut for ooze prevention arm
+translate([-(x2+zscrew-31),0,High0+19])
+linear_extrude(height=6,scale=[1,1.5])
+square([32,10],center=true);
+
+} // end if all cuts
 
 }// end diff
 
@@ -517,6 +545,15 @@ cylinder(r=3,h=6,$fn=F2);
 
 //=======================================================
 
+// left limit switch 
+if(0){
+  translate([x2-28+zscrew,-13,High0+90-34])
+  rotate([-90,90,0]){
+    switch(ang1=0); 
+    switch(ang1=12); 
+  }
+}
+
 //translate([-350,0,0])
 xleft1();
 if(0){
@@ -529,9 +566,27 @@ color("orange")
 translate([x2-30+zscrew,0,High0+76+7])
 cylinder(r=10,h=6,$fn=12);
 
+color("red")
+translate([x2-20+zscrew,-12,High0+90-34])
+difference(){
+  rotate([-90,90,0])
+  cube([23,25,6.5]);  
+  translate([-15,0,1])
+  rotate([-90,90,45])
+  cube([25,10,15]);  
+}
 }
 
-//xright1();
+// right limit switch
+if(0){
+  translate([-(x2-28+zscrew),-6.5,High0+90-34])
+  rotate([90,90,0]){
+    switch(ang1=0);
+    switch(ang1=12);
+  }
+}
+
+xright1();
 if(0){
 // This is a printing support for xright1
 color("pink")
@@ -565,7 +620,7 @@ if(0){
   idler();
 }
 
-if(1){
+if(0){
 // upper x rod
 color("orange")
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -579,7 +634,7 @@ rotate([0,90,0])
 cylinder(r=4,h=480,$fn=F2);
 }
 
-if(1){
+if(0){
 //----------- red LEFT ------------------------------------
 // left z motor
 color("red")
@@ -589,12 +644,12 @@ zmotor();
 
 // left z rod
 color("red")
-translate([x2-30+zscrew+xrodscrew,0,15+42])
+translate([x2-30+zscrew+xrodscrew,0,57])
 cylinder(r=5,h=350,$fn=F2);
 
 // left lm10u bearing lower
 color("red")
-translate([x2-30+zscrew+xrodscrew,0,High0+16])
+translate([x2-30+zscrew+xrodscrew,0,High0+20])
 cylinder(r=19.2/2,h=29,$fn=F2);
 
 // left lm10u bearing upper

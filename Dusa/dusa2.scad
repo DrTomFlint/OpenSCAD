@@ -19,7 +19,7 @@ use <xcarriage.scad>
 
 // ---- positioning -------------------
 // Height of x rods, +47, +288
-High0=47;        
+High0=200;        
 
 // Left extruder position, +153, +398
 LeftX0=153; 
@@ -32,28 +32,28 @@ Bed0=0;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
-tops=0;  
+tops=1;  
 
 // Show z axis left
 leftZon=1;
 
 // Show z axis right
-rightZon=0;
+rightZon=1;
 
 // Show x axis left
 leftXon=1;
 
 // Show x axis right
-rightXon=0;
+rightXon=1;
 
 // Show extruder left
 leftEon=1;
 
 // Show extruder right
-rightEon=0;
+rightEon=1;
 
 // Show ybed 
 ybed=0;    
@@ -316,6 +316,15 @@ if(leftXon){
   translate([0,ytoz,High0-150])
   xleft1();
 
+  // left x limit switch 
+  translate([x2-28+zscrew,ytoz-13,High0+90-34])
+  rotate([-90,90,0]){
+    color("red")
+    switch(ang1=0); 
+    color("green")
+    switch(ang1=12); 
+  }
+  
   // left x carriage
   color("red")
   translate([0,ytoz,High0-150])
@@ -342,7 +351,7 @@ if(leftXon){
   // left x motor
   color("gray")
   translate([480/2-30-xmot0,ytoz+76,High0+zmotor1])
-  rotate([90,90,0])
+  rotate([90,-90,0])
   xymotor();
 
   color("orange")
@@ -388,8 +397,18 @@ if(rightXon){
   // right x end
   translate([0,ytoz,High0-150])
   xright1();
+    
+  // right x limit switch 
+  translate([-(x2-28+zscrew),ytoz-6.5,High0+90-34])
+  rotate([90,90,0]){
+    color("red")
+    switch(ang1=0);
+    color("green")
+    switch(ang1=12);
+  }
   
   // right x carriage
+  color("green")
   translate([0,ytoz,High0-150])
   xmain1(X0=RightX0+135,type=2);
 
@@ -414,7 +433,7 @@ if(rightXon){
   // right x motor
   color("blue")
   translate([-480/2+30+xmot0,ytoz+76,High0+zmotor2])
-  rotate([90,90,0])
+  rotate([90,-90,0])
   xymotor();
 
   // right x motor pulley
