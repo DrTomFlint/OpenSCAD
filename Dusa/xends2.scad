@@ -169,7 +169,7 @@ zmotor(tol=0.15);
 // extra clearance left z screw
 translate([x2-30+zscrew,0,15])
 rotate([0,0,180])
-cylinder(r=5.15,h=350,$fn=F2);
+cylinder(r=4.5,h=350,$fn=F2);
 
 // cut for upper x rod plus clearance
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -290,6 +290,19 @@ translate([x2+zscrew-31,0,High0+19])
 linear_extrude(height=6,scale=[1,1.5])
 square([32,10],center=true);
 
+// cut for left x motor wires
+translate([480/2-xmot0-6,30,High0+zmotor1+7])
+scale([1,1,2])
+rotate([90,0,15])
+cylinder(r=2.5,h=45,$fn=F2);
+
+// cut for limit switch wires
+translate([x2+zscrew-24,-15.5,High0+36.4])
+cube([2,6,19.2]);
+translate([x2+zscrew-24,-10.5,High0+54])
+scale([1,1,2])
+rotate([0,90,0])
+cylinder(r=1,h=30,$fn=20);
 
 // cut for visibility
 //translate([x2-30+zscrew-50,-40,High0+20])
@@ -393,7 +406,7 @@ zmotor(tol=0.15);
 // extra clearance right z screw
 translate([-(x2-30+zscrew),0,15])
 rotate([0,0,180])
-cylinder(r=5.15,h=350,$fn=F2);
+cylinder(r=4.5,h=350,$fn=F2);
 
 // cut for upper x rod plus clearance
 translate([-480/2,0+16,High0+zmotor1+34])
@@ -513,7 +526,6 @@ translate([-(x2-28+zscrew),-6.5,High0+90-34])
 rotate([90,90,0])
 switchcut();
 
-
 // cut near limit switch to eliminate overhang
 translate([-(x2+zscrew-39),-15.5,High0+20])
 cube([9,10,14]);
@@ -522,6 +534,20 @@ cube([9,10,14]);
 translate([-(x2+zscrew-31),0,High0+19])
 linear_extrude(height=6,scale=[1,1.5])
 square([32,10],center=true);
+
+// cut for left x motor wires
+translate([-(480/2-xmot0-6),30,High0+zmotor1+19])
+scale([1,1,2])
+rotate([90,0,-15])
+cylinder(r=2.5,h=45,$fn=F2);
+
+// cut for limit switch wires
+translate([-(x2+zscrew-24),-15.5,High0+36.4])
+cube([2,6,19.2]);
+translate([-(x2+zscrew+9),-10.5,High0+59])
+scale([1,1,2])
+rotate([0,94,0])
+cylinder(r=1,h=35,$fn=20);
 
 } // end if all cuts
 
@@ -555,9 +581,9 @@ if(0){
 }
 
 //translate([-350,0,0])
-xleft1();
+//xleft1();
 if(0){
-// This is a printing support for xleft1
+// This is a printing support enforcer for xleft1
 color("pink")
 translate([x2-30+zscrew+xrodscrew,0,High0+60-1])
 cylinder(r=19.2/2-2,h=30,$fn=12);
@@ -567,27 +593,27 @@ translate([x2-30+zscrew,0,High0+76+7])
 cylinder(r=10,h=6,$fn=12);
 
 color("red")
-translate([x2-20+zscrew,-12,High0+90-34])
-difference(){
-  rotate([-90,90,0])
-  cube([23,25,6.5]);  
-  translate([-15,0,1])
-  rotate([-90,90,45])
-  cube([25,10,15]);  
-}
+translate([x2+zscrew-39,-13,High0+36])
+cube([15,7,20]);  
+
+color("pink")
+translate([480/2-36-xmot0,23,High0+zmotor2-7])
+cube([12,4.5,9]);
+
+
 }
 
 // right limit switch
 if(0){
-  translate([-(x2-28+zscrew),-6.5,High0+90-34])
+  translate([-(x2-28+zscrew),ytoz-6.5,High0+90-34])
   rotate([90,90,0]){
     switch(ang1=0);
     switch(ang1=12);
   }
 }
 
-xright1();
-if(0){
+//xright1();
+if(1){
 // This is a printing support for xright1
 color("pink")
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-1])
@@ -596,6 +622,14 @@ cylinder(r=19.2/2-2,h=30,$fn=12);
 color("orange")
 translate([-(x2-30+zscrew),0,High0+83])
 cylinder(r=10,h=6,$fn=12);
+
+color("red")
+translate([-(x2+zscrew-24),-13,High0+36])
+cube([15,7,20]);  
+
+color("pink")
+translate([-(480/2-24-xmot0),23,High0+zmotor1-2.0])
+cube([12,4.5,9]);
 
 }
 
