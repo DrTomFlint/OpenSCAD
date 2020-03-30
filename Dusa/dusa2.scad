@@ -4,6 +4,7 @@
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/switch.scad>
+use <../Parts/acin.scad>
 use <frame.scad>
 use <zaxis.scad>
 use <xends2.scad>
@@ -18,8 +19,8 @@ use <xcarriage.scad>
 // computations, and should have a comment above to provide text
 
 // ---- positioning -------------------
-// Height of x rods, +47, +288
-High0=200;        
+// Height of x rods, +46 hardstop, +290 hardstop
+High0=46;        
 
 // Left extruder position, +153, +398
 LeftX0=153; 
@@ -32,28 +33,28 @@ Bed0=0;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=0;
+frameOn=1;
 
 // Show top z brackets
-tops=1;  
+tops=0;  
 
 // Show z axis left
-leftZon=1;
+leftZon=0;
 
 // Show z axis right
-rightZon=1;
+rightZon=0;
 
 // Show x axis left
-leftXon=1;
+leftXon=0;
 
 // Show x axis right
-rightXon=1;
+rightXon=0;
 
 // Show extruder left
-leftEon=1;
+leftEon=0;
 
 // Show extruder right
-rightEon=1;
+rightEon=0;
 
 // Show ybed 
 ybed=0;    
@@ -679,6 +680,7 @@ color("cyan")
 translate([0,Bed0,zoff2+8.4+10.25])
 cube([254,245,3.15],center=true);
 }
+
 
 }
 

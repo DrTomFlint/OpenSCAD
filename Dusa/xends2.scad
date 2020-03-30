@@ -152,13 +152,21 @@ color("blue")
 translate([x2-30+zscrew,0,High0+90-4])
 cylinder(r1=11,r2=12,h=4,$fn=F2);
 
-// cut for znut mounting screws M3x12
-translate([x2-30+zscrew,0,High0+87])
+// cut for znut mounting screws M3x20
+translate([x2-30+zscrew,0,High0+90-2])
 rotate([180,0,0]){
   translate([7.75,0,0])
-  cylinder(r=1.5,h=10,$fn=F2);
+  cylinder(r=1.5,h=20,$fn=F2);
   translate([-7.75,0,0])
-  cylinder(r=1.5,h=10,$fn=F2);
+  cylinder(r=1.5,h=20,$fn=F2);
+}
+
+// cuts for access to znut screws
+translate([x2-30+zscrew,0,High0+11]){
+  translate([7.75,0,0])
+  cylinder(r=5.7/2,h=57,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=5.7/2,h=57,$fn=F2);
 }
 
 // cut left z screw
@@ -273,14 +281,6 @@ rotate([-90,90,0])
 mirror([0,0,1])
 switchcut();
 
-// cuts for access to znut screws
-translate([x2-30+zscrew,0,High0+20]){
-  translate([7.75,0,0])
-  cylinder(r=4.5/2,h=57,$fn=F2);
-  translate([-7.75,0,0])
-  cylinder(r=4.5/2,h=57,$fn=F2);
-}
-
 // cut near limit switch to eliminate overhang
 translate([x2+zscrew-48,-15.5,High0+20])
 cube([9,10,14]);
@@ -298,11 +298,15 @@ cylinder(r=2.5,h=45,$fn=F2);
 
 // cut for limit switch wires
 translate([x2+zscrew-24,-15.5,High0+36.4])
-cube([2,6,19.2]);
+cube([3,6,19.2]);
 translate([x2+zscrew-24,-10.5,High0+54])
 scale([1,1,2])
 rotate([0,90,0])
 cylinder(r=1,h=30,$fn=20);
+
+// pry out for limit switch
+translate([x2+zscrew-44,-7.5,High0+44])
+cube([8,2,4]);
 
 // cut for visibility
 //translate([x2-30+zscrew-50,-40,High0+20])
@@ -389,13 +393,21 @@ color("blue")
 translate([-(x2-30+zscrew),0,High0+90-4])
 cylinder(r1=11,r2=12,h=4,$fn=F2);
 
-// cut for znut mounting screws M3x12
-translate([-(x2-30+zscrew),0,High0+90-1])
+// cut for znut mounting screws M3x20
+translate([-(x2-30+zscrew),0,High0+90-2])
 rotate([180,0,0]){
   translate([7.75,0,0])
   cylinder(r=1.5,h=20,$fn=F2);
   translate([-7.75,0,0])
   cylinder(r=1.5,h=20,$fn=F2);
+}
+
+// cuts for access to znut screws
+translate([-(x2-30+zscrew),0,High0+11]){
+  translate([7.75,0,0])
+  cylinder(r=5.7/2,h=57,$fn=F2);
+  translate([-7.75,0,0])
+  cylinder(r=5.7/2,h=57,$fn=F2);
 }
 
 // cut right z screw
@@ -513,14 +525,6 @@ cylinder(r=3,h=30,$fn=F2);
 translate([-(480/2-24-xmot0),23,High0+zmotor1-2.0])
 cube([12,6,9]);
 
-// cuts for access to znut screws
-translate([-(x2-30+zscrew),0,High0+20]){
-  translate([7.75,0,0])
-  cylinder(r=4.5/2,h=57,$fn=F2);
-  translate([-7.75,0,0])
-  cylinder(r=4.5/2,h=57,$fn=F2);
-}
-
 // cut for the limit switch 
 translate([-(x2-28+zscrew),-6.5,High0+90-34])
 rotate([90,90,0])
@@ -543,11 +547,20 @@ cylinder(r=2.5,h=45,$fn=F2);
 
 // cut for limit switch wires
 translate([-(x2+zscrew-24),-15.5,High0+36.4])
-cube([2,6,19.2]);
+cube([3,6,19.2]);
 translate([-(x2+zscrew+9),-10.5,High0+59])
 scale([1,1,2])
 rotate([0,94,0])
 cylinder(r=1,h=35,$fn=20);
+
+// pry out for limit switch
+translate([-(x2+zscrew-35),-7.5,High0+44])
+cube([8,2,4]);
+
+// cut for visibility
+//translate([-(x2-30+zscrew+50),-40,High0+20])
+//cube([100,40,100]);
+
 
 } // end if all cuts
 
@@ -564,7 +577,7 @@ cylinder(r=1,h=35,$fn=20);
   translate([-x2+28,28,High0+28])
   rotate([90,0,180])
   linear_extrude(height=2,scale=1)
-  text("Feb 2020", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  text("Mar 2020", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 
 
 }

@@ -2,6 +2,7 @@
 // frame for the PrusaDusa
 
 use <../Parts/tslot.scad>
+use <../Parts/acin.scad>
 
 
 
@@ -21,7 +22,6 @@ y1=330;
 
 // Length of towers
 z1=380;       
-
 
 //--------------------------------------
 module frame(
@@ -287,11 +287,47 @@ y2=y1/2;    // 165
     rotate([0,180,-90])
     lbrace();
     
+    // power supply
+    color("silver")
+    translate([x2-45,yoff-30,90])
+    rotate([0,0,180])
+    ps();
+    
+    // ac box
+    translate([x2,-y2-15,0]){
+    color("green")
+    acbox();
+    color("gray")
+    translate([-55,20,36])
+    acin();
+    }
 }
+//------------------------------------
+module ps(){
+  
+translate([-45,0,0]){
+  // body
+  cube([90,45,225]);
+  // tabs
+  translate([15/2,0,225])
+  cube([75,1,14]);
+  translate([15/2,0,-14])
+  cube([75,1,14]);
+}
+// power cords
+translate([-25,45/2,225])
+cylinder(r=4.5,h=12,$fn=22);
+translate([0,45/2,-12])
+cylinder(r=4.5,h=12,$fn=22);
+  
+} 
 
+ 
 //====================================
 
 frame(yoff=yoff,x1=x1,y1=y1,z1=z1);
 //cylinder(r=10,h=180);
+
+//ps();
  
 //=====================================
