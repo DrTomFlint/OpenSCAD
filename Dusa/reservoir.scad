@@ -56,18 +56,39 @@ module topplug(tol=0,cut=0){
         cylinder(r1=9,r2=7,h=7.1,$fn=88); 
         translate([-21,-2,3])
         cube([42,4,7]);
+        translate([0,-15,3])        
+        cylinder(r1=7,r2=5,h=7,$fn=88);   
       }
       // threaded hole for the barb
       translate([0,0,-1])
       metric_thread(diameter=10.1, pitch=2, length=11);  
-      // air vent
-      translate([0,-15,-10])
-      cylinder(r=0.4,h=20,$fn=22);   
+      // filler cap
+      translate([0,-15,-1])
+      metric_thread (diameter=8.1, pitch=2, length=11);
     }
   }
-  
-  
 }  
+//--------------------------------------
+module fillercap(){
+
+  difference(){
+    union(){
+      translate([0,0,3])
+      metric_thread (diameter=8.1, pitch=2, length=8);
+      translate([0,0,11])
+      cylinder(r1=5,r2=4.5,h=1.5,$fn=88);
+      translate([0,0,14])
+      minkowski(){
+        cube([6,1,4],center=true);
+        sphere(1,$fn=44);
+      }  
+    }
+    translate([0,0,2])
+    cylinder(r1=2.0,r2=0.5,h=10,$fn=44);
+    cylinder(r=0.5,h=30,$fn=22);
+  }
+}
+      
 //--------------------------------------
 module topbarb(){
   difference(){
@@ -147,24 +168,28 @@ difference(){
 
 //=========================================
  
-reservoir();
+//reservoir();
 
 //bottomplug();
 //topplug();
 //topbarb();
 
+fillercap();
+
 // cutaway
 if(0){
   difference(){
     union(){
+      //translate([0,-15,47])
+      fillercap();
     //color("gray")
     //reservoir();
     //color("green")
     //translate([0,0,-5.8])
     //bottomplug();
-    color("green")
-    translate([0,0,48])
-    topplug(cut=0);
+    //color("green")
+    //translate([0,0,48])
+    //topplug(cut=0);
     //color("cyan")
     //translate([0,0,46])
     //rotate([0,0,180])
