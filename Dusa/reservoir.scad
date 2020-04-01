@@ -44,9 +44,11 @@ difference(){
 module topplug(tol=0,cut=0){
   difference(){
     union(){
-      metric_thread (diameter=24*2+tol, pitch=2, length=8);
-      translate([0,0,7.5])
-      cylinder(r=25,h=2,$fn=122);
+      metric_thread (diameter=24*2-0.5, pitch=2, length=8);
+      translate([0,0,6.5])
+      cylinder(r1=23,r2=25,h=2,$fn=122);
+      translate([0,0,8.5])
+      cylinder(r1=25,r2=25,h=1,$fn=122);
     }
     if(cut==0){
       difference(){
@@ -61,10 +63,10 @@ module topplug(tol=0,cut=0){
       }
       // threaded hole for the barb
       translate([0,0,-1])
-      metric_thread(diameter=10.1, pitch=2, length=11);  
+      metric_thread(diameter=10.5, pitch=2, length=11);  
       // filler cap
       translate([0,-15,-1])
-      metric_thread (diameter=8.1, pitch=2, length=11);
+      metric_thread (diameter=8.5, pitch=2, length=11);
     }
   }
 }  
@@ -74,18 +76,20 @@ module fillercap(){
   difference(){
     union(){
       translate([0,0,3])
-      metric_thread (diameter=8.1, pitch=2, length=8);
-      translate([0,0,11])
-      cylinder(r1=5,r2=4.5,h=1.5,$fn=88);
+      metric_thread (diameter=7.5, pitch=2, length=8);
+      translate([0,0,10])
+      cylinder(r1=3.5,r2=5,h=1.5,$fn=88);
+      translate([0,0,11.5])
+      cylinder(r1=5,r2=5,h=1,$fn=88);
       translate([0,0,14])
       minkowski(){
-        cube([6,1,4],center=true);
+        cube([7.5,1,4],center=true);
         sphere(1,$fn=44);
       }  
     }
     translate([0,0,2])
-    cylinder(r1=2.0,r2=0.5,h=10,$fn=44);
-    cylinder(r=0.5,h=30,$fn=22);
+    cylinder(r1=2.0,r2=0.8,h=10,$fn=44);
+    cylinder(r=0.8,h=30,$fn=22);
   }
 }
       
@@ -160,7 +164,7 @@ difference(){
   cylinder(r1=27,r2=24,h=4.01,$fn=222);
 
   translate([0,0,48])
-  topplug(tol=0.2,cut=1);
+  metric_thread (diameter=24*2+0.2, pitch=2, length=8);
 
 }  
 
