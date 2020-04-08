@@ -4,6 +4,7 @@
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/switch.scad>
+use <../Parts/bltouch.scad>
 use <../Parts/acin.scad>
 use <frame.scad>
 use <zaxis.scad>
@@ -23,7 +24,7 @@ use <xcarriage.scad>
 High0=46;        
 
 // Left extruder position, +153, +398
-LeftX0=153; 
+LeftX0=153+2; 
 
 // Right extruder position, +82, +327
 RightX0=327;
@@ -33,7 +34,7 @@ Bed0=0;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
 tops=0;  
@@ -45,13 +46,13 @@ leftZon=0;
 rightZon=0;
 
 // Show x axis left
-leftXon=0;
+leftXon=1;
 
 // Show x axis right
 rightXon=0;
 
 // Show extruder left
-leftEon=0;
+leftEon=1;
 
 // Show extruder right
 rightEon=0;
@@ -330,6 +331,12 @@ if(leftXon){
   color("red")
   translate([0,ytoz,High0-150])
   xmain1(X0=LeftX0,type=1);
+  // BLtouch
+  color("cyan")
+  translate([+480/2-LeftX0+95.1,-2.7,High0+19.5])
+  translate([1,ytoz-0.6,0])
+  rotate([0,0,-90])
+  bltouch(up=1);
 
   // left x rod lm8u bearing hi 1
   color("gray")

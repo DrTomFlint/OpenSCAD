@@ -382,13 +382,90 @@ module post2(tol=0){
   cube([6,6,11]);
 
 }
+//----------------------------------------------------------
+module dcdc(tol=0){
+  
+  // main body
+  difference(){
+    cube([51.6+tol,28.3+tol,78.8+tol]);
+    
+    translate([-1,14,2.7])
+    rotate([0,90,0])
+    cylinder(r=1.5,h=8,$fn=22);
+    translate([-1,14,69.3])
+    rotate([0,90,0])
+    cylinder(r=1.5,h=8,$fn=22);
+    
+  }
+  // terminal block
+  translate([10.2,10.3,78.7])
+  cube([39.8,12.2,13.2]);
+  translate([10.2,9.3,78.7+10.2])
+  cube([39.8,12.2+2,3]);
+  
+}
+//-------------------------------------------------------------
+module dcbracket(tol=0){
+
+difference(){
+  translate([-15.5+1,-49+1,-59])
+  minkowski(){
+    cube([10.5-2,28-2,122]);
+    sphere(1,$fn=88);
+  }
+  
+  // cut for the dcdc
+  translate([-5,-49,-44]){
+    dcdc(tol=0.15);
+    // cut for M3x10 to attach dcdc
+    translate([-11,14,2.7])
+    rotate([0,90,0])
+    cylinder(r=1.55,h=18,$fn=22);
+    translate([-11,14,69.3])
+    rotate([0,90,0])
+    cylinder(r=1.55,h=18,$fn=22);
+    // clearance for M3x10 heads
+    translate([-10.5,14,2.7])
+    rotate([0,90,0])
+    cylinder(r=3,h=3.5,$fn=22);
+    translate([-10.5,14,69.3])
+    rotate([0,90,0])
+    cylinder(r=3,h=3.5,$fn=22);
+
+  }
+  
+  // cut for top rail
+  translate([x0front,y0front,-90])
+  rotate([0,0,0])
+  tslot1(type=2,len=160,tol=0.2);
+  // cut for M4 to front rail
+  translate([-23,-5-30,-51])
+  rotate([0,90,0])
+  cylinder(r=2,h=20,$fn=22);  
+  translate([-23,-5-30,55])
+  rotate([0,90,0])
+  cylinder(r=2,h=20,$fn=22);  
+
+}
+}
 //=================================
 
+if(1){
+translate([-5,-49,-44])
+color("gray")
+dcdc();
+}
+
+color("cyan")
+dcbracket();
+
 // missed by 2 mm when making the pi shelf
+if(0){
 translate([2,0,0]){
-//  post1();
+  post1();
   post2();
-//  pi4bracket();
+  pi4bracket();
+}
 }
 
 if(0){
@@ -401,7 +478,7 @@ pi4case();
 
 //duet3bracket();
 
-if(0){
+if(1){
 translate([0,140,0])
 mirror([0,1,0])
 duet3bracket();
@@ -409,9 +486,9 @@ duet3bracket();
 
 if(0){
 // top rail
-translate([x0front,y0front,-50])
+translate([x0front,y0front,-90])
 rotate([0,0,0])
-tslot1(type=2,len=100);
+tslot1(type=2,len=160);
 
 // back rail
 translate([x0front,y0front+30+120+15,-50])

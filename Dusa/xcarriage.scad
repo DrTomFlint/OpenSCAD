@@ -3,6 +3,7 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/bltouch.scad>
 use <frame.scad>
 use <zaxis.scad>
 use <xends2.scad>
@@ -13,19 +14,19 @@ use <xends2.scad>
 High0=150;        
 
 // Left extruder position, 153+
-LeftX0=153+50; 
+LeftX0=153+0; 
 
 // Right extruder position, 82+
 RightX0=82+50;
 
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
-tops=1;  
+tops=0;  
 
 // Show ybed ------------------
-ybed=1;    
+ybed=0;    
 
 // Length front, back, top rail
 x1=480;         
@@ -163,9 +164,12 @@ type=1
     translate([+480/2-X0+41.1,-25,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
-    translate([+480/2-X0+41.1+53,-25,High0+89.9-53])
-    rotate([-90,0,0])
-    cylinder(r=2,h=60,$fn=44);
+    // only cut 4th hole on right side, left has BLtouch
+    if(type==2){
+      translate([+480/2-X0+41.1+53,-25,High0+89.9-53])
+      rotate([-90,0,0])
+      cylinder(r=2,h=60,$fn=44);
+    }
 
     // countersink for regular M4x30 
     translate([+480/2-X0+41.1,11,High0+89.9])
@@ -185,13 +189,15 @@ type=1
     rotate([90,0,0])
     cylinder(r=4,h=2.1,$fn=44);
     
-    translate([+480/2-X0+41.1+53,11,High0+89.9-53])
-    rotate([90,0,0])
-    cylinder(r1=4,r2=2,h=2.1,$fn=44);
-    translate([+480/2-X0+41.1+53,13,High0+89.9-53])
-    rotate([90,0,0])
-    cylinder(r=4,h=2.1,$fn=44);
-  
+    // only cut 4th hole on the right side, left side has BLtouch
+    if(type==2){
+      translate([+480/2-X0+41.1+53,11,High0+89.9-53])
+      rotate([90,0,0])
+      cylinder(r1=4,r2=2,h=2.1,$fn=44);
+      translate([+480/2-X0+41.1+53,13,High0+89.9-53])
+      rotate([90,0,0])
+      cylinder(r=4,h=2.1,$fn=44);
+    }
     // cut for upper rail and lm8us
     translate([+480/2-X0+80+22,0+16,High0+zmotor1+34])
     rotate([-90,0,90])
@@ -219,9 +225,32 @@ type=1
       belt3();
     }  
 
+    // cut for BLtouch attach  ******************************************************
+    if(type==1){
+      translate([+480/2-X0+88,-2.7,High0+51])
+      cube([15,15,6]);
+        
+      // flat head M3 to mount the BLtouch block
+      translate([+480/2-X0+41.1+53,11,High0+62])
+      rotate([90,0,0])
+      cylinder(r=2,h=30,$fn=44);
+      translate([+480/2-X0+41.1+53,11,High0+62])
+      rotate([90,0,0])
+      cylinder(r1=4,r2=2,h=2.1,$fn=44);
+      translate([+480/2-X0+41.1+53,13,High0+62])
+      rotate([90,0,0])
+      cylinder(r=4,h=2.1,$fn=44);      
+    }    
+    if(type==2){      
+    }  
 
 } // end diff
 
+  // *********************************************************************************
+    translate([+480/2-X0+95.1,-2.7,High0+19.5])
+    touchbox();
+
+    
     if(type==1){
       // belt attach solid
       difference(){
@@ -360,9 +389,54 @@ module standoff(){
   
 }
 
+// ************************************************************************************************
+module touchbox(){
+  
+  difference(){
+    union(){
+    translate([-0.8,-0.7,19])
+    cube([10,15.8,30],center=true);
+    color("green")
+    translate([-0.8,-0.7,41.7])
+    cube([10,15.8,10.4],center=true);
+    color("orange")
+    translate([5,-0.6,37])
+    cube([6,6,2],center=true);
+
+    color("blue")
+    translate([-3.8,-0.7,37.7])
+    cube([4,15.8,18],center=true);
+    
+    color("cyan")
+    translate([5.5,6.2,9])
+    cube([4,2,7],center=true);
+    
+    color("pink")
+    translate([5.5,-7.4,9])
+    cube([4,2.4,7],center=true);
+    
+    }
+    translate([1,-0.6,0])
+    rotate([0,0,-90])
+    bltouch(up=1,tol=0.15);
+    
+    // upper flat head M4 
+    translate([-1,11,62-19.5])
+    rotate([90,0,0])
+    cylinder(r=2,h=30,$fn=44);
+
+    // lower M4x12 from backside of extruder
+    translate([-1,0,17.35])
+    rotate([90,0,0])
+    cylinder(r=2,h=10,$fn=44);
+
+  }
+  
+}
 //==============================================
 
 //standoff();
+//touchbox();
 
 // left extruder belt slider
 if(1){
@@ -388,7 +462,7 @@ if(0){
 }
 
 // Left x carriage
-//xmain1(X0=LeftX0,type=1);
+xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
@@ -437,7 +511,7 @@ if(0){
 
 
 // standoffs are no longer part of the carriage
-if(0){ // left side
+if(1){ // left side
     // four legs to attach extruder
     X3=LeftX0;
     color("pink")
@@ -450,9 +524,9 @@ if(0){ // left side
     translate([+480/2-X3+41.1,-11.4,High0+89.9-53])
     rotate([-90,0,0])
     standoff();
-    translate([+480/2-X3+41.1+53,-11.4,High0+89.9-53])
-    rotate([-90,0,0])
-    standoff();
+    //translate([+480/2-X3+41.1+53,-11.4,High0+89.9-53])
+    //rotate([-90,0,0])
+    //standoff();
 }
 if(0){  // right side
     // four legs to attach extruder
@@ -472,7 +546,7 @@ if(0){  // right side
     standoff();
 }
 
-if(0){
+if(1){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
@@ -480,7 +554,7 @@ rotate([90,0,180])
 import("aqua5.stl");
 }
 
-if(0){
+if(1){
 // left emotor
 color("orange")
 translate([+480/2-LeftX0+67,-59.5,High0+44+10])
@@ -488,7 +562,7 @@ rotate([90,-90,180])
 emotor();
 }
 
-if(0){  // left side bearings
+if(1){  // left side bearings
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-LeftX0+90,0+16,High0+30])
@@ -514,11 +588,11 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
 // left x-end "Prusa Dusa"
-//translate([0,0,High0-150])
-//xleft1();
+translate([0,0,High0-150])
+xleft1();
 
 // left x motor
-if(0){
+if(1){
 color("gray")
 translate([480/2-30-xmot0,0+76,High0+zmotor1])
 rotate([90,90,0])
