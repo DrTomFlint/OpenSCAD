@@ -123,7 +123,7 @@ module fan(tol=0){
  
   // Fan body
   translate([-t1,0,0])
-  cube([t1+tol,120+tol,120+tol]);
+  cube([t1+tol,121+tol,120+tol]);
   translate([-(t1+t2),60,60])
   rotate([0,90,0])
   cylinder(r=60,h=t2,$fn=88);  
@@ -134,9 +134,14 @@ module fan(tol=0){
   translate([0,7,7])
   rotate([0,-90,0])
   cylinder(r=1.45,h=t4,$fn=22);
-  translate([0,120-7,7])
+
+  translate([0,120-7,7])    // double up to tolerate offset errors
   rotate([0,-90,0])
-  cylinder(r=1.45,h=t4,$fn=22);
+  cylinder(r=1.6,h=t4,$fn=22);
+  translate([0,120-7.5,7])
+  rotate([0,-90,0])
+  cylinder(r=1.6,h=t4,$fn=22);
+
   translate([0,7,120-7])
   rotate([0,-90,0])
   cylinder(r=1.45,h=t4,$fn=22);
@@ -173,7 +178,7 @@ module radiator(tol=0){
   // radiator main box, holes on backside are accurate location
   difference(){
     translate([-(t4+32.5),-5.5,0])
-    cube([32.5+tol,127.8+tol,120+tol]);
+    cube([32.5+tol,129+tol,120+tol]);
 
     translate([-t4-10,10.7-5.5,8])
     rotate([0,-90,0])
@@ -192,8 +197,9 @@ module radiator(tol=0){
   }
   
   // long side - actually more rounded than this model
+  // also this side may stick out a bit more or less, not exact
   color("cyan")
-  translate([-(t4+29.5-4),120,3+4])
+  translate([-(t4+29.5-4),117,3+4])
   minkowski(){
     cube([26-8,30-8,114-8]);
     sphere(r=4,$fn=44);
@@ -263,16 +269,30 @@ module radiatorBracket2(){
   // main attach
   difference(){
     union(){
+      // main base
       translate([-(t4+32.5+6.2),104,-tB])
-      cube([t4+32.5+12,108,tB+2]);
+      cube([t4+32.5+12,116,tB+2]);
+      // extra base under pump
+      color("pink")
+      translate([-(t4+32.5+6.2),144-5,-tB])
+      cube([80,76+5,tB+16]);
+      // tab for radiator front
       translate([-(t1+t2+-0.5),110,0])
       cube([t2-1,7,10]);
-      // backside screw attach
+      // backside radiator screw attach
       translate([-(t4+32.5+6.2),104,0])
-      cube([6,108,14]);
+      cube([6,40,16]);
     }
-    pump(tol=0.5);
+    // cut for radiator
     radiator(tol=0.25);
+  
+    // cut for pump and foam anti-vibration pads
+    translate([-62,147-5.1,0])
+    cube([65+10.2,65+10.2,30]);
+
+    // cut for radiator clearance
+    translate([-58.65,140-5,2])
+    cube([35,10,30]);
     
     // top rail
     translate([-70,120+45,-20])
@@ -282,22 +302,23 @@ module radiatorBracket2(){
     // cut for side rail
     translate([-70,100,-tB-1.3])
     cube([80,40,2]);
-    
-    // trim corner
-    translate([-68,213,1])
-    rotate([45,0,0])
-    cube([10,20,20]);
-   
-    // trim corner
-    translate([-68,212,-5.5])
-    rotate([90,-90,90])
-    rounder(r=4,h=80,f=88);
+       
+    // round off pump corners
+    translate([-64.8,220,-5.5])
+    rotate([0,0,-90])
+    rounder(r=2,h=30,f=88);
+    translate([15.4,220,-5.5])
+    rotate([0,0,180])
+    rounder(r=2,h=30,f=88);
+    translate([15.4,144-5,-5.5])
+    rotate([0,0,90])
+    rounder(r=2,h=30,f=88);
    
     // M4 screw for rail attach
     translate([-10,120+30,-20])
     cylinder(r=2,h=25,$fn=33);
     translate([-10,120+30,-1])
-    cylinder(r=7.2/2,h=4.3,$fn=33);
+    cylinder(r=7.2/2,h=24.3,$fn=33);
 
     // M4 screw for rail attach
     translate([-50,120+60,-20])
@@ -305,6 +326,7 @@ module radiatorBracket2(){
     translate([-50,120+60,-1])
     cylinder(r=7.2/2,h=4.3,$fn=33);
 
+    // screw on back of radiator
     translate([-t4-10,116-5.5,8])
     rotate([0,-90,0])
     cylinder(r=1.5,h=35,$fn=33);
@@ -313,7 +335,37 @@ module radiatorBracket2(){
     translate([-t4-35,116-5.5,8])
     rotate([0,-90,0])
     cylinder(r=3.3,h=5,$fn=33);
-  }
+
+    // trim corner near radiator screw
+    translate([-t4-40,103,9])
+    rotate([45,0,0])
+    cube([8,14,14]);
+    
+    // material reduction, cut out some baseplate under the pump
+    translate([-35,163,-10])
+    minkowski(){
+      cube([30,40,20]);
+      cylinder(r=4,h=20,$fn=44);
+    }
+    
+  }  // end of difference
+  
+  // extra brace on pump surround near radiator outlet
+  translate([0.3,120,0])
+  difference(){
+    cube([5.5,20,16]);
+    translate([-1,0,2])
+    rotate([45,0,0])
+    cube([8,22,22]);
+  }  
+  
+  
+  // text label
+  color("red")
+    translate([-26,218.6,6])
+  rotate([90,0,180])
+  linear_extrude(height=2,scale=1)
+  text("SUPERCOOL", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
   
 }    
 
@@ -321,7 +373,7 @@ module radiatorBracket2(){
 module pump(tol=0){
 
   // box
-  translate([-62-tol/2,147-tol/2,0]){
+  translate([-62+5.1-tol/2,147-tol/2,0]){
     cube([64.8+tol,64.8+tol,56]);
     // reservoir
     translate([32,32,56])
@@ -337,15 +389,16 @@ module pump(tol=0){
   //radiator();
   //color("green")
   //radiatorBracket1();
-//  color("cyan")
-  radiatorBracket2();
+  //color("cyan")
+  //radiatorBracket2(); 
   //color("orange")
   //pump();
 //}
 
-/*
+
 topshelf();
 
+/*
 translate([x2-70,-80,z1+55])
 rotate([0,-90,180]){
   duet3();
