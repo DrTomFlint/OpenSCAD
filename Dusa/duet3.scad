@@ -460,7 +460,7 @@ color("cyan")
 dcbracket();
 
 // missed by 2 mm when making the pi shelf
-if(0){
+if(1){
 translate([2,0,0]){
   post1();
   post2();
@@ -468,15 +468,15 @@ translate([2,0,0]){
 }
 }
 
-if(0){
+if(1){
 translate([58,112.75,-15])
 rotate([0,180,90])
 pi4case();
 }
 
-//duet3();
+duet3();
 
-//duet3bracket();
+duet3bracket();
 
 if(1){
 translate([0,140,0])
@@ -484,7 +484,7 @@ mirror([0,1,0])
 duet3bracket();
 }
 
-if(0){
+if(1){
 // top rail
 translate([x0front,y0front,-90])
 rotate([0,0,0])

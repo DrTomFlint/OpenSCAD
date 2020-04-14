@@ -3,6 +3,8 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
+use <../Parts/pi4.scad>
+
 use <duet3.scad>
 
 // Length front, back, top rail
@@ -444,6 +446,30 @@ module axleBoxA(){
   }
   
 }
+//-------------------------------------------
+// axle box for the passive side
+module axleBoxP(){
+  
+  difference(){
+    translate([-2,0,2])
+    cube([13+4,16,10],center=true);
+
+    hull(){
+      translate([0,0,-5])
+      cylinder(r=7.8/2,h=20,$fn=88);
+      translate([-4,0,-5])
+      cylinder(r=7.8/2,h=20,$fn=88);
+    }
+    
+    // round off top edges
+    translate([-10.5,-8,-6])
+    rounder(r=4,h=20,f=44);
+    translate([-10.5,8,-6])
+    rotate([0,0,-90])
+    rounder(r=4,h=20,f=44);
+  }
+  
+}
 //----------------------------------------
 module reelPlus(){
 
@@ -489,7 +515,7 @@ h6=16;    // thickness of wingnuts
 module reelLegs(){
 
   difference(){
-    color("cyan")
+    //color("cyan")
     union(){
       hull(){
         // tab near axle
@@ -529,17 +555,17 @@ module reelLegs(){
       
       // front foot
       translate([-9.5,63,-85.5])
-      cube([20,25,6]);
-      translate([-2.4,63,-80.5])
+      cube([20,25,8]);
+      translate([-2.4,63,-78.5])
       rotate([0,45,0])
-      cube([4,25,4]);
+      cube([4,23,4]);
 
       // back foot
       translate([-9.5,-87,-85.5])
-      cube([20,25,6]);
-      translate([-2.4,-87,-80.5])
+      cube([20,25,8]);
+      translate([-2.4,-87+2,-78.5])
       rotate([0,45,0])
-      cube([4,25,4]);
+      cube([4,23,4]);
     
     }  // end of union
      
@@ -566,6 +592,100 @@ module reelLegs(){
     cylinder(r=2,h=20,$fn=22);
     translate([6,-(60+15),-90])
     cylinder(r=2,h=20,$fn=22);
+    
+    // M3x20 screws in front foot to prevent layers delaminating
+    // use M3x40 when joining center pair
+    translate([-6.5,(60+8),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,(60+8),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    translate([-6.5,(60+22),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,(60+22),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    // M3x20 screws in back foot to prevent layers delaminating
+    // use M3x40 when joining center pair
+    translate([-6.5,-(60+8),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,-(60+8),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    translate([-6.5,-(60+22),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,-(60+22),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    
+    // holes for raw fiber to bind 2 center legs together
+    translate([-11,9,-8]) // upper front
+    rotate([0,90,0])
+    cylinder(r=1,h=20,$fn=77); 
+    translate([-11,-9,-8]) // upper back
+    rotate([0,90,0])
+    cylinder(r=1,h=20,$fn=77); 
+    translate([-11,30,-44]) // middle front
+    rotate([0,90,0])
+    cylinder(r=1,h=20,$fn=77); 
+    translate([-11,-30,-44]) // middle back
+    rotate([0,90,0])
+    cylinder(r=1,h=20,$fn=77); 
+    
+    // front material reduction, create ribs
+    hull(){
+      translate([-7,12,-12]) // upper inside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77); 
+      translate([-7,61,-72])  // lower inside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+    hull(){
+      translate([-7,13,-4])  // upper outside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77);
+      translate([-7,74,-72])   // lower outside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+
+    // back material reduction, create ribs
+    hull(){
+      translate([-7,-12,-12]) // upper inside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77); 
+      translate([-7,-61,-72])  // lower inside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+    hull(){
+      translate([-7,-13,-4])  // upper outside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77);
+      translate([-7,-74,-72])   // lower outside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+
+    // crossbar material reduction, create ribs
+    hull(){
+      translate([-7,31,-50])  // front
+      rotate([0,90,0])
+      cylinder(r1=2,r2=3,h=8,$fn=77); 
+      translate([-7,-31,-50])   // back
+      rotate([0,90,0])
+      cylinder(r1=2,r2=3,h=8,$fn=77); 
+    }
+
+
+
 
   }
 
@@ -573,62 +693,113 @@ module reelLegs(){
 //-----------------------------------------
 module reelBracket1(){
   
-  //rotate([0,90,0])
-  //reelPlus();
-
-  // active side
+  // active box
   rotate([0,90,0])
   translate([0,0,-6.5])
   axleBoxA();
   
-  // legs on active side
+  // legs 
   reelLegs();
  
-  
-  // undo the translate for reelBracket
-  translate([0,-(yoff-90),-(z1+130)]){
-    // top rail
-    translate([-x2,yoff,15+z1+15])
-    rotate([0,90,0])
-    tslot1(type=2,len=x1);
-      
-    // back rail
-    translate([-x2,yoff-165,15+z1+15])
-    rotate([0,90,0])
-    tslot1(type=1,len=x1);
-  }
 }
+//-----------------------------------------
+module reelBracket2(){
   
+  // passive box
+  rotate([0,90,0])
+  translate([0,0,-6.5+9.0])
+  axleBoxP();
+  
+  // legs 
+  mirror([1,0,0])
+  reelLegs();
+ 
+}
 //===============================
 
-//translate([0,yoff-90,z1+130])
+//axleBoxP();
+
+reelBracket1();
+//reelBracket2();
+
+// reels
+if(0){
+  
+translate([0,yoff-90,z1+130])
+rotate([0,90,0])
+reelPlus();
+
+translate([-19.1,yoff-90,z1+130])
+mirror([1,0,0])
+rotate([0,90,0])
+reelPlus();
+}
+
+// reel brackets
+if(0){
+translate([0,yoff-90,z1+130])
 reelBracket1();
 
-//reelPlus();
-//axleBox();
-//reelAxle();
+translate([110,yoff-90,z1+130])
+reelBracket2();
+
+color("green")
+translate([-19.1,yoff-90,z1+130])
+mirror([1,0,0])
+reelBracket1();
+
+color("green")
+translate([-19.1-110,yoff-90,z1+130])
+mirror([1,0,0])
+reelBracket2();
+
+
+}
+
 
 //topshelf();
 
+if(0){
+translate([-x2+70,yoff-165,30+z1+20]){
+  color("gray")
+  radiator();
+  color("green")
+  radiatorBracket1();
+  color("cyan")
+  radiatorBracket2(); 
+  color("orange")
+  pump();
+}
+}
 
-//translate([-x2+70,yoff-165,30+z1+20]){
-  //color("gray")
-  //radiator();
-  //color("green")
-  //radiatorBracket1();
-  //color("cyan")
-  //radiatorBracket2(); 
-  //color("orange")
-  //pump();
-//}
+// Pi4 bracket case...
+if(0){
+translate([x2-70,-82,z1+60])
+rotate([0,-90,180]){
+translate([2,0,0]){
+  post1();
+  post2();
+  pi4bracket();
+}}
 
+translate([x2-70,-82,z1+60])
+rotate([0,-90,180]){
+translate([58,112.75,-15])
+rotate([0,180,90])
+pi4case();
+}}
 
-/*
-translate([x2-70,-80,z1+55])
+// Duet bracket board...
+if(0){
+translate([x2-70,-82,z1+60])
 rotate([0,-90,180]){
   duet3();
   duet3bracket();
+  translate([0,140,0])
+  mirror([0,1,0])
+  duet3bracket();
+
 }
-*/
+}
 
 //===============================
