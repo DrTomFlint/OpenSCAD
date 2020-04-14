@@ -383,10 +383,233 @@ module pump(tol=0){
 }    
 
 //-------------------------------------------------------
+module reelAxle(tol=0){
+  
+  // main shaft with 1 flat side
+  difference(){
+    cylinder(r=7.65/2+tol/2,h=127.9+tol,$fn=88);
+    translate([2.775,-4,-1])
+    cube([8,8,130]);
+  }
+  
+  // box at lower end
+  translate([-6.8,-7.8/2,0])
+  cube([6.8,7.8,5.4]);
+
+  // ramp on box end
+  difference(){
+    color("cyan")
+    translate([-6.8,-5.25,0])
+    rotate([0,0,45])
+    cube([7.5,7.5,5.4]);
+
+    color("gray")
+    translate([-21.8,-7.5,-1])
+    cube([15,15,7]);
+  }
+  
+  // ridges on sides of box
+  color("pink")
+  translate([-6.8,-3.3,2.7])
+  rotate([0,90,0])
+  scale([1,2,1]){
+    cylinder(r1=1.1,r2=1,h=7.3,$fn=22);
+    translate([0,0,7.29])
+    cylinder(r2=0.7,r1=1,h=2.27,$fn=22);
+  }
+
+  color("orange")
+  translate([-6.8,3.3,2.7])
+  rotate([0,90,0])
+  scale([1,2,1]){
+    cylinder(r=1,h=7.3,$fn=22);
+    translate([0,0,7.29])
+    cylinder(r2=0.7,r1=1,h=2.27,$fn=22);
+  }
+
+}
+//-------------------------------------------
+// axle box for the active side
+module axleBoxA(){
+  
+  difference(){
+    translate([0,0,2])
+    cube([13,16,10],center=true);
+
+    reelAxle(tol=0.15);
+    
+    translate([-4,0,6])
+    cube([7.7,7.8,4],center=true);
+    
+  }
+  
+}
+//----------------------------------------
+module reelPlus(){
+
+// model reel and rewinder hub
+h1=1.2;   // axle sticking out of the hub
+h2=16.3;  // knobby adjustment wheel with clutch and spring
+h3=5;     // thickness of reel sides
+h4=46+0;    // width of hub fiber part
+h5=h1+h2+h3+h4+h3;  // total height to the wingnuts
+h6=16;    // thickness of wingnuts
+  
+  // adjustable side of hub
+  color("red")
+  cylinder(r=11.9/2,h=h1,$fn=22);
+  
+  color("gray"){
+  translate([0,0,h1])
+  cylinder(r=105/2,h=h2,$fn=88);
+
+  // main reel
+  translate([0,0,h1+h2])
+  cylinder(r=200/2,h=h3,$fn=88);
+  translate([0,0,h1+h2+h3])
+  cylinder(r=150/2,h=h4,$fn=88);
+  translate([0,0,h1+h2+h3+h4])
+  cylinder(r=200/2,h=h3,$fn=88);
+  
+  // wing nuts
+  translate([0,0,h5])
+  cylinder(r=42,h=h6,$fn=88);
+  // threaded shaft
+  translate([0,0,h1])
+  cylinder(r=30/2,h=108-h1,$fn=88);
+  }
+  
+  // add the axle
+  color("orange")
+  translate([0,0,-6.5])
+  reelAxle();
+
+  
+}
+module reelLegs(){
+
+  difference(){
+    color("cyan")
+    union(){
+      hull(){
+        // tab near axle
+        translate([-9.5,6,0])
+        rotate([0,90,0])
+        cylinder(r=6.8,h=10,$fn=89);
+        // tab on front rail
+        translate([-9.5,63,-85.5])
+        cube([10,25,8]);
+      }
+      hull(){  
+        // tab near axle
+        translate([-9.5,-6,0])
+        rotate([0,90,0])
+        cylinder(r=6.8,h=10,$fn=89);
+        // tab on back rail
+        translate([-9.5,-87,-85.5])
+        cube([10,25,8]);
+      }
+      // crossbrace
+      translate([-9.5,-50,-55])
+      cube([10,100,10]);
+      
+      // top crossbrace fillet
+      translate([-9.5,-10,-10])
+      cube([10,20,10]);
+      
+      // front crossbrace fillet
+      translate([-9.5,33,-53])
+      rotate([60,0,0])
+      cube([10,10,10]);
+      
+      // back crossbrace fillet
+      translate([-9.5,-33,-53])
+      rotate([30,0,0])
+      cube([10,10,10]);
+      
+      // front foot
+      translate([-9.5,63,-85.5])
+      cube([20,25,6]);
+      translate([-2.4,63,-80.5])
+      rotate([0,45,0])
+      cube([4,25,4]);
+
+      // back foot
+      translate([-9.5,-87,-85.5])
+      cube([20,25,6]);
+      translate([-2.4,-87,-80.5])
+      rotate([0,45,0])
+      cube([4,25,4]);
+    
+    }  // end of union
+     
+    // cut for the axlebox
+    translate([-4.5,0,3.5])
+    cube([12,16,20],center=true);
+
+    // cuts for the rails
+    // undo the translate for reelBracket
+    translate([0,-(yoff-90),-(z1+130)]){
+      // top rail
+      translate([-x2,yoff,15+z1+15])
+      rotate([0,90,0])
+      tslot1(type=2,len=x1,tol=0.2);
+        
+      // back rail
+      translate([-x2,yoff-165,15+z1+15])
+      rotate([0,90,0])
+      tslot1(type=1,len=x1,tol=0.2);
+    }
+    
+    // M4 screws for rail attach
+    translate([6,60+15,-90])
+    cylinder(r=2,h=20,$fn=22);
+    translate([6,-(60+15),-90])
+    cylinder(r=2,h=20,$fn=22);
+
+  }
+
+}
+//-----------------------------------------
 module reelBracket1(){
+  
+  //rotate([0,90,0])
+  //reelPlus();
+
+  // active side
+  rotate([0,90,0])
+  translate([0,0,-6.5])
+  axleBoxA();
+  
+  // legs on active side
+  reelLegs();
+ 
+  
+  // undo the translate for reelBracket
+  translate([0,-(yoff-90),-(z1+130)]){
+    // top rail
+    translate([-x2,yoff,15+z1+15])
+    rotate([0,90,0])
+    tslot1(type=2,len=x1);
+      
+    // back rail
+    translate([-x2,yoff-165,15+z1+15])
+    rotate([0,90,0])
+    tslot1(type=1,len=x1);
+  }
 }
   
 //===============================
+
+//translate([0,yoff-90,z1+130])
+reelBracket1();
+
+//reelPlus();
+//axleBox();
+//reelAxle();
+
+//topshelf();
+
 
 //translate([-x2+70,yoff-165,30+z1+20]){
   //color("gray")
@@ -399,8 +622,6 @@ module reelBracket1(){
   //pump();
 //}
 
-
-topshelf();
 
 /*
 translate([x2-70,-80,z1+55])
