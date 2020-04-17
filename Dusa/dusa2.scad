@@ -23,8 +23,8 @@ use <xcarriage.scad>
 // Height of x rods, +46 hardstop, +290 hardstop
 High0=46;        
 
-// Left extruder position, +153, +398
-LeftX0=153+2; 
+// Left extruder position, +152, +398
+LeftX0=152; 
 
 // Right extruder position, +82, +327
 RightX0=327;
@@ -319,8 +319,8 @@ if(leftXon){
   xleft1();
 
   // left x limit switch 
-  translate([x2-28+zscrew,ytoz-13,High0+90-34])
-  rotate([-90,90,0]){
+  translate([x2-28+zscrew,ytoz-5,High0+90-48])
+  rotate([0,-90,90]){
     color("red")
     switch(ang1=0); 
     color("green")

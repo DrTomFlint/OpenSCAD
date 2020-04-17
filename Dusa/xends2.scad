@@ -276,19 +276,23 @@ translate([480/2-36-xmot0,23,High0+zmotor2-7])
 cube([12,6,9]);
 
 // cut for the limit switch 
-translate([x2-28+zscrew,-6.5,High0+90-34])
-rotate([-90,90,0])
-mirror([0,0,1])
+translate([x2-28+zscrew,-5,High0+90-48])
+rotate([0,-90,90])
+//mirror([0,0,0])
+switchcut();
+translate([x2-28+zscrew,-15,High0+90-48])
+rotate([0,-90,90])
+mirror([0,0,0])
 switchcut();
 
-// cut near limit switch to eliminate overhang
-translate([x2+zscrew-48,-15.5,High0+20])
-cube([9,10,14]);
+// cut for BLtouch clearance **************************************************
+translate([x2+zscrew-48.5,-14,High0+20])
+cube([9,20,48]);
 
 // cut for ooze prevention arm
-translate([x2+zscrew-31,0,High0+19])
-linear_extrude(height=6,scale=[1,1.5])
-square([32,10],center=true);
+//translate([x2+zscrew-31,0,High0+19])
+//linear_extrude(height=6,scale=[1,1.5])
+//square([32,10],center=true);
 
 // cut for left x motor wires
 translate([480/2-xmot0-6,30,High0+zmotor1+7])
@@ -296,16 +300,16 @@ scale([1,1,2])
 rotate([90,0,15])
 cylinder(r=2.5,h=45,$fn=F2);
 
-// cut for limit switch wires
-translate([x2+zscrew-24,-15.5,High0+36.4])
-cube([3,6,19.2]);
+// cut for limit switch wires 
+translate([x2+zscrew-28,-14.8,High0+43])
+cube([4.5,9,18]);
 translate([x2+zscrew-24,-10.5,High0+54])
 scale([1,1,2])
 rotate([0,90,0])
 cylinder(r=1,h=30,$fn=20);
 
 // pry out for limit switch
-translate([x2+zscrew-44,-7.5,High0+44])
+translate([x2+zscrew-44,-5.5,High0+50])
 cube([8,2,4]);
 
 // cut for visibility
@@ -586,15 +590,16 @@ cube([8,2,4]);
 
 // left limit switch 
 if(0){
-  translate([x2-28+zscrew,-13,High0+90-34])
-  rotate([-90,90,0]){
+  color("red")
+  translate([x2-28+zscrew,-5,High0+90-48])
+  rotate([0,-90,90]){
     switch(ang1=0); 
     switch(ang1=12); 
   }
 }
 
 //translate([-350,0,0])
-//xleft1();
+xleft1();
 if(0){
 // This is a printing support enforcer for xleft1
 color("pink")
@@ -606,8 +611,8 @@ translate([x2-30+zscrew,0,High0+76+7])
 cylinder(r=10,h=6,$fn=12);
 
 color("red")
-translate([x2+zscrew-39,-13,High0+36])
-cube([15,7,20]);  
+translate([x2+zscrew-39,-13,High0+41])
+cube([15,7,22]);  
 
 color("pink")
 translate([480/2-36-xmot0,23,High0+zmotor2-7])
@@ -626,7 +631,7 @@ if(0){
 }
 
 //xright1();
-if(1){
+if(0){
 // This is a printing support for xright1
 color("pink")
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-1])

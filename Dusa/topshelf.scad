@@ -719,8 +719,8 @@ module reelBracket2(){
 
 //axleBoxP();
 
-reelBracket1();
-//reelBracket2();
+//reelBracket1();
+reelBracket2();
 
 // reels
 if(0){

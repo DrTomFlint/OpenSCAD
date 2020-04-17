@@ -403,6 +403,10 @@ module touchbox(){
     translate([5,-0.6,37])
     cube([6,6,2],center=true);
 
+    color("gray")
+    translate([5,-0.6,42.5])
+    cube([1,14,8],center=true);
+
     color("blue")
     translate([-3.8,-0.7,37.7])
     cube([4,15.8,18],center=true);
@@ -436,10 +440,10 @@ module touchbox(){
 //==============================================
 
 //standoff();
-//touchbox();
+touchbox();
 
 // left extruder belt slider
-if(1){
+if(0){
 X5=LeftX0;
 difference(){
 // left belt attach movable
@@ -462,7 +466,7 @@ if(0){
 }
 
 // Left x carriage
-xmain1(X0=LeftX0,type=1);
+//xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
@@ -511,7 +515,7 @@ if(0){
 
 
 // standoffs are no longer part of the carriage
-if(1){ // left side
+if(0){ // left side
     // four legs to attach extruder
     X3=LeftX0;
     color("pink")
@@ -546,7 +550,7 @@ if(0){  // right side
     standoff();
 }
 
-if(1){
+if(0){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
@@ -554,7 +558,7 @@ rotate([90,0,180])
 import("aqua5.stl");
 }
 
-if(1){
+if(0){
 // left emotor
 color("orange")
 translate([+480/2-LeftX0+67,-59.5,High0+44+10])
@@ -562,7 +566,7 @@ rotate([90,-90,180])
 emotor();
 }
 
-if(1){  // left side bearings
+if(0){  // left side bearings
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-LeftX0+90,0+16,High0+30])
@@ -588,11 +592,13 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
 // left x-end "Prusa Dusa"
+if(0){
 translate([0,0,High0-150])
 xleft1();
+}
 
 // left x motor
-if(1){
+if(0){
 color("gray")
 translate([480/2-30-xmot0,0+76,High0+zmotor1])
 rotate([90,90,0])
