@@ -96,21 +96,28 @@ type=1
     
     // surround lower rail and lm8us
     if(type==1){
-      translate([+480/2-X0+100,0+16,High0+30])   //*******************
+      translate([+480/2-X0+100,0+16,High0+30])   
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24+7,$fn=F2);
     }
     if(type==2){
-      translate([+480/2-X0+69,0+16,High0+30])
+      translate([+480/2-X0+68,0+16,High0+30])   // **************************
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24,$fn=F2);
     }
 
-    // boss to mount the blowers      **************************
+    // boss to mount the blowers      
     if(type==1){
       // upper mount with heat-set M3 brass
       color("pink")
       translate([+480/2-X0+48.5+3,25,High0+zmotor1+37.5])
+      rotate([-98,0,0])
+      cylinder(r=4,h=3.5,$fn=22);
+    }
+    if(type==2){
+      // upper mount with heat-set M3 brass  
+      color("pink")
+      translate([+480/2-X0+84,25,High0+zmotor1+37.5])
       rotate([-98,0,0])
       cylinder(r=4,h=3.5,$fn=22);
     }
@@ -129,8 +136,13 @@ type=1
     translate([+480/2-X0+16,0,High0+zmotor1+55])
     rotate([0,45,0])
     cube([20,60,20]);
-    if(type==1){
+//    if(type==1){
       translate([+480/2-X0+16,0,High0+26.5])
+      rotate([0,45,0])
+      cube([14,60,20]);
+//    }
+    if(type==2){
+      translate([+480/2-X0+91,0,High0+26.5])
       rotate([0,45,0])
       cube([20,60,20]);
     }
@@ -162,7 +174,7 @@ type=1
     translate([+480/2-X0+41.1,-25,High0+89.9-53])
     rotate([-90,0,0])
     cylinder(r=2,h=60,$fn=44);
-    // only cut 4th hole on right side, left has BLtouch
+    // don't cut 4th hole, left is BLtouch
     if(type==2){
       translate([+480/2-X0+41.1+53,-25,High0+89.9-53])
       rotate([-90,0,0])
@@ -192,7 +204,7 @@ type=1
     rotate([90,0,0])
     cylinder(r=4,h=2.1,$fn=44);
     
-    // only cut 4th hole on the right side, left side has BLtouch
+    // dont cut 4th hole
     if(type==2){
       translate([+480/2-X0+41.1+53,11,High0+89.9-53])
       rotate([90,0,0])
@@ -218,9 +230,9 @@ type=1
       cylinder(r=15/2+0.1,h=26.1,$fn=F2);
     }
     if(type==2){
-      translate([+480/2-X0+80+22,0+16,High0+30])
+      translate([+480/2-X0+68,0+16,High0+30])   // ************************
       rotate([-90,0,90])
-      #cylinder(r=15/2+0.1,h=26,$fn=F2);
+      cylinder(r=15/2+0.1,h=26+10,$fn=F2);
     }      
     // cut for belts
     color("green")
@@ -269,14 +281,23 @@ type=1
       rotate([-98,0,0])
       cylinder(r=1.8,h=3.6+18,$fn=22);
     }
+    if(type==2){
+      // hole for the blower attach brass part
+      translate([+480/2-X0+84,28.5-3.5,High0+zmotor1+37.6])
+      rotate([-98,0,0])
+      cylinder(r=2.3,h=3.6+15,$fn=22);
+      // clearance for M3 screw past the brass
+      translate([+480/2-X0+84,28.5-6.5,High0+zmotor1+38.1])
+      rotate([-98,0,0])
+      cylinder(r=1.8,h=3.6+18,$fn=22);
+    }
     
-} // end diff
+} // end diff ------------------------------------------------------------
 
-  // -------------
     //translate([+480/2-X0+95.1,-2.7,High0+19.5])
     //touchbox();
 
-    if(type==1){      //**********************************
+    if(type==1){   
       difference(){
         union(){
           // belt attach solid part
@@ -316,6 +337,11 @@ type=1
         translate([+480/2-RightX0-35,16,High0+zmotor1+34])
         rotate([-90,0,90])
         cylinder(r=15/2,h=65,$fn=F2);
+
+        // clearance near the extruder motor hole
+        translate([+480/2-RightX0-73,7,High0+zmotor1+11])
+        rotate([0,55,0])
+        cube([10,16,10]);
       }
 
     }
@@ -332,12 +358,34 @@ type=1
       cylinder(r=2,h=24+7,$fn=F2);
     }
     if(type==2){
-      translate([+480/2-X0+69,25,High0+33])
+      translate([+480/2-X0+68,25,High0+33]) 
       rotate([-90,0,90])
       cylinder(r=2,h=24,$fn=F2);
     }
 
-    // Duct     ***********************************************
+    // lower attachment for blower fan Right side
+    if(type==2){
+      difference(){
+        // boss
+        translate([+480/2-X0+37.0,9,High0+44.5])
+        rotate([-8,0,0])
+        minkowski(){
+        cube([8,6,4]);
+        rotate([-90,0,0])
+        cylinder(r=2,h=6,$fn=22);
+        }
+        // hole for the blower attach brass part
+        translate([+480/2-X0+40.5,16,High0+44.3])
+        rotate([-98,0,0])
+        cylinder(r=2.3,h=3.5+18,$fn=22);
+        // clearance for M3 screw past the brass
+        translate([+480/2-X0+40.5,13,High0+44.8])
+        rotate([-98,0,0])
+        cylinder(r=1.8,h=3.5+21,$fn=22);
+      }
+    }
+    
+    // Duct Left
     if(type==1){
       if(1){
       difference(){
@@ -386,7 +434,55 @@ type=1
         
     }      
       
+    // Duct Right    ***********************************************
+    if(type==2){
+      if(1){
+      difference(){
+        union(){
+          color("pink")
+          translate([+480/2-X0+66,26,High0+36]) 
+          rotate([0,90,0])
+          cylinder(r=18,h=24+0,$fn=F2);
+          color("green")
+          translate([+480/2-X0+66,9.5,High0+15.5]) 
+          rotate([8,0,0])
+          cube([24+0,19,28]);
+          
+        }
+        translate([+480/2-X0+65,-2,High0+36.5]) 
+        rotate([0,0,0])
+        cube([26+12,25,28]);
+        translate([+480/2-X0+65,20,High0+36.5]) 
+        rotate([-9,0,0])
+        cube([26+16,25,28]);
+        // cut for rail
+        translate([+480/2-X0+80+22,0+16,High0+30])
+        rotate([-90,0,90])
+        cylinder(r=5.5,h=68,$fn=F2);
 
+        color("gray")
+        difference(){
+          translate([+480/2-X0+69,26,High0+36]) 
+          rotate([0,90,0])
+          cylinder(r=16,h=17,$fn=F2);
+
+          translate([+480/2-X0+69,14,High0+32]) 
+          rotate([0,90,0])
+          cylinder(r=10,h=22,$fn=F2);
+        }       
+        
+        translate([+480/2-X0+69,8,High0+17.5]) 
+        rotate([8,0,0])
+        cube([17,18,3.8]);
+        
+        // re-cut for the lm8u into the duct side
+        translate([+480/2-X0+69,0+16,High0+30])
+        rotate([-90,0,90])
+        cylinder(r=15/2+0.1,h=26,$fn=F2);
+
+      }
+    }        
+  }      
 }
 
 //---------------------------------------
@@ -395,7 +491,7 @@ module belt1(){
 difference(){
     // base block
     color("orange")
-    translate([-5,-9,23]) cube([12,24,16]);
+    translate([-5,-9,25]) cube([12,24,14]);
 
     // belt entry 
     translate([-7.5,-10,34.9]) rotate([0,45,0]) cube([3,32,3]);
@@ -533,7 +629,6 @@ module touchbox(){
 //standoff();
 //touchbox();
 
-
 // left blower
 if(1){
 color("cyan")
@@ -543,7 +638,7 @@ blower();
 }
 
 // left extruder belt slider
-if(1){
+if(0){
 X5=LeftX0;
 difference(){
 // left belt attach movable
@@ -578,7 +673,15 @@ if(0){
 }
 
 // Right x carriage
-//xmain1(X0=RightX0+135,type=2);
+xmain1(X0=RightX0+135,type=2);
+
+// right blower 
+if(1){
+color("cyan")
+translate([+480/2-RightX0-98.5,43,High0+33.5])
+rotate([-9,0,0])
+blower();  
+}
 
 // support for printing Right xmain1
 if(0){
@@ -594,7 +697,7 @@ if(0){
 }
 
 // right belt attach movable
-if(0){
+if(1){
   X6=RightX0;
   color("pink")
   difference(){
@@ -646,7 +749,7 @@ if(0){  // right side
     standoff();
 }
 
-if(1){
+if(0){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
@@ -739,7 +842,7 @@ rotate([90,90,0])
 idler();
 }
 
-if(0){
+if(1){
 // belt upper right
 color("blue")
 difference(){
@@ -767,7 +870,7 @@ difference(){
     }
 }
 }
-if(0){
+if(1){
 // belt lower left
 color("gray")
 difference(){
@@ -833,7 +936,7 @@ emotor();
 if(0){  // right side bearings
 // x rod lm8u bearing low
 color("gray")
-translate([+480/2-RightX0-66,16,High0+30])
+translate([+480/2-RightX0-76,16,High0+30])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
 
