@@ -90,14 +90,14 @@ module blower(tol=0,hole=1){
   // upper attachment
   difference(){
     hull(){
-      translate([46.7,-8.2,45.7])
+      translate([47.4,-8.2,45.8])
       rotate([90,0,0])
       cylinder(r=6.5/2,h=6,$fn=88);
-      translate([46.7-5,-8.2,45.7-5])
+      translate([47.4-5,-8.2,45.8-5])
       rotate([90,0,0])
       cylinder(r=6.5/2,h=6,$fn=88);
     }
-    translate([46.7,-8.0,45.7])
+    translate([47.4,-8.0,45.8])
     rotate([90,0,0])
     cylinder(r=2.1,h=7,$fn=44);
   }
