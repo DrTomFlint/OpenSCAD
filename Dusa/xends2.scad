@@ -285,14 +285,35 @@ rotate([0,-90,90])
 mirror([0,0,0])
 switchcut();
 
-// cut for BLtouch clearance **************************************************
-translate([x2+zscrew-48.5,-14,High0+20])
+// cut for BLtouch clearance 
+translate([x2+zscrew-48.25,-14,High0+20])
 cube([9,20,48]);
 
-// cut for ooze prevention arm
-//translate([x2+zscrew-31,0,High0+19])
-//linear_extrude(height=6,scale=[1,1.5])
-//square([32,10],center=true);
+// brass M3 heat-set mounting for ooze prevention arm ***********************************
+translate([x2+zscrew-33,-8,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
+translate([x2+zscrew-33,8,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
+translate([x2+zscrew-18,-6,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
+
+// x motor holes, 45 deg cuts to make printable
+translate([-480/2-33-xmot0,-15,High0+zmotor1])
+rotate([-90,0,0]){
+    translate([-15.5+x1,15.5,0])
+    cylinder(r=7.5,h=21,$fn=4);
+    translate([-15.5+x1,-15.5,0])
+    cylinder(r=7.5,h=21,$fn=4);
+}
 
 // cut for left x motor wires
 translate([480/2-xmot0-6,30,High0+zmotor1+7])
@@ -335,7 +356,7 @@ text("DUSA", font = "Open Sans:style=Bold", size=7,halign="center",valign="cente
 
 }
 
-//------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 module xright1(
 
 ){
@@ -538,10 +559,22 @@ switchcut();
 translate([-(x2+zscrew-39),-15.5,High0+20])
 cube([9,10,14]);
 
-// cut for ooze prevention arm
-translate([-(x2+zscrew-31),0,High0+19])
-linear_extrude(height=6,scale=[1,1.5])
-square([32,10],center=true);
+// cut for ooze prevention arm  *****************************************
+translate([-(x2+zscrew-33),-8,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
+translate([-(x2+zscrew-33),8,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
+translate([-(x2+zscrew-18),-6,High0+25.5]){
+  translate([0,0,-3.5])
+  cylinder(r=2.3,h=3.5,$fn=22);
+  cylinder(r=1.65,h=3.5+5,center=true,$fn=22);
+}
 
 // cut for left x motor wires
 translate([-(480/2-xmot0-6),30,High0+zmotor1+19])
@@ -599,7 +632,7 @@ if(0){
 }
 
 //translate([-350,0,0])
-xleft1();
+//xleft1();
 if(0){
 // This is a printing support enforcer for xleft1
 color("pink")
@@ -618,7 +651,6 @@ color("pink")
 translate([480/2-36-xmot0,23,High0+zmotor2-7])
 cube([12,4.5,9]);
 
-
 }
 
 // right limit switch
@@ -631,7 +663,7 @@ if(0){
 }
 
 //xright1();
-if(0){
+if(1){
 // This is a printing support for xright1
 color("pink")
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-1])

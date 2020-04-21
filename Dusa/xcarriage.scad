@@ -5,6 +5,8 @@ use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/bltouch.scad>
 use <../Parts/blower.scad>
+use <../Parts/switch.scad>
+
 use <frame.scad>
 use <zaxis.scad>
 use <xends2.scad>
@@ -15,7 +17,7 @@ use <xends2.scad>
 High0=150;        
 
 // Left extruder position, 153+
-LeftX0=153+0; 
+LeftX0=152; 
 
 // Right extruder position, 82+
 RightX0=82+50;
@@ -101,7 +103,7 @@ type=1
       cylinder(r=15/2+4,h=24+7,$fn=F2);
     }
     if(type==2){
-      translate([+480/2-X0+68,0+16,High0+30])   // **************************
+      translate([+480/2-X0+68,0+16,High0+30])   
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24,$fn=F2);
     }
@@ -136,11 +138,9 @@ type=1
     translate([+480/2-X0+16,0,High0+zmotor1+55])
     rotate([0,45,0])
     cube([20,60,20]);
-//    if(type==1){
-      translate([+480/2-X0+16,0,High0+26.5])
-      rotate([0,45,0])
-      cube([14,60,20]);
-//    }
+    translate([+480/2-X0+16,0,High0+26.5])
+    rotate([0,45,0])
+    cube([14,60,20]);
     if(type==2){
       translate([+480/2-X0+91,0,High0+26.5])
       rotate([0,45,0])
@@ -230,7 +230,7 @@ type=1
       cylinder(r=15/2+0.1,h=26.1,$fn=F2);
     }
     if(type==2){
-      translate([+480/2-X0+68,0+16,High0+30])   // ************************
+      translate([+480/2-X0+68,0+16,High0+30]) 
       rotate([-90,0,90])
       cylinder(r=15/2+0.1,h=26+10,$fn=F2);
     }      
@@ -294,9 +294,17 @@ type=1
     
 } // end diff ------------------------------------------------------------
 
-    //translate([+480/2-X0+95.1,-2.7,High0+19.5])
-    //touchbox();
+    if(1){
+      translate([+480/2-X0+95.1,-2.7,High0+19.5]){
+        touchbox();
 
+        color("red")
+        translate([1,0,0])
+        rotate([0,0,-90])
+        bltouch(up=1);
+      }
+    }
+    
     if(type==1){   
       difference(){
         union(){
@@ -630,7 +638,7 @@ module touchbox(){
 //touchbox();
 
 // left blower
-if(1){
+if(0){
 color("cyan")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
@@ -673,10 +681,10 @@ if(0){
 }
 
 // Right x carriage
-xmain1(X0=RightX0+135,type=2);
+//xmain1(X0=RightX0+135,type=2);
 
 // right blower 
-if(1){
+if(0){
 color("cyan")
 translate([+480/2-RightX0-98.5,43,High0+33.5])
 rotate([-9,0,0])
@@ -697,7 +705,7 @@ if(0){
 }
 
 // right belt attach movable
-if(1){
+if(0){
   X6=RightX0;
   color("pink")
   difference(){
@@ -714,7 +722,7 @@ if(1){
 
 
 // standoffs are no longer part of the carriage
-if(0){ // left side
+if(1){ // left side
     // four legs to attach extruder
     X3=LeftX0;
     color("pink")
@@ -749,7 +757,7 @@ if(0){  // right side
     standoff();
 }
 
-if(0){
+if(1){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
@@ -791,9 +799,19 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
 // left x-end "Prusa Dusa"
-if(0){
+if(1){
 translate([0,0,High0-150])
 xleft1();
+}
+
+// left limit switch ***********************************
+if(1){
+  color("red")
+  translate([x2-28+zscrew,-5,High0+90-48])
+  rotate([0,-90,90]){
+    switch(ang1=0); 
+    switch(ang1=12); 
+  }
 }
 
 // left x motor
@@ -842,7 +860,7 @@ rotate([90,90,0])
 idler();
 }
 
-if(1){
+if(0){
 // belt upper right
 color("blue")
 difference(){
@@ -870,7 +888,7 @@ difference(){
     }
 }
 }
-if(1){
+if(0){
 // belt lower left
 color("gray")
 difference(){
