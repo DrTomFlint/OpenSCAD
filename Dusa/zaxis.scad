@@ -169,6 +169,8 @@ union(){
     color("orange")
     translate([6,-9.5,34])
     cube([26,37,24],center=true);
+    translate([23,-14,34])
+    cube([10,28,24],center=true);
 
     // collar around rod
     color("red")
@@ -202,6 +204,16 @@ union(){
     rotate([0,90,0])
     tslot1(type=2,len=60,tol=0.15);
 
+    // left top L front
+    color("pink")
+    translate([0,-42.3/2-yoff3,380+30])
+    rotate([-90,90,0])
+    lbrace(tol=0.15);
+    // trim off leftover that is in the Tslot
+    color("red")
+    translate([-25,-42.3/2-yoff3-4,386])
+    cube([25,6,20]);
+
     // left z rod, add some tolerance
     color("red")
     translate([x3,0,42])
@@ -230,11 +242,11 @@ if(endstop==1){
   
     // cuts for the end stop switch
     // allow insertion
-    translate([-4,-42.3/2-yoff3-3.5,352])
-    cube([8,25,30]);
-    translate([0.2,-42.3/2-yoff3+17.2,352])
-    rotate([0,0,45])
-    cube([5.2,6,20]);
+    translate([-8,-42.3/2-yoff3-3.5,352])
+    cube([10.5,25,30]);
+    translate([-8,-42.3/2-yoff3+19,350])
+    cube([10,6,20]);
+    
     // cut for lever arm near fulcrum
     translate([2,-42.3/2-yoff3+3,352])
     cube([7,17,20]);
@@ -242,25 +254,43 @@ if(endstop==1){
     translate([-0.5,-42.3/2-yoff3+10,352])
     cube([11,15,18]);
     // cut for NC
-    translate([-4,-42.3/2-yoff3+17,380])
-    cube([14,3.5,7]);
+    translate([-6,-42.3/2-yoff3+17,380])
+    cube([16,3.5,7]);
     // cut for NO
-    translate([-4,-42.3/2-yoff3+10,380])
-    cube([14,3.5,7]);
+    translate([-6,-42.3/2-yoff3+10,380])
+    cube([16,3.5,7]);
     // cut for C
-    translate([-4,-42.3/2-yoff3+1,380])
-    cube([14,3.5,7]);
+    translate([-6,-42.3/2-yoff3+1,380])
+    cube([16,3.5,7]);
     // trim down the posts
-    translate([2.5,-42.3/2-yoff3+4,374])
+    translate([2.4,-42.3/2-yoff3+4,374])
     cube([4,14,6]);
 
-if(0){
-    // cut for visibility, do not leave this active
-    translate([-24,-42.3/2-yoff3+0,351])
-    cube([27,20,30]);
-}    
 }  // end of if(endstop)
-    
+
+  // add a tunnel for the endstop wires
+  translate([-12,yoff3-23,380])
+  cylinder(r=1.8,h=33,$fn=22);
+  translate([-12,yoff3-23,404])
+  cylinder(r1=1.8,r2=2.8,h=1,$fn=22);
+  translate([-12,yoff3-23,385])
+  cylinder(r1=2.8,r2=1.8,h=1,$fn=22);
+  
+} // end of difference
+
+// add a loop for the wires **************
+difference(){
+  hull(){
+  translate([-9,yoff3-23,380])
+  rotate([0,90,0])
+  cylinder(r=3,h=3,$fn=22);
+  translate([-9,yoff3-23,390])
+  rotate([0,90,0])
+  cylinder(r=3,h=3,$fn=22);
+  }
+  translate([-10,yoff3-23,380])
+  rotate([0,90,0])
+  cylinder(r=1.8,h=5,$fn=22);
 }
 
 // show where switch will fit, both angles for the lever arm
@@ -329,11 +359,19 @@ translate([-30,-30-42.3/2-yoff3,380+15])
 rotate([0,90,0])
 tslot1(type=2,len=60,tol=0.15);
 
+// left top L front
+color("pink")
+translate([0,-42.3/2-yoff3,380+30])
+rotate([-90,90,0])
+lbrace();
+
+/*
 // left z motor
 color("red")
 translate([x1,0,0])
 rotate([0,0,180])
 zmotor(tol=0.15);
+*/
 
 // left z rod, add some tolerance
 color("red")

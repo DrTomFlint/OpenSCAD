@@ -205,24 +205,24 @@ y2=y1/2;    // 165
     lbrace();
     
     // ------------ L braces top rail --------------
-/*    // left top L front
+    // left top L front
     color("gray")
     translate([x2-30,yoff+30,z1+45])
     rotate([-90,90,0])
     lbrace();
-  */  
+    
     // left top L rear
     color("gray")
     translate([x2-30,yoff-30,z1+45])
     rotate([90,180,0])
     lbrace();
     
-/*    // right top L front
+    // right top L front
     color("gray")
     translate([-x2+30,yoff+30,z1+45])
     rotate([-90,0,0])
     lbrace();
-    */
+    
     
     // right top L rear
     color("gray")
