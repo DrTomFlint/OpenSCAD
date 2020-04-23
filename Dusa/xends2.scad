@@ -551,13 +551,13 @@ translate([-(480/2-24-xmot0),23,High0+zmotor1-2.0])
 cube([12,6,9]);
 
 // cut for the limit switch 
-translate([-(x2-28+zscrew),-6.5,High0+90-34])
+translate([-(x2-28+zscrew-2),-6.5,High0+90-34])
 rotate([90,90,0])
 switchcut();
 
 // cut near limit switch to eliminate overhang
-translate([-(x2+zscrew-39),-15.5,High0+20])
-cube([9,10,14]);
+//translate([-(x2+zscrew-39),-15.5,High0+20])
+//cube([9,10,14]);
 
 // cut for ooze prevention arm  *****************************************
 translate([-(x2+zscrew-33),-8,High0+25.5]){
@@ -583,8 +583,8 @@ rotate([90,0,-15])
 cylinder(r=2.5,h=45,$fn=F2);
 
 // cut for limit switch wires
-translate([-(x2+zscrew-24),-15.5,High0+36.4])
-cube([3,6,19.2]);
+translate([-(x2+zscrew-23),-14,High0+36.4])  // *************************
+cube([4,6,19.2]);
 translate([-(x2+zscrew+9),-10.5,High0+59])
 scale([1,1,2])
 rotate([0,94,0])
@@ -653,9 +653,9 @@ cube([12,4.5,9]);
 
 }
 
-// right limit switch
+// right limit switch  **************************************************************
 if(0){
-  translate([-(x2-28+zscrew),ytoz-6.5,High0+90-34])
+  translate([-(x2-28+zscrew-2),ytoz-6.5,High0+90-34])
   rotate([90,90,0]){
     switch(ang1=0);
     switch(ang1=12);
@@ -675,7 +675,7 @@ cylinder(r=10,h=6,$fn=12);
 
 color("red")
 translate([-(x2+zscrew-24),-13,High0+36])
-cube([15,7,20]);  
+cube([17,7,20]);  
 
 color("pink")
 translate([-(480/2-24-xmot0),23,High0+zmotor1-2.0])

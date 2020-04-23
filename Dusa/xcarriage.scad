@@ -19,8 +19,8 @@ High0=150;
 // Left extruder position, 153+
 LeftX0=152; 
 
-// Right extruder position, 82+
-RightX0=82+50;
+// Right extruder position, +82 +328
+RightX0=328;
 
 // Show frame
 frameOn=0;
@@ -294,14 +294,16 @@ type=1
     
 } // end diff ------------------------------------------------------------
 
-    if(1){
-      translate([+480/2-X0+95.1,-2.7,High0+19.5]){
-        touchbox();
+    if(0){
+      if(type==1){
+        translate([+480/2-X0+95.1,-2.7,High0+19.5]){
+          touchbox();
 
-        color("red")
-        translate([1,0,0])
-        rotate([0,0,-90])
-        bltouch(up=1);
+          color("red")
+          translate([1,0,0])
+          rotate([0,0,-90])
+          bltouch(up=1);
+        }
       }
     }
     
@@ -665,7 +667,7 @@ if(0){
 }
 
 // Left x carriage
-xmain1(X0=LeftX0,type=1);
+//xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
@@ -681,7 +683,7 @@ if(0){
 }
 
 // Right x carriage
-//xmain1(X0=RightX0+135,type=2);
+xmain1(X0=RightX0+135,type=2);
 
 // right blower 
 if(0){
@@ -722,7 +724,7 @@ if(0){
 
 
 // standoffs are no longer part of the carriage
-if(1){ // left side
+if(0){ // left side
     // four legs to attach extruder
     X3=LeftX0;
     color("pink")
@@ -739,7 +741,7 @@ if(1){ // left side
     //rotate([-90,0,0])
     //standoff();
 }
-if(0){  // right side
+if(1){  // right side
     // four legs to attach extruder
     X4=RightX0+135;
     color("pink")
@@ -757,7 +759,7 @@ if(0){  // right side
     standoff();
 }
 
-if(1){
+if(0){
 // left extruder
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
@@ -799,13 +801,13 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 }
 
 // left x-end "Prusa Dusa"
-if(1){
+if(0){
 translate([0,0,High0-150])
 xleft1();
 }
 
 // left limit switch ***********************************
-if(1){
+if(0){
   color("red")
   translate([x2-28+zscrew,-5,High0+90-48])
   rotate([0,-90,90]){
@@ -836,8 +838,17 @@ idler();
 }
 
 // right x-end "Tom Flint"
-//translate([0,0,High0-150])
-//xright1();
+translate([0,0,High0-150])
+xright1();
+
+// right limit switch  **************************************************************
+if(1){
+  translate([-(x2-28+zscrew-2),-6.5,High0+90-34])
+  rotate([90,90,0]){
+    switch(ang1=0);
+    switch(ang1=12);
+  }
+}
 
 // right x motor
 if(0){
@@ -933,7 +944,7 @@ cylinder(r=4,h=480,$fn=F2);
 
 }
 
-if(0){
+if(1){
 // right extruder
 color("gray")
 translate([+480/2-RightX0,2,High0+26+10])
