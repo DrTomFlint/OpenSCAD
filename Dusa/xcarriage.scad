@@ -127,8 +127,11 @@ type=1
   } // end Boss union -----------
 
     // trim front vertical block
+//    translate([+480/2-X0+34,16.5,High0+zmotor1+45.5])
+//    rotate([45,0,0])
+//    #cube([67,20,20]);
     translate([+480/2-X0+34,16.5,High0+zmotor1+45.5])
-    rotate([45,0,0])
+    rotate([30,0,0])
     cube([67,20,20]);
 
     // trim corners
@@ -292,8 +295,104 @@ type=1
       cylinder(r=1.8,h=3.6+18,$fn=22);
     }
     
+    // topside brass mounts for wire retainers
+    if(type==1){
+      translate([+480/2-X0+75,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+      translate([+480/2-X0+90.3,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+    }
+    if(type==2){
+      translate([+480/2-X0+45.5,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+      translate([+480/2-X0+60,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+    }
+    
+    
 } // end diff ------------------------------------------------------------
 
+    // topside clips for the cooling lines
+    if(type==1){
+      color("pink")
+      translate([+480/2-X0+61,4.5,High0+zmotor1+55])
+      difference(){
+        union(){
+          rotate([-90,0,0])
+          cylinder(r=3.5,h=6,$fn=22);
+          translate([-3.5,0,-5])
+          cube([7,6,5]);
+        }
+        translate([0,-1,0])
+        rotate([-90,0,0])
+        cylinder(r=2.2,h=8,$fn=22);
+        translate([-2.8,-1,3.5])
+        rotate([0,45,0])
+        cube([4,8,4]);
+      }
+          
+      color("pink")
+      translate([+480/2-X0+69,4.5,High0+zmotor1+55])
+      difference(){
+        union(){
+          rotate([-90,0,0])
+          cylinder(r=3.5,h=6,$fn=22);
+          translate([-3.5,0,-5])
+          cube([7,6,5]);
+        }
+        translate([0,-1,0])
+        rotate([-90,0,0])
+        cylinder(r=2.2,h=8,$fn=22);
+        translate([-2.8,-1,3.5])
+        rotate([0,45,0])
+        cube([4,8,4]);
+      }
+    }
+    if(type==2){
+      color("red")
+      translate([(480/2-X0+67),4.5,High0+zmotor1+55])
+      difference(){
+        union(){
+          rotate([-90,0,0])
+          cylinder(r=3.5,h=6,$fn=22);
+          translate([-3.5,0,-5])
+          cube([7,6,5]);
+        }
+        translate([0,-1,0])
+        rotate([-90,0,0])
+        cylinder(r=2.2,h=8,$fn=22);
+        translate([-2.8,-1,3.5])
+        rotate([0,45,0])
+        cube([4,8,4]);
+      }
+          
+      color("pink")
+      translate([(480/2-X0+75),4.5,High0+zmotor1+55])
+      difference(){
+        union(){
+          rotate([-90,0,0])
+          cylinder(r=3.5,h=6,$fn=22);
+          translate([-3.5,0,-5])
+          cube([7,6,5]);
+        }
+        translate([0,-1,0])
+        rotate([-90,0,0])
+        cylinder(r=2.2,h=8,$fn=22);
+        translate([-2.8,-1,3.5])
+        rotate([0,45,0])
+        cube([4,8,4]);
+      }
+    }
+    
+    // touch box, just for reference, do not print
     if(0){
       if(type==1){
         translate([+480/2-X0+95.1,-2.7,High0+19.5]){
@@ -444,7 +543,7 @@ type=1
         
     }      
       
-    // Duct Right    ***********************************************
+    // Duct Right  
     if(type==2){
       if(1){
       difference(){
@@ -634,10 +733,89 @@ module touchbox(){
   }
   
 }
+//--------------------------------------------------------------------------
+module shockmount(){
+  
+  difference(){
+  union(){
+    cylinder(r=4,h=1,$fn=22);
+    cylinder(r=2.1,h=2.5+1,$fn=22);
+  }
+  translate([0,0,-0.5])
+  cylinder(r=1.6,h=5,$fn=22);
+  }  
+}
+//-------------------------------------------------------
+// blower shock mount left side lower
+module blowerS1(){
+  difference(){
+    cylinder(r=4,h=5.7,$fn=22);
+    translate([0,0,-1])
+    cylinder(r=1.6,h=8,$fn=22);
+  }
+}
+//-------------------------------------------------------
+// blower shock mount left side upper
+module blowerS2(){
+  difference(){
+    cylinder(r=4,h=7.8,$fn=22);
+    translate([0,0,-1])
+    cylinder(r=1.6,h=9,$fn=22);
+    translate([-2.0,5,-1])
+    rotate([0,0,-45])
+    cube([10,10,10]);
+  }
+}
+//-------------------------------------------------------
+// blower shock mount right side lower
+module blowerS3(){
+  difference(){
+    cylinder(r=4,h=8.2,$fn=22);
+    translate([0,0,-1])
+    cylinder(r=1.6,h=10,$fn=22);
+  }
+}
+//-------------------------------------------------------
+// blower shock mount right side upper
+module blowerS4(){
+  difference(){
+    cylinder(r=4,h=6.6,$fn=22);
+    translate([0,0,-1])
+    cylinder(r=1.6,h=10,$fn=22);
+    translate([-5,-1,-1])
+    rotate([0,0,45])
+    cube([10,10,10]);
+  }
+}
 //==========================================================================================
 
 //standoff();
 //touchbox();
+
+// printing for the blower standoffs
+if(0){
+  blowerS1();
+  translate([10,0,0])
+  blowerS2();
+  translate([20,0,0])
+  blowerS3();
+  translate([30,0,0])
+  blowerS4();
+}
+
+// printing for the blower shock mounts, use ninja-flex
+if(1){
+  for(kk=[0:7]){
+    translate([kk*9,0,0]){
+      shockmount();
+      color("red")
+      translate([3.5,-0.4,0])
+      cube([2,0.85,0.6]);
+    }
+  }
+}
+
+
 
 // left blower
 if(0){
@@ -645,6 +823,36 @@ color("cyan")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
 blower();  
+}
+// left blower standoffs
+if(0){
+  // lower
+  color("red")
+  translate([+480/2-LeftX0+95,24.5,High0+43.75])
+  rotate([-98,0,0])
+  blowerS1();
+  color("green")
+  translate([+480/2-LeftX0+95,30.2,High0+42.9])
+  rotate([-98,0,0])
+  shockmount();
+  color("blue")
+  translate([+480/2-LeftX0+95,38.2,High0+41.6])
+  rotate([82,0,0])
+  shockmount();
+
+  // upper
+  color("red")
+  translate([+480/2-LeftX0+48.5+3,28.5,High0+zmotor1+37.0])
+  rotate([-98,0,0])
+  blowerS2();
+  color("green")
+  translate([+480/2-LeftX0+48.5+3,36.3,High0+zmotor1+36])
+  rotate([-98,0,0])
+  shockmount();
+  color("blue")
+  translate([+480/2-LeftX0+48.5+3,44.5,High0+zmotor1+35])
+  rotate([82,0,0])
+  shockmount();
 }
 
 // left extruder belt slider
@@ -676,22 +884,15 @@ if(0){
   color("pink")
   cube([65,20,11]);
   
-  // lower rail and lm8us
+  // lower rail and lm8us 
   color("pink")
-  translate([+480/2-LeftX0+66,4.5,High0+18])
-  cube([24,20,16.5]);
+  translate([+480/2-LeftX0+45,4.5,High0+15])
+  cube([55,20,20]);
+
 }
 
 // Right x carriage
-xmain1(X0=RightX0+135,type=2);
-
-// right blower 
-if(0){
-color("cyan")
-translate([+480/2-RightX0-98.5,43,High0+33.5])
-rotate([-9,0,0])
-blower();  
-}
+//xmain1(X0=RightX0+135,type=2);
 
 // support for printing Right xmain1
 if(0){
@@ -703,7 +904,46 @@ if(0){
   // lower rail and lm8us
   color("pink")
   translate([+480/2-RightX0+45-135,4.5,High0+18])
-  cube([24,20,16.5]);
+  cube([45,20,16.5]);
+}
+
+// right blower 
+if(0){
+color("cyan")
+translate([+480/2-RightX0-98.5,43,High0+33.5])
+rotate([-9,0,0])
+blower();  
+}
+
+// right blower standoffs  ***********************************************************
+if(0){
+  // lower
+  color("red")
+  translate([480/2-RightX0-95,21.0,High0+43.9])
+  rotate([-98,0,0])
+  blowerS3();
+  color("green")
+  translate([+480/2-RightX0-95,29.2,High0+42.9])
+  rotate([-98,0,0])
+  shockmount();
+  color("blue")
+  translate([+480/2-RightX0-95,37.2,High0+41.6])
+  rotate([82,0,0])
+  shockmount();
+
+  // upper
+  color("red")
+  translate([+480/2-RightX0-51,28.5,High0+zmotor1+37.0])
+  rotate([-98,0,0])
+  blowerS4();
+  color("green")
+  translate([+480/2-RightX0-51,35.0,High0+zmotor1+36])
+  rotate([-98,0,0])
+  shockmount();
+  color("blue")
+  translate([+480/2-RightX0-51,43.3,High0+zmotor1+35])
+  rotate([82,0,0])
+  shockmount();
 }
 
 // right belt attach movable
@@ -741,7 +981,7 @@ if(0){ // left side
     //rotate([-90,0,0])
     //standoff();
 }
-if(1){  // right side
+if(0){  // right side
     // four legs to attach extruder
     X4=RightX0+135;
     color("pink")
@@ -806,7 +1046,7 @@ translate([0,0,High0-150])
 xleft1();
 }
 
-// left limit switch ***********************************
+// left limit switch 
 if(0){
   color("red")
   translate([x2-28+zscrew,-5,High0+90-48])
@@ -839,10 +1079,10 @@ idler();
 
 // right x-end "Tom Flint"
 translate([0,0,High0-150])
-xright1();
+//xright1();
 
-// right limit switch  **************************************************************
-if(1){
+// right limit switch 
+if(0){
   translate([-(x2-28+zscrew-2),-6.5,High0+90-34])
   rotate([90,90,0]){
     switch(ang1=0);
@@ -944,7 +1184,7 @@ cylinder(r=4,h=480,$fn=F2);
 
 }
 
-if(1){
+if(0){
 // right extruder
 color("gray")
 translate([+480/2-RightX0,2,High0+26+10])

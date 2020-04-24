@@ -20,11 +20,11 @@ use <xcarriage.scad>
 // computations, and should have a comment above to provide text
 
 // ---- positioning -------------------
-// Height of x rods, +46 hardstop, +290 hardstop
-High0=46;        
+// Height of x rods, +46 hardstop, ~51 bed height, +290 hardstop
+High0=50;        
 
 // Left extruder position, +152, +398
-LeftX0=152; 
+LeftX0=152+20; 
 
 // Right extruder position, +82, +327
 RightX0=327;
@@ -58,7 +58,7 @@ leftEon=1;
 rightEon=1;
 
 // Show ybed 
-ybed=0;    
+ybed=1;    
 
 // ----- dimensions -------------------
 // Length front, back, top rail
