@@ -104,9 +104,39 @@ module blower(tol=0,hole=1){
 
 
 }
+//-------------------------------------------------------
+// blower flexible box to mate with duct *******************************************************
+module flexboxL(){
+
+difference(){
+  union(){
+    color("red")
+    translate([51.2+2-19.5,-21.5+1,0])
+    cube([17.0,18.5,3]);
+
+    color("orange")
+    translate([51.2+2-19.5,-21.5+1,-3])
+    cube([17.0,18.5,3]);
+
+    color("pink")
+    translate([51.2+2-19.5+17.3/2,-21.5+1+18.5/2,-1])
+    linear_extrude(height=1.2,scale=1.2)
+    square([17.0,18.5],center=true);
+  }
+  color("green")
+  translate([51.2+3-19.5,-21.5+2,-8])
+  cube([17-2,18.5-2,15]);
+
+  color("green")
+  translate([41,-21.5,2.5])
+  cube([2,4,2]);
+}
+
+}
 
 //==========================================
 
-blower();
+//blower();
+flexboxL();
 
 //===========================================

@@ -804,7 +804,7 @@ if(0){
 }
 
 // printing for the blower shock mounts, use ninja-flex
-if(1){
+if(0){
   for(kk=[0:7]){
     translate([kk*9,0,0]){
       shockmount();
@@ -818,12 +818,20 @@ if(1){
 
 
 // left blower
-if(0){
+if(1){
 color("cyan")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
 blower();  
 }
+// left blower flex box ************************************************************
+if(1){
+//color("red")
+translate([+480/2-LeftX0+99,22,High0+37])
+rotate([9,0,180])
+flexboxL();  
+}
+
 // left blower standoffs
 if(0){
   // lower
@@ -875,7 +883,7 @@ if(0){
 }
 
 // Left x carriage
-//xmain1(X0=LeftX0,type=1);
+xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
