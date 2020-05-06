@@ -842,6 +842,7 @@ h1=6;
       }
     }
     if(type==2){
+/*
       translate([+480/2-X0+45.5,8.5,High0+zmotor1+48.1]){
         cylinder(r=2.3,h=3.5,$fn=22);
         cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
@@ -849,6 +850,58 @@ h1=6;
       translate([+480/2-X0+60,8.5,High0+zmotor1+48.1]){
         cylinder(r=2.3,h=3.5,$fn=22);
         cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+      */
+
+      difference(){
+        union(){
+          // right foot
+          translate([+480/2-X0+45.5,8.75,High0+zmotor1+51.5])
+          cylinder(r=4.25,h=7,$fn=200);
+          // left foot
+          translate([+480/2-X0+60,8.75,High0+zmotor1+51.5])
+          cylinder(r=4.25,h=7,$fn=200);
+          // central block
+        color("green")
+          translate([+480/2-X0+45.5,4.5,High0+zmotor1+51.5])
+//          cube([14,8.5,h1]);
+          cube([14.5,8.5,7]);
+          // curved top of block
+          translate([+480/2-X0+45.5+14/2,4.5,High0+zmotor1+51.5+h1])
+          rotate([-90,0,0])
+          cylinder(r=13.0/2,h=8.5,$fn=88);
+        }
+
+        // trim the left foot
+        translate([+480/2-X0+63.4,4.5,High0+zmotor1+51.5])
+        cube([6,8.5,h1+10]);
+        
+        // right screw hole
+        translate([+480/2-X0+45.5,8.5,High0+zmotor1+50])
+        cylinder(r=1.8,h=20,center=true,$fn=22);
+        // right head clearance
+        translate([+480/2-X0+45.5,8.5,High0+zmotor1+58.5])
+        cylinder(r=5.8/2,h=20,$fn=22);
+        
+        // left screw hole
+        translate([+480/2-X0+60,8.5,High0+zmotor1+50])
+        cylinder(r=1.8,h=20,center=true,$fn=22);
+        // left head clearance
+        translate([+480/2-X0+60,8.5,High0+zmotor1+58.5])
+        cylinder(r=5.8/2,h=20,$fn=22);
+        
+        // central hole
+        color("red")
+        hull(){
+          // upper
+          translate([+480/2-X0+45.5+14.0/2,3.5,High0+zmotor1+51.5+h1])
+          rotate([-90,0,0])
+          cylinder(r=7.5/2,h=10,$fn=88);
+          // lower
+          translate([+480/2-X0+45.5+14.0/2,4.5,High0+zmotor1+54.0])
+          rotate([-90,0,0])
+          cylinder(r=7.5/2,h=10,$fn=88);
+        }
       }
     }
 }
@@ -858,7 +911,8 @@ h1=6;
 //standoff();
 //touchbox();
 
-wireclip(type=1,X0=LeftX0);
+//wireclip(type=1,X0=LeftX0);
+wireclip(type=2,X0=RightX0+135);
 
 // printing for the blower standoffs
 if(0){
@@ -967,7 +1021,7 @@ if(0){
 
 }
 
-// Right x carriage
+// Right x carriage ******************************************************
 //xmain1(X0=RightX0+135,type=2);
 
 // support for printing Right xmain1
