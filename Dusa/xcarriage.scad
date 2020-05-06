@@ -295,7 +295,7 @@ type=1
       cylinder(r=1.8,h=3.6+18,$fn=22);
     }
     
-    // topside brass mounts for wire retainers
+    // topside brass mounts for wire retainers *******************************************
     if(type==1){
       translate([+480/2-X0+75,8.5,High0+zmotor1+48.1]){
         cylinder(r=2.3,h=3.5,$fn=22);
@@ -700,8 +700,8 @@ module touchbox(){
     cube([6,6,2],center=true);
 
     color("gray")
-    translate([5,-0.6,42.5])
-    cube([1,14,8],center=true);
+    translate([5-1,-0.6,42.5])
+    cube([3,14,8],center=true);
 
     color("blue")
     translate([-3.8,-0.7,37.7])
@@ -787,10 +787,78 @@ module blowerS4(){
     cube([10,10,10]);
   }
 }
+//----------------------------------------------
+// wire clips on topside
+module wireclip(type=1,X0=0){
+
+h1=6;
+  
+    if(type==1){
+
+      difference(){
+        union(){
+          // right foot
+          translate([+480/2-X0+76.5,8.75,High0+zmotor1+51.5])
+          cylinder(r=4.25,h=7,$fn=200);
+          // left foot
+          translate([+480/2-X0+90,8.75,High0+zmotor1+51.5])
+          cylinder(r=4.25,h=7,$fn=200);
+          // central block
+        color("green")
+          translate([+480/2-X0+76,4.5,High0+zmotor1+51.5])
+          cube([13.5,8.5,h1]);
+          // curved top of block
+          translate([+480/2-X0+76+13.5/2,4.5,High0+zmotor1+51.5+h1])
+          rotate([-90,0,0])
+          cylinder(r=13.5/2,h=8.5,$fn=88);
+        }
+        
+        // right screw hole
+        translate([+480/2-X0+75,8.5,High0+zmotor1+50])
+        cylinder(r=1.8,h=20,center=true,$fn=22);
+        // right head clearance
+        translate([+480/2-X0+75,8.5,High0+zmotor1+58.5])
+        cylinder(r=5.8/2,h=20,$fn=22);
+        
+        // left screw hole
+        translate([+480/2-X0+90.3,8.5,High0+zmotor1+50])
+        cylinder(r=1.8,h=20,center=true,$fn=22);
+        // left head clearance
+        translate([+480/2-X0+90,8.5,High0+zmotor1+58.5])
+        cylinder(r=5.8/2,h=20,$fn=22);
+        
+        // central hole
+        color("red")
+        hull(){
+          // upper
+          translate([+480/2-X0+76+13.5/2,3.5,High0+zmotor1+51.5+h1])
+          rotate([-90,0,0])
+          cylinder(r=8/2,h=10,$fn=88);
+          // lower
+          translate([+480/2-X0+76+13.5/2,4.5,High0+zmotor1+54.0])
+          rotate([-90,0,0])
+          cylinder(r=8/2,h=10,$fn=88);
+        }
+      }
+    }
+    if(type==2){
+      translate([+480/2-X0+45.5,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+      translate([+480/2-X0+60,8.5,High0+zmotor1+48.1]){
+        cylinder(r=2.3,h=3.5,$fn=22);
+        cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+      }
+    }
+}
+
 //==========================================================================================
 
 //standoff();
 //touchbox();
+
+wireclip(type=1,X0=LeftX0);
 
 // printing for the blower standoffs
 if(0){
@@ -818,14 +886,14 @@ if(0){
 
 
 // left blower
-if(1){
+if(0){
 color("cyan")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
 blower();  
 }
-// left blower flex box ************************************************************
-if(1){
+// left blower flex box
+if(0){
 //color("red")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
@@ -882,8 +950,8 @@ if(0){
   cube([21,2,5]);
 }
 
-// Left x carriage
-xmain1(X0=LeftX0,type=1);
+// Left x carriage   *********************************
+//xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
@@ -923,7 +991,7 @@ rotate([-9,0,0])
 blower();  
 }
 
-// right blower standoffs  ***********************************************************
+// right blower standoffs 
 if(0){
   // lower
   color("red")
