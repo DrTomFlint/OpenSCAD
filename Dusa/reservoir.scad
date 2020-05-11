@@ -169,6 +169,96 @@ difference(){
 }  
 
 }
+//------------------------------------------------
+module splitblock(){
+  
+// screw base
+color("orange")
+translate([0,0,18]){
+mirror([0,0,1])
+  difference(){
+  union(){
+    for(i=[0:4]){
+      translate([0,0,10+i*3])
+      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+    }
+    translate([0,0,25])
+    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=2,h=20,$fn=44);
+  translate([0,0,25])
+  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  }
+}
+    
+translate([0,5,8]){
+  difference(){
+  union(){
+    for(i=[0:4]){
+      translate([0,0,10+i*3])
+      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+    }
+    translate([0,0,25])
+    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=2,h=20,$fn=88);
+  translate([0,0,25])
+  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  }
+}
+
+translate([0,-5,8]){
+  difference(){
+  union(){
+    for(i=[0:4]){
+      translate([0,0,10+i*3])
+      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+    }
+    translate([0,0,25])
+    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=2,h=20,$fn=88);
+  translate([0,0,25])
+  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  }
+}
+
+difference(){
+  hull(){
+    color("red")
+    translate([0,5,17])
+    cylinder(r=3.3,h=1.0,$fn=88);
+    color("green")
+    translate([0,-5,17])
+    cylinder(r=3.3,h=1.0,$fn=88);
+    color("cyan")
+    translate([0,0,8])
+    cylinder(r=3.3,h=1.0,$fn=88);
+  }
+
+  hull(){
+    color("red")
+    translate([0,5,18.0])
+    cylinder(r=2,h=0.01,$fn=88);
+    color("cyan")
+    translate([0,0,7.99])
+    cylinder(r=2,h=0.01,$fn=88);
+  }
+  hull(){
+    color("red")
+    translate([0,-5,18.0])
+    cylinder(r=2,h=0.01,$fn=88);
+    color("cyan")
+    translate([0,0,7.99])
+    cylinder(r=2,h=0.01,$fn=88);
+  }
+}
+
+
+}
 
 //=========================================
  
@@ -178,7 +268,38 @@ difference(){
 //topplug();
 //topbarb();
 
-fillercap();
+//fillercap();
+
+
+// add support for printing splitblock
+if(1){
+difference(){
+union(){
+  translate([0,0,-7.8])
+  cube([10,10,0.4],center=true);
+  translate([-5,-0.4,-8])
+  cube([10,0.8,4]);
+  translate([-0.4,-5,-8])
+  cube([0.8,10,4]);
+}
+ translate([0,0,-9])
+ cylinder(r=2.5,h=9,$fn=88);
+}
+}
+
+splitblock();
+
+
+// cutaway for splitblock
+if(0){
+difference(){
+splitblock();
+translate([0,-10,-10])
+cube([20,20,50]);
+}
+}
+
+
 
 // cutaway
 if(0){
