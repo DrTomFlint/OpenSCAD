@@ -260,6 +260,32 @@ difference(){
 
 }
 
+//------------------------------------------------------
+module funnel(){
+
+      color("cyan")
+      difference(){
+        union(){
+          translate([0,-15,-6])
+          cylinder(r=2.5,h=16,$fn=88);
+          translate([0,-15,4])
+          metric_thread (diameter=7.5, pitch=2, length=8);
+          translate([0,-15,10])
+          cylinder(r1=2.8,r2=10.0,h=11,$fn=88);
+          translate([0,-15,21])
+          cylinder(r=10.0,h=15,$fn=88);
+        }
+        translate([0,-15,-7])
+        cylinder(r=1.6,h=18,$fn=88);
+
+        translate([0,-15,9.99])
+        cylinder(r1=1.6,r2=9.0,h=11.1,$fn=88);
+
+        translate([0,-15,20.99])
+        cylinder(r=9.0,h=15.2,$fn=88);
+      }
+}
+
 //=========================================
  
 //reservoir();
@@ -270,9 +296,10 @@ difference(){
 
 //fillercap();
 
+funnel();
 
 // add support for printing splitblock
-if(1){
+if(0){
 difference(){
 union(){
   translate([0,0,-7.8])
@@ -287,7 +314,7 @@ union(){
 }
 }
 
-splitblock();
+//splitblock();
 
 
 // cutaway for splitblock
