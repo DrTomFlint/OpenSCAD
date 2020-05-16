@@ -14,29 +14,29 @@ difference(){
     scale([1.2,1,1])
     cylinder(r1=5,r2=5,h=2.1,$fn=88);
     // barbs
-    for(i=[0:4]){
+    for(i=[0:5]){
       translate([0,0,2+i*3])
-      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+      cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
     // tip
     color("red")
-    translate([0,0,17])
-    cylinder(r1=3,r2=2.4,h=1,$fn=88);
+    translate([0,0,20])
+    cylinder(r1=3.2,r2=2.4,h=1,$fn=88);
   }
   
   // bore hole
   translate([0,0,-0.1])
-  cylinder(r1=2.3,r2=1.9,h=19.3,$fn=88);  
+  cylinder(r1=2.2,r2=1.9,h=22.3,$fn=88);  
 
   // tip bevel
   color("green")
-  translate([0,0,17])
-  cylinder(r1=1.8,r2=2.6,h=1.1,$fn=88);
+  translate([0,0,19.5])
+  cylinder(r1=1.8,r2=2.7,h=1.6,$fn=88);
   
   // entry bevel
   color("green")
   translate([0,0,-0.1])
-  cylinder(r1=2.5,r2=2.3,h=1.2,$fn=88);
+  cylinder(r1=2.5,r2=2.2,h=1.2,$fn=88);
 }
 }
 //----------------------------------
@@ -52,28 +52,31 @@ difference(){
 
     // add a barb to connect to the silicon tubing
     translate([0,0,8])
-    cylinder(r1=7,r2=3.3,h=3,$fn=88);
+    cylinder(r1=7,r2=3.6,h=3,$fn=88);
 
-    for(i=[0:4]){
+    for(i=[0:5]){
       translate([0,0,11+i*3])
-      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+      cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
     color("red")
-    translate([0,0,26])
-    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+    translate([0,0,29])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
   }
 
   color("green")
-  translate([0,0,26])
-  cylinder(r1=2.2,r2=2.7,h=1.1,$fn=88);
+  translate([0,0,28])
+  cylinder(r1=1.45,r2=2.7,h=2.1,$fn=88);
 
-  // bore hole
+  // bore hole, constricted to equal cross section of 2x ptfe tubes
+  // each tube is 2mm inner diameter, so 3.1415 mm^2, 6.28 mm^2 total
+  // one hole of 1.42 mm radius has the same area.  Try 1.45 mm radius.
   translate([0,0,9])
-  cylinder(r1=2.4,r2=2.2,h=18.1,$fn=88);
+//  cylinder(r1=2.4,r2=2.2,h=21.1,$fn=88);
+  cylinder(r=1.45,h=21.1,$fn=88);
 
   // tapered inlet since pump bores are offset
   translate([0,0,-0.01])
-  cylinder(r1=5,r2=2.4,h=9.1,$fn=88);
+  cylinder(r1=5,r2=1.45,h=9.1,$fn=88);
 
 }  
 
@@ -158,7 +161,7 @@ cube([20,20,40]);
 }
 }
 
-//adaptB();
+adaptB();
 
 // cutaway view:
 if(0){
@@ -181,7 +184,7 @@ cube([20,20,40]);
 }
 }
 
-adaptD();
+//adaptD();
 
 // cutaway view:
 if(0){

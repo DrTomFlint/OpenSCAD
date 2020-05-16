@@ -180,10 +180,10 @@ mirror([0,0,1])
   union(){
     for(i=[0:4]){
       translate([0,0,10+i*3])
-      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+      cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
     translate([0,0,25])
-    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
   }
   translate([0,0,9])
   cylinder(r=2,h=20,$fn=44);
@@ -191,16 +191,17 @@ mirror([0,0,1])
   cylinder(r1=2,r2=2.3,h=1,$fn=44);
   }
 }
-    
+
+// top barb 1    
 translate([0,5,8]){
   difference(){
   union(){
     for(i=[0:4]){
       translate([0,0,10+i*3])
-      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+      cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
     translate([0,0,25])
-    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
   }
   translate([0,0,9])
   cylinder(r=2,h=20,$fn=88);
@@ -209,15 +210,16 @@ translate([0,5,8]){
   }
 }
 
+// top barb 2
 translate([0,-5,8]){
   difference(){
   union(){
     for(i=[0:4]){
       translate([0,0,10+i*3])
-      cylinder(r1=3.3,r2=3,h=3,$fn=88);
+      cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
     translate([0,0,25])
-    cylinder(r1=3,r2=2.5,h=1,$fn=88);
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
   }
   translate([0,0,9])
   cylinder(r=2,h=20,$fn=88);
@@ -226,17 +228,18 @@ translate([0,-5,8]){
   }
 }
 
+// Y block
 difference(){
   hull(){
     color("red")
     translate([0,5,17])
-    cylinder(r=3.3,h=1.0,$fn=88);
+    cylinder(r=3.6,h=1.0,$fn=88);
     color("green")
     translate([0,-5,17])
-    cylinder(r=3.3,h=1.0,$fn=88);
+    cylinder(r=3.6,h=1.0,$fn=88);
     color("cyan")
     translate([0,0,8])
-    cylinder(r=3.3,h=1.0,$fn=88);
+    cylinder(r=3.6,h=1.0,$fn=88);
   }
 
   hull(){
@@ -263,7 +266,6 @@ difference(){
 //------------------------------------------------------
 module funnel(){
 
-      color("cyan")
       difference(){
         union(){
           translate([0,-15,-6])
@@ -275,6 +277,7 @@ module funnel(){
           translate([0,-15,21])
           cylinder(r=10.0,h=15,$fn=88);
         }
+        color("cyan")
         translate([0,-15,-7])
         cylinder(r=1.6,h=18,$fn=88);
 
@@ -296,25 +299,27 @@ module funnel(){
 
 //fillercap();
 
-funnel();
+//funnel();
 
 // add support for printing splitblock
-if(0){
+if(1){
 difference(){
 union(){
+  // base plate
   translate([0,0,-7.8])
   cube([10,10,0.4],center=true);
+  // fins
   translate([-5,-0.4,-8])
-  cube([10,0.8,4]);
+  cube([10,0.8,3]);
   translate([-0.4,-5,-8])
-  cube([0.8,10,4]);
+  cube([0.8,10,3]);
 }
  translate([0,0,-9])
- cylinder(r=2.5,h=9,$fn=88);
+ cylinder(r=3,h=9,$fn=88);
 }
 }
 
-//splitblock();
+splitblock();
 
 
 // cutaway for splitblock
