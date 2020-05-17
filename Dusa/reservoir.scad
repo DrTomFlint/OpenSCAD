@@ -172,23 +172,25 @@ difference(){
 //------------------------------------------------
 module splitblock(){
   
-// screw base
+// bottom barb
 color("orange")
 translate([0,0,18]){
 mirror([0,0,1])
   difference(){
   union(){
-    for(i=[0:4]){
+    for(i=[0:5]){
       translate([0,0,10+i*3])
       cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
-    translate([0,0,25])
+    translate([0,0,28])
     cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=2,h=20,$fn=44);
-  translate([0,0,25])
-  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  cylinder(r=1.8,h=20,$fn=44);
+  translate([0,0,28])
+  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -196,17 +198,19 @@ mirror([0,0,1])
 translate([0,5,8]){
   difference(){
   union(){
-    for(i=[0:4]){
+    for(i=[0:5]){
       translate([0,0,10+i*3])
       cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
-    translate([0,0,25])
+    translate([0,0,28])
     cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=2,h=20,$fn=88);
-  translate([0,0,25])
-  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  cylinder(r=1.8,h=20,$fn=88);
+  translate([0,0,28])
+  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -214,17 +218,19 @@ translate([0,5,8]){
 translate([0,-5,8]){
   difference(){
   union(){
-    for(i=[0:4]){
+    for(i=[0:5]){
       translate([0,0,10+i*3])
       cylinder(r1=3.6,r2=3.2,h=3,$fn=88);
     }
-    translate([0,0,25])
+    translate([0,0,28])
     cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=2,h=20,$fn=88);
-  translate([0,0,25])
-  cylinder(r1=2,r2=2.3,h=1,$fn=44);
+  cylinder(r=1.8,h=20,$fn=88);
+  translate([0,0,28])
+  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -233,30 +239,30 @@ difference(){
   hull(){
     color("red")
     translate([0,5,17])
-    cylinder(r=3.6,h=1.0,$fn=88);
+    cylinder(r=5,h=1.0,$fn=88);
     color("green")
     translate([0,-5,17])
-    cylinder(r=3.6,h=1.0,$fn=88);
+    cylinder(r=5,h=1.0,$fn=88);
     color("cyan")
     translate([0,0,8])
-    cylinder(r=3.6,h=1.0,$fn=88);
+    cylinder(r=5,h=1.0,$fn=88);
   }
-
+  // inside cuts
   hull(){
     color("red")
     translate([0,5,18.0])
-    cylinder(r=2,h=0.01,$fn=88);
+    cylinder(r=1.8,h=0.01,$fn=88);
     color("cyan")
     translate([0,0,7.99])
-    cylinder(r=2,h=0.01,$fn=88);
+    cylinder(r=1.8,h=0.01,$fn=88);
   }
   hull(){
     color("red")
     translate([0,-5,18.0])
-    cylinder(r=2,h=0.01,$fn=88);
+    cylinder(r=1.8,h=0.01,$fn=88);
     color("cyan")
     translate([0,0,7.99])
-    cylinder(r=2,h=0.01,$fn=88);
+    cylinder(r=1.8,h=0.01,$fn=88);
   }
 }
 
@@ -288,8 +294,27 @@ module funnel(){
         cylinder(r=9.0,h=15.2,$fn=88);
       }
 }
+//--------------------------------------------------
+// tray on top of extruder motor to catch any drips from the quick
+// connect fitting of the coolant lines
+module driptray(){
+
+difference(){
+  cube([34,27.5,3.0]);
+
+  translate([0.45,0.45,0.8])
+  cube([34-0.9,27.5-0.9,3]);
+}
+translate([0,-2,0])
+cube([8,2.5,3]);
+translate([34-8,-2,0])
+cube([8,2.5,3]);
+
+}
 
 //=========================================
+
+//driptray();
  
 //reservoir();
 
@@ -306,15 +331,15 @@ if(1){
 difference(){
 union(){
   // base plate
-  translate([0,0,-7.8])
+  translate([0,0,-7.8-3])
   cube([10,10,0.4],center=true);
   // fins
-  translate([-5,-0.4,-8])
+  translate([-5,-0.4,-8-3])
   cube([10,0.8,3]);
-  translate([-0.4,-5,-8])
+  translate([-0.4,-5,-8-3])
   cube([0.8,10,3]);
 }
- translate([0,0,-9])
+ translate([0,0,-9-3])
  cylinder(r=3,h=9,$fn=88);
 }
 }
@@ -326,8 +351,8 @@ splitblock();
 if(0){
 difference(){
 splitblock();
-translate([0,-10,-10])
-cube([20,20,50]);
+translate([0,-10,-15])
+cube([20,20,60]);
 }
 }
 
