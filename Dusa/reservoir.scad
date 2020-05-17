@@ -170,7 +170,7 @@ difference(){
 
 }
 //------------------------------------------------
-module splitblock(){
+module splitblockOld(){
   
 // bottom barb
 color("orange")
@@ -188,9 +188,9 @@ mirror([0,0,1])
     cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=1.8,h=20,$fn=44);
+  cylinder(r=1.6,h=20,$fn=44);
   translate([0,0,28])
-  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -208,9 +208,9 @@ translate([0,5,8]){
     cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=1.8,h=20,$fn=88);
+  cylinder(r=1.6,h=20,$fn=88);
   translate([0,0,28])
-  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -228,9 +228,9 @@ translate([0,-5,8]){
     cylinder(r1=5,r2=2.5,h=3,$fn=88);
   }
   translate([0,0,9])
-  cylinder(r=1.8,h=20,$fn=88);
+  cylinder(r=1.6,h=20,$fn=88);
   translate([0,0,28])
-  cylinder(r1=1.8,r2=2.3,h=1,$fn=44);
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
   }
 }
 
@@ -251,18 +251,118 @@ difference(){
   hull(){
     color("red")
     translate([0,5,18.0])
-    cylinder(r=1.8,h=0.01,$fn=88);
+    cylinder(r=1.6,h=0.01,$fn=88);
     color("cyan")
     translate([0,0,7.99])
-    cylinder(r=1.8,h=0.01,$fn=88);
+    cylinder(r=1.6,h=0.01,$fn=88);
   }
   hull(){
     color("red")
     translate([0,-5,18.0])
-    cylinder(r=1.8,h=0.01,$fn=88);
+    cylinder(r=1.6,h=0.01,$fn=88);
     color("cyan")
     translate([0,0,7.99])
-    cylinder(r=1.8,h=0.01,$fn=88);
+    cylinder(r=1.6,h=0.01,$fn=88);
+  }
+}
+
+
+}
+
+//------------------------------------------------
+module splitblock(){
+  
+// bottom barb
+color("orange")
+translate([0,0,18]){
+mirror([0,0,1])
+  difference(){
+  union(){
+    for(i=[0:11]){
+      translate([0,0,10+i*1.5])
+      cylinder(r1=3.6,r2=3.2,h=1.5,$fn=88);
+    }
+    translate([0,0,28])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=1.6,h=20,$fn=44);
+  translate([0,0,28])
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
+  }
+}
+
+// top barb 1    
+translate([0,5,8]){
+  difference(){
+  union(){
+    for(i=[0:11]){
+      translate([0,0,10+i*1.5])
+      cylinder(r1=3.6,r2=3.2,h=1.5,$fn=88);
+    }
+    translate([0,0,28])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=1.6,h=20,$fn=88);
+  translate([0,0,28])
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
+  }
+}
+
+// top barb 2
+translate([0,-5,8]){
+  difference(){
+  union(){
+    for(i=[0:11]){
+      translate([0,0,10+i*1.5])
+      cylinder(r1=3.6,r2=3.2,h=1.5,$fn=88);
+    }
+    translate([0,0,28])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+    translate([0,0,10])
+    cylinder(r1=5,r2=2.5,h=3,$fn=88);
+  }
+  translate([0,0,9])
+  cylinder(r=1.6,h=20,$fn=88);
+  translate([0,0,28])
+  cylinder(r1=1.6,r2=2.3,h=1,$fn=44);
+  }
+}
+
+// Y block
+difference(){
+  hull(){
+    color("red")
+    translate([0,5,17])
+    cylinder(r=5,h=1.0,$fn=88);
+    color("green")
+    translate([0,-5,17])
+    cylinder(r=5,h=1.0,$fn=88);
+    color("cyan")
+    translate([0,0,8])
+    cylinder(r=5,h=1.0,$fn=88);
+  }
+  // inside cuts
+  hull(){
+    color("red")
+    translate([0,5,18.0])
+    cylinder(r=1.6,h=0.01,$fn=88);
+    color("cyan")
+    translate([0,0,7.99])
+    cylinder(r=1.6,h=0.01,$fn=88);
+  }
+  hull(){
+    color("red")
+    translate([0,-5,18.0])
+    cylinder(r=1.6,h=0.01,$fn=88);
+    color("cyan")
+    translate([0,0,7.99])
+    cylinder(r=1.6,h=0.01,$fn=88);
   }
 }
 
@@ -335,9 +435,9 @@ union(){
   cube([10,10,0.4],center=true);
   // fins
   translate([-5,-0.4,-8-3])
-  cube([10,0.8,3]);
+  cube([10,0.8,2.5]);
   translate([-0.4,-5,-8-3])
-  cube([0.8,10,3]);
+  cube([0.8,10,2.5]);
 }
  translate([0,0,-9-3])
  cylinder(r=3,h=9,$fn=88);
