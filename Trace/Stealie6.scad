@@ -66,7 +66,7 @@ module white()
  maxd=dy;
  scale([1/maxd, 1/maxd, 1])
  translate([-minx-dx/2, -miny-dy/2, 0])
- linear_extrude(height=1, convexity=1342)
+ linear_extrude(height=1.5, convexity=1342)
  union() {
   union() {
    union() {
@@ -119,7 +119,7 @@ module black1()
  maxd=dy;
  scale([1/maxd, 1/maxd, 1])
  translate([-minx-dx/2, -miny-dy/2, 0])
- linear_extrude(height=1, convexity=1342)
+ linear_extrude(height=1.5, convexity=1342)
  offset(r=240)
  union() {
   union() {
@@ -159,28 +159,28 @@ module black1()
 //-----------------------------------
 module black(){
   difference(){
-  scale([10,10,1])
-  black1();
-  translate([0,0,-0.1])
-  scale([10,10,1.5])
-  white();
+    scale([10,10,1])
+    black1();
+    translate([0,0,-0.1])
+    scale([10,10,2])
+    white();
   }
   translate([0,0.1,0])
   difference(){
-    cylinder(r=5.0,h=1,$fn=222);
+    cylinder(r=5.0,h=1.5,$fn=222);
     translate([0,0,-0.1])
-    cylinder(r=4.8,h=1.2,$fn=222);
+    cylinder(r=4.8,h=1.7,$fn=222);
   }
 }
 //---------------------------------------------------------
 module colors(){
   difference(){
     translate([0,0.1,0])
-    cylinder(r=4.8,h=1.1,$fn=222);
+    cylinder(r=4.8,h=1.5,$fn=222);
 
-    scale([1,1,1.2])
+    scale([1,1,1])
     black();
-    scale([10,10,1.2])
+    scale([10,10,1])
     white();
   }
   
@@ -204,6 +204,25 @@ module outercolor(){
     rotate([0,0,10])
     scale([1,0.3,1])
     cylinder(r=1.3,h=2.0,$fn=222);
+  }
+}
+
+//---------------------------------------------------------
+module eyes(){
+
+  intersection(){
+    colors();
+    
+    union(){
+    translate([-1.5,-2.2,-0.2])
+    scale([1,0.3,1])
+    cylinder(r=1.3,h=2.0,$fn=222);
+
+    translate([1.5,-2.05,-0.2])
+    rotate([0,0,10])
+    scale([1,0.3,1])
+    cylinder(r=1.3,h=2.0,$fn=222);
+    }
   }
 }
 
@@ -256,10 +275,30 @@ difference(){
   
 //=========================================================
 
+//black1();
+
 //colors();
 //outercolor();
 //innercolor();
 //innerred();
+
+if(0){
+scale([10,10,1])
+eyes();
+}
+
+// base
+if(0){
+//  difference(){
+    scale([10,10,1])
+    translate([0,0.1,-0.3])
+    cylinder(r=5.0,h=0.3,$fn=222);
+
+//    translate([0,0,-0.5])
+//    scale([10,10,3])
+//    eyes();
+//  }
+}
 
 // white
 if(0){
