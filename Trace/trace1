@@ -217,9 +217,9 @@ fi
 convert $negate -gravity center -background white -gamma $gamma -adaptive-resize $xres'x'$yres $infile $ppm
 if [ "$filter" != 0 ]
 then
-	mkbitmap -f $filter -s 2 -t $level <$ppm >$pgm
+	./mkbitmap -f $filter -s 2 -t $level <$ppm >$pgm
 else
-	mkbitmap -n -s 2 -t $level <$ppm >$pgm
+	./mkbitmap -n -s 2 -t $level <$ppm >$pgm
 fi
 
 if [ "$verbose" = "true" ]
@@ -230,7 +230,7 @@ fi
 # potrace 1.11 says -a 0 to disable smoothing
 # potrace 1.10 says -a -1 (or any negative) to disable smoothing
 # -a -1 seem to work on both versions, so we just do that...
-potrace --opaque -a -1 -u $subres --group -sct $turd <$pgm >$svg
+./potrace --opaque -a -1 -u $subres --group -sct $turd <$pgm >$svg
 
 # compute max possible bounding box...
 # based on the actual PGM file dimensions
