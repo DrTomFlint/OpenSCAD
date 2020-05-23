@@ -6,6 +6,7 @@ use <../Parts/motors.scad>
 use <../Parts/bltouch.scad>
 use <../Parts/blower.scad>
 use <../Parts/switch.scad>
+use <../Parts/rounder.scad>
 
 use <frame.scad>
 use <zaxis.scad>
@@ -295,7 +296,7 @@ type=1
       cylinder(r=1.8,h=3.6+18,$fn=22);
     }
     
-    // topside brass mounts for wire retainers *******************************************
+    // topside brass mounts for wire retainers 
     if(type==1){
       translate([+480/2-X0+75,8.5,High0+zmotor1+48.1]){
         cylinder(r=2.3,h=3.5,$fn=22);
@@ -680,7 +681,7 @@ module standoff(){
     difference(){
       cylinder(r=5.3,h=16,$fn=8);        
       translate([0,0,-0.5])
-      cylinder(r=2.2,h=17,$fn=8);        
+      cylinder(r=2.3,h=17,$fn=8);        
     }
   
 }
@@ -905,6 +906,108 @@ h1=6;
       }
     }
 }
+//-----------------------------------------------------------------
+module hoseclip(){
+  
+    X3=LeftX0;
+    
+    // standoff
+    color("pink")
+    translate([+480/2-X3+41.1,-11.4,High0+89.9])
+    rotate([-90,0,0])
+    standoff();
+    
+    // standoff
+    translate([+480/2-X3+41.1+53,-11.4,High0+89.9])
+    rotate([-90,0,0])
+    standoff();
+    
+    // horizontal bar and cylinderical fingers
+    difference(){
+    union(){
+      // vertical post
+      translate([+480/2-X3+38,-11.4,High0+93])
+      cube([6,16,20]);
+      // corner fillet
+      translate([+480/2-X3+38,-11.4,High0+113])
+      rotate([0,45,0])
+      cube([8,16,8]);
+      // vertical post
+      translate([+480/2-X3+38+53,-11.4,High0+93])
+      cube([6,16,20]);
+      // corner fillet
+      translate([+480/2-X3+38+47.5,-11.4,High0+113])
+      rotate([0,45,0])
+      cube([8,16,8]);      
+      // crossbar
+      translate([+480/2-X3+38,-11.4,High0+113])
+      cube([59,16,6]);
+      
+      // finger 1
+      color("green")
+      translate([+480/2-X3+55,-11.4+16,High0+116])
+      rotate([-90,0,0])
+      cylinder(r=3,h=30,$fn=88);
+      color("green")
+      translate([+480/2-X3+55,-11.4,High0+116])
+      rotate([-90,0,0])
+      cylinder(r1=5,r2=3,h=30,$fn=88);
+      
+      // finger 2      
+      color("red")
+      translate([+480/2-X3+80,-11.4+16,High0+116])
+      rotate([-90,0,0])
+      cylinder(r=3,h=30,$fn=88);
+      color("red")
+      translate([+480/2-X3+80,-11.4,High0+116])
+      rotate([-90,0,0])
+      cylinder(r1=5,r2=3,h=30,$fn=88);
+    }
+    // holes for M3x40 and brass inserts to make fingers strong
+    color("pink")
+    translate([+480/2-X3+55,-11.4+6,High0+116])  
+    rotate([-90,0,0])
+    cylinder(r=1.6,h=40,$fn=88);
+    color("pink")
+    translate([+480/2-X3+55,-11.4,High0+116])
+    rotate([-90,0,0])
+    cylinder(r=3,h=6.1,$fn=88);
+    translate([+480/2-X3+55,-11.4+43,High0+116])
+    rotate([-90,0,0])
+    cylinder(r=2.25,h=3.0,$fn=22);
+
+    color("pink")
+    translate([+480/2-X3+80,-11.4+6,High0+116])
+    rotate([-90,0,0])
+    cylinder(r=1.6,h=40,$fn=88);
+    color("pink")
+    translate([+480/2-X3+80,-11.4,High0+116])
+    rotate([-90,0,0])
+    cylinder(r=3,h=6.1,$fn=88);
+    translate([+480/2-X3+80,-11.4+43,High0+116])
+    rotate([-90,0,0])
+    cylinder(r=2.25,h=3.0,$fn=22);
+    
+    // round off the corners of the crossbar
+    translate([+480/2-X3+38,-11.4,High0+119])
+    rotate([-90,0,0])
+    rounder(r=5,h=16,f=88);
+    translate([+480/2-X3+97,-11.4,High0+119])
+    rotate([-90,0,0])
+    rotate([0,0,90])
+    rounder(r=5,h=16,f=88);
+    
+    // material reduction
+    translate([+480/2-X3+43,-11.4-1,High0+114])
+    rotate([-90,0,0])
+    cylinder(r=2.5,h=18,$fn=44);
+    translate([+480/2-X3+43+49,-11.4-1,High0+114])
+    rotate([-90,0,0])
+    cylinder(r=2.5,h=18,$fn=44);
+    
+  }          
+    
+}
 
 //==========================================================================================
 
@@ -912,7 +1015,9 @@ h1=6;
 //touchbox();
 
 //wireclip(type=1,X0=LeftX0);
-wireclip(type=2,X0=RightX0+135);
+//wireclip(type=2,X0=RightX0+135);
+
+hoseclip();
 
 // printing for the blower standoffs
 if(0){
