@@ -910,6 +910,7 @@ h1=6;
 module hoseclip(){
   
     X3=LeftX0;
+    foff=4;
     
     // standoff
     color("pink")
@@ -945,46 +946,46 @@ module hoseclip(){
       
       // finger 1
       color("green")
-      translate([+480/2-X3+55,-11.4+16,High0+116])
+      translate([+480/2-X3+55-foff,-11.4+16,High0+116])
       rotate([-90,0,0])
       cylinder(r=3,h=30,$fn=88);
       color("green")
-      translate([+480/2-X3+55,-11.4,High0+116])
+      translate([+480/2-X3+55-foff,-11.4,High0+116])
       rotate([-90,0,0])
       cylinder(r1=5,r2=3,h=30,$fn=88);
       
       // finger 2      
       color("red")
-      translate([+480/2-X3+80,-11.4+16,High0+116])
+      translate([+480/2-X3+80-foff,-11.4+16,High0+116])
       rotate([-90,0,0])
       cylinder(r=3,h=30,$fn=88);
       color("red")
-      translate([+480/2-X3+80,-11.4,High0+116])
+      translate([+480/2-X3+80-foff,-11.4,High0+116])
       rotate([-90,0,0])
       cylinder(r1=5,r2=3,h=30,$fn=88);
     }
     // holes for M3x40 and brass inserts to make fingers strong
     color("pink")
-    translate([+480/2-X3+55,-11.4+6,High0+116])  
+    translate([+480/2-X3+55-foff,-11.4+6,High0+116])  
     rotate([-90,0,0])
     cylinder(r=1.6,h=40,$fn=88);
     color("pink")
-    translate([+480/2-X3+55,-11.4,High0+116])
+    translate([+480/2-X3+55-foff,-11.4,High0+116])
     rotate([-90,0,0])
     cylinder(r=3,h=6.1,$fn=88);
-    translate([+480/2-X3+55,-11.4+43,High0+116])
+    translate([+480/2-X3+55-foff,-11.4+43,High0+116])
     rotate([-90,0,0])
     cylinder(r=2.25,h=3.0,$fn=22);
 
     color("pink")
-    translate([+480/2-X3+80,-11.4+6,High0+116])
+    translate([+480/2-X3+80-foff,-11.4+6,High0+116])
     rotate([-90,0,0])
     cylinder(r=1.6,h=40,$fn=88);
     color("pink")
-    translate([+480/2-X3+80,-11.4,High0+116])
+    translate([+480/2-X3+80-foff,-11.4,High0+116])
     rotate([-90,0,0])
     cylinder(r=3,h=6.1,$fn=88);
-    translate([+480/2-X3+80,-11.4+43,High0+116])
+    translate([+480/2-X3+80-foff,-11.4+43,High0+116])
     rotate([-90,0,0])
     cylinder(r=2.25,h=3.0,$fn=22);
     
@@ -997,13 +998,19 @@ module hoseclip(){
     rotate([0,0,90])
     rounder(r=5,h=16,f=88);
     
+    translate([+480/2-X3+43+13.5,-11.4+8,High0+80])
+    cylinder(r=2.0,h=40,$fn=44);
+
+    
     // material reduction
     translate([+480/2-X3+43,-11.4-1,High0+114])
     rotate([-90,0,0])
     cylinder(r=2.5,h=18,$fn=44);
+    
     translate([+480/2-X3+43+49,-11.4-1,High0+114])
     rotate([-90,0,0])
     cylinder(r=2.5,h=18,$fn=44);
+    
     
   }          
     
@@ -1017,7 +1024,10 @@ module hoseclip(){
 //wireclip(type=1,X0=LeftX0);
 //wireclip(type=2,X0=RightX0+135);
 
-hoseclip();
+//hoseclip();  // left side
+mirror([1,0,0]) hoseclip();  // right side
+
+
 
 // printing for the blower standoffs
 if(0){

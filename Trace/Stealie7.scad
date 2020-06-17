@@ -1,7 +1,7 @@
 // Stealie7.scad
 
 L0=0.2;   // layer thickness
-N=5;      // number of colored layers, does not include clear
+N=7;      // number of colored layers, does not include clear
 
 Z0=L0*N;  // thickness of the colored layers
 
@@ -325,7 +325,7 @@ if(0){
 }
 
 // top
-if(1){
+if(0){
   scale([10,10,1])
   translate([0,0.1,Z0])
   cylinder(r=5.0,h=L0,$fn=222);
@@ -354,7 +354,7 @@ if(0){
 }
 
 // blue
-if(0){
+if(1){
   scale([10,10,1])  
   union(){
     innerblue();
