@@ -1,5 +1,5 @@
 # Dusa
-These are most of the files to create a 3D printer.
+These are most of the files to create a 3D printer.  Additional files in Parts repo.
 
 The printer is a Prusa style build with 2 extruders sharing a common X-axis set of linear rails.
 
