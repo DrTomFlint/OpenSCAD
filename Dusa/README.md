@@ -1,6 +1,8 @@
 # Dusa
 These are most of the files to create a 3D printer.
+
 The printer is a Prusa style build with 2 extruders sharing a common X-axis set of linear rails.
+
 The frame is T-slot with M5 hardware corner braces.
 Power is 24 volt supply and an additional 12 volt DC/DC converter.
 Controller board is a Duet 3 with a Raspberry Pi 4 attached.  
