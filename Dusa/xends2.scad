@@ -4,6 +4,7 @@
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/switch.scad>
+use <../Parts/rounder.scad>
 use <frame.scad>
 use <zaxis.scad>
 
@@ -559,7 +560,7 @@ switchcut();
 //translate([-(x2+zscrew-39),-15.5,High0+20])
 //cube([9,10,14]);
 
-// cut for ooze prevention arm  *****************************************
+// cut for ooze prevention arm  
 translate([-(x2+zscrew-33),-8,High0+25.5]){
   translate([0,0,-3.5])
   cylinder(r=2.3,h=3.5,$fn=22);
@@ -583,7 +584,7 @@ rotate([90,0,-15])
 cylinder(r=2.5,h=45,$fn=F2);
 
 // cut for limit switch wires
-translate([-(x2+zscrew-23),-14,High0+36.4])  // *************************
+translate([-(x2+zscrew-23),-14,High0+36.4]) 
 cube([4,6,19.2]);
 translate([-(x2+zscrew+9),-10.5,High0+59])
 scale([1,1,2])
@@ -618,7 +619,120 @@ cube([8,2,4]);
 
 
 }
+//-----------------------------------------------------  ******************************************************************************
+module xooze(type=1){
+  
+difference(){
+  // boss that screws on
+  color("cyan")
+  translate([x2+zscrew-45,-13,High0+16.5])
+  cube([31,26,5.5]);
+  
+  // M3 mounting holes
+  translate([x2+zscrew-33,-8,High0+25.5]){
+    translate([0,0,-9.1])
+    cylinder(r=1.5,h=3.5+5,$fn=22);
+    translate([0,0,-9.1])
+    cylinder(r=3,h=4.5,center=true,$fn=22);
+  }
+  translate([x2+zscrew-33,8,High0+25.5]){
+    translate([0,0,-9.1])
+    cylinder(r=1.5,h=3.5+5,$fn=22);
+    translate([0,0,-9.1])
+    cylinder(r=3,h=4.5,center=true,$fn=22);
+  }
+  color("pink")
+  translate([x2+zscrew-18,-6,High0+25.5]){
+    translate([0,0,-9.1])
+    cylinder(r=1.5,h=3.5+5,$fn=22);
+    translate([0,0,-9.1])
+    cylinder(r=3,h=4.5,center=true,$fn=22);
+  }
+  hull(){
+    // clearance z screw
+    translate([x2-30+zscrew,0,15])
+    rotate([0,0,180])
+    cylinder(r=4.5,h=350,$fn=F2);
 
+    translate([x2-10+zscrew,10,15])
+    rotate([0,0,180])
+    cylinder(r=8,h=350,$fn=F2);
+  }
+  // small rounded corner of boss
+  translate([x2+zscrew-14,-13,High0+16])
+  rotate([0,0,90])
+  rounder(r=8,h=8,f=88);
+
+  // large rounded corner of boss
+  translate([x2+zscrew-14,13,High0+16])
+  rotate([0,0,180])
+  rounder(r=15,h=8,f=88);
+
+  // small rounded corner near arm
+  translate([x2+zscrew-45,13,High0+16])
+  rotate([0,0,-90])
+  rounder(r=5,h=8,f=88);
+
+  // clearance for body of the BLtouch
+  translate([x2+zscrew-45,-3,High0+16])
+  cylinder(r=6.5,h=8,$fn=88);
+}
+
+difference(){
+  union(){
+    // plate block
+    color("green")
+    translate([x2+zscrew-96,-10,High0+9.8])
+    rotate([0,-2,0])
+    cube([28,14,3]);
+  
+    hull(){
+      // front  arm anchor
+      color("pink")
+      translate([x2+zscrew-80,0,High0+10.3])
+      rotate([0,-2,0])
+      cube([12,4,4]);
+
+      // front boss anchor
+      color("orange")
+      translate([x2+zscrew-45,3.5,High0+16.5])
+      cube([1,4,5.5]);
+    }
+    hull(){
+      // back  arm anchor
+      color("pink")
+      translate([x2+zscrew-80,-10,High0+10.3])
+      rotate([0,-2,0])
+      cube([12,4,4]);
+
+      // back boss anchor
+      color("orange")
+      translate([x2+zscrew-45,-13,High0+16.5])
+      cube([1,4,5.5]);
+    }
+  }
+  
+  // cut for metal plate
+  color("orange")
+  translate([x2+zscrew-102,-7,High0+11.8])
+  rotate([0,-2,0])
+  cube([31.5,8.3+0.15,0.8+0.15]); // add some extra clearance 0.15
+  
+  // cut for the hole in the plate
+  translate([x2+zscrew-102.5+27.5,-7+4.15,High0+8])
+  
+  cylinder(r=1.7,h=5,$fn=22);  
+}
+
+  // metal plate
+  if(0){
+    color("orange")
+    translate([x2+zscrew-102,-7,High0+11.8])
+    rotate([0,-2,0])
+    cube([31.5,8.3,0.8]);
+  }
+
+}
 //=======================================================
 
 // left limit switch 
@@ -630,6 +744,9 @@ if(0){
     switch(ang1=12); 
   }
 }
+
+mirror([1,0,0])
+xooze(type=1);
 
 //translate([-350,0,0])
 //xleft1();
@@ -653,7 +770,7 @@ cube([12,4.5,9]);
 
 }
 
-// right limit switch  **************************************************************
+// right limit switch 
 if(0){
   translate([-(x2-28+zscrew-2),ytoz-6.5,High0+90-34])
   rotate([90,90,0]){
@@ -663,7 +780,7 @@ if(0){
 }
 
 //xright1();
-if(1){
+if(0){
 // This is a printing support for xright1
 color("pink")
 translate([-(x2-30+zscrew+xrodscrew),0,High0+60-1])

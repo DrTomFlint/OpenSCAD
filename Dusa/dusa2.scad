@@ -21,10 +21,10 @@ use <xcarriage.scad>
 
 // ---- positioning -------------------
 // Height of x rods, +46 hardstop, ~51 bed height, +290 hardstop
-High0=50;        
+High0=50.5+40;        
 
 // Left extruder position, +152, +398
-LeftX0=152+20; 
+LeftX0=152+0; 
 
 // Right extruder position, +82, +327
 RightX0=327;
@@ -34,31 +34,31 @@ Bed0=0;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=1;
+frameOn=0;
 
 // Show top z brackets
-tops=1;  
+tops=0;  
 
 // Show z axis left
-leftZon=1;
+leftZon=0;
 
 // Show z axis right
-rightZon=1;
+rightZon=0;
 
 // Show x axis left
-leftXon=1;
+leftXon=0;
 
 // Show x axis right
 rightXon=1;
 
 // Show extruder left
-leftEon=1;
+leftEon=0;
 
 // Show extruder right
 rightEon=1;
 
 // Show ybed 
-ybed=1;    
+ybed=0;    
 
 // ----- dimensions -------------------
 // Length front, back, top rail
@@ -317,6 +317,8 @@ if(leftXon){
   // left x end
   translate([0,ytoz,High0-150])
   xleft1();
+  translate([0,ytoz,High0-150])
+  xooze(type=1);
 
   // left x limit switch 
   translate([x2-28+zscrew,ytoz-5,High0+90-48])
@@ -405,7 +407,11 @@ if(rightXon){
   // right x end
   translate([0,ytoz,High0-150])
   xright1();
-    
+
+  mirror([1,0,0])
+  translate([0,ytoz,High0-150])
+  xooze(type=1);
+      
   // right x limit switch 
   translate([-(x2-28+zscrew),ytoz-6.5,High0+90-34])
   rotate([90,90,0]){
