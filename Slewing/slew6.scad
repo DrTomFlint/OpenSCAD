@@ -1,26 +1,38 @@
-// slew1
+//==================================================================
+// slew6.scad
 // slewing joint with cross roller bearings
+//
+// DrTomFlint July 2020
+//==================================================================
 
+CarrierOn = 1;
+RollersOn = 1;
+RollerPrint = 0;
+OuterRaceOn = 1;
+InnerHiOn = 1;
+InnerLowOn = 1;
+PlateOn = 0;
+GasketOn = 0;
 
-F1=200;              // $fn for rollers
-F2=44;              // $fn for less critical
-
-// TEST !!
-//rod=9.0;           // roller outer diameter
-// 9.0 too loose, #5 build first solid
+CutawayOn = 1;
+CutawayAngle = 20;
 
 // 9.1 is good, use that extra 0.1 on the rollers only!!
-rod=9.0;           // roller outer diameter
+// roller outer diameter, for races
+rod=9.0;          
+// roller outer diameter, for rollers
 rodx=9.1;
+// roller inner diameter
+rid=5.8;           
+// roller height
+rhi=rod-0.6;
+// z height of bevels
+rbevel=1.2;   
+// half the number of rollers
+Nr = 6;    
+// outer race fillet    
+ofill=0;  
 
-rid=5.8;            //  roller inner diameter
-//rhi=rod-0.5;      // roller height
-rhi=rod-0.6;      // roller height
-
-rbevel=1.2;           // z height of bevels
-Nr = 6;            // half the number rollers
-    
-ofill=0;        // outer race fillet
 ood=36-ofill;        // outer race outer rad
 oid=10+ofill;         // outer race inner rad
 ohi=14-2*ofill;         // outer race height
@@ -40,11 +52,14 @@ oholeo=3;       // offset from edge
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360
 
+F1=200;              // $fn for rollers
+F2=44;              // $fn for less critical
+
 //-------------------------------
+// solid rollers, print in PetG
 module roller1(tol=0){
 
-difference(){
-union(){
+  union(){
     // boss is stack of 3 cylinders
     translate([0,0,-tol])
     cylinder(r1=rodx/2-rbevel,  r2=rodx/2+tol, h=rbevel+tol, $fn=F1);
@@ -54,57 +69,45 @@ union(){
         
     translate([0,0,rhi-rbevel])
     cylinder(r1=rodx/2+tol,  r2=rodx/2-rbevel, h=rbevel, $fn=F1);
-}
-
-
-}
+  }
 }
 
 //-------------------------------
 module roller1cut(tol=0){
 
-difference(){
-union(){
-    translate([0,0,rbevel])
-    cylinder(r=rod/2+tol, h=rhi-2*rbevel, $fn=F1);
+  translate([0,0,rbevel])
+  cylinder(r=rod/2+tol, h=rhi-2*rbevel, $fn=F1);
 }
-
-
-}
-}
-
 
 //------------------------------------
 module ring1(tol=0.1){
     
-    difference(){
-        union(){
-        // main ring
-        rotate_extrude(angle=CutAngle,$fn=F1){
-        translate([(ood+oid)/2,0,0])
-        //offset(r=ofill,$fn=F2)
-        square([ood-oid,ohi],center=true);
-        }
-
+  difference(){
+    union(){
+      // main ring
+      rotate_extrude(angle=CutAngle,$fn=F1){
+      translate([(ood+oid)/2,0,0])
+      //offset(r=ofill,$fn=F2)
+      square([ood-oid,ohi],center=true);
+      }
     } // end union
-    
-        // cut for races
-        rotate_extrude($fn=F1){
-        translate([(ood+oid)*iooff,0,0])
-        rotate([0,0,45])
-        offset(r=rbevel,$fn=F2)
-        square([rod-rbevel*2+tol,
-            rod-rbevel*2+tol],center=true);
-        }
-        
-        // cut for bolts inner
-        for(i=[0:Nholei-1]){
-            rotate([0,0,360/Nholei*i])
-            translate([oid+oholei,0,-1])
-            cylinder(r=rholei,h=ohi*2,center=true,$fn=16);
-        }
-
+  
+    // cut for races
+    rotate_extrude($fn=F1){
+      translate([(ood+oid)*iooff,0,0])
+      rotate([0,0,45])
+      offset(r=rbevel,$fn=F2)
+      square([rod-rbevel*2+tol,
+          rod-rbevel*2+tol],center=true);
     }
+    
+    // cut for bolts inner
+    for(i=[0:Nholei-1]){
+        rotate([0,0,360/Nholei*i])
+        translate([oid+oholei,0,-1])
+        cylinder(r=rholei,h=ohi*2,center=true,$fn=16);
+    }
+  }
 }
 
 //---------------------------------
@@ -112,19 +115,18 @@ module outer1(){
 
 lip=0;
     
-    difference(){
-        union(){
-        ring1();  
+  difference(){
+    union(){
+      ring1();  
 
-        color("cyan")
-        translate([0,0,ohi/2+1])
-        cylinder(r1=ood+lip,r2=ood+lip,h=2,center=true,$fn=F1);
+      color("cyan")
+      translate([0,0,ohi/2+1])
+      cylinder(r1=ood+lip,r2=ood+lip,h=2,center=true,$fn=F1);
     }// end union
-    
+  
     // cut for outer ring
     cylinder(r=(ood+oid)*iooff+iogap/2,h=ohi*3,center=true,$fn=F1);
-    
-
+  
     // cut for bolts outer
     for(i=[0:Nholeo-1]){
         rotate([0,0,360/Nholeo*i])
@@ -138,18 +140,18 @@ lip=0;
         translate([ood-oholeo,0,-ohi/2-1])
         cylinder(r=2.9,h=5,$fn=16);
     }
-
-    
+  
+    // add a version number for tracking
     translate([(ood+oid)/2+5.5,13,-ohi/2-0.2])
-color("red")
+    color("red")
     rotate([0,0,-65])
     linear_extrude(height=0.8){
-        rotate([180,0,0])
-    text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+      rotate([180,0,0])
+      text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
     }
-}// end diff
-
+  }// end diff
 }
+
 //---------------------------------
 module inner1(){
     
@@ -162,62 +164,55 @@ module inner1(){
 }
 //-----------------------------------
 module innerLow(tol=0.1){
-    difference(){
-        inner1();
-        
-        translate([-ood,-ood,-tol])
-        cube([ood*2,ood*2,20]);
-
-    }
+  difference(){
+    inner1();
+    
+    translate([-ood,-ood,-tol])
+    cube([ood*2,ood*2,20]);
+  }
  
-difference(){
+  difference(){
     color("orange")
-        translate([0,0,-ohi/2-2])
-        difference(){
-            union(){
-            cylinder(r=(ood+oid)*iooff+iogap/2+3,h=3,center=true,$fn=F2);
-                translate([0,0,2])
-            cylinder(r=(ood+oid)*iooff-iogap/2,h=1,center=true,$fn=F2);
-            }
-            
-            cylinder(r=oid,h=6,center=true,$fn=F1);
+    translate([0,0,-ohi/2-2])
+    difference(){
+      union(){
+        cylinder(r=(ood+oid)*iooff+iogap/2+3,h=3,center=true,$fn=F2);
+        translate([0,0,2])
+        cylinder(r=(ood+oid)*iooff-iogap/2,h=1,center=true,$fn=F2);
+      }
+        
+      //
+      cylinder(r=oid,h=6,center=true,$fn=F1);
 
-       // cut for bolts inner
-        for(i=[0:Nholei-1]){
-            rotate([0,0,360/Nholei*i])
-            translate([oid+oholei,0,-1])
-            cylinder(r=rholei,h=ohi*2,center=true,$fn=16);
-        }
+      // cut for bolts inner
+      for(i=[0:Nholei-1]){
+        rotate([0,0,360/Nholei*i])
+        translate([oid+oholei,0,-1])
+        cylinder(r=rholei,h=ohi*2,center=true,$fn=16);
+      }
 
-        // cuts for bolt heads
-        if(1){
+      // cuts for bolt heads
+      if(1){
         for(i=[0:Nholei-1]){
-            rotate([0,0,360/Nholei*i]){
+          rotate([0,0,360/Nholei*i]){
             translate([oid+oholei,0,-0.1])
             cylinder(r=2.9,h=3.0,center=true,$fn=16);
             translate([oid+oholei,0,1.6])
             cylinder(r1=2.9,r2=1.55,h=1,center=true,$fn=16);
-            }
+          }
         }
+      }
     }
-                
-
-
-
-
-        }
         
     translate([(ood+oid)/2-1,8,-ohi/2-4])
-color("red")
+    color("red")
     rotate([0,0,-65])
     linear_extrude(height=0.8){
-        rotate([180,0,0])
-    text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
-    }
-        
-    }
-    
- }
+      rotate([180,0,0])
+      text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    }        
+  }    
+}
 
 //-----------------------------------
 module innerHi(tol=0.1){
@@ -335,52 +330,85 @@ module plate1(){
 
     }
 }
-//=================================
+//=====================================================================
 
+// Use this to get a cutaway view of the carrier
 if(0){
+  difference(){
+    carrier2();
+    translate([22,-13,0])
+    rotate([0,0,180/Nr])
+    cube([40,40,40],center=true);    
+  }
+}
+
+// make a union of all the parts to allow a cutaway view
 difference(){
-carrier();
-translate([22,-13,0])
-rotate([0,0,180/Nr])
-cube([40,40,40],center=true);    
-}
-}
+union(){    
+  // This is the carrier that keeps the rollers seperated
+  if(CarrierOn){
+    carrier2();
+  }
 
-//carrier2();
+  // this makes the full set of rollers, use for modeling not printing
+  if(RollersOn){
+    for(i=[0:Nr-1]){
+        rotate([0,0,360/Nr*i])
 
-if(0){
-//for(i=[0]){
-for(i=[0:Nr-1]){
-    rotate([0,0,360/Nr*i])
+        color("red")
+        translate([(ood+oid)*iooff,0,0])
+        rotate([0,45,0])
+        translate([0,0,-rhi/2])
+        roller1();
+    }
+    for(i=[0:Nr-1]){
+        rotate([0,0,360/Nr*i+180/Nr])
 
-    color("red")
-    translate([(ood+oid)*iooff,0,0])
-    rotate([0,45,0])
-    translate([0,0,-rhi/2])
+        color("green")
+        translate([(ood+oid)*iooff,0,0])
+        rotate([0,-45,0])
+        translate([0,0,-rhi/2])
+        roller1();
+    }
+  }
+
+  // Make 1 roller, use for printing
+  if(RollerPrint){
     roller1();
+  }
+
+  // Outer bearing race
+  if(OuterRaceOn){
+    outer1();
+  }
+
+  // Inner race, high side only
+  if(InnerHiOn){
+    innerHi();
+  }
+
+  // Inner race, low side only
+  if(InnerLowOn){
+    innerLow();
+  }
+
+  // Plate attaches to screw on inner race, used to spin with a drill
+  if(PlateOn){
+    plate1();
+  }
+
+  // Gasket can adjust spacing between upper and lower inner races to get
+  // smooth motion of the bearing
+  if(GasketOn){
+    gasket();
+  }
+} // end of cutaway union
+if(CutawayOn){
+  rotate([0,0,CutawayAngle])
+  translate([20,-20,0])
+  cube([40,40,40],center=true);    
 }
-//for(i=[0]){
-for(i=[0:Nr-1]){
-    rotate([0,0,360/Nr*i+180/Nr])
+} // end of cutaway difference
 
-    color("green")
-    translate([(ood+oid)*iooff,0,0])
-    rotate([0,-45,0])
-    translate([0,0,-rhi/2])
-    roller1();
-}
-}
 
-//roller1();
-
-//ring1();
-
-//outer1();
-
-//innerHi();
-//innerLow();
-
-plate1();
-
-//gasket();
-
+//=====================================================================

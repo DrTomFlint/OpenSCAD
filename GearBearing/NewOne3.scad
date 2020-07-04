@@ -1,34 +1,53 @@
+//======================================================================
 // Planetary gear bearing (customizable)
-// 18 minutes to render
-
+// Takes about 18 minutes to render.
+// This is a remix/update of Emmett Lalish's gear bearing
+// https://www.thingiverse.com/thing:53451
+// To change the text you will need to edit the .scad file provided.
+//
+// DrTomFlint July 2020
+//----------------------------------------------------------------------
+// Customizer settings:
 // outer diameter of ring
 D=80;
 // thickness
 T=20;
 // clearance
 tol=0.16;
-
+// number of planets
 number_of_planets=8;
+// teeth on planets
 number_of_teeth_on_planets=12;
+// teeth on sun
 approximate_number_of_teeth_on_sun=36;
 // pressure angle
-P=22;//[30:60]
+P=22;
 // number of teeth to twist across
 nTwist=2.2;
-DR=0.5*1;// maximum depth ratio of teeth
-inset=1;    // inset for gear blanks
-
+// depth ratio of teeth
+DR=0.5*1;
+// inset for gear blanks
+inset=1; 
 // width of sun hole
 w=18.0;
+// sides on sun hole
 s=8;
-axle=3;
-// planet holes
+// size of planet holes
 w2=4.0;
+// sides on plante holes
 s2=8;
-axle2=1;
 
-axle3=5;
+//-------------------------------------------------------------------
+module null(){
+  // just forces an end to the customizer params
+}
+//-------------------------------------------------------------------
 
+axle=0;  // these are not used
+axle2=0;
+axle3=0;
+
+// variables computed from the customizer params:
 m=round(number_of_planets);                      // m planets
 np=round(number_of_teeth_on_planets);           // np num tooth planet
 ns1=approximate_number_of_teeth_on_sun;         
@@ -45,8 +64,6 @@ helix_angle=atan(2*nTwist*pitch/T);
 echo("helix angle"); echo(helix_angle);
 
 phi=$t*360/m;           // $t index loops over 0 to 1
-
-
 
 //----------------------------------
 // ring gear

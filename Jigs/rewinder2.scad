@@ -1,8 +1,26 @@
+//====================================================================
 // rewinder2.scad
-// redux for the rewinder spring
-// original design is fragile due to bi-directional action
-// this makes a single direction spring that should be more robust
+// Rework for the universal auto rewinder spool holder
+// https://www.thingiverse.com/thing:3338467
+// The original design is fragile due to bi-directional action.
+// This makes a replacement spring and housing, the spring is a
+// seperate part so you can adjust and replace it.
+// Print each part individually then assemble them.
+// You may want to mirror the parts to get the opposite rotation for
+// you setup.
+// OpenScad coding could have been better so this takes a while to 
+// render, 30 seconds on my laptop for the spring.
+// 
+// DrTomFlint July 2020
+//=====================================================================
+// Customizer parameters:
 
+// Spring thickness
+Thick = 1.4;
+// Turn on the spring
+SpringOn = 1;
+// Turn on the housing
+HousingOn = 0;
 
 //-------------------------------------------------------------------
 module line(point1, point2, width = 1, cap_round = true) {
@@ -50,7 +68,8 @@ points = [for(theta = [0:step:2 * PI * circles])
 ];
 
 linear_extrude(height=6.6,convexity=20)
-polyline(points, 1.4);
+//polyline(points, 1.4);
+polyline(points, Thick);
 
 }
 
@@ -132,16 +151,21 @@ module spring(){
 //==================================================================
 
 // un-mirrored parts for left side of the Dusa only
-spring();
-//house();
+if(SpringOn){
+  spring();
+}
+if(HousingOn){
+  house();
+}
 
 // mirrored parts for the MMU and right side of Dusa
 //translate([120,0,0])
 //mirror([1,0,0]) house();
 
-translate([120,0,0])
-mirror([1,0,0]) spring();
+//translate([120,0,0])
+//mirror([1,0,0]) spring();
 
+// Use these to show a section view
 if(0){
   difference(){
     house();
@@ -158,7 +182,6 @@ if(0){
   }
 }
 
-//spiral1();
 
 
 //==================================================================
