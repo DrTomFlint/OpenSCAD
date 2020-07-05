@@ -1,21 +1,21 @@
 //==================================================================
-// slew6.scad
+// slew7.scad
 // slewing joint with cross roller bearings
 //
 // DrTomFlint July 2020
 //==================================================================
 
-CarrierOn = 0;
-RollersOn = 0;
+CarrierOn = 1;
+RollersOn = 1;
 RollerPrint = 0;
 OuterRaceOn = 1;
-InnerHiOn = 0;
-InnerLowOn = 0;
+InnerHiOn = 1;
+InnerLowOn = 1;
 PlateOn = 0;
 GasketOn = 0;
 
-CutawayOn = 0;
-CutawayAngle = 20;
+CutawayOn = 1;
+CutawayAngle = 0;
 
 // 9.1 is good, use that extra 0.1 on the rollers only!!
 // roller outer diameter, for races
@@ -29,25 +29,19 @@ rhi=rod-0.6;
 // z height of bevels
 rbevel=1.2;   
 // half the number of rollers
-Nr = 6;    
-// outer race fillet    
-ofill=0;  
+Nr = 7;    
 
-ood=36-ofill;        // outer race outer rad
-oid=10+ofill;         // outer race inner rad
-ohi=14-2*ofill;         // outer race height
+ood=36;        // outer race outer rad
+oid=16;         // outer race inner rad
+ohi=12;         // outer race height
 
-iooff=0.51;     // offset race in the boss
+iooff=0.52;     // offset race in the boss
 
 iogap=4;        // inner outer gap
 
-Nholei=8;     // number holes inner
+Nholei=4;     // number holes inner
 rholei=1.55;     // radius of holes inner
-oholei=3;       // offset from edge
-
-Nholeo=8;     // number holes inner
-rholeo=1.55;     // radius of holes inner
-oholeo=3;       // offset from edge
+oholei=3.0;       // offset from edge
 
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360
@@ -87,7 +81,6 @@ module ring1(tol=0.1){
       // main ring
       rotate_extrude(angle=CutAngle,$fn=F1){
       translate([(ood+oid)/2,0,0])
-      //offset(r=ofill,$fn=F2)
       square([ood-oid,ohi],center=true);
       }
     } // end union
@@ -119,35 +112,26 @@ lip=0;
     union(){
       ring1();  
 
+      // extend outer race vertically to clear the bolts of inner races
       color("cyan")
-      translate([0,0,ohi/2+1])
-      cylinder(r1=ood+lip,r2=ood+lip,h=2,center=true,$fn=F1);
+      translate([0,0,ohi/2])
+      cylinder(r1=ood+lip,r2=ood+lip,h=6,$fn=F1);
+      color("green")
+      translate([0,0,ohi/2+6])
+      cylinder(r1=ood+lip,r2=ood+lip-1,h=1,$fn=F1);
     }// end union
   
-    // cut for outer ring
+    // cut the central hole
     cylinder(r=(ood+oid)*iooff+iogap/2,h=ohi*3,center=true,$fn=F1);
-  
-    // cut for bolts outer
-    for(i=[0:Nholeo-1]){
-        rotate([0,0,360/Nholeo*i])
-        translate([ood-oholeo,0,-1])
-        cylinder(r=rholeo,h=ohi*2,center=true,$fn=16);
-    }
-
-    // cut for bolt heads
-    for(i=[0:Nholeo-1]){
-        rotate([0,0,360/Nholeo*i])
-        translate([ood-oholeo,0,-ohi/2-1])
-        cylinder(r=2.9,h=5,$fn=16);
-    }
+    translate([0,0,ohi/2+6])
+    cylinder(r1=(ood+oid)*iooff+iogap/2,r2=(ood+oid)*iooff+iogap/2+1,h=1.01,$fn=F1);
   
     // add a version number for tracking
-    translate([(ood+oid)/2+5.5,13,-ohi/2-0.2])
+    translate([ood-0.8,0,ohi/2])
     color("red")
-    rotate([0,0,-65])
+    rotate([90,0,90])
     linear_extrude(height=0.8){
-      rotate([180,0,0])
-      text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+      text("7", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
     }
   }// end diff
 }
@@ -172,17 +156,20 @@ module innerLow(tol=0.1){
   }
  
   difference(){
-    color("orange")
-    translate([0,0,-ohi/2-2])
+    translate([0,0,-ohi/2-3])
     difference(){
       union(){
-        cylinder(r=(ood+oid)*iooff+iogap/2+3,h=3,center=true,$fn=F2);
+        color("orange")
+        cylinder(r1=ood-1,r2=ood,h=1,center=true,$fn=F2);
+        translate([0,0,1])
+        cylinder(r=ood,h=1,center=true,$fn=F2);
+        color("blue")
         translate([0,0,2])
-        cylinder(r=(ood+oid)*iooff-iogap/2,h=1,center=true,$fn=F2);
+        cylinder(r=(ood+oid)*iooff-iogap/2,h=2,center=true,$fn=F2);
       }
         
       //
-      cylinder(r=oid,h=6,center=true,$fn=F1);
+      cylinder(r=oid,h=7,center=true,$fn=F1);
 
       // cut for bolts inner
       for(i=[0:Nholei-1]){
@@ -204,42 +191,32 @@ module innerLow(tol=0.1){
       }
     }
         
-    translate([(ood+oid)/2-1,8,-ohi/2-4])
+    translate([(ood+oid)/2-3,9,-ohi/2-4.1])
     color("red")
     rotate([0,0,-65])
-    linear_extrude(height=0.8){
+    linear_extrude(height=1){
       rotate([180,0,0])
-      text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+      text("7", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
     }        
   }    
 }
 
 //-----------------------------------
 module innerHi(tol=0.1){
-    difference(){
+  difference(){
     intersection(){
-        inner1();
-        
-        translate([-ood,-ood,+tol])
-        cube([ood*2,ood*2,20]);
+      inner1();
+      
+      translate([-ood,-ood,+tol])
+      cube([ood*2,ood*2,20]);
     }
 
-
-        // cut for bolt heads
-    if(0){
-        for(i=[0:Nholei-1]){
-            rotate([0,0,360/Nholei*i])
-            translate([oid+oholei,0,ohi/2-4])
-            cylinder(r=3,h=4,$fn=F2);
-        }
-    }
-
-    translate([(ood+oid)/2-9,6,ohi/2-0.2])
-color("red")
+    translate([(ood+oid)/2-7,6,ohi/2-0.2])
+    color("red")
     rotate([0,0,-65])
     linear_extrude(height=0.8){
-        rotate([0,0,0])
-    text("5", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+      rotate([0,0,-4])
+      text("7", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
     }
 }
 }
@@ -257,9 +234,8 @@ module gasket(){
 module carrier2(tol=-0.25){
     a1=360/Nr;
 //    a1=360;
-z0=ohi+2*ofill;
+z0=ohi;
 z1=0.0;     // clearance to top/bottom
-
 tolR=0.25;  // radial tolerance to clear races    
     
 difference(){ 
