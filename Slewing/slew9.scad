@@ -24,12 +24,20 @@
 // I have not tried that yet.
 //
 // The upper and lower races screw together.  This allows you to set the
-// tension on the rollers.  There is a set of holes on the inner bore 
+// tension on the rollers.  There is a set of holes on the inner race
 // that should fit a raw bit of 1.75 mm filament.  This is used to lock
-// the screw in place.  The holes go all the way through the lower race,
-// so you should be able to remove the locking pin by pushing it out 
-// with a paperclip or needle.  Don't push the locking pin all the way 
-// into the hole until you have worn in the bearing a bit.
+// the screw in place.  
+//
+// This version still has some bad hacks in it.  In particular the added
+// GT2 timing belt pulley on the outer race will require some manual 
+// coding if you change other parameters.  The dimensions are set in 
+// timing2.scad file and not computed from the other parameters.  There
+// is also a 45 degree cylindrical support that fits just below the 
+// pulley to make the outer race printable without support.  That will
+// need manual adjustment.
+//
+// If you don't need the timing pulley you can turn it off with PulleyOn
+// and save messing with it.  The rest of the bearing should scale OK.
 //
 // This was tested using PetG on a Prusa i3 mk3s.
 //
@@ -37,6 +45,7 @@
 //==================================================================
 
 use <../Parts/threads.scad>  // include the threads.scad file
+use <../Parts/timing2.scad>  // include the timing2.scad file
 
 CarrierOn = 1;    // 1=turned on, 0=turned off
 RollersOn = 1;    // use this only for design, see how roller fit
@@ -44,9 +53,10 @@ RollerPrint = 0;  // use this only for printing the rollers
 OuterRaceOn = 1;
 InnerHiOn = 1;
 InnerLowOn = 1;
+PulleyOn = 1;
 
 CutawayOn = 1;    // turn this on to make a sectional view
-CutawayAngle = 0; // adjust the angle of the sectional cut
+CutawayAngle = -10; // adjust the angle of the sectional cut
 
 // 9.1 is good, use that extra 0.1 on the rollers only!!
 // roller outer diameter, for races
@@ -60,19 +70,18 @@ rhi=rod-0.6;
 // z height of bevels
 rbevel=1.2;   
 // half the number of rollers
-Nr = 20;    
+Nr = 10;    
 
-ood=120;        // outer race outer rad
-oid=98;         // outer race inner rad
+ood=75;        // outer race outer rad
+oid=50;         // outer race inner rad
 ohi=15;         // outer race height
 
-iooff=0.51;     // offset race in the boss
+iooff=0.525;     // offset race in the boss
 
 iogap=4;        // inner outer gap
 
-Nholei=4;     // number holes inner
-rholei=1.55;     // radius of holes inner
-oholei=3.0;       // offset from edge
+Ntabo=8;      // number of bolt down tabs outer 
+Ntabi=6;      // number of bolt down tabs inner
 
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360
@@ -135,26 +144,62 @@ lip=0;
     
   difference(){
     union(){
-      ring1();  
-
-      // extend outer race vertically to clear the inner race
+      // main outer 
+      ring1();
+      if(PulleyOn){ 
+        // add teeth for a GT2 timing belt, this is a bit of a hack
+        // and will not scale with other parameters.  The dimensions are
+        // all set in the timing2.scad file.
+        // @TODO fix the use of the pulley.
+        translate([0,0,-2]) 
+        time2();
+        // add support for the time2 timing belt pulley
+        translate([0,0,-3.5]) 
+        difference(){
+          cylinder(r1=ood,r2=ood+2.5,h=2.5,$fn=F1);
+          cylinder(r=ood-2,h=2.5,$fn=F1);
+        }
+      }
+      // extend outer race vertically to clear the carrier
       color("green")
       translate([0,0,ohi/2])
       cylinder(r1=ood+lip,r2=ood+lip-1,h=1,$fn=F1);
+
+      // base plate  
+      color("green")
+      translate([0,0,-ohi/2-2])
+      cylinder(r=ood,h=2,$fn=F1);
+  
+      // tabs for bolting down
+      for(i=[0:Ntabo-1]){
+        rotate([0,0,i*360/Ntabo]){
+          translate([0,ood,-ohi/2-2])
+          scale([1,1.5,1])
+          cylinder(r=6,h=5,$fn=F1);
+          translate([0,ood,-ohi/2-2+5])
+          scale([1,1.5,1])
+          cylinder(r1=6,r2=5,h=1,$fn=F1);
+        }
+      }
     }// end union
+
+    // holes in the tabs for bolting down
+    for(i=[0:Ntabo-1]){
+      rotate([0,0,i*360/Ntabo])
+      translate([0,ood+4,-ohi/2-3])
+      cylinder(r=1.7,h=8,$fn=F1);
+      rotate([0,0,i*360/Ntabo])
+      translate([0,ood+4,-3])
+      cylinder(r=3,h=20,$fn=F1);
+    }
+
+    // inner bevel base plate  
+    translate([0,0,-ohi/2-2.01])
+    cylinder(r1=(ood+oid)*iooff+iogap/2+1,r2=(ood+oid)*iooff+iogap/2,h=1,$fn=F1);
   
     // cut the central hole
     cylinder(r=(ood+oid)*iooff+iogap/2,h=ohi*3,center=true,$fn=F1);
-    translate([0,0,ohi/2+6])
-    cylinder(r1=(ood+oid)*iooff+iogap/2,r2=(ood+oid)*iooff+iogap/2+1,h=1.01,$fn=F1);
-  
-    // add a version number for tracking
-    translate([ood-0.8,0,0])
-    color("red")
-    rotate([90,0,90])
-    linear_extrude(height=0.8){
-      text("8", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
-    }
+      
   }// end diff
 }
 
@@ -178,112 +223,104 @@ module innerLow(tol=0.1){
 
     // cut for threads
     translate([0,0,-ohi/2+0.2])
-    metric_thread (diameter=oid*2+7+0.7, pitch=2, length=ohi/2, leadin=3);
+    metric_thread (diameter=oid*2+7+0.7, pitch=2, length=ohi/2, leadin=3, n_starts=3);
     
+    // cuts for the locking pins
+    for(i=[-3:3]){
+      rotate([0,0,-180/Ntabi+4*i])
+      translate([0,-oid-6,-ohi/2-2])
+      cylinder(r=1.9/2,h=2*ohi,$fn=33);
+      rotate([0,0,-180/Ntabi+4*i+180])
+      translate([0,-oid-6,-ohi/2-2])
+      cylinder(r=1.9/2,h=2*ohi,$fn=33);
+    }    
+
     // extra clearance for top threaded part, make these thru holes so
     // it might be possible to remove the locking pin
     translate([0,0,-ohi/2])
     cylinder(r=(oid*2+5.5)/2, h=0.5, $fn=F2);
 
-    // cuts to lock threads
-    for(i=[-4:4]){
-      rotate([0,0,9*i])
-      translate([0,-oid+1,-ohi/2])
-      rotate([90,0,0])
-      cylinder(r=1.9/2,h=6+10,$fn=F2);
-    }
   }
- 
-  // bottom plate
-  difference(){
-    translate([0,0,-ohi/2-3])
-    difference(){
-      union(){
-        color("orange")
-        cylinder(r1=ood-1,r2=ood,h=1,center=true,$fn=F1);
-        translate([0,0,1])
-        cylinder(r=ood,h=1,center=true,$fn=F1);
-        color("blue")
-        translate([0,0,2])
-        cylinder(r=(ood+oid)*iooff-iogap/2,h=2,center=true,$fn=F1);
-      }
-        
-      // Center bore
-      cylinder(r=oid,h=9,center=true,$fn=F1);      
-    
-      // lower bevel cut on inner diameter
-      translate([0,0,-0.51])
-      cylinder(r1=oid+1,r2=oid,h=1,$fn=F1);
-
-      // repeat the cuts to lock threads
-      for(i=[-4:4]){
-        rotate([0,0,9*i])
-        translate([0,-oid+1,3])
-        rotate([90,0,0])
-        cylinder(r=1.9/2,h=6+10,$fn=F1);
-      }
-    }
-        
-    translate([(ood+oid)/2-3,9,-ohi/2-4.1])
-    color("red")
-    rotate([0,0,-65])
-    linear_extrude(height=1){
-      rotate([180,0,0])
-      text("8", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
-    }        
-  }    
-}
+ }
 
 //-----------------------------------
 module innerHi(tol=0.1){
   color("orange")
   difference(){
-    intersection(){
-      color("orange")
-      inner1();
+    union(){
+      // top half of the inner race
+      intersection(){
+        color("orange")
+        inner1();
+        
+        color("orange")
+        translate([-ood,-ood,+tol])
+        cube([ood*2,ood*2,20]);
+      }
       
+      // add a raised section 
       color("orange")
-      translate([-ood,-ood,+tol])
-      cube([ood*2,ood*2,20]);
+      translate([0,0,ohi/2])
+      cylinder(r=(ood+oid)*iooff-iogap/2,h=2,$fn=F1);
+      color("orange")
+      translate([0,0,ohi/2+2])
+      cylinder(r1=(ood+oid)*iooff-iogap/2,r2=(ood+oid)*iooff-iogap/2-1,h=1,$fn=F1);
+      
+      
     }
+    
+    // cut for the central bore
+    cylinder(r=oid,h=ohi*2,center=true,$fn=F1);
+    
+    // cuts for the locking pins
+    for(i=[-3:3]){
+      rotate([0,0,-180/Ntabi+7*i])
+      translate([0,-oid-6,-ohi/2-2])
+      cylinder(r=1.9/2,h=2*ohi,$fn=33);
+      rotate([0,0,-180/Ntabi+7*i+180])
+      translate([0,-oid-6,-ohi/2-2])
+      cylinder(r=1.9/2,h=2*ohi,$fn=33);
+    }    
+  }
 
-    // upper bevel cut on inner diameter
-    color("orange")
-    translate([0,0,ohi/2-1])
-    cylinder(r1=oid,r2=oid+1,h=1.01,$fn=F1);
-
-    translate([(ood+oid)/2-6,6,ohi/2-0.2])
-    color("red")
-    rotate([0,0,-65])
-    linear_extrude(height=0.8){
-      rotate([0,0,-4])
-      text("8", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  // tabs for bolting down  
+  for(i=[0:Ntabi-1]){
+    rotate([0,0,i*360/Ntabi]){
+      color("gray")
+      difference(){
+        union(){
+          translate([0,oid,ohi/2-2])
+          scale([1,1.5,1])
+          cylinder(r=5,h=5,$fn=F1);      
+          translate([0,oid,ohi/2-3])
+          scale([1,1.5,1])
+          cylinder(r1=4,r2=5,h=1,$fn=F1);
+        }
+        translate([0,oid-4,ohi/2-4])
+        cylinder(r=1.7,h=8,$fn=F1);
+      }
     }
   }
   
   // add thread
   difference(){  
     translate([0,0,-ohi/2+0.2])
-    metric_thread (diameter=oid*2+7, pitch=2, length=ohi/2, leadin=3);
+    metric_thread (diameter=oid*2+7, pitch=2, length=ohi/2, leadin=3, n_starts=3);
 
+    // cut for center bore
     cylinder(r=oid,h=ohi*2,center=true,$fn=F1);
 
-    // cuts to lock threads, increase angular displacement by 1 deg
-    // versus the cuts on the innerLow part, should insure some align
-    for(i=[-4:4]){
-      rotate([0,0,12*i])
-      translate([0,-oid+1,-ohi/2])
-      rotate([90,0,0])
-      cylinder(r=1.9/2,h=6,$fn=F2);
-    }
+    // bevel on center bore
+    translate([0,0,-ohi/2+0.5])
+    cylinder(r1=oid+1,r2=oid,h=1,center=true,$fn=F1);
+
   }
   
 }
 
 //--------------------------------
 module carrier2(tol=-0.25){
-    a1=360/Nr;
-//    a1=360;
+
 z0=ohi;
 z1=0.0;     // clearance to top/bottom
 tolR=0.25;  // radial tolerance to clear races    
