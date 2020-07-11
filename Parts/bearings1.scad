@@ -2,6 +2,7 @@
 // modules for bearings
 
 //----------------------------
+// 608Z ball bearings from the filament rollers
 module balls1(
     tol=0.0,
     mark=1,

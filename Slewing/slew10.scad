@@ -1,5 +1,5 @@
 //==================================================================
-// slew9.scad
+// slew10.scad
 // A slewing joint with cross roller bearings.
 //
 // This has only been tested with the default parameters, if you are
@@ -47,15 +47,18 @@
 use <../Parts/threads.scad>  // include the threads.scad file
 use <../Parts/timing2.scad>  // include the timing2.scad file
 
-CarrierOn = 1;    // 1=turned on, 0=turned off
+CarrierOn = 0;    // 1=turned on, 0=turned off
 RollersOn = 0;    // use this only for design, see how roller fit
 RollerPrint = 0;  // use this only for printing the rollers
 OuterRaceOn = 1;
 InnerHiOn = 0;
-InnerLowOn = 1;
+InnerLowOn = 0;
 PulleyOn = 1;
 
-CutawayOn = 1;    // turn this on to make a sectional view
+OuterTab = 1; // 0=off, 1=inner, 2=outer
+InnerTab = 1; // 0=off, 1=inner, 2=outer
+
+CutawayOn = 0;    // turn this on to make a sectional view
 CutawayAngle = 0; // adjust the angle of the sectional cut
 
 // 9.1 is good, use that extra 0.1 on the rollers only!!
@@ -80,8 +83,10 @@ iooff=0.525;     // offset race in the boss
 
 iogap=4;        // inner outer gap
 
-Ntabo=8;      // number of bolt down tabs outer 
+Ntabo=6;      // number of bolt down tabs outer 
 Ntabi=6;      // number of bolt down tabs inner
+Ntab2=6;      // number of bolt down tabs outer race inner side 
+Ntab3=6;      // number of bolt down tabs inner race outer side
 
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360
@@ -151,13 +156,20 @@ lip=0;
         // and will not scale with other parameters.  The dimensions are
         // all set in the timing2.scad file.
         // @TODO fix the use of the pulley.
-        translate([0,0,-2]) 
-        time2();
-        // add support for the time2 timing belt pulley
-        translate([0,0,-3.5]) 
-        difference(){
-          cylinder(r1=ood,r2=ood+2.5,h=2.5,$fn=F1);
-          cylinder(r=ood-2,h=2.5,$fn=F1);
+        translate([0,0,-6]){ 
+          time2();
+          // add lower support for the time2 timing belt pulley
+          translate([0,0,-1.5]) 
+          difference(){
+            cylinder(r1=ood,r2=ood+2.5,h=2.5,$fn=F1);
+            cylinder(r=ood-2,h=2.5,$fn=F1);
+          }
+          // add upper support for the time2 timing belt pulley
+          translate([0,0,10.25]) 
+          difference(){
+            cylinder(r2=ood,r1=ood+2.5,h=2.5,$fn=F1);
+            cylinder(r=ood-2,h=2.5,$fn=F1);
+          }
         }
       }
       // extend outer race vertically to clear the carrier
@@ -167,38 +179,48 @@ lip=0;
 
       // base plate  
       color("green")
-      translate([0,0,-ohi/2-2])
-      cylinder(r=ood,h=2,$fn=F1);
+      translate([0,0,-ohi/2-4])
+      cylinder(r=ood,h=4,$fn=F1);
   
       // Outer tabs for bolting down  
-      if(0){
+      if(OuterTab==2){
       for(i=[0:Ntabo-1]){
         rotate([0,0,i*360/Ntabo]){
-          translate([0,ood,-ohi/2-2])
-          scale([1,1.5,1])
-          cylinder(r=6,h=5,$fn=F1);
-          translate([0,ood,-ohi/2-2+5])
-          scale([1,1.5,1])
-          cylinder(r1=6,r2=5,h=1,$fn=F1);
+          
+          hull(){
+            translate([0,ood,-ohi/2-4])
+            scale([1,1.5,1])
+            cylinder(r=7,h=3,$fn=F1);
+            translate([0,ood-3,-ohi/2-4])
+            scale([3,1,1])
+            cylinder(r=4,h=3,$fn=F1);
+          }
+          
+          hull(){
+            translate([0,ood,-ohi/2-4])
+            scale([3.3,1,1])
+            cylinder(r=3,h=3,$fn=F1);
+            translate([0,ood-4,-ohi/2-4])
+            scale([3.5,1,1])
+            cylinder(r=3,h=5,$fn=F1);
+          }
         }
       }
       }
 
-
     }// end union
 
-    // holes in the tabs for bolting down
-    for(i=[0:Ntabo-1]){
-      rotate([0,0,i*360/Ntabo])
-      translate([0,ood+4,-ohi/2-3])
-      cylinder(r=1.7,h=8,$fn=F1);
-      rotate([0,0,i*360/Ntabo])
-      translate([0,ood+4,-3])
-      cylinder(r=3,h=20,$fn=F1);
+    // holes in the outer tabs for bolting down
+    if(OuterTab==2){
+      for(i=[0:Ntabo-1]){
+        rotate([0,0,i*360/Ntabo])
+        translate([0,ood+7,-ohi/2-6])
+        cylinder(r=1.7,h=8,$fn=F1);
+      }
     }
-
+    
     // inner bevel base plate  
-    translate([0,0,-ohi/2-2.01])
+    translate([0,0,-ohi/2-4.01])
     cylinder(r1=(ood+oid)*iooff+iogap/2+1,r2=(ood+oid)*iooff+iogap/2,h=1,$fn=F1);
   
     // cut the central hole
@@ -206,14 +228,29 @@ lip=0;
       
   }// end diff
  
-  // Inner tabs for bolting down
-  if(1){
-  for(i=[0:Ntabo-1]){
-    rotate([0,0,i*360/Ntabo]){
-      color("pink")
-      translate([0,(ood+oid)/2,-ohi/2-2])
-      scale([1,1.5,1])
-      cylinder(r=6,h=1,$fn=F1);
+  // Inner tabs for bolting down ********************
+  if(OuterTab==1){
+  for(i=[0:Ntab2-1]){
+    rotate([0,0,i*360/Ntabi]){
+      difference(){
+        hull(){
+          color("pink")
+          translate([0,0.4*(ood+oid),-ohi/2-4])
+          scale([1,1.5,1])
+          cylinder(r=5,h=3,$fn=F1);
+          color("cyan")
+          translate([0,ood-6,-ohi/2-4])
+          scale([4,1,1])
+          cylinder(r=5,h=3,$fn=F1);
+        }
+        // bolt holes
+        translate([0,oid-4,-ohi/2-6])
+        cylinder(r=1.7,h=8,$fn=F1);
+        // arch holes
+        translate([0,ood-8,-ohi/2-6])
+        scale([1,1.5,1])
+        cylinder(r=10,h=8,$fn=F1);
+      }
     }
   }
   }
@@ -274,19 +311,33 @@ module innerHi(tol=0.1){
         cube([ood*2,ood*2,20]);
       }
       
-      // add a raised section 
-      color("orange")
-      translate([0,0,ohi/2])
-      cylinder(r=(ood+oid)*iooff-iogap/2,h=2,$fn=F1);
-      color("orange")
-      translate([0,0,ohi/2+2])
-      cylinder(r1=(ood+oid)*iooff-iogap/2,r2=(ood+oid)*iooff-iogap/2-1,h=1,$fn=F1);
-      
+      // add a raised section (inner tabs)
+      if(InnerTab<2){
+        color("orange")
+        translate([0,0,ohi/2])
+        cylinder(r=(ood+oid)*iooff-iogap/2,h=2,$fn=F1);
+        color("orange")
+        translate([0,0,ohi/2+2])
+        cylinder(r1=(ood+oid)*iooff-iogap/2,r2=(ood+oid)*iooff-iogap/2-1,h=1,$fn=F1);
+      }
+      // raised section (outer tabs)
+      if(InnerTab==2){
+        color("orange")
+        translate([0,0,ohi/2])
+        cylinder(r=(ood+oid)*iooff-iogap/2,h=4,$fn=F1);
+        //color("orange")
+        translate([0,0,ohi/2+4])
+        cylinder(r1=(ood+oid)*iooff-iogap/2,r2=(ood+oid)*iooff-iogap/2-1,h=1,$fn=F1);
+      }      
       
     }
     
     // cut for the central bore
     cylinder(r=oid,h=ohi*2,center=true,$fn=F1);
+    
+    // cut for the top inside bevel
+    translate([0,0,ohi/2+4.01])
+    cylinder(r1=oid,r2=oid+1,h=1,$fn=F1);
     
     // cuts for the locking pins
     for(i=[-3:3]){
@@ -299,21 +350,65 @@ module innerHi(tol=0.1){
     }    
   }
 
-  // tabs for bolting down  
-  for(i=[0:Ntabi-1]){
-    rotate([0,0,i*360/Ntabi]){
-      color("gray")
-      difference(){
-        union(){
-          translate([0,oid,ohi/2-2])
-          scale([1,1.5,1])
-          cylinder(r=5,h=5,$fn=F1);      
-          translate([0,oid,ohi/2-3])
-          scale([1,1.5,1])
-          cylinder(r1=4,r2=5,h=1,$fn=F1);
+  // inner tabs for bolting down  
+  if(InnerTab==1){
+    for(i=[0:Ntabi-1]){
+      rotate([0,0,i*360/Ntabi]){
+        color("gray")
+        difference(){
+          hull(){
+            translate([0,oid,ohi/2])
+            scale([1,1.5,1])
+            cylinder(r=5,h=3,$fn=F1);      
+
+            translate([0,oid+2,ohi/2])
+            scale([3,1,1])
+            cylinder(r=3,h=3,$fn=F1);      
+          }
+          translate([0,oid-4,ohi/2-4])
+          cylinder(r=1.7,h=8,$fn=F1);
         }
-        translate([0,oid-4,ohi/2-4])
-        cylinder(r=1.7,h=8,$fn=F1);
+      }
+    }
+  }
+    
+  // outer tabs for bolting down
+  if(InnerTab==2){
+    for(i=[0:Ntab3-1]){
+      rotate([0,0,i*360/Ntab3]){
+        //color("red")
+        difference(){
+          union(){
+            // main arm
+            hull(){
+              translate([0,ood+4,ohi/2+2])
+              scale([1,1.5,1])
+              cylinder(r=5,h=3,$fn=F1);      
+
+              translate([0,oid+11,ohi/2+2])
+              scale([5,1,1])
+              cylinder(r=3,h=3,$fn=F1);      
+            }
+            // fillet
+            hull(){
+              translate([0,oid+12,ohi/2+2])
+              scale([5,1,1])
+              cylinder(r=2.9,h=3,$fn=F1);      
+
+              translate([0,oid+10,ohi/2+0])
+              scale([5,1,1])
+              cylinder(r=3,h=5,$fn=F1);      
+            }
+            
+          }
+          // bolt holes
+          translate([0,ood+7,ohi/2])
+          cylinder(r=1.7,h=8,$fn=F1);
+          // arch holes
+          translate([0,0.5*(ood+oid),ohi/2])
+          scale([1,1.8,1])
+          cylinder(r=7,h=8,$fn=F1);
+        }
       }
     }
   }
@@ -390,7 +485,7 @@ for(i=[0:Nr-1]){
 
 //=====================================================================
 
-
+module slew10(){
 // make a union of all the parts to allow a cutaway view
 difference(){
 union(){    
@@ -448,6 +543,9 @@ if(CutawayOn){
   cube([2*ood,2*ood,2*ohi],center=true);    
 }
 } // end of cutaway difference
+}
 
+//=======================
+slew10();
 
 //=====================================================================
