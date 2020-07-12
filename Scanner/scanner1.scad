@@ -18,17 +18,57 @@ use <../Fractals/Lsystem.scad>
 
 
 AzOn=1;     // azimuth axis, turntable
-TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
+TableOn=1;  // rotational table, 0=off, 1=flat, 2=pillar
 ElOn=1;     // elevation axis, camera arm
-ShellOn=1;  // lower shell, 1=full, 2=don't show cylinder
-ArmOn=1;    // camera arm
+ShellOn=1;  // shell cover
 LidOn=1;    // rear lid
+BaseOn=1;   // base plate
+TowerOn=3;  // 0 = off, 1=left, 2=right, 3=both
+BearingsOn=1;   // show bearings in the towers
+
+ArmOn=1;    // camera arm
 Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
 
 F2=88;
 F1=222;
+
+//--------------------------------------------------------------------
+module baseplate(){
+  
+Ntabi=6;  
+oid=50;         // outer race inner rad
+ohi=15;         // outer race height
+  
+    for(i=[0:Ntabi-1]){
+      rotate([0,0,i*360/Ntabi]){
+        color("gray")
+        difference(){
+          hull(){
+            translate([0,oid,0])
+            scale([1,1.5,1])
+            cylinder(r=5,h=3,$fn=F1);      
+
+            translate([0,oid+2,0])
+            scale([3,1,1])
+            cylinder(r=3,h=3,$fn=F1);      
+          }
+          translate([0,oid-4,-4])
+          cylinder(r=1.7,h=8,$fn=F1);
+        }
+      }
+    }
+
+  
+  difference(){
+    translate([0,0,0])
+    cylinder(r=90,h=3,$fn=F2);
+   
+    translate([0,0,-1])
+    cylinder(r=50,h=5,$fn=F2);
+  }  
+}
 
 //--------------------------------------------------------------------
 module axle(){
@@ -65,18 +105,26 @@ module azimuth(){
   slew10();
   
   // azimuth motor
-  translate([110,0,62])
-  rotate([0,0,90])
+  translate([126,72,62])
+  rotate([0,0,180])
   rotate([180,0,0])
   xymotor();
   
   // azimuth pulley
   color("green")
-  translate([110,0,10])
+  translate([126,72,10])
   rotate([180,0,0])
   pulley();
 
+  
+  // azimuth idler
+  color("green")
+  translate([85,60,5])
+  rotate([180,0,0])
+  idler();
+
   // azimuth belt
+  if(0){
   color("gray")
   difference(convexity=6){
     hull(){
@@ -92,6 +140,8 @@ module azimuth(){
       cylinder(r=152.2/2,h=9,$fn=F2);
     }
   }
+  }
+  
 } // end azimuth
 
 // --------------------------------------------------------------------
@@ -171,13 +221,40 @@ module fwheel(){
 //-------------------------------------------------------------------
 module elevation(){
 
-dy1 = 20;   // delta y for the elevation motor and pulley
-
-  // elevation pulley
+  // elevation wheel
   translate([0,0,100])  
   rotate([0,90,0])
   ewheel();
   
+  theta=38;
+  theta2=theta+4.35;
+  y1=144*cos(theta);
+  z1=144*sin(theta);
+  y2=102.9*cos(theta2);
+  z2=102.9*sin(theta2);
+  echo(Y1 = y1);
+  echo(Z1 = z1);
+  echo(Y2 = y2);
+  echo(Z2 = z2);
+  
+  // elevation motor
+  translate([-57,y1,100-z1])  
+  rotate([0,-90,180])
+  xymotor();
+
+  // elevation pulley
+  color("cyan")
+  translate([-5,y1,100-z1])  
+  rotate([0,90,0])
+  pulley();
+
+  // elevation idler
+  color("cyan")
+  translate([0,y2,100-z2])  
+  rotate([0,90,0])
+  idler();
+
+
   // left axle
   translate([3,0,100])  
   rotate([0,90,0])
@@ -191,19 +268,7 @@ dy1 = 20;   // delta y for the elevation motor and pulley
   rotate([0,90,0])
   fwheel();
 
-  // elevation pulley
-  color("cyan")
-  translate([-5,dy1,12])  
-  rotate([0,90,0])
-  pulley();
-
-  // elevation motor
-  translate([-57,dy1,12])  
-  rotate([-90,0,0])
-  rotate([0,-90,180])
-  xymotor();
-
-  // elevation belt
+/*  // elevation belt
   color("gray")
   difference(convexity=6){
     hull(){
@@ -225,25 +290,34 @@ dy1 = 20;   // delta y for the elevation motor and pulley
       cylinder(r=152.2/2,h=9,$fn=F2);
     }
   }
+  */
 } // end elevation
 //---------------------------------------------------------------------
 module shell(){
 
+  // cylinder shell
+  translate([0,0,-10]){
+    difference(){
+      cylinder(r=82,h=110,$fn=F2);
+      translate([0,0,-1])
+      cylinder(r=81,h=112,$fn=F2);
+    }
+  }
+
+} // end shell  
+//---------------------------------------------------------------------
+module tower(){
+
   difference(){
     union(){
-      if(ShellOn==1){
-        // cylinder shell
-        translate([0,0,-10]){
-          difference(){
-            cylinder(r=82,h=110,$fn=F2);
-            translate([0,0,-1])
-            cylinder(r=81,h=112,$fn=F2);
-          }
-        }
-      }
       // left tower
       translate([-85,-10,-10])
       cube([4,20,110]);
+      // make I beams
+      translate([-88,-10,-10])
+      cube([4,3,110]);
+      translate([-88,10,-10])
+      cube([4,3,110]);
     
       // left bearing housing
       translate([-80,0,100])  
@@ -255,22 +329,8 @@ module shell(){
       rotate([0,-90,0])
       cylinder(r=16,h=4,$fn=F2);
       
-      // right tower
-      translate([81,-10,-10])
-      cube([4,20,110]);
-    
-      // right bearing housing
-      translate([88,0,100])  
-      rotate([0,-90,0])
-      cylinder(r=12,h=8,$fn=F2);
-
-      // right bearing light shield
-      translate([86.5,0,100])  
-      rotate([0,-90,0])
-      cylinder(r=16,h=4,$fn=F2);
-
-    } // end union    
-    
+      
+    }
     // cut left bearing insert
     translate([-81,0,100])  
     rotate([0,-90,0])
@@ -280,31 +340,9 @@ module shell(){
     translate([-79,0,100])  
     rotate([0,-90,0])
     cylinder(r=7,h=9,$fn=F2);
-
-    // cut right bearing insert
-    translate([90,0,100])  
-    rotate([0,-90,0])
-    cylinder(r=11+0.15,h=9,$fn=F2);
-
-    // cut right bearing shaft 
-    translate([84,0,100])  
-    rotate([0,-90,0])
-    cylinder(r=7,h=9,$fn=F2);
   }
   
-  // add left bearing
-  color("red")
-  translate([-81,0,100])  
-  rotate([0,-90,0])
-  balls1(tol=0);
-  
-  // add right bearing
-  color("red")
-  translate([88,0,100])  
-  rotate([0,-90,0])
-  balls1(tol=0);
-  
-} // end shell  
+} // end tower  
 
 //---------------------------------------------------------------------
 module dome(Rin=81,thick=1){
@@ -471,6 +509,30 @@ module scanner(){
     ewheel();
   }
     
+  if(BaseOn){
+    translate([0,0,-13.5])
+    baseplate();
+  }
+  if(TowerOn){
+    tower();
+    mirror([1,0,0])
+    tower();
+  }
+
+  if(BearingsOn){
+    // add left bearing
+    color("red")
+    translate([-81,0,100])  
+    rotate([0,-90,0])
+    balls1(tol=0);
+    
+    // add right bearing
+    color("red")
+    translate([88,0,100])  
+    rotate([0,-90,0])
+    balls1(tol=0);
+  }  
+
 }
 //=================================================================
 

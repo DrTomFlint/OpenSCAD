@@ -188,7 +188,7 @@ module L_system2(start, rules, n, angle, w=0.4, draw_chars="F", move_chars="M", 
     if(ch=="F") for(x=[pos[0],pos[1],newpos[0],newpos[1]]) x ];
 
   segmented_lines(coords, w);
-  echo("Done!");
+  //echo("Done!");
 }
 
 // draw a closed path using polygon, assumes no move commands(all lines connected)

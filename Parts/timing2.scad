@@ -149,7 +149,7 @@ module pulley( belt_type , pulley_OD , tooth_depth , tooth_width ){
           union(){
             //base
             if (( base_height < 2 ) && (no_of_nuts > 0)){ 
-              echo ("CAN'T DRAW PULLEY BASE, HEIGHT LESS THAN 2!!!"); 
+              //echo ("CAN'T DRAW PULLEY BASE, HEIGHT LESS THAN 2!!!"); 
             } else {
               translate([0,0,-idler_height]){
                 //rotate_extrude($fn=base_diameter*2)
@@ -229,10 +229,10 @@ module pulley( belt_type , pulley_OD , tooth_depth , tooth_width ){
               
         //captive nut and grub screw holes
         if ( base_height < nut_width ){
-          echo ("CAN'T DRAW CAPTIVE NUTS, HEIGHT LESS THAN NUT DIAMETER!!!");
+          //echo ("CAN'T DRAW CAPTIVE NUTS, HEIGHT LESS THAN NUT DIAMETER!!!");
         } else {
           if ( (base_diameter - motor_shaft)/2 < nut_depth + 3 ) { 
-            echo ("CAN'T DRAW CAPTIVE NUTS, DIAMETER TOO SMALL FOR NUT DEPTH!!!");
+            //echo ("CAN'T DRAW CAPTIVE NUTS, DIAMETER TOO SMALL FOR NUT DEPTH!!!");
           } else {
             // Iterate over nuts amount
             if (no_of_nuts > 0){
