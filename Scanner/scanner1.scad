@@ -14,19 +14,49 @@ use <../Slewing/slew10.scad>
 use <../Parts/motors.scad>
 use <../Parts/bearings1.scad>
 use <../Parts/timing2.scad>
+use <../Fractals/Lsystem.scad>
+
 
 AzOn=1;     // azimuth axis, turntable
-TableOn=1;  // rotational table, 0=off, 1=flat, 2=pillar
-ElOn=0;     // elevation axis, camera arm
-ShellOn=0;  // lower shell
-ArmOn=0;    // camera arm
-LidOn=0;    // rear lid
+TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
+ElOn=1;     // elevation axis, camera arm
+ShellOn=1;  // lower shell, 1=full, 2=don't show cylinder
+ArmOn=1;    // camera arm
+LidOn=1;    // rear lid
+Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
-Az=90;       // azimuth angle
+WheelOn=0;  // show the ewheel by itself
 
 F2=88;
 F1=222;
 
+//--------------------------------------------------------------------
+module axle(){
+
+  // ewheel engage
+  cylinder(r=7,$fn=6,h=6.5);
+  // thru the bearing
+  translate([0,0,6.5])
+  cylinder(r=7.8/2,h=8,$fn=F2);
+  // arm engage
+  translate([0,0,6.5+8])
+  cylinder(r1=3.6,r2=3.5,h=4.5,$fn=6);
+  
+  // Add a fancy button top
+  difference(){
+    translate([0,0,-3])
+    cylinder(r1=10,r2=12,h=2,$fn=F2);
+    translate([0,0,-3.1])
+    linear_extrude(height=1,convexity=6)
+    scale([3.5,3.5])
+    penrose_tiling(n=2, w=0.2);
+  }
+  translate([0,0,-1])
+  cylinder(r1=12,r2=12,h=1,$fn=F2);
+  
+  
+}
+  
 //--------------------------------------------------------------------
 module azimuth(){
 
@@ -35,14 +65,15 @@ module azimuth(){
   slew10();
   
   // azimuth motor
-  translate([110,0,57])
+  translate([110,0,62])
+  rotate([0,0,90])
   rotate([180,0,0])
   xymotor();
   
   // azimuth pulley
   color("green")
-  translate([110,0,-9])
-  rotate([0,0,0])
+  translate([110,0,10])
+  rotate([180,0,0])
   pulley();
 
   // azimuth belt
@@ -63,22 +94,112 @@ module azimuth(){
   }
 } // end azimuth
 
+// --------------------------------------------------------------------
+module table(type=1){
+  
+  // plain flat base
+  color("cyan")
+  translate([0,0,11.5])
+  cylinder(r=79,h=2,$fn=F2);
+  
+  // add the support pillar in the center
+  if(type==2){
+    color("gray")
+    translate([0,0,11.5])
+    cylinder(r=6,h=100-11.5-10,$fn=F2);
+  }
+  
+}
+//-------------------------------------------------------------------
+module ewheel(){
+
+Nspokes=7;
+
+  // outer rim is GT2 pulley
+  time2();
+
+  difference(){
+    union(){
+      // hub for shaft
+      translate([0,0,3])
+      cylinder(r=12,h=6,$fn=F2);
+      // fancy disk
+      intersection(){
+        translate([0,0,4])
+        linear_extrude(height=3,convexity=10)
+        scale([12,12])
+        penrose_tiling(n=4, w=0.2);
+        
+        cylinder(r=76,h=20,center=true);
+      }
+    }
+    // cut for the axle
+    cylinder(r=7,$fn=6,h=20);  
+  }
+}
+//-------------------------------------------------------------------
+module fwheel(){
+
+
+  // outer rim
+  translate([0,0,3])
+  difference(){
+    cylinder(r=34,h=6,$fn=F2);
+    cylinder(r=32,h=20,$fn=F2,center=true);
+  }
+
+  difference(){
+    union(){
+      // hub for shaft
+      translate([0,0,3])
+      cylinder(r=12,h=6,$fn=F2);
+      // fancy disk
+      intersection(){
+        translate([0,0,4])
+        linear_extrude(height=3,convexity=10)
+        scale([12,12])
+        penrose_tiling(n=2, w=0.2);
+        
+        cylinder(r=76,h=20,center=true);
+      }
+    }
+    // cut for the axle
+    cylinder(r=7,$fn=6,h=20);  
+  }
+}
+
 //-------------------------------------------------------------------
 module elevation(){
-      
-  // elevation wheel
-  translate([-100,0,100])  
+
+dy1 = 20;   // delta y for the elevation motor and pulley
+
+  // elevation pulley
+  translate([0,0,100])  
   rotate([0,90,0])
-  time2();
+  ewheel();
+  
+  // left axle
+  translate([3,0,100])  
+  rotate([0,90,0])
+  axle();
+
+  // right axle
+  translate([193,0,100])  
+  rotate([0,-90,0])
+  axle();
+  translate([184,0,100])  
+  rotate([0,90,0])
+  fwheel();
 
   // elevation pulley
   color("cyan")
-  translate([-104,0,0])  
+  translate([-5,dy1,12])  
   rotate([0,90,0])
   pulley();
 
   // elevation motor
-  translate([-155,0,0])  
+  translate([-57,dy1,12])  
+  rotate([-90,0,0])
   rotate([0,-90,180])
   xymotor();
 
@@ -86,18 +207,20 @@ module elevation(){
   color("gray")
   difference(convexity=6){
     hull(){
-      translate([-100+9,0,0])  
+      // pulley
+      translate([9,dy1,12])  
       rotate([0,-90,0])
       cylinder(r=9.6/2+1.5,h=7,$fn=F2);
-      translate([-100+2,0,100])  
+      // ewheel
+      translate([2,0,100])  
       rotate([0,90,0])
       cylinder(r=152.2/2+1.5,h=7,$fn=F2);
     }
     hull(){
-      translate([-100+9,0,0])  
+      translate([9,dy1,12])  
       rotate([0,-90,0])
       cylinder(r=9.6/2,h=9,$fn=F2);
-      translate([-100+2,0,100])  
+      translate([2,0,100])  
       rotate([0,90,0])
       cylinder(r=152.2/2,h=9,$fn=F2);
     }
@@ -108,15 +231,16 @@ module shell(){
 
   difference(){
     union(){
-      // bottom cylinder  
-      translate([0,0,-10]){
-        difference(){
-          cylinder(r=82,h=110,$fn=F2);
-          translate([0,0,-1])
-          cylinder(r=81,h=112,$fn=F2);
+      if(ShellOn==1){
+        // cylinder shell
+        translate([0,0,-10]){
+          difference(){
+            cylinder(r=82,h=110,$fn=F2);
+            translate([0,0,-1])
+            cylinder(r=81,h=112,$fn=F2);
+          }
         }
       }
-
       // left tower
       translate([-85,-10,-10])
       cube([4,20,110]);
@@ -269,19 +393,8 @@ module backlid(){
 }
 //-------------------------------------------------------------------
 module arm(){
-
-    // left axle
-    color("cyan")
-    translate([-96,0,0])  
-    rotate([0,90,0])
-    cylinder(r=7.8/2,h=18,$fn=F2);
-  
-    // right axle
-    color("cyan")
-    translate([78,0,0])  
-    rotate([0,90,0])
-    cylinder(r=7.8/2,h=18,$fn=F2);
     
+  difference(){
     union(){
       // main loop
       difference(){
@@ -299,23 +412,40 @@ module arm(){
       translate([-79.5,0,0])  
       rotate([0,90,0])
       cylinder(r=12,h=3.5,$fn=F2);
+      
       translate([79.5,0,0])  
       rotate([0,-90,0])
       cylinder(r=12,h=3.5,$fn=F2);
       
     } // end union  
+
+    // cut for the left axle  
+    translate([-79.5,0,0])  
+    rotate([0,90,0])
+    cylinder(r=3.6,h=6,$fn=6);
+
+    // cut for the right axle  
+    translate([75,0,0])  
+    rotate([0,90,0])
+    cylinder(r=3.6,h=6,$fn=6);
+  }
 }
 
 //----------------------------------------------------------------
 module scanner(){
 
   if(ElOn){
+    translate([-98,0,0])
     elevation();
   }
 
   // azimuth
   if(AzOn){
     azimuth();
+  }
+  
+  if(TableOn){
+    table(type=TableOn);
   }
   
   // shell
@@ -335,6 +465,10 @@ module scanner(){
     translate([0,0,100]){
       backlid();
     }
+  }
+  
+  if(WheelOn){
+    ewheel();
   }
     
 }

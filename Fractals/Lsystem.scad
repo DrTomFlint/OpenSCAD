@@ -57,10 +57,10 @@ $fn=16;
 //koch_snowflake(n=4);          // Recommended n <= 8
 //quadratic_type1_koch(n=4);    // Recommended n <= 8
 //quadratic_type2_koch(n=3);    // Recommended n <= 6
-sierpinski_triangle(n=6);     // Recommended n <= 11
+//sierpinski_triangle(n=6);     // Recommended n <= 11
 //sierpinski_arrowhead(n=6);    // Recommended n <= 11
 //island_curve(n=2);            // Recommended n <= 4
-//penrose_tiling(n=4, w=0.2);   // Recommended n <= 6
+penrose_tiling(n=4, w=0.2);   // Recommended n <= 6
 //pentadendrite(n=4);           // Recommended n <= 5
 //icy(n=4);
 //tree(n=4);
