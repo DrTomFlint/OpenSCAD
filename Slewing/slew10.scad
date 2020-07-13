@@ -73,7 +73,7 @@ rhi=rod-0.6;
 // z height of bevels
 rbevel=1.2;   
 // half the number of rollers
-Nr = 10;    
+Nr = 14;    
 
 ood=75;        // outer race outer rad
 oid=50;         // outer race inner rad
@@ -276,7 +276,7 @@ module innerLow(tol=0.1){
 
     // cut for threads
     translate([0,0,-ohi/2+0.2])
-    metric_thread (diameter=oid*2+7+0.7, pitch=2, length=ohi/2, leadin=3, n_starts=3);
+    metric_thread (diameter=oid*2+7+0.7, pitch=2, length=ohi/2, leadin=3, n_starts=2);
     
     // cuts for the locking pins
     for(i=[-3:3]){
@@ -416,7 +416,7 @@ module innerHi(tol=0.1){
   // add thread
   difference(){  
     translate([0,0,-ohi/2+0.2])
-    metric_thread (diameter=oid*2+7, pitch=2, length=ohi/2, leadin=3, n_starts=3);
+    metric_thread (diameter=oid*2+7, pitch=2, length=ohi/2, leadin=3, n_starts=2);
 
     // cut for center bore
     cylinder(r=oid,h=ohi*2,center=true,$fn=F1);
@@ -434,7 +434,7 @@ module carrier2(tol=-0.25){
 
 z0=ohi;
 z1=0.0;     // clearance to top/bottom
-tolR=0.25;  // radial tolerance to clear races    
+tolR=0.5;  // radial tolerance to clear races    
     
 difference(){ 
   union(){  
@@ -458,7 +458,7 @@ for(i=[0:Nr-1]){
     translate([(ood+oid)*iooff,0,0])
     rotate([0,45,0])
     translate([0,0,-rhi/2-c1-rhi/2])
-    cylinder(r=rodx/2+0.2, h=2*rhi+2*c1, $fn=F1);
+    cylinder(r=rodx/2+0.15, h=2*rhi+2*c1, $fn=F1);
 
  }
 for(i=[0:Nr-1]){
@@ -468,7 +468,7 @@ for(i=[0:Nr-1]){
     translate([(ood+oid)*iooff,0,0])
     rotate([0,-45,0])
     translate([0,0,-rhi/2-c1-rhi/2])
-    cylinder(r=rodx/2+0.2, h=2*rhi+2*c1, $fn=F1);
+    cylinder(r=rodx/2+0.15, h=2*rhi+2*c1, $fn=F1);
 }
 
 // indicator cut
