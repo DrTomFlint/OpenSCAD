@@ -253,6 +253,86 @@ module mid1cut(){
 
 
 }
+//-----------------------------------------
+module front1(){
+  
+  difference(){
+    union(){
+      translate([-0.5,0,-4])
+      cube([4,20,8],center=true);
+      translate([1,0,2])
+      cube([8,20,4],center=true);
+    }
+    
+    // led
+    translate([0,3,-3])
+    rotate([90,0,0])
+    rotate([0,-90,0])
+    led1(tol=t2,legs=leg);
+    // led
+    translate([0,-3,-3])
+    rotate([-90,0,0])
+    rotate([0,-90,0])
+    led1(tol=t2,legs=leg);
+    // led
+    translate([0.5,3,-3])
+    rotate([90,0,0])
+    rotate([0,-90,0])
+    led1(tol=t2,legs=leg);
+    // led
+    translate([0.5,-3,-3])
+    rotate([-90,0,0])
+    rotate([0,-90,0])
+    led1(tol=t2,legs=leg);
+    
+    // cut for light    
+    translate([-1,0,-3])
+    rotate([90,0,0])
+    cylinder(r=3,h=10,$fn=22,center=true);
+    
+    front2(tol=0.15);
+    
+  }
+
+
+}
+
+//-----------------------------------------
+module front1cut(){
+  
+    union(){
+      translate([-0.5,0,-4])
+      cube([4,8,8],center=true);
+      translate([1,0,2])
+      cube([8,10,4],center=true);
+    }
+
+
+}
+//------------------------------------------------------
+module front2(tol=0){
+  
+    translate([2.5,0,0])
+    cube([2+tol,15+tol,10+tol],center=true);
+    
+    translate([0,0,4.5])
+    cube([3.5+tol,9+tol,7+tol],center=true);
+    
+    translate([1.5,0,4])
+    rotate([0,90,0])
+    cylinder(r1=15/2,r2=6/2,h=2,$fn=66);
+    
+    translate([1.5,0,-5])
+    rotate([0,90,0])
+    scale([0.5,1,1])
+    cylinder(r1=15/2,r2=6/2,h=2,$fn=66);
+    
+    translate([1.5,0,13])
+    rotate([0,90,0])
+    sphere(r=8,$fn=88);
+}
+
+
 //------------------------------------------------------
 module mid2(tol=0){
   
@@ -311,18 +391,9 @@ module mid3(tol=0){
     rotate([0,90,0])
     cylinder(r1=7/2,r2=6/2,h=2,$fn=66);
     
-    // add back the rose
-    difference(){
-      translate([-1.75,0,14])
-      rotate([0,90,0])
-      linear_extrude(height=7,convexity=6)
-      scale([3,3])
-      penrose_tiling(n=2, w=0.3);
-    
-    translate([5,-10,4])
-    rotate([0,-12,0])
-    cube([10,20,20]);
-  } 
+    translate([1.5,0,10])
+    sphere(r=5,$fn=88);
+  
 }
 
 //---------------------------------------------
@@ -404,26 +475,55 @@ module top2(){
 
 }
 
+//-------------------------------------------
+module ledbattery(tol=0){
+
+
+  // boss
+  cube([6+tol,40+tol,23.8+tol]);
+  // rounded end of boss
+  translate([0,40,23.8/2])
+  rotate([0,90,0])
+  cylinder(r=23.8/2+tol/2,h=6+tol,$fn=88);
+  
+  // wires
+  translate([3,0,3.5])
+  rotate([90,0,0])
+  cylinder(r=1+tol,h=6,$fn=22);
+  translate([3,0,5.5])
+  rotate([90,0,0])
+  cylinder(r=1+tol,h=6,$fn=22);
+  
+  // switch
+  translate([2,-4,11])
+  cube([2+tol,4+tol,6+tol]);
+}
+
+
 
 //===================================================
 
-translate([0,0,0]){
-  color("cyan")
-  base1();
+ledbattery();
+
+
+translate([0,80,0]){
+  translate([0,0,0]){
+    color("cyan")
+    base1();
+  }
+
+  translate([0,0,0]){
+    color("gray")
+    base2();
+  }
+
+  translate([0,0,0]){
+    color("cyan")
+    top2();
+  }
 }
 
-translate([0,0,0]){
-  color("gray")
-  base2();
-}
-
-translate([0,0,0]){
-  color("cyan")
-  top2();
-}
-
-
-translate([0,40,0])
+translate([0,120,0])
 basecuts();
 
 translate([0,-40,0])
@@ -433,8 +533,8 @@ translate([0,-80,0])
 mid1();
 
 translate([0,-80,0])
-mid2();
-
+//mid2();
+mid3();
 
 /*
 led1();

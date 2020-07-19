@@ -56,9 +56,6 @@ difference(){
             base2();
             // top
             top2();
-            //
-            translate([0,0,4])
-            xa();
             
           }
         }
@@ -109,9 +106,10 @@ if(0){
 
 } // end diff
 
-if(0){
+if(1){
     // in-between light
-    for(i=[0:N0-1]){
+//    for(i=[1:N0-1]){
+    for(i=[1,2,3,4,6,7,8,9]){
       a0=i*360/N0;
       x0=r0*1.0*cos(a0);
       y0=r0*0.855*sin(a0);
@@ -122,9 +120,9 @@ if(0){
           translate([x6,0,z6]){
             rotate([0,-14,0]){
             mid1();
-            color("cyan")
+            //color("cyan")
             //mid2();
-            mid3();
+            //mid3();
           }
           }
         }
@@ -133,7 +131,8 @@ if(0){
 }
 
 
-
+// crystals
+if(0){
 for(i=[0:N0-1]){
   a0=i*360/N0+180/N0;
   x0=r0*1.0*cos(a0);
@@ -150,6 +149,44 @@ for(i=[0:N0-1]){
     }
   }
 }
+
+
+// battery
+if(1){
+  difference(){
+    translate([-105.5,0,10])
+    rotate([0,20,0])
+    cube([12,32,16],center=true);
+    
+    translate([-112,23.8/2,2])
+    rotate([0,20,0])
+    rotate([90,0,0])
+    ledbattery(tol=0.2);
+  }
+}
+
+if(0){
+    translate([-112,23.8/2,2])
+    rotate([0,20,0])
+    rotate([90,0,0])
+    ledbattery(tol=0);
+}
+
+// front
+if(1){
+    translate([105.5,0,10])
+    rotate([0,-10,0])
+    front1();
+}
+
+if(0){
+    translate([105.5,0,10])
+    rotate([0,-10,0])
+    front2();
+}
+
+}
+
 
 
 //=====================================================
