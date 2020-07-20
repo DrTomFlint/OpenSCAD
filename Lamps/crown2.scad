@@ -41,7 +41,7 @@ difference(){
     headband(zlow=58,zhi=59,thick=3.0);
 
     // main band
-    headband(zlow=50,zhi=66);
+    headband(zlow=50,zhi=74);
     
     for(i=[0:N0-1]){
       a0=i*360/N0+180/N0;
@@ -55,7 +55,8 @@ difference(){
             base1();
             base2();
             // top
-            top2();
+            //top2();
+            top3();
             
           }
         }
@@ -65,10 +66,28 @@ difference(){
 
   } // end union
 
+  // scallop cut the upper headband
+    for(i=[0:2*N0-1]){
+      a0=i*180/N0+90/N0;
+      x0=r0*1.0*cos(a0);
+      y0=r0*0.855*sin(a0);
+      translate([x0,y0,0]){
+        rotate([0,0,a0]){
+          
+          // mids
+          translate([-12,0,26]){
+            rotate([0,90,0])
+            scale([1,1.7,1])
+            cylinder(r=10,h=10,$fn=44);
+          }
+        }
+      }
+    }
+  
 
-if(0){
+if(1){
     // in-between light
-    for(i=[0:N0-1]){
+    for(i=[1,2,3,4,6,7,8,9]){
       a0=i*360/N0;
       x0=r0*1.0*cos(a0);
       y0=r0*0.855*sin(a0);
@@ -85,7 +104,7 @@ if(0){
     }
 }
 
-if(0){
+if(1){
   // repeat the basecuts to eliminate headband material that might interfere
   for(i=[0:N0-1]){
     a0=i*360/N0+180/N0;
@@ -121,8 +140,7 @@ if(1){
             rotate([0,-14,0]){
             mid1();
             //color("cyan")
-            //mid2();
-            //mid3();
+            mid3();
           }
           }
         }
@@ -132,7 +150,7 @@ if(1){
 
 
 // crystals
-if(0){
+if(1){
 for(i=[0:N0-1]){
   a0=i*360/N0+180/N0;
   x0=r0*1.0*cos(a0);
@@ -151,8 +169,8 @@ for(i=[0:N0-1]){
 }
 
 
-// battery
-if(1){
+// battery strap
+if(0){
   difference(){
     translate([-105.5,0,10])
     rotate([0,20,0])
@@ -165,21 +183,47 @@ if(1){
   }
 }
 
+// battery 2 strap
+if(1){
+  difference(){
+    translate([-106.5,0,10])
+    rotate([0,20,0])
+    cube([14,32,16],center=true);
+    
+    translate([-106,-11,2])
+    rotate([0,0,180])
+    rotate([0,-10,0])
+    rotate([90,0,0])
+    cutbattery2(tol=0.2);
+  }
+}
+
+// battery 1
 if(0){
     translate([-112,23.8/2,2])
     rotate([0,20,0])
     rotate([90,0,0])
-    ledbattery(tol=0);
+    battery(tol=0);
+}
+// battery 2
+if(1){
+    translate([-106,-11,2])
+    rotate([0,0,180])
+    rotate([0,-10,0])
+    rotate([90,0,0])
+    color("green")
+    ledbattery2(tol=0);
 }
 
-// front
+// front strap
 if(1){
     translate([105.5,0,10])
     rotate([0,-10,0])
     front1();
 }
 
-if(0){
+// front lamp
+if(1){
     translate([105.5,0,10])
     rotate([0,-10,0])
     front2();
@@ -192,11 +236,12 @@ if(0){
 //=====================================================
 
 // xtal top lid
-if(0){
+if(1){
   //difference(){
   intersection(){
-  top2();
-  translate([0,0,8])
+  //top2();
+  top3(type=3);
+  translate([0,0,7.5])
   cube([40,40,10],center=true);
   }
 }
@@ -208,13 +253,13 @@ if(0){
   rotate([0,-90,0])
 //  mid2();
   mid3();
-  translate([14.5,0,7.5])
+  translate([12,0,7.5])
   cube([40,40,10],center=true);
   }
 }
 
 // midsection:
-if(1){
+if(0){
   color("cyan")
   intersection(){
 
@@ -224,11 +269,11 @@ if(1){
   }
 
   translate([-200,-200,3])
-  cube([400,400,10]);
+  cube([400,400,8.5]);
   }
 }
 // lowsection:
-if(1){
+if(0){
   color("red")
   intersection(){
 
@@ -242,7 +287,7 @@ if(1){
   }
 }
 // topsection:
-if(1){
+if(0){
   intersection(){
 
     union(){
@@ -250,7 +295,7 @@ if(1){
       //tops();
     }
 
-    translate([-200,-200,13])
+    translate([-200,-200,11.5])
     cube([400,400,60]);
   }
 }

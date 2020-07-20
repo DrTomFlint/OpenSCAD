@@ -50,13 +50,13 @@ use <../Parts/timing2.scad>  // include the timing2.scad file
 CarrierOn = 0;    // 1=turned on, 0=turned off
 RollersOn = 0;    // use this only for design, see how roller fit
 RollerPrint = 0;  // use this only for printing the rollers
-OuterRaceOn = 0;
+OuterRaceOn = 1;
 InnerHiOn = 0;
-InnerLowOn = 1;
-PulleyOn = 1;
+InnerLowOn = 0;
+PulleyOn = 0;
 
-OuterTab = 0; // 0=off, 1=inner, 2=outer
-InnerTab = 0; // 0=off, 1=inner, 2=outer
+OuterTab = 2; // 0=off, 1=inner, 2=outer
+InnerTab = 2; // 0=off, 1=inner, 2=outer
 
 CutawayOn = 0;    // turn this on to make a sectional view
 CutawayAngle = 0; // adjust the angle of the sectional cut
@@ -83,10 +83,10 @@ iooff=0.525;     // offset race in the boss
 
 iogap=4;        // inner outer gap
 
-Ntabo=6;      // number of bolt down tabs outer 
+Ntabo=8;      // number of bolt down tabs outer 
 Ntabi=6;      // number of bolt down tabs inner
 Ntab2=6;      // number of bolt down tabs outer race inner side 
-Ntab3=6;      // number of bolt down tabs inner race outer side
+Ntab3=8;      // number of bolt down tabs inner race outer side
 
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360

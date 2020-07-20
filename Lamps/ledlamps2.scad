@@ -288,7 +288,7 @@ module front1(){
     // cut for light    
     translate([-1,0,-3])
     rotate([90,0,0])
-    cylinder(r=3,h=10,$fn=22,center=true);
+    cylinder(r=5,h=10,$fn=22,center=true);
     
     front2(tol=0.15);
     
@@ -380,8 +380,8 @@ module mid3(tol=0){
     translate([2.5,0,-1])
     cube([2+tol,7+tol,9+tol],center=true);
     
-    translate([0,0,4.5])
-    cube([3.5+tol,7+tol,7+tol],center=true);
+    translate([0,0,4.0])
+    cube([3.5+tol,6+tol,7+tol],center=true);
     
     translate([1.5,0,4])
     rotate([0,90,0])
@@ -391,7 +391,9 @@ module mid3(tol=0){
     rotate([0,90,0])
     cylinder(r1=7/2,r2=6/2,h=2,$fn=66);
     
-    translate([1.5,0,10])
+    translate([0,0,10])
+    //rotate([0,15,0])
+    scale([0.38,1,1])
     sphere(r=5,$fn=88);
   
 }
@@ -475,6 +477,52 @@ module top2(){
 
 }
 
+//---------------------------------------------
+module top3(type=1){
+  
+
+  // top fastens the led in the pocket, xtal holds it down
+  difference(){
+    union(){
+      // top
+      translate([0,0,hfoot+hmid])
+      scale([1,s1,1])
+      rotate([0,0,180/F3])
+      cylinder(r1=rtop,r2=rlip,h=htop+2,$fn=88);
+      
+      // fancy 
+      if(type!=2){
+      hull(){
+        translate([4,-10,hfoot+hmid+5])
+        sphere(r=5,$fn=88);
+        translate([-10,-22,hfoot+hmid+12])
+        sphere(r=1,$fn=88);
+      }
+    }
+    if(type!=3){
+      hull(){
+        translate([4,10,hfoot+hmid+5])
+        sphere(r=5,$fn=88);
+        translate([-10,22,hfoot+hmid+12])
+        sphere(r=1,$fn=88);
+      }
+    }
+      // front balls
+        translate([7,3,hfoot+hmid+4])
+        sphere(r=3.5,$fn=88);
+        translate([7,-3,hfoot+hmid+4])
+        sphere(r=3.5,$fn=88);
+      
+    }
+    basecuts();
+    // add a lip around xtal
+    translate([0,0,hfoot+hmid-0.01])
+    rotate([0,0,180/F3])
+    cylinder(r1=7+0.25,r2=6.5+0.25,h=1.5+0.25,$fn=F3);
+  }
+
+}
+
 //-------------------------------------------
 module ledbattery(tol=0){
 
@@ -499,12 +547,119 @@ module ledbattery(tol=0){
   cube([2+tol,4+tol,6+tol]);
 }
 
+//-------------------------------------------
+module ledbattery2(tol=0){
+
+
+  difference(){
+    union(){
+    // boss
+    cube([6+tol,18.4+tol,23.8+tol]);
+
+    // rounded end of boss
+    translate([0,18,23.8/2])
+    rotate([0,90,0])
+    cylinder(r=23.8/2+tol/2,h=7.3+1+tol,$fn=88);
+    // rounded end of boss
+    translate([7.3+1,18,23.8/2])
+    rotate([0,90,0])
+    cylinder(r1=23.8/2+tol/2,r2=22/2,h=1+tol,$fn=88);
+/*    
+    // wires
+    translate([3,0,3.5])
+    rotate([90,0,0])
+    cylinder(r=1+tol,h=6,$fn=22);
+    translate([3,0,5.5])
+    rotate([90,0,0])
+    cylinder(r=1+tol,h=6,$fn=22);
+    
+    // switch
+    translate([2,-4,11])
+    cube([2+tol,4+tol,6+tol]);
+  */  
+  }
+  
+  // battery stack
+  translate([1,18,23.8/2])
+  rotate([0,90,0])
+  cylinder(r=20/2+0.1,h=6.2+tol,$fn=88);
+  
+  // slice off the bottom, re-use the existing one
+  translate([3-10,-10,-10])
+  cube([10,40,40]);
+
+    // switch
+    translate([2.9,-1,10])
+    cube([2+tol,4+tol,8+tol]);
+    
+    // switch box
+    translate([2.9,1.6,1.6])
+    cube([2+tol,8+tol,20.72+tol]);
+
+    // power busbar
+    translate([4.5,18,23.7/2])
+    rotate([-60,0,0])
+    cube([6+tol,3.1+tol,22],center=true);
+  }
+  
+    // posts
+    color("red")
+    translate([6,4.7,2.7])
+    rotate([0,-90,0])
+    cylinder(r1=1.6,r2=1.3,h=4.7,$fn=22);
+    color("red")
+    translate([6,4.7,21.5])
+    rotate([0,-90,0])
+    cylinder(r1=1.6,r2=1.3,h=4.7,$fn=22);
+
+
+}
+
+//-------------------------------------------
+module cutbattery2(tol=0){
+
+
+    union(){
+    // boss
+    cube([6+tol,18.4+tol,23.8+tol]);
+
+    // rounded end of boss
+    translate([0,18,23.8/2])
+    rotate([0,90,0])
+    cylinder(r=23.8/2+tol/2,h=7.3+1+tol,$fn=88);
+    // rounded end of boss
+    translate([7.3+1,18,23.8/2])
+    rotate([0,90,0])
+    cylinder(r1=23.8/2+tol/2,r2=22/2,h=1+tol,$fn=88);
+    
+    // wires
+    translate([3,0,3.5])
+    rotate([90,0,0])
+    cylinder(r=1+tol,h=6,$fn=22);
+    translate([3,0,5.5])
+    rotate([90,0,0])
+    cylinder(r=1+tol,h=6,$fn=22);
+    
+    // switch
+    translate([2,-4,11])
+    cube([2+tol,4+tol,6+tol]);
+    
+  }
+  
+
+}
 
 
 //===================================================
 
-ledbattery();
+//ledbattery();
 
+//ledbattery2();
+
+/*
+
+translate([0,-120,0])
+front2();
 
 translate([0,80,0]){
   translate([0,0,0]){
@@ -532,9 +687,18 @@ basecuts2();
 translate([0,-80,0])
 mid1();
 
-translate([0,-80,0])
+*/
+
+
+//translate([0,-80,0])
 //mid2();
-mid3();
+//mid3();
+
+//top3();
+translate([0,60,0])
+top3(type=2);
+//translate([0,-60,0])
+//top3(type=3);
 
 /*
 led1();
