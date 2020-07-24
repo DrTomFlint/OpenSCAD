@@ -236,7 +236,7 @@ if(1){
 //=====================================================
 
 // xtal top lid
-if(1){
+if(0){
   //difference(){
   intersection(){
   //top2();
@@ -251,10 +251,19 @@ if(0){
   //difference(){
   intersection(){
   rotate([0,-90,0])
-//  mid2();
   mid3();
   translate([12,0,7.5])
   cube([40,40,10],center=true);
+  }
+}
+// front token
+if(1){
+  //difference(){
+  intersection(){
+  rotate([0,-90,0])
+  front2();
+  translate([0,0,7.5])
+  cube([80,80,10],center=true);
   }
 }
 

@@ -312,8 +312,8 @@ module front1cut(){
 //------------------------------------------------------
 module front2(tol=0){
   
-    translate([2.5,0,0])
-    cube([2+tol,15+tol,10+tol],center=true);
+    translate([2.5,0,-3])
+    cube([2+tol,15+tol,10+6+tol],center=true);
     
     translate([0,0,4.5])
     cube([3.5+tol,9+tol,7+tol],center=true);
@@ -321,15 +321,17 @@ module front2(tol=0){
     translate([1.5,0,4])
     rotate([0,90,0])
     cylinder(r1=15/2,r2=6/2,h=2,$fn=66);
-    
-    translate([1.5,0,-5])
+
+/*    
+    translate([1.5,0,-5-4])
     rotate([0,90,0])
     scale([0.5,1,1])
     cylinder(r1=15/2,r2=6/2,h=2,$fn=66);
+    */
     
-    translate([1.5,0,13])
-    rotate([0,90,0])
-    sphere(r=8,$fn=88);
+    translate([0,0,16])
+    scale([0.16,1,1])
+    sphere(r=15,$fn=400);
 }
 
 
@@ -656,11 +658,12 @@ module cutbattery2(tol=0){
 
 //ledbattery2();
 
-/*
+
 
 translate([0,-120,0])
 front2();
 
+/*
 translate([0,80,0]){
   translate([0,0,0]){
     color("cyan")
@@ -695,8 +698,8 @@ mid1();
 //mid3();
 
 //top3();
-translate([0,60,0])
-top3(type=2);
+//translate([0,60,0])
+//top3(type=2);
 //translate([0,-60,0])
 //top3(type=3);
 

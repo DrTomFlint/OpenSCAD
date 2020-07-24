@@ -21,7 +21,8 @@ use <../Fractals/Lsystem.scad>
 
 ElOn=0;     // elevation axis, ewheel
 AzOn=1;     // azimuth axis, turntable
-ShellOn=0;  // shell cover
+ShellOn=1;  // shell cover
+Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
 TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
@@ -33,7 +34,7 @@ BearingsOn=0;   // show bearings in the towers
 
 
 ArmOn=0;    // camera arm
-Az=-20;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
+Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
 
@@ -50,17 +51,24 @@ ohi=15;         // outer race height
   
   difference(){
     union(){
-      // main disk
-      translate([0,0,0])
-      cylinder(r=102,h=9,$fn=F2);
+      hull(){
+        // main disk
+        translate([0,0,0])
+        cylinder(r=102,h=9,$fn=F2);
+
+        // azimuth motor
+        translate([130,18,0])
+        cylinder(r=8,h=9,$fn=88);
+        translate([130,-18,0])
+        cylinder(r=8,h=9,$fn=88);
+      }
+      
       // tower support
       translate([-94,0,10])
       cube([13,20,14],center=true);
       translate([94,0,10])
       cube([13,20,14],center=true);
-      // azimuth motor
-      translate([112,0,4.5])
-      cube([52,52,9],center=true);
+
       // elevation motor
       translate([-94,0,-22])
       cube([8,46,46],center=true);
@@ -127,12 +135,20 @@ ohi=15;         // outer race height
   translate([-ax1-31/2,ay1-31/2,9])
   cylinder(r=3,h=10,$fn=12);
 
+  // locking pin for swing arm
+  for(i=[1:7]){
+    translate([-ax1-31/4,ay1-31/2-5-i*4+4,-1])
+    cylinder(r=1,h=12,$fn=12);
+    translate([-ax1-31/4-4,ay1-31/2-5-i*4+2,-1])
+    cylinder(r=1,h=12,$fn=12);
+  }
+  
 if(0){  
   // indent for the slew10
   translate([0,0,13.5])
   rotate([180,0,0])
   innerHi(tol=0.25);
-  }
+}
 
   // elevation motor
   r2=141;
@@ -163,13 +179,18 @@ if(0){
 
         
   // shell
+  translate([0,0,16])
   shell(tol=0.2);
+  // shell2
+  translate([0,0,16])
+  shell2(tol=0.2);
 
   // towers 
-  tower(tol=0.15);    
-  mirror([1,0,0])
-  tower(tol=0.15);
-    
+  translate([0,0,5]){
+    tower(tol=0.15);    
+    mirror([1,0,0])
+    tower(tol=0.15);
+  }    
   }  
 }
 
@@ -202,34 +223,50 @@ module axle(){
 
 // ------------------------------------------------------------
 module swingarm(tol=0){
-thick=13;
-z5=2;
+thick=15;
+z5=1;
 
-  // zero is shaft of a servo
+    rm=112;   // azimuth motor radius
+    ri=50;    // idler swing arm length
+    phi=180;    // main motor angle
+    phi2=-60;     // angle of idler arm
+    ax1=rm*cos(phi);
+    ay1=rm*sin(phi);
+    ax2=ri*cos(phi2);
+    ay2=ri*sin(phi2);
+
+difference(){
+  // the arm  
+  hull(){
     color("pink")
     translate([31/2,31/2,z5])
-    cylinder(r=5,h=thick,$fn=44);
-    translate([31/2,-31/2,z5])
-    cylinder(r=5,h=thick,$fn=44);
+    cylinder(r=6,h=thick,$fn=44);
 
-  rm=112;   // azimuth motor radius
-  ri=40;    // idler swing arm length
-  phi=180;    // main motor angle
-  phi2=-60;     // angle of idler arm
-  ax1=rm*cos(phi);
-  ay1=rm*sin(phi);
-  ax2=ri*cos(phi2);
-  ay2=ri*sin(phi2);
 
-  translate([-ax2,-ay2,z5])
-   # cylinder(r=5,h=thick,$fn=44);    //****************************************************************
-    
+    // azimuth idler location:
+    translate([-ax2,-ay2,z5])
+    cylinder(r=5,h=thick,$fn=44); 
+    }
+
+    // cut for idler bolt
+    translate([-ax2,-ay2,-1])
+    cylinder(r=1.7,h=thick+2,$fn=44);  
+    // cut for idler 
+    translate([-ax2,-ay2,z5+4])
+    cylinder(r=11,h=9.5,$fn=44);  
+
+    // cut for motor bolt
+    translate([31/2,31/2,z5-2])
+    cylinder(r=1.7,h=thick+10,$fn=44);  
+    translate([31/2,31/2,z5-0.01])
+    cylinder(r=3,h=4,$fn=44);  
+  }
 }
   
 //--------------------------------------------------------------------
 module azimuth(){
 rm=112;   // azimuth motor radius
-ri=40;    // idler swing arm length
+ri=50;    // idler swing arm length
 
   // Turntable
   rotate([180,0,0])
@@ -247,20 +284,19 @@ ri=40;    // idler swing arm length
   echo(AY2 = ay2);
 
   // azimuth motor
-  color("green")
-//  translate([ax1,ay1,-56])
-//  rotate([0,0,180])
-//  rotate([0,0,0])
-  translate([-ax1,ay1,-56])
-  rotate([0,0,180])
-  rotate([0,0,0])
-  xymotor();
-    
+  if(1){
+    color("green")
+    translate([-ax1,ay1,-60])
+    rotate([0,0,180])
+    rotate([0,0,0])
+    xymotor();
+  }    
+  
   // azimuth pulley
-  color("orange")
   translate([-ax1,ay1,10])
   rotate([180,0,0]){
-    //pulley();
+    color("orange")
+    pulley();
     swingarm();
   }
 
@@ -378,7 +414,7 @@ r2=141;
   ewheel();
   
   theta=90;
-  theta2=theta+4.35;
+  theta2=theta-20;
   y1=r2*cos(theta);
   z1=r2*sin(theta);
   y2=102.9*cos(theta2);
@@ -390,9 +426,6 @@ r2=141;
   
   // elevation motor
   color("red")
-//  translate([-58,y1,TowerHigh-z1])  
-//  rotate([0,90,0])
-//  rotate([0,0,90])
   translate([65,y1,TowerHigh-z1])  
   rotate([0,-90,0])
   rotate([0,0,90])
@@ -401,16 +434,19 @@ r2=141;
   // elevation pulley
   color("cyan")
   translate([14,y1,TowerHigh-z1])  
-  rotate([0,-90,0])
-  pulley();
+  rotate([0,-90,0]){
+    pulley();
+    mirror([1,0,0])
+    swingarm();
+    }
 
-/*
+
   // elevation idler
   color("cyan")
   translate([0,y2,TowerHigh-z2])  
   rotate([0,90,0])
   idler();
-*/
+
 
   // left axle
   translate([3,0,TowerHigh])  
@@ -456,23 +492,80 @@ if(1){
 //---------------------------------------------------------------------
 module shell(tol=0){
 
-  // cylinder shell
-  translate([0,0,6]){
+  translate([0,0,-10]){
     difference(){
-      cylinder(r=92+tol/2,h=TowerHigh+6+tol,$fn=F2);
+      // hollow cylinder
+      cylinder(r=92+tol/2,h=TowerHigh+0+tol,$fn=F1);
       translate([0,0,-1])
-      cylinder(r=91-tol/2,h=112,$fn=F2);
+      cylinder(r=91-tol/2,h=TowerHigh+12+tol,$fn=F1);
+      
+      // cuts for the towers
+      tower(tol=0.2,holes=0);
+      mirror([1,0,0])
+      tower(tol=0.2,holes=0);
+      
+      // cut for belt and idler  *********************************************************************
+      
     }
   }
 
 } // end shell  
 //--------------------------------------------------------------------
-module zdrive(){
+module shell2(tol=0){
+  // azimuth motor
+  rm=112;   // azimuth motor radius
+  phi=180;
+  phi2=phi+4.35;
+  ax1=rm*cos(phi);
+  ay1=rm*sin(phi);
+  ax2=102.9*cos(phi2);
+  ay2=102.9*sin(phi2);
+  echo(AX1 = ax1);
+  echo(AY1 = ay1);
+  echo(AX2 = ax2);
+  echo(AY2 = ay2);
+
+z8=-10;
+hi8=22;
+thick8=1;
+
+difference(){
+  hull(){
+  // corners of the shell
+    translate([-ax1+31/2,ay1+31/2,z8])
+    cylinder(r=9+tol,h=hi8,$fn=88);
+    translate([-ax1-31/2-10,ay1+31/2+30,z8])
+    cylinder(r=11+tol,h=hi8,$fn=88);
+    translate([-ax1-31/2-10,ay1-31/2-30,z8])
+    cylinder(r=11+tol,h=hi8,$fn=88);
+    translate([-ax1+31/2,ay1-31/2,z8])
+    cylinder(r=9+tol,h=hi8,$fn=88);
+  }
+  translate([0,0,-0.01])
+  hull(){
+    translate([-ax1+31/2,ay1+31/2,z8])
+    cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
+    translate([-ax1-31/2-10,ay1+31/2+30,z8])
+    cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
+    translate([-ax1-31/2-10,ay1-31/2-30,z8])
+    cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
+    translate([-ax1+31/2,ay1-31/2,z8])
+    cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
+  }
+  // cut for the main shell
+  translate([0,0,-20])
+  cylinder(r=92+tol/2,h=TowerHigh+10+tol,$fn=F1);
+  // cut for the tower
+  translate([0,0,-20])
+  mirror([1,0,0])
+  tower(tol=0.2);
+
+}
 
 }
 
 //---------------------------------------------------------------------
-module tower(tol=0){
+module tower(tol=0,holes=1){
 
 TowerLow=6;
 TowerXoff=95;
@@ -486,7 +579,7 @@ TowerWide=14;
       // make I beams
       translate([-TowerXoff-3,-TowerWide/2,-TowerLow])
       cube([4+tol,3+tol,TowerHigh+TowerLow+tol]);
-      translate([-TowerXoff-3,TowerWide/2,-TowerLow])
+      translate([-TowerXoff-3,TowerWide/2-3,-TowerLow])
       cube([4+tol,3+tol,TowerHigh+TowerLow+tol]);
     
       // left bearing housing
@@ -501,21 +594,23 @@ TowerWide=14;
       
       
     }
-    // cut left bearing insert
-    translate([-TowerXoff+2,0,TowerHigh])  
-    rotate([0,-90,0])
-    cylinder(r=11+0.15,h=9,$fn=F2);
+    if(holes){
+      // cut left bearing insert
+      translate([-TowerXoff+2,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=11+0.15,h=9,$fn=F2);
 
-    // cut left bearing shaft 
-    translate([-TowerXoff+6,0,TowerHigh])  
-    rotate([0,-90,0])
-    cylinder(r=7,h=9,$fn=F2);
+      // cut left bearing shaft 
+      translate([-TowerXoff+6,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=7,h=9,$fn=F2);
+    }
   }
   
 } // end tower  
 
 //---------------------------------------------------------------------
-module dome(Rin=81,thick=1){
+module dome(Rin=91,thick=1){
   
   difference(){
     sphere(r=Rin+thick,$fn=F1);
@@ -537,7 +632,7 @@ module lid(type=1){
     union(){
       // dome part
       difference(){
-        dome(Rin=81,thick=1);
+        dome(Rin=91,thick=1);
         rotate([-60,0,0])         // here is the cut angle
         translate([0,-100,50])    
         cube([200,200,100],center=true);    
@@ -548,9 +643,9 @@ module lid(type=1){
       color("green")
       translate([0,0,-2])
       difference(){
-        cylinder(r=83,h=4,$fn=F1);
+        cylinder(r=93,h=4,$fn=F1);
         translate([0,0,-1])
-        cylinder(r=82,h=6,$fn=F1);
+        cylinder(r=92,h=6,$fn=F1);
         translate([0,-97,40])
         cube([200,200,100],center=true);    
       }
@@ -560,9 +655,9 @@ module lid(type=1){
         rotate([30,0,0])
         translate([0,0,-2])
         difference(){
-          cylinder(r=83,h=4,$fn=F1);
+          cylinder(r=93,h=4,$fn=F1);
           translate([0,0,-1])
-          cylinder(r=82,h=6,$fn=F1);
+          cylinder(r=92,h=6,$fn=F1);
           translate([0,-97,40])
           cube([200,200,100],center=true);    
         }
@@ -662,6 +757,9 @@ module scanner(){
   if(ShellOn){
     shell();
   }
+  if(Shell2On){
+    shell2();
+  }
   
   // arm
   if(ArmOn){
@@ -682,7 +780,7 @@ module scanner(){
   }
     
   if(BaseOn){
-    translate([0,0,-13.5])
+    translate([0,0,-16])
     baseplate();
   }
   if(TowerOn){
