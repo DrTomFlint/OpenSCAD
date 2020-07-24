@@ -88,45 +88,10 @@ Tthick2=4+tol;
   
 } // end tower  
 
-//---------------------------------------------------------------------
-module tower2in(tol=0,holes=1){
-
-TowerLow=52+tol;
-TowerXoff=Tower2X-12;
-TowerWide=70+tol;
-Tower2High=0+tol;
-Tthick=8+tol;
-Tthick2=4+tol;
-  translate([30,0,0]){
-    
-        // *********************************************************************************************
-  
-  // sleeve
-  //color("cyan")
-  difference(){
-    union(){
-      translate([TowerXoff+4,0,TowerHigh])
-      rotate([0,90,0])
-      cylinder(r=28,h=7,$fn=88);
-
-//      translate([TowerXoff+4,-28,-58])
-//      cube([7,28*2,166]);
-    }
-    
-    if(holes){
-      translate([TowerXoff+3,0,TowerHigh])
-      rotate([0,90,0])
-      cylinder(r=26,h=10,$fn=88);
-    }    
-  }
-}
-  
-} // end tower  
 
 //===========================================
 
 tower2out();
-tower2in();
 
 mirror([1,0,0])
 tower();

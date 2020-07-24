@@ -27,25 +27,26 @@ use <./swingarm.scad>
 use <./axle.scad>
 use <./wheels.scad>
 use <./towers.scad>
+use <./shells.scad>
 
 
-ElOn=1;     // elevation axis, ewheel
-AzOn=1;     // azimuth axis, turntable
+ElOn=0;     // elevation axis, ewheel
+AzOn=0;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
-LidOn=1;    // rear lid
-TableOn=1;  // rotational table, 0=off, 1=flat, 2=pillar
+LidOn=0;    // rear lid
+TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 BaseOn=1;   // base plate
 
-TowerOn=3;  // towers
+TowerOn=0;  // towers
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
 
 ArmOn=0;    // camera arm
-Arm2On=1;    // camera arm
-Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
+Arm2On=0;    // camera arm
+Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
 
@@ -192,7 +193,6 @@ ohi=15;         // outer race height
 
   // towers 
   translate([0,0,5]){
-    tower2in(tol=0.15);    
     tower2out(tol=0.15);    
     mirror([1,0,0])
     tower(tol=0.15);
@@ -214,6 +214,7 @@ ohi=15;         // outer race height
 module azimuth(){
 
   // Turntable
+  color("green")
   rotate([0,0,180/8])
   rotate([180,0,0])
   slew10();
@@ -231,8 +232,9 @@ module azimuth(){
   // azimuth pulley
   translate([-ax1,ay1,10])
   rotate([180,0,0]){
-    color("orange")
+    color("green")
     pulley();
+    color("green")
     swingarm(length=50,angle=-60);
   }
 
@@ -261,6 +263,7 @@ module azimuth(){
 module elevation(){
 
   // elevation wheel
+  color("red")
   translate([6,0,TowerHigh]) 
   rotate([0,90,0])
   rotate([0,0,30])
@@ -274,7 +277,7 @@ module elevation(){
   xymotor();
 
   // elevation pulley
-  color("cyan")
+  color("red")
   translate([14,y1,TowerHigh-z1])  
   rotate([0,-90,0]){
     pulley();
@@ -306,86 +309,6 @@ module elevation(){
   }
   
 } // end elevation
-//---------------------------------------------------------------------
-module shell(tol=0){
-
-  translate([0,0,-10]){
-    difference(){
-      // hollow cylinder
-      cylinder(r=92+tol/2,h=TowerHigh+10+tol,$fn=F1);
-      translate([0,0,-1])
-      cylinder(r=91-tol/2,h=TowerHigh+12+tol,$fn=F1);
-      
-      // cuts for the towers
-      translate([0,0,10])
-      tower2in(tol=0.2,holes=0);
-      translate([0,0,10])
-      tower2out(tol=0.2,holes=0);
-      
-      mirror([1,0,0])
-      translate([0,0,10])
-      tower(tol=0.2,holes=0);
-      
-      // cut for belt and idler 
-      
-    }
-  }
-
-} // end shell  
-//--------------------------------------------------------------------
-module shell2(tol=0){
-  // azimuth motor
-  rm=112;   // azimuth motor radius
-  phi=180;
-  phi2=phi+4.35;
-  ax1=rm*cos(phi);
-  ay1=rm*sin(phi);
-  ax2=102.9*cos(phi2);
-  ay2=102.9*sin(phi2);
-  echo(AX1 = ax1);
-  echo(AY1 = ay1);
-  echo(AX2 = ax2);
-  echo(AY2 = ay2);
-
-z8=-10;
-hi8=22;
-thick8=1;
-
-difference(){
-  hull(){
-  // corners of the shell
-    translate([-ax1+31/2,ay1+31/2,z8])
-    cylinder(r=9+tol,h=hi8,$fn=88);
-    translate([-ax1-31/2-10,ay1+31/2+30,z8])
-    cylinder(r=11+tol,h=hi8,$fn=88);
-    translate([-ax1-31/2-10,ay1-31/2-30,z8])
-    cylinder(r=11+tol,h=hi8,$fn=88);
-    translate([-ax1+31/2,ay1-31/2,z8])
-    cylinder(r=9+tol,h=hi8,$fn=88);
-  }
-  translate([0,0,-0.01])
-  hull(){
-    translate([-ax1+31/2,ay1+31/2,z8])
-    cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1-31/2-10,ay1+31/2+30,z8])
-    cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1-31/2-10,ay1-31/2-30,z8])
-    cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1+31/2,ay1-31/2,z8])
-    cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
-  }
-  // cut for the main shell
-  translate([0,0,-20])
-  cylinder(r=92+tol/2,h=TowerHigh+10+tol,$fn=F1);
-  // cut for the tower
-  translate([0,0,-20])
-  mirror([1,0,0])
-  tower(tol=0.2);
-
-}
-
-}
-
 
 //----------------------------------------------------------------
 module scanner(){
@@ -406,23 +329,26 @@ module scanner(){
   
   // shell
   if(ShellOn){
+    color("gray")
     shell();
   }
   if(Shell2On){
+    color("gray")
     shell2();
   }
   
   // arm2
   if(Arm2On){
+    color("cyan")
     translate([0,0,TowerHigh])
     rotate([Az,0,0])
     arm2();
   }
     
-  // back lid
+  // lid
   if(LidOn){
     translate([0,0,TowerHigh]){
-      backlid();
+      lid2();
     }
   }
   
@@ -441,11 +367,9 @@ module scanner(){
   }
   if(TowerOn==2){
     tower2out();
-    tower2in();
   }
   if(TowerOn==3){
     tower2out();
-    tower2in();
     mirror([1,0,0])
     tower();
   }
