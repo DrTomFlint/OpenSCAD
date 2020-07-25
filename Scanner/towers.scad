@@ -5,6 +5,9 @@ TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
 F2=88;
+
+use <../Fractals/Lsystem.scad>
+
 //---------------------------------------------------------------------
 module tower(tol=0,holes=1){
 
@@ -80,11 +83,34 @@ Tthick2=4+tol;
     }
     // bore hole
     translate([TowerXoff-1,0,TowerHigh])
+    rotate([0,90,0]){
+      scale([1.5,0.8,1])
+      cylinder(r=17,h=Tthick+2,$fn=88);
+      scale([0.8,1.5,1])
+      cylinder(r=17,h=Tthick+2,$fn=88);
+    }
+    
+    // decorative hole
+    translate([TowerXoff-1,0,TowerHigh-60])
     rotate([0,90,0])
-    cylinder(r=17,h=Tthick+2,$fn=88);
+    cylinder(r=24,h=Tthick+2,$fn=88);
 
-
+    // bolt hole
+    translate([TowerXoff-1,10,0])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=Tthick+2,$fn=88);
+    translate([TowerXoff-1,-10,0])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=Tthick+2,$fn=88);
   }
+  
+  // tiling in the decorative hole
+  translate([TowerXoff-1,0,TowerHigh-60])
+  rotate([0,90,0])
+  linear_extrude(height=9,convexity=10)
+  scale([9,9])
+  penrose_tiling(n=2, w=0.2);
+
   
 } // end tower  
 

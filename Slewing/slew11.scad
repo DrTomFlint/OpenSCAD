@@ -85,10 +85,10 @@ iooff=0.525;     // offset race in the boss
 
 iogap=4;        // inner outer gap
 
-Ntabo=6;      // number of bolt down tabs outer 
-Ntabi=6;      // number of bolt down tabs inner
-Ntab2=6;      // number of bolt down tabs outer race inner side 
-Ntab3=6;      // number of bolt down tabs inner race outer side
+Ntabo=4;      // number of bolt down tabs outer 
+Ntabi=4;      // number of bolt down tabs inner
+Ntab2=4;      // number of bolt down tabs outer race inner side 
+Ntab3=4;      // number of bolt down tabs inner race outer side
 
 //CutAngle=180/Nr;   // cutaway view if < 360
 CutAngle=360;   // cutaway view if < 360

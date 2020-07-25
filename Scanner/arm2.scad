@@ -38,7 +38,7 @@ F2=88;
     // cut for the left axle  
     translate([-ra-2,0,0])  
     rotate([0,90,0])
-    cylinder(r=12,h=8,$fn=88);
+    cylinder(r=17,h=8,$fn=88);
 
     // cut for the right axle  
     translate([ra+1.5,0,0])  

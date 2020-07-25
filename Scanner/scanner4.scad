@@ -30,7 +30,7 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=0;     // elevation axis, ewheel
+ElOn=1;     // elevation axis, ewheel
 AzOn=0;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
@@ -39,12 +39,11 @@ TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 BaseOn=1;   // base plate
 
-TowerOn=0;  // towers
+TowerOn=3;  // towers
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
 
-ArmOn=0;    // camera arm
 Arm2On=0;    // camera arm
 Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
@@ -57,15 +56,15 @@ F1=222;
   // azimuth motor
   rm=112;   // azimuth motor radius
   phi=180;
-  phi2=phi+4.35;
+//  phi2=phi+4.35;
   ax1=rm*cos(phi);  // azimuth motor
   ay1=rm*sin(phi);
-  ax2=102.9*cos(phi2);  // idler
-  ay2=102.9*sin(phi2);
+//  ax2=102.9*cos(phi2);  // idler
+//  ay2=102.9*sin(phi2);
   echo(AX1 = ax1);
   echo(AY1 = ay1);
-  echo(AX2 = ax2);
-  echo(AY2 = ay2);
+//  echo(AX2 = ax2);
+//  echo(AY2 = ay2);
 
   // elevation motor
   r2=143;
@@ -90,7 +89,7 @@ ohi=15;         // outer race height
       hull(){
         // main disk
         translate([0,0,0])
-        cylinder(r=102,h=9,$fn=F2);
+        cylinder(r=96,h=9,$fn=F2);
 
         // azimuth motor
         translate([130,18,0])
@@ -99,9 +98,9 @@ ohi=15;         // outer race height
         cylinder(r=8,h=9,$fn=88);
 
         // near tower2 for elevation axis
-        translate([Tower2X-16,40,4.5])
+        translate([Tower2X-7,32,0])
         cylinder(r=8,h=9,$fn=88);
-        translate([Tower2X-16,-40,4.5])
+        translate([Tower2X-7,-32,0])
         cylinder(r=8,h=9,$fn=88);
       }
       
@@ -110,8 +109,8 @@ ohi=15;         // outer race height
       cube([13,20,14],center=true);
 
       // tower2 support
-      translate([Tower2X-19,-78/2,8])
-      cube([34,78,30]);
+      translate([Tower2X-15,-74/2,9])
+      cube([30,74,20]);
 
     }
 
@@ -163,10 +162,10 @@ ohi=15;         // outer race height
   cylinder(r=3,h=10,$fn=12);
 
   // locking pin for swing arm
-  for(i=[1:7]){
-    translate([-ax1-31/4,ay1-31/2-5-i*4+4,-1])
+  for(i=[0:4]){
+    translate([-ax1-31/4,ay1-31/2-5-i*4,-1])
     cylinder(r=1,h=12,$fn=12);
-    translate([-ax1-31/4-4,ay1-31/2-5-i*4+2,-1])
+    translate([-ax1-31/4-4,ay1-31/2-5-i*4,-1])
     cylinder(r=1,h=12,$fn=12);
   }
   
@@ -200,12 +199,28 @@ ohi=15;         // outer race height
     
   // added cut near tower2
   translate([Tower2X+6,0,5])
-  cube([20,67,100],center=true);
+  cube([20,62,100],center=true);
   
-  translate([Tower2X+15,100,38])
+  translate([Tower2X+15,100,29])
   rotate([90,0,0])
   rotate([0,0,180])
   rounder(r=20,h=200,f=88);
+
+  translate([Tower2X-15,-74/2,9])
+  rounder(r=4,h=60,f=88);
+  translate([Tower2X-15,74/2,9])
+  rotate([0,0,-90])
+  rounder(r=4,h=60,f=88);
+  
+  // bolt hole
+  translate([-150,10,16])
+  rotate([0,90,0])
+  cylinder(r=1.7,h=40,$fn=88);
+  translate([-150,-10,16])
+  rotate([0,90,0])
+  cylinder(r=1.7,h=40,$fn=88);
+
+
 }
 
 }
@@ -224,8 +239,7 @@ module azimuth(){
   if(1){
     color("green")
     translate([-ax1,ay1,-60])
-    rotate([0,0,180])
-    rotate([0,0,0])
+    rotate([0,0,90])
     xymotor();
   }    
   
@@ -235,7 +249,7 @@ module azimuth(){
     color("green")
     pulley();
     color("green")
-    swingarm(length=50,angle=-60);
+    swingarm(length=35,angle=-60);
   }
 
   // azimuth belt
@@ -266,7 +280,7 @@ module elevation(){
   color("red")
   translate([6,0,TowerHigh]) 
   rotate([0,90,0])
-  rotate([0,0,30])
+  rotate([0,0,45])
   gwheel();
     
   // elevation motor
