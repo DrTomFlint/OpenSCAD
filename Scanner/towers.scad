@@ -4,9 +4,11 @@
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
+Tower3X=-110;   // offset for elevation and left tower
 F2=88;
 
 use <../Fractals/Lsystem.scad>
+use <../Parts/motors.scad>
 
 //---------------------------------------------------------------------
 module tower(tol=0,holes=1){
@@ -114,12 +116,129 @@ Tthick2=4+tol;
   
 } // end tower  
 
+//---------------------------------------------------------------------
+module tower3(tol=0,holes=1){
+
+TowerLow=52+tol;
+TowerXoff=Tower3X;
+TowerWide=54+tol;
+Tower2High=0+tol;
+Tthick=10+tol;
+Tthick2=4+tol;
+
+  difference(){
+    // boss is a hull
+    hull(){
+      // bottom is 2 cylinders
+      color("pink")
+      translate([TowerXoff,-TowerWide/2+4,-TowerLow])
+      rotate([0,90,0])
+      cylinder(r=8,h=Tthick,$fn=88);
+      color("pink")
+      translate([TowerXoff,TowerWide/2-4,-TowerLow])
+      rotate([0,90,0])
+      cylinder(r=8,h=Tthick,$fn=88);
+      // upper tower is 1 big cylinder
+      translate([TowerXoff,0,TowerHigh])
+      rotate([0,90,0])
+      cylinder(r=56,h=Tthick,$fn=88);
+      // top peak for bolting on the slew13
+      color("pink")
+      translate([TowerXoff,0,TowerHigh+54])
+      rotate([0,90,0])
+      cylinder(r=8,h=Tthick,$fn=88);
+      
+    }
+    // bore hole
+    translate([TowerXoff-1,0,TowerHigh])
+    rotate([0,90,0])
+    cylinder(r=50+0.2,h=Tthick+2,$fn=88);
+    
+    // bolt holes for outer tabs
+    if(1){
+    Ntabo=3;
+    ood=50;        // outer race outer rad
+    //oid=ood-25;         // outer race inner rad
+    ohi=15;         // outer race height
+    translate([Tower3X+10,0,TowerHigh])
+    rotate([0,90,0])
+    rotate([0,0,-30])
+    for(i=[0:Ntabo-1]){
+      rotate([0,0,i*360/Ntabo]){
+          translate([0,ood+4,-ohi/2-4])
+          cylinder(r=1.7,h=20,$fn=22);
+      }
+    }
+  }
+
+    // elevation motor
+    y1=0;
+    z1=143;
+    color("red")
+    translate([Tower3X+54,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    rotate([0,0,90])
+    xymotor(tol=0.2);
+    // elevation motor shaft extra clearance
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=10,h=20,center=true);
+
+    // elevation motor bolt holes
+    translate([0,31/2,31/2])
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    
+    translate([0,-31/2,31/2])
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    
+    translate([0,-31/2,-31/2])
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    
+    translate([0,31/2,-31/2])
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+
+
+/*    
+    // decorative hole
+    translate([TowerXoff-1,0,TowerHigh-60])
+    rotate([0,90,0])
+    cylinder(r=24,h=Tthick+2,$fn=88);
+
+    // bolt hole
+    translate([TowerXoff-1,10,0])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=Tthick+2,$fn=88);
+    translate([TowerXoff-1,-10,0])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=Tthick+2,$fn=88);
+    
+*/    
+  }
+/*  
+  // tiling in the decorative hole
+  translate([TowerXoff-1,0,TowerHigh-60])
+  rotate([0,90,0])
+  linear_extrude(height=9,convexity=10)
+  scale([9,9])
+  penrose_tiling(n=2, w=0.2);
+*/
+  
+} // end tower  
+
 
 //===========================================
 
-tower2out();
+tower3();
 
-mirror([1,0,0])
-tower();
+//mirror([1,0,0])
+//tower();
 
 //===================================================
