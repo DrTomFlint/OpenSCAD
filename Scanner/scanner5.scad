@@ -33,8 +33,8 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=1;     // elevation axis, ewheel
-AzOn=1;     // azimuth axis, turntable
+ElOn=0;     // elevation axis, ewheel
+AzOn=0;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
@@ -49,7 +49,7 @@ Tower2X=-110;   // offset for elevation and left tower
 
 Tower3X=-110;   // offset for elevation and left tower
 
-Arm2On=1;    // camera arm
+Arm2On=0;    // camera arm
 Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
@@ -87,39 +87,42 @@ module baseplate(){
 Ntabi=6;  
 oid=50;         // outer race inner rad
 ohi=15;         // outer race height
-
+thick5=10;
   
+  translate([0,0,-2])
   difference(){
     union(){
       hull(){
         // main disk
         translate([0,0,0])
-        cylinder(r=96,h=9,$fn=F2);
+        cylinder(r=96,h=thick5,$fn=F2);
 
         // azimuth motor
         translate([130,18,0])
-        cylinder(r=8,h=9,$fn=88);
+        cylinder(r=8,h=thick5,$fn=88);
         translate([130,-18,0])
-        cylinder(r=8,h=9,$fn=88);
+        cylinder(r=8,h=thick5,$fn=88);
 
-/*
-        // near tower2 for elevation axis
-        translate([Tower2X-7,32,0])
-        cylinder(r=8,h=9,$fn=88);
-        translate([Tower2X-7,-32,0])
-        cylinder(r=8,h=9,$fn=88);
-*/        
+
+        // near tower3 for elevation axis
+        translate([Tower2X+8,40,0])
+        cylinder(r=8,h=thick5,$fn=88);
+        translate([Tower2X+8,-40,0])
+        cylinder(r=8,h=thick5,$fn=88);
+        
       }
+
+      // bolt posts near tower3
+      translate([Tower2X+8+3,40-2,0])
+      cylinder(r=7+4,h=20,$fn=88);
+      
+      translate([Tower2X+8+3,-40+2,0])
+      cylinder(r=7+4,h=20,$fn=88);
+
       
       // tower support
       translate([94,0,10])
       cube([13,20,14],center=true);
-
-/*
-      // tower2 support
-      translate([Tower2X-15,-74/2,9])
-      cube([30,74,20]);
-*/
 
     }
 
@@ -133,12 +136,12 @@ ohi=15;         // outer race height
     }
 
     // center recess
-    translate([0,0,3])
+    translate([0,0,5])
     cylinder(r=88,h=10,$fn=F2);
        
     // bore hole
     translate([0,0,-1])
-    cylinder(r=58,h=15,$fn=F2);
+    cylinder(r=58,h=25,$fn=F2,center=true);
     
     // rounding on azimuth mount
     translate([138,-52/2,-1])
@@ -201,37 +204,16 @@ ohi=15;         // outer race height
 
   // towers 
   translate([0,0,5]){
-    tower3(tol=0.15);    
+    tower3(tol=0.15);   
+    tower4(tol=0.15); 
     mirror([1,0,0])
     tower(tol=0.15);
   }    
     
-  // added cut near tower2
-  translate([Tower2X+6,0,5])
-  cube([20,62,100],center=true);
-  
-  translate([Tower2X+15,100,29])
-  rotate([90,0,0])
-  rotate([0,0,180])
-  rounder(r=20,h=200,f=88);
-
-  translate([Tower2X-15,-74/2,9])
-  rounder(r=4,h=60,f=88);
-  translate([Tower2X-15,74/2,9])
-  rotate([0,0,-90])
-  rounder(r=4,h=60,f=88);
-  
-  // bolt hole
-  translate([-150,10,16])
-  rotate([0,90,0])
-  cylinder(r=1.7,h=40,$fn=88);
-  translate([-150,-10,16])
-  rotate([0,90,0])
-  cylinder(r=1.7,h=40,$fn=88);
-
 
 }
 
+  
 }
 
 //--------------------------------------------------------------------
@@ -285,6 +267,7 @@ module azimuth(){
 //-------------------------------------------------------------------
 module elevation(){
 
+
   // elevation wheel
   color("orange")
   translate([4,0,TowerHigh]) 
@@ -292,13 +275,14 @@ module elevation(){
   rotate([0,0,30])
   rotate([180,0,0])
   slew13();
-    
+      
   // elevation motor
   color("red")
   translate([54,y1,TowerHigh-z1])  
   rotate([0,-90,0])
   rotate([0,0,90])
   xymotor();
+
 
   // elevation pulley
   color("red")
@@ -392,9 +376,12 @@ module scanner(){
   }
   if(TowerOn==2){
     tower3();
+    color("red")
+    tower4();
   }
   if(TowerOn==3){
     tower3();
+    tower4();
     mirror([1,0,0])
     tower();
   }

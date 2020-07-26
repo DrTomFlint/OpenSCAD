@@ -21,12 +21,13 @@ module dome(Rin=91,thick=1){
 // 4 = front lid + front lip
 
 module lid(type=1){
+  Rin=92;
   
   difference(){
     union(){
       // dome part
       difference(){
-        dome(Rin=91,thick=1);
+        dome(Rin=Rin,thick=1);
         rotate([-60,0,0])         // here is the cut angle
         translate([0,-100,50])    
         cube([200,200,100],center=true);    
@@ -37,9 +38,9 @@ module lid(type=1){
       color("green")
       translate([0,0,-2])
       difference(){
-        cylinder(r=93,h=4,$fn=F1);
+        cylinder(r=Rin+2,h=4,$fn=F1);
         translate([0,0,-1])
-        cylinder(r=92,h=6,$fn=F1);
+        cylinder(r=Rin+1,h=6,$fn=F1);
         translate([0,-97,40])
         cube([200,200,100],center=true);    
       }
@@ -49,9 +50,9 @@ module lid(type=1){
         rotate([30,0,0])
         translate([0,0,-2])
         difference(){
-          cylinder(r=93,h=4,$fn=F1);
+          cylinder(r=Rin+2,h=4,$fn=F1);
           translate([0,0,-1])
-          cylinder(r=92,h=6,$fn=F1);
+          cylinder(r=Rin+1,h=6,$fn=F1);
           translate([0,-97,40])
           cube([200,200,100],center=true);    
         }
@@ -59,12 +60,12 @@ module lid(type=1){
     } // end union
       
     // cuts for left tower sleve
-    translate([-95,0,0])
+    translate([-Rin-10,0,0])
     rotate([0,90,0])
-    cylinder(r=28,h=15,$fn=F2);   
+    cylinder(r=30,h=20,$fn=F2);   
 
     // cuts for hinge spot
-    translate([78,0,0])
+    translate([Rin,0,0])
     rotate([0,90,0])
     cylinder(r=12.1,h=15,$fn=F2);
   } 

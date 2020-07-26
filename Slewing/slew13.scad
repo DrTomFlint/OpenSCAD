@@ -58,7 +58,7 @@ OuterRaceOn = 1;
 InnerHiOn = 1;
 InnerLowOn = 1;
 PulleyOn = 0;
-Pulley2On = 1;
+Pulley2On = 0;
 
 OuterTab = 2; // 0=off, 1=inner, 2=outer, 3=special for insert in tower
 InnerTab = 3; // 0=off, 1=inner, 2=outer, 3=internal 90 degreee

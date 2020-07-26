@@ -123,7 +123,7 @@ TowerLow=52+tol;
 TowerXoff=Tower3X;
 TowerWide=54+tol;
 Tower2High=0+tol;
-Tthick=10+tol;
+Tthick=9.5+tol;
 Tthick2=4+tol;
 
   difference(){
@@ -149,24 +149,26 @@ Tthick2=4+tol;
       cylinder(r=8,h=Tthick,$fn=88);
       
     }
-    // bore hole
-    translate([TowerXoff-1,0,TowerHigh])
-    rotate([0,90,0])
-    cylinder(r=50+0.2,h=Tthick+2,$fn=88);
-    
-    // bolt holes for outer tabs
-    if(1){
-    Ntabo=3;
-    ood=50;        // outer race outer rad
-    //oid=ood-25;         // outer race inner rad
-    ohi=15;         // outer race height
-    translate([Tower3X+10,0,TowerHigh])
-    rotate([0,90,0])
-    rotate([0,0,-30])
-    for(i=[0:Ntabo-1]){
-      rotate([0,0,i*360/Ntabo]){
-          translate([0,ood+4,-ohi/2-4])
-          cylinder(r=1.7,h=20,$fn=22);
+    if(holes){
+      // bore hole
+      translate([TowerXoff-1,0,TowerHigh])
+      rotate([0,90,0])
+      cylinder(r=50+0.2,h=Tthick+2,$fn=88);
+      
+      // bolt holes for outer tabs
+      if(1){
+      Ntabo=3;
+      ood=50;        // outer race outer rad
+      //oid=ood-25;         // outer race inner rad
+      ohi=15;         // outer race height
+      translate([Tower3X+10,0,TowerHigh])
+      rotate([0,90,0])
+      rotate([0,0,-30])
+      for(i=[0:Ntabo-1]){
+        rotate([0,0,i*360/Ntabo]){
+            translate([0,ood+4,-ohi/2-4])
+            cylinder(r=1.7,h=20,$fn=22);
+        }
       }
     }
   }
@@ -233,10 +235,98 @@ Tthick2=4+tol;
   
 } // end tower  
 
+//-----------------
+module tower4(tol=0,holes=1){
+TowerLow=52+tol;
+TowerXoff=Tower3X+13;
+TowerWide=54+tol;
+Tower2High=0+tol;
+Tthick=4+tol;
+Tthick2=4+tol;
+
+  difference(){
+    union(){
+      // boss is a hull
+      hull(){
+        // upper tower is 1 big cylinder
+        translate([TowerXoff,0,TowerHigh])
+        rotate([0,90,0])
+        cylinder(r=56,h=Tthick,$fn=88);
+        // top peak for bolting on the slew13
+        color("pink")
+        translate([TowerXoff,0,TowerHigh+54])
+        rotate([0,90,0])
+        cylinder(r=8,h=Tthick,$fn=88);
+        // 2nd peak for bolting on the slew13
+        color("pink")
+        translate([TowerXoff,0,TowerHigh])
+        rotate([120,0,0])
+        translate([0,0,54])
+        rotate([0,90,0])
+        cylinder(r=8,h=Tthick,$fn=88);
+        // 3rd peak for bolting on the slew13
+        color("pink")
+        translate([TowerXoff,0,TowerHigh])
+        rotate([-120,0,0])
+        translate([0,0,54])
+        rotate([0,90,0])
+        cylinder(r=8,h=Tthick,$fn=88);
+        
+        
+      }
+      
+      // shoulder for the shell to rest ontop
+      // upper tower is 1 big cylinder
+      translate([TowerXoff,0,TowerHigh])
+      rotate([0,90,0])
+      cylinder(r=30,h=Tthick+7.5,$fn=88);   //*****************************************
+      
+      // vertical post to break the shell into front/back
+      difference(){
+        // post
+        translate([TowerXoff,-30,TowerHigh-121.8])
+        cube([Tthick+8,60,121.8]);
+        
+        // cut away to match the shell circle
+        translate([0,0,-20])
+        cylinder(r=91-0.5-tol,h=TowerHigh+12+tol+10,$fn=200);
+
+      }      
+    }
+    
+    
+    if(holes){
+      // bore hole
+      translate([TowerXoff-1,0,TowerHigh])
+      rotate([0,90,0])
+      cylinder(r=28+0.2,h=Tthick+20,$fn=88);
+      
+      // bolt holes for outer tabs
+      if(1){
+      Ntabo=3;
+      ood=50;        // outer race outer rad
+      //oid=ood-25;         // outer race inner rad
+      ohi=15;         // outer race height
+      translate([Tower3X+10,0,TowerHigh])
+      rotate([0,90,0])
+      rotate([0,0,-30])
+      for(i=[0:Ntabo-1]){
+        rotate([0,0,i*360/Ntabo]){
+            translate([0,ood+4,-ohi/2-4])
+            cylinder(r=1.7,h=20,$fn=22);
+        }
+      }
+    }
+  }
+}
+
+}
+
 
 //===========================================
 
-tower3();
+tower3(holes=1);
+//tower4(holes=1);
 
 //mirror([1,0,0])
 //tower();

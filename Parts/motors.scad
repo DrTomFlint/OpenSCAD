@@ -78,10 +78,10 @@ F3=22;
     // wiring box
     translate([42.4/2,0,2.0+2.5])
     rotate([0,90,0])
-    cylinder(r=2.5,h=10);
+    cylinder(r=2.5,h=10,$fn=22);
     
     // main shaft
-    translate([0,0,z1])
+    translate([0,0,z1-0.1])
     cylinder(r=2.5,h=20,$fn=F3);
     
 }

@@ -11,46 +11,20 @@ module shell(tol=0){
   translate([0,0,-10]){
     difference(){
       // hollow cylinder
-      cylinder(r=92+tol/2,h=TowerHigh+10+tol,$fn=F1);
+      cylinder(r=93+tol/2,h=TowerHigh+10+tol,$fn=F1);
       translate([0,0,-1])
-      cylinder(r=91-tol/2,h=TowerHigh+12+tol,$fn=F1);
+      cylinder(r=92-tol/2,h=TowerHigh+12+tol,$fn=F1);
       
       // cuts for the towers
       translate([0,0,10])
-      tower2out(tol=0.2,holes=0);
+      tower4(tol=0.2,holes=0);
       
       mirror([1,0,0])
       translate([0,0,10])
       tower(tol=0.2,holes=0);
       
-      // cut for sleeve
-      translate([TowerXoff+28,0,TowerHigh+10])
-      rotate([0,90,0])
-      cylinder(r=26,h=12,$fn=88);
-      
     }
   }
-  Tower2X=-110;
-  TowerLow=52+tol;
-  TowerXoff=Tower2X-12;
-  TowerWide=70+tol;
-  Tower2High=0+tol;
-  Tthick=8+tol;
-  Tthick2=4+tol;
-  translate([30,0,0]){
-    
-  // sleeve
-  //color("cyan")
-  difference(){
-    translate([TowerXoff,0,TowerHigh])
-    rotate([0,90,0])
-    cylinder(r=28,h=7,$fn=88);
-
-    translate([TowerXoff-2,0,TowerHigh])
-    rotate([0,90,0])
-    cylinder(r=26,h=10,$fn=88);
-  }
-}
 
 
 } // end shell  
