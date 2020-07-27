@@ -65,7 +65,7 @@ module lid(type=1){
     cylinder(r=30,h=20,$fn=F2);   
 
     // cuts for hinge spot
-    translate([Rin,0,0])
+    translate([Rin-5,0,0])
     rotate([0,90,0])
     cylinder(r=12.1,h=15,$fn=F2);
   } 

@@ -33,8 +33,8 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=0;     // elevation axis, ewheel
-AzOn=0;     // azimuth axis, turntable
+ElOn=1;     // elevation axis, ewheel
+AzOn=1;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
@@ -42,7 +42,7 @@ TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 BaseOn=1;   // base plate
 
-TowerOn=3;  // towers
+TowerOn=2;  // towers
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
@@ -98,34 +98,32 @@ thick5=10;
         cylinder(r=96,h=thick5,$fn=F2);
 
         // azimuth motor
-        translate([130,18,0])
+        translate([132,18,0])
         cylinder(r=8,h=thick5,$fn=88);
-        translate([130,-18,0])
+        translate([132,-18,0])
         cylinder(r=8,h=thick5,$fn=88);
 
 
         // near tower3 for elevation axis
-        translate([Tower2X+8,40,0])
+        translate([Tower2X+14,50,0])
         cylinder(r=8,h=thick5,$fn=88);
-        translate([Tower2X+8,-40,0])
+        translate([Tower2X+14,-50,0])
         cylinder(r=8,h=thick5,$fn=88);
         
       }
 
-      // bolt posts near tower3
-      translate([Tower2X+8+3,40-2,0])
-      cylinder(r=7+4,h=20,$fn=88);
-      
-      translate([Tower2X+8+3,-40+2,0])
-      cylinder(r=7+4,h=20,$fn=88);
-
-      
       // tower support
       translate([94,0,10])
       cube([13,20,14],center=true);
 
     }
 
+    // bolts between base and tower 3
+    translate([-83,57,-50])
+    cylinder(r=1.7,h=200,$fn=22);
+    translate([-83,-57,-50])
+    cylinder(r=1.7,h=200,$fn=22);
+    
     // bolt holes for the slew10
     for(i=[0:7]){
       rotate([0,0,i*360/8+180/8]){
@@ -141,6 +139,7 @@ thick5=10;
        
     // bore hole
     translate([0,0,-1])
+//    cylinder(r=58,h=25,$fn=F2,center=true);
     cylinder(r=58,h=25,$fn=F2,center=true);
     
     // rounding on azimuth mount
@@ -153,9 +152,12 @@ thick5=10;
 
   // azimuth motor
   color("green")
-  translate([-ax1,ay1,-42.5])
+  translate([-ax1,ay1,-42.5-4])   //*******************
   rotate([0,0,180])
   xymotor(tol=0.15);
+
+  translate([-ax1,ay1,10])
+  cylinder(r=12,h=20,center=true);
 
   // M3 bolts for azimuth motor
   translate([-ax1+31/2,ay1+31/2,0])
@@ -168,17 +170,23 @@ thick5=10;
   cylinder(r=1.7,h=10,$fn=12);
 
   // clearance for heads
-  translate([-ax1-31/2,ay1+31/2,9])
-  cylinder(r=3,h=10,$fn=12);
-  translate([-ax1-31/2,ay1-31/2,9])
-  cylinder(r=3,h=10,$fn=12);
+  translate([-ax1-31/2,ay1+31/2,6.1])
+  cylinder(r=3,h=10,$fn=22);
+  translate([-ax1-31/2,ay1-31/2,6.1])
+  cylinder(r=3,h=10,$fn=22);
+  translate([-ax1+31/2,ay1+31/2,6.1])
+  cylinder(r=3,h=4,$fn=22);
+  translate([-ax1+31/2,ay1-31/2,6.1])
+  cylinder(r=3,h=4,$fn=22);
 
   // locking pin for swing arm
-  for(i=[0:4]){
-    translate([-ax1-31/4,ay1-31/2-5-i*4,-1])
-    cylinder(r=1,h=12,$fn=12);
-    translate([-ax1-31/4-4,ay1-31/2-5-i*4,-1])
-    cylinder(r=1,h=12,$fn=12);
+  for(i=[-1:2]){
+    translate([-ax1+i*4,ay1-31/2-5-i*4,-1])
+    cylinder(r=1,h=42,$fn=12);
+    translate([-ax1+i*4-4,ay1-31/2-5-i*4,-1])
+    cylinder(r=1,h=42,$fn=12);
+    translate([-ax1+i*4-8,ay1-31/2-5-i*4,-1])
+    cylinder(r=1,h=42,$fn=12);
   }
   
   translate([-90,y1+31/2,-23.5+31/2])  
@@ -204,7 +212,7 @@ thick5=10;
 
   // towers 
   translate([0,0,5]){
-    tower3(tol=0.15);   
+    //tower3(tol=0.15);   
     tower4(tol=0.15); 
     mirror([1,0,0])
     tower(tol=0.15);
@@ -229,7 +237,7 @@ module azimuth(){
   // azimuth motor
   if(1){
     color("green")
-    translate([-ax1,ay1,-60])
+    translate([-ax1,ay1,-60-4])
     rotate([0,0,90])
     xymotor();
   }    
@@ -239,8 +247,13 @@ module azimuth(){
   rotate([180,0,0]){
     color("green")
     pulley();
+//    color("green")
+//    swingarm(length=35,angle=-60);
+    
     color("green")
-    swingarm(length=35,angle=-60);
+    translate([31/2,-31/2,2])
+    rotate([0,0,125])
+    swingarm2(length=55);
   }
 
   // azimuth belt
@@ -289,8 +302,11 @@ module elevation(){
   translate([1,y1,TowerHigh-z1])  
   rotate([0,-90,0]){
     pulley();
-    rotate([0,0,180])
-    swingarm(length=40,angle=-30);
+//    rotate([0,0,180])
+//    swingarm(length=40,angle=-30);
+    translate([-31/2,-31/2,2.5])
+    rotate([0,0,-7])
+    swingarm2(length=44);
   }
 
   // elevation belt

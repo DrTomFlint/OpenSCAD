@@ -119,36 +119,114 @@ Tthick2=4+tol;
 //---------------------------------------------------------------------
 module tower3(tol=0,holes=1){
 
-TowerLow=52+tol;
+TowerLow=59+tol;
 TowerXoff=Tower3X;
-TowerWide=54+tol;
+TowerWide=111+tol;
 Tower2High=0+tol;
 Tthick=9.5+tol;
 Tthick2=4+tol;
 
   difference(){
-    // boss is a hull
-    hull(){
-      // bottom is 2 cylinders
-      color("pink")
-      translate([TowerXoff,-TowerWide/2+4,-TowerLow])
-      rotate([0,90,0])
-      cylinder(r=8,h=Tthick,$fn=88);
-      color("pink")
-      translate([TowerXoff,TowerWide/2-4,-TowerLow])
-      rotate([0,90,0])
-      cylinder(r=8,h=Tthick,$fn=88);
-      // upper tower is 1 big cylinder
-      translate([TowerXoff,0,TowerHigh])
-      rotate([0,90,0])
-      cylinder(r=56,h=Tthick,$fn=88);
-      // top peak for bolting on the slew13
-      color("pink")
-      translate([TowerXoff,0,TowerHigh+54])
-      rotate([0,90,0])
-      cylinder(r=8,h=Tthick,$fn=88);
-      
+    union(){
+      // boss is a hull
+      hull(){
+        // bottom is 2 cylinders
+        color("pink")
+        translate([TowerXoff+Tthick/2,-TowerWide/2+Tthick/2,-TowerLow])
+        rotate([0,90,0])
+        cube([Tthick,Tthick,Tthick],center=true);
+        //cylinder(r=8,h=Tthick,$fn=88);
+        color("pink")
+        translate([TowerXoff+Tthick/2,TowerWide/2-Tthick/2,-TowerLow])
+        rotate([0,90,0])
+        //cylinder(r=8,h=Tthick,$fn=88);
+        cube([Tthick,Tthick,Tthick],center=true);
+        // upper tower is 1 big cylinder
+        translate([TowerXoff,0,TowerHigh])
+        rotate([0,90,0])
+        cylinder(r=56,h=Tthick,$fn=88);
+        // top peak for bolting on the slew13
+        color("pink")
+        translate([TowerXoff,0,TowerHigh+54])
+        rotate([0,90,0])
+        cylinder(r=8,h=Tthick,$fn=88);
+        
+      }
+      // front wing
+      translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
+      rotate([0,0,-30]){
+        difference(){
+          cube([40,8,180]);
+          translate([40,-1,56])
+          rotate([0,-20,0])
+          cube([80,10,200]);
+        }
+        translate([24,Tthick,38])
+        cylinder(r=9,h=28,$fn=88);
+      }
+            
+      // back wing
+      mirror([0,1,0])
+      translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
+      rotate([0,0,-30]){
+        difference(){
+          cube([40,8,180]);
+          translate([40,-1,56])
+          rotate([0,-20,0])
+          cube([80,10,200]);
+        }
+        translate([24,Tthick,38])
+        cylinder(r=9,h=28,$fn=88);
+      }
+    }    
+
+    // front wing cut
+    translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
+    rotate([0,0,-30]){
+      difference(){
+        translate([4,-6,4])
+        cube([40-8,8,180-8]);
+        translate([40,-1,46])
+        rotate([0,-20,0])
+        cube([80-8,10,200-8]);
+
+        translate([20,1,60])
+        rotate([90,0,0])
+        rotate([0,0,72/4])
+        linear_extrude(height=9,convexity=10)
+        scale([8.5,8.5])
+        penrose_tiling(n=4, w=0.2);
+
+      }
     }
+
+    // back wing
+    mirror([0,1,0]){
+    translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
+    rotate([0,0,-30]){
+      difference(){
+        translate([4,-6,4])
+        cube([40-8,8,180-8]);
+        translate([40,-1,46])
+        rotate([0,-20,0])
+        cube([80-8,10,200-8]);
+
+        translate([20,1,60])
+        rotate([90,0,0])
+        rotate([0,0,72/4])
+        linear_extrude(height=9,convexity=10)
+        scale([8.5,8.5])
+        penrose_tiling(n=4, w=0.2);
+      }
+    }
+  }
+
+    // bolts between base and tower 3
+    translate([-83,57,-50])
+    cylinder(r=1.7,h=200,$fn=22);
+    translate([-83,-57,-50])
+    cylinder(r=1.7,h=200,$fn=22);
+    
     if(holes){
       // bore hole
       translate([TowerXoff-1,0,TowerHigh])
@@ -172,6 +250,27 @@ Tthick2=4+tol;
       }
     }
   }
+
+    // copied code from the baseplate to make this cut-out.
+    Ntabi=6;  
+    oid=50;         // outer race inner rad
+    ohi=15;         // outer race height
+    thick5=10+0.25;
+
+    translate([0,0,-2-16])
+    hull(){
+      // main disk
+      translate([0,0,0])
+      cylinder(r=96,h=thick5,$fn=F2);
+
+      // near tower3 for elevation axis
+      translate([Tower2X+14,50,0])
+      cylinder(r=8+0.25,h=thick5+0.25,$fn=88);
+      translate([Tower2X+14,-50,0])
+      cylinder(r=8+0.25,h=thick5+0.25,$fn=88);
+      
+    }
+
 
     // elevation motor
     y1=0;
@@ -207,31 +306,52 @@ Tthick2=4+tol;
     rotate([0,-90,0])
     cylinder(r=1.7,h=20,center=true,$fn=22);
 
-
-/*    
+    // swing arm locking pin
+    for(i=[0:6]){
+      translate([0,-25-i*2,i*5])
+      translate([Tower3X,y1,TowerHigh-z1])  
+      rotate([0,-90,0])
+      cylinder(r=1,h=60,center=true,$fn=22);
+      translate([0,-25-i*2+6,i*5])
+      translate([Tower3X,y1,TowerHigh-z1])  
+      rotate([0,-90,0])
+      cylinder(r=1,h=60,center=true,$fn=22);
+      translate([0,-25-i*2-6,i*5])
+      translate([Tower3X,y1,TowerHigh-z1])  
+      rotate([0,-90,0])
+      cylinder(r=1,h=60,center=true,$fn=22);
+    }
+   
     // decorative hole
-    translate([TowerXoff-1,0,TowerHigh-60])
-    rotate([0,90,0])
-    cylinder(r=24,h=Tthick+2,$fn=88);
-
-    // bolt hole
-    translate([TowerXoff-1,10,0])
-    rotate([0,90,0])
-    cylinder(r=1.7,h=Tthick+2,$fn=88);
-    translate([TowerXoff-1,-10,0])
-    rotate([0,90,0])
-    cylinder(r=1.7,h=Tthick+2,$fn=88);
-    
-*/    
+    translate([TowerXoff+5,0,TowerHigh-60])
+    difference(){
+      cube([20,82,80],center=true);
+      
+      translate([0,0,TowerHigh-45])
+      rotate([0,90,0])
+      cylinder(r=60,h=24,center=true,$fn=88);
+    }
+  
   }
-/*  
+  
   // tiling in the decorative hole
-  translate([TowerXoff-1,0,TowerHigh-60])
-  rotate([0,90,0])
-  linear_extrude(height=9,convexity=10)
-  scale([9,9])
-  penrose_tiling(n=2, w=0.2);
-*/
+  intersection(){
+    translate([TowerXoff+5,0,TowerHigh-60])
+    difference(){
+      cube([20,82,82],center=true);
+      
+      translate([0,0,TowerHigh-45])
+      rotate([0,90,0])
+      cylinder(r=60,h=24,center=true,$fn=88);
+    }
+
+    translate([TowerXoff-1,0,23])
+    rotate([0,90,0])
+    rotate([0,0,72/2])
+    linear_extrude(height=9,convexity=10)
+    scale([8,8])
+    penrose_tiling(n=4, w=0.2);
+  }
   
 } // end tower  
 

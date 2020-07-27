@@ -50,24 +50,24 @@ thick8=1;
 difference(){
   hull(){
   // corners of the shell
-    translate([-ax1+31/2,ay1+31/2,z8])
+    translate([-ax1+31/2+2,ay1+31/2,z8])
     cylinder(r=9+tol,h=hi8,$fn=88);
-    translate([-ax1-31/2-10,ay1+31/2+26,z8])
+    translate([-ax1-31/2-9,ay1+31/2+24,z8])
     cylinder(r=11+tol,h=hi8,$fn=88);
-    translate([-ax1-31/2-10,ay1-31/2-26,z8])
+    translate([-ax1-31/2-9,ay1-31/2-24,z8])
     cylinder(r=11+tol,h=hi8,$fn=88);
-    translate([-ax1+31/2,ay1-31/2,z8])
+    translate([-ax1+31/2+2,ay1-31/2,z8])
     cylinder(r=9+tol,h=hi8,$fn=88);
   }
   translate([0,0,-0.01])
   hull(){
-    translate([-ax1+31/2,ay1+31/2,z8])
+    translate([-ax1+31/2+2,ay1+31/2,z8])
     cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1-31/2-10,ay1+31/2+26,z8])
+    translate([-ax1-31/2-9,ay1+31/2+24,z8])
     cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1-31/2-10,ay1-31/2-26,z8])
+    translate([-ax1-31/2-9,ay1-31/2-24,z8])
     cylinder(r=11-thick8-tol,h=hi8-thick8,$fn=88);
-    translate([-ax1+31/2,ay1-31/2,z8])
+    translate([-ax1+31/2+2,ay1-31/2,z8])
     cylinder(r=9-thick8-tol,h=hi8-thick8,$fn=88);
   }
   // cut for the main shell
