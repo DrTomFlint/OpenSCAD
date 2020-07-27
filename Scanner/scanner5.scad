@@ -33,8 +33,8 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=1;     // elevation axis, ewheel
-AzOn=1;     // azimuth axis, turntable
+ElOn=0;     // elevation axis, ewheel
+AzOn=0;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
@@ -42,7 +42,7 @@ TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 BaseOn=1;   // base plate
 
-TowerOn=2;  // towers
+TowerOn=0;  // towers
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower

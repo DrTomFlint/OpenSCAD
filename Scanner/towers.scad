@@ -186,11 +186,11 @@ Tthick2=4+tol;
       difference(){
         translate([4,-6,4])
         cube([40-8,8,180-8]);
-        translate([40,-1,46])
+        translate([44,-1,40])
         rotate([0,-20,0])
         cube([80-8,10,200-8]);
 
-        translate([20,1,60])
+       translate([20,8,60])
         rotate([90,0,0])
         rotate([0,0,72/4])
         linear_extrude(height=9,convexity=10)
@@ -200,7 +200,7 @@ Tthick2=4+tol;
       }
     }
 
-    // back wing
+    // back wing cut
     mirror([0,1,0]){
     translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
     rotate([0,0,-30]){
@@ -307,19 +307,20 @@ Tthick2=4+tol;
     cylinder(r=1.7,h=20,center=true,$fn=22);
 
     // swing arm locking pin
-    for(i=[0:6]){
+    translate([0,-1,-1])
+    for(i=[2:6]){
       translate([0,-25-i*2,i*5])
       translate([Tower3X,y1,TowerHigh-z1])  
       rotate([0,-90,0])
-      cylinder(r=1,h=60,center=true,$fn=22);
+      cylinder(r=1,h=20,center=true,$fn=22);
       translate([0,-25-i*2+6,i*5])
       translate([Tower3X,y1,TowerHigh-z1])  
       rotate([0,-90,0])
-      cylinder(r=1,h=60,center=true,$fn=22);
+      cylinder(r=1,h=20,center=true,$fn=22);
       translate([0,-25-i*2-6,i*5])
       translate([Tower3X,y1,TowerHigh-z1])  
       rotate([0,-90,0])
-      cylinder(r=1,h=60,center=true,$fn=22);
+      cylinder(r=1,h=20,center=true,$fn=22);
     }
    
     // decorative hole
@@ -345,7 +346,7 @@ Tthick2=4+tol;
       cylinder(r=60,h=24,center=true,$fn=88);
     }
 
-    translate([TowerXoff-1,0,23])
+    translate([TowerXoff,0,23])
     rotate([0,90,0])
     rotate([0,0,72/2])
     linear_extrude(height=9,convexity=10)
