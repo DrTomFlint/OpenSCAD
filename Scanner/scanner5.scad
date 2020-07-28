@@ -16,6 +16,7 @@ use <../Slewing/slew10.scad>
 use <../Slewing/slew11.scad>
 use <../Slewing/slew12.scad>
 use <../Slewing/slew13.scad>
+use <../Slewing/slew14.scad>
 use <../Parts/motors.scad>
 use <../Parts/bearings1.scad>
 use <../Parts/timing2.scad>
@@ -33,8 +34,8 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=0;     // elevation axis, ewheel
-AzOn=0;     // azimuth axis, turntable
+ElOn=1;     // elevation axis, ewheel
+AzOn=1;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
@@ -42,14 +43,14 @@ TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 BaseOn=1;   // base plate
 
-TowerOn=0;  // towers
+TowerOn=3;  // towers
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
 
 Tower3X=-110;   // offset for elevation and left tower
 
-Arm2On=0;    // camera arm
+Arm2On=1;    // camera arm
 Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
@@ -287,7 +288,8 @@ module elevation(){
   rotate([0,90,0])
   rotate([0,0,30])
   rotate([180,0,0])
-  slew13();
+//  slew13();
+  slew14();
       
   // elevation motor
   color("red")
@@ -310,6 +312,7 @@ module elevation(){
   }
 
   // elevation belt
+  rbelt=114.08/2;
   color("gray")
   translate([-13,0,0])
   difference(convexity=6){
@@ -321,7 +324,7 @@ module elevation(){
       // ewheel
       translate([2,0,TowerHigh])  
       rotate([0,90,0])
-      cylinder(r=71.4/2+1.5,h=7,$fn=F2);
+      cylinder(r=rbelt+1.5,h=7,$fn=F2);
     }
     hull(){
       translate([0,y1,TowerHigh-z1])  
@@ -329,7 +332,7 @@ module elevation(){
       cylinder(r=9.6/2,h=9,$fn=F2);
       translate([2,0,TowerHigh])  
       rotate([0,90,0])
-      cylinder(r=71.4/2,h=9,$fn=F2);
+      cylinder(r=rbelt,h=9,$fn=F2);
     }
   }
   

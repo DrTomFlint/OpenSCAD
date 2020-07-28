@@ -1,6 +1,7 @@
 //==================================================================
-// slew13.scad
+// slew14.scad
 // A slewing joint with cross roller bearings.
+// ** larger pulley than inner race to increase length of belt
 // ** small settings for elevation drive 
 // ** test for moving the timing belt pulley to the inner race
 //
@@ -50,6 +51,8 @@ use <../Parts/threads.scad>  // include the threads.scad file
 use <../Parts/timing2.scad>  // include the timing2.scad file
 use <../Parts/timing4.scad>  // include the timing2.scad file
 use <../Parts/timing5.scad>  // include the timing2.scad file
+use <../Parts/timing6.scad>  // include the timing2.scad file
+use <../Fractals/Lsystem.scad>
 
 CarrierOn = 0;    // 1=turned on, 0=turned off
 RollersOn = 0;    // use this only for design, see how roller fit
@@ -57,8 +60,10 @@ RollerPrint = 0;  // use this only for printing the rollers
 OuterRaceOn = 1;
 InnerHiOn = 1;
 InnerLowOn = 1;
+InnerCapOn = 0;
 PulleyOn = 0;
-Pulley2On = 1;
+Pulley2On = 0;
+JwheelOn = 1;
 
 OuterTab = 2; // 0=off, 1=inner, 2=outer, 3=special for insert in tower
 InnerTab = 3; // 0=off, 1=inner, 2=outer, 3=internal 90 degreee
@@ -207,21 +212,11 @@ if(0){
             cylinder(r=3,h=4,$fn=F1);
           }
 
-/*          
-          hull(){
-            translate([0,ood,-ohi/2-4])
-            scale([3.3,1,1])
-            cylinder(r=1.8,h=3,$fn=F1);
-            translate([0,ood-4,-ohi/2-4])
-            scale([3.5,1,1])
-            cylinder(r=1.8,h=5,$fn=F1);
-          }
-*/          
         }
       }
       }
 
-      // Special Outer tabs for bolting down  ******************
+      // Special Outer tabs for bolting down  
       if(OuterTab==3){
       translate([0,0,ohi+1])
       for(i=[0:Ntabo-1]){
@@ -236,16 +231,6 @@ if(0){
             cylinder(r=3,h=3,$fn=F1);
           }
 
-/*          
-          hull(){
-            translate([0,ood,-ohi/2-4])
-            scale([3.3,1,1])
-            cylinder(r=1.8,h=3,$fn=F1);
-            translate([0,ood-4,-ohi/2-4])
-            scale([3.5,1,1])
-            cylinder(r=1.8,h=5,$fn=F1);
-          }
-*/          
         }
       }
       }
@@ -374,6 +359,89 @@ module innerLow(tol=0.1){
   }
  }
 
+//-------------------------------------------------------
+module innerCap(tol=0){
+  
+  intersection(){
+    translate([0,0,ohi/2+3])
+    rotate([0,0,0])
+    rotate([0,0,72/2])
+    linear_extrude(height=9,convexity=10)
+    scale([5.2,5.2])
+    penrose_tiling(n=5, w=0.2);
+    
+    translate([0,0,ohi/2+3])
+  //  cylinder(r=112/2,h=12,$fn=F1);
+    // cut for the central bore
+    cylinder(r1=oid-1,r2=oid+4,h=ohi*3,center=true,$fn=F1);
+  }
+  
+
+
+}
+
+//------------------------------------------------------------------------------
+module jwheel(){
+
+difference(){
+union(){            
+  // pulley from timing5.scad, bore diameter 110
+  translate([0,0,ohi/2+2])
+  time6();
+
+  // riser from inner race to attach the pulley     ******************************************************************
+  translate([0,0,ohi/2])
+  cylinder(r1=(ood+oid)*iooff-iogap/2,r2=oid+6,h=12.3,$fn=F1);
+  
+  intersection(){
+    translate([0,0,ohi/2+6.3])
+    rotate([0,0,0])
+    rotate([0,0,72/2])
+    linear_extrude(height=6,convexity=10)
+    //scale([5.2,5.2])
+    scale([6.5,6.5])
+    penrose_tiling(n=5, w=0.2);
+    
+    translate([0,0,ohi/2+3])
+    cylinder(r=112/2,h=12,$fn=F1);
+  }
+}
+
+    // cut for the central bore
+    cylinder(r1=oid-1,r2=oid+4,h=ohi*3,center=true,$fn=F1);
+    
+    // cut for the top inside bevel
+    translate([0,0,ohi/2+11])
+    cylinder(r1=oid+3.0,r2=oid+5,h=2,$fn=F1);
+  }
+  
+  // bolt in tabs
+    intersection(){
+    // center bore
+    cylinder(r1=oid-1,r2=oid+4,h=ohi*2.5,center=true,$fn=F1);
+
+    for(i=[0:Ntabi-1]){
+      rotate([0,0,i*360/Ntabi]){
+        color("green")
+        difference(){
+          // boss sticks out from inner wall
+          translate([0,oid+2,-ohi/2+15])
+          //rotate([-16,0,0])
+          scale([1,1.2,1])
+          cylinder(r=5,h=5,$fn=F1);
+          
+          // bolt holes
+          translate([0,oid-1,-ohi/2+10])
+          cylinder(r=1.7,h=30,$fn=F2);
+
+        }
+      }
+    }
+  }
+
+}
+
+
 //-----------------------------------
 module innerHi(tol=0.1){
   color("orange")
@@ -387,12 +455,6 @@ module innerHi(tol=0.1){
         color("orange")
         translate([-ood,-ood,+tol])
         cube([ood*2,ood*2,20]);
-      }
-      // pulley is part of boss union
-      if(Pulley2On){
-        // pulley from timing5.scad
-        translate([0,0,ohi/2-1])
-        time5();
       }
 
       // add a raised section (inner tabs)
@@ -417,10 +479,10 @@ module innerHi(tol=0.1){
     }
     
     // cut for the central bore
-    cylinder(r1=oid-1,r2=oid+4,h=ohi*2.5,center=true,$fn=F1);
+    cylinder(r1=oid-1,r2=oid+4,h=ohi*3,center=true,$fn=F1);
     
     // cut for the top inside bevel
-    translate([0,0,ohi/2+7.5])
+    translate([0,0,ohi/2+12])
     cylinder(r1=oid+3.0,r2=oid+5,h=2,$fn=F1);
     
     // cuts for the locking pins
@@ -593,7 +655,7 @@ for(i=[0:Nr-1]){
 
 //=====================================================================
 
-module slew13(){
+module slew14(){
 // make a union of all the parts to allow a cutaway view
 difference(){
 union(){    
@@ -638,6 +700,12 @@ union(){
   if(InnerHiOn){
     innerHi();
   }
+  if(JwheelOn){
+    jwheel();
+  }
+  if(InnerCapOn){
+    innerCap();
+  }
 
   // Inner race, low side only
   if(InnerLowOn){
@@ -655,6 +723,6 @@ if(CutawayOn){
 }
 
 //=======================
-slew13();
+slew14();
 
 //=====================================================================

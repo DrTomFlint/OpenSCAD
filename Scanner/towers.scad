@@ -189,14 +189,14 @@ Tthick2=4+tol;
         translate([44,-1,40])
         rotate([0,-20,0])
         cube([80-8,10,200-8]);
-
+/*
        translate([20,8,60])
         rotate([90,0,0])
         rotate([0,0,72/4])
         linear_extrude(height=9,convexity=10)
         scale([8.5,8.5])
         penrose_tiling(n=4, w=0.2);
-
+*/
       }
     }
 
@@ -210,13 +210,15 @@ Tthick2=4+tol;
         translate([40,-1,46])
         rotate([0,-20,0])
         cube([80-8,10,200-8]);
-
+/*
         translate([20,1,60])
         rotate([90,0,0])
         rotate([0,0,72/4])
         linear_extrude(height=9,convexity=10)
         scale([8.5,8.5])
         penrose_tiling(n=4, w=0.2);
+*/        
+        
       }
     }
   }
