@@ -57,9 +57,9 @@ use <../Fractals/Lsystem.scad>
 CarrierOn = 0;    // 1=turned on, 0=turned off
 RollersOn = 0;    // use this only for design, see how roller fit
 RollerPrint = 0;  // use this only for printing the rollers
-OuterRaceOn = 1;
-InnerHiOn = 1;
-InnerLowOn = 1;
+OuterRaceOn = 0;
+InnerHiOn = 0;
+InnerLowOn = 0;
 InnerCapOn = 0;
 PulleyOn = 0;
 Pulley2On = 0;
@@ -386,15 +386,15 @@ module jwheel(){
 difference(){
 union(){            
   // pulley from timing5.scad, bore diameter 110
-  translate([0,0,ohi/2+2])
+  translate([0,0,ohi/2+2-4])
   time6();
 
   // riser from inner race to attach the pulley     ******************************************************************
   translate([0,0,ohi/2])
-  cylinder(r1=(ood+oid)*iooff-iogap/2,r2=oid+6,h=12.3,$fn=F1);
+  cylinder(r1=(ood+oid)*iooff-iogap/2,r2=oid+6,h=12.3-4,$fn=F1);
   
   intersection(){
-    translate([0,0,ohi/2+6.3])
+    translate([0,0,ohi/2+6.3-4])
     rotate([0,0,0])
     rotate([0,0,72/2])
     linear_extrude(height=6,convexity=10)
@@ -402,7 +402,7 @@ union(){
     scale([6.5,6.5])
     penrose_tiling(n=5, w=0.2);
     
-    translate([0,0,ohi/2+3])
+    translate([0,0,ohi/2+3-4])
     cylinder(r=112/2,h=12,$fn=F1);
   }
 }
@@ -411,7 +411,7 @@ union(){
     cylinder(r1=oid-1,r2=oid+4,h=ohi*3,center=true,$fn=F1);
     
     // cut for the top inside bevel
-    translate([0,0,ohi/2+11])
+    translate([0,0,ohi/2+11-4])
     cylinder(r1=oid+3.0,r2=oid+5,h=2,$fn=F1);
   }
   

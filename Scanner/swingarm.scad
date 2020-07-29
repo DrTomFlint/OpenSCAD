@@ -156,12 +156,88 @@ cylinder(r=thick/2,h=thick,$fn=44);
       idler();
   }
 }
-//=============================
+
+//-------------------------------------------------------------------
+module line(point1, point2, width = 1, cap_round = true) {
+    angle = 90 - atan((point2[1] - point1[1]) / (point2[0] - point1[0]));
+    offset_x = 0.5 * width * cos(angle);
+    offset_y = 0.5 * width * sin(angle);
+
+    offset1 = [-offset_x, offset_y];
+    offset2 = [offset_x, -offset_y];
+
+    if(cap_round) {
+        translate(point1) circle(d = width, $fn = 24);
+        translate(point2) circle(d = width, $fn = 24);
+    }
+
+    polygon(points=[
+        point1 + offset1, point2 + offset1,  
+        point2 + offset2, point1 + offset2
+    ]);
+}
+
+//----------------------------------------------------------------------
+module polyline(points, width = 1) {
+    module polyline_inner(points, index) {
+        if(index < len(points)) {
+            line(points[index - 1], points[index], width);
+            polyline_inner(points, index + 1);
+        }
+    }
+
+    polyline_inner(points, 1);
+}
+
+//---------------------------------------------------------------------
+module spiral2(h=6.6){
+PI = 3.14159;
+step = 0.1;
+circles = 1.0;
+arm_len = 10;
+
+b = arm_len / 2 / PI;
+// one radian is almost 57.2958 degrees
+points = [for(theta = [0:step:2 * PI * circles])
+    [b * theta * cos(theta * 57.2958), b * theta * sin(theta * 57.2958)]
+];
+
+//linear_extrude(height=6.6,convexity=20)
+linear_extrude(height=h,convexity=20)
+//polyline(points, 1.4);
+polyline(points, 10);
+
+}
+
+
+//-------------------------------------------------------
+// TODO filler part doesn't scale right
+module swingcog(length=40, angle=0){
+
+difference(){
+    // hub
+    union(){
+        rotate([0,0,angle]){
+            translate([0,0,15])
+            rotate([180,0,0])
+            spiral2(h=15);
+        }
+    }
+    cylinder(r=1.7,h=40,center=true,$fn=22);
+    }
+
+    
+}
+
+//======================================================================
 
 //translate([0,0,-40])
 //color("gray")
 //swingarm();
 
 swingarm2(length=35, angle=0);
+
+swingcog(angle=-190);
+
 
 //===================================

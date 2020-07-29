@@ -244,17 +244,22 @@ module azimuth(){
   }    
   
   // azimuth pulley
-  translate([-ax1,ay1,10])
-  rotate([180,0,0]){
+  translate([-ax1,ay1,10]){
     color("green")
+    rotate([180,0,0])
     pulley();
-//    color("green")
-//    swingarm(length=35,angle=-60);
     
+
     color("green")
+    rotate([180,0,0])
     translate([31/2,-31/2,2])
     rotate([0,0,125])
-    swingarm2(length=55);
+    swingarm2(length=50);
+/*    
+    translate([31/2,-31/2,2])
+    swingcog(angle=0);
+*/
+    
   }
 
   // azimuth belt
@@ -304,11 +309,12 @@ module elevation(){
   translate([1,y1,TowerHigh-z1])  
   rotate([0,-90,0]){
     pulley();
-//    rotate([0,0,180])
-//    swingarm(length=40,angle=-30);
     translate([-31/2,-31/2,2.5])
     rotate([0,0,-7])
     swingarm2(length=44);
+    translate([-31/2,-31/2,2.5])
+    translate([25,-25,0])
+    swingcog(angle=180);
   }
 
   // elevation belt

@@ -55,7 +55,7 @@ module polyline(points, width = 1) {
 }
 
 //---------------------------------------------------------------------
-module spiral1(){
+module spiral1(h=6.6){
 PI = 3.14159;
 step = 0.05;
 circles = 10;
@@ -67,7 +67,8 @@ points = [for(theta = [0:step:2 * PI * circles])
     [b * theta * cos(theta * 57.2958), b * theta * sin(theta * 57.2958)]
 ];
 
-linear_extrude(height=6.6,convexity=20)
+//linear_extrude(height=6.6,convexity=20)
+linear_extrude(height=h,convexity=20)
 //polyline(points, 1.4);
 polyline(points, Thick);
 

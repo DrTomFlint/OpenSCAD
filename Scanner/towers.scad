@@ -151,7 +151,16 @@ Tthick2=4+tol;
         rotate([0,90,0])
         cylinder(r=8,h=Tthick,$fn=88);
         
+        
       }
+      // support the bolt-on tabs on bottom oftower4
+      translate([TowerXoff+10,-30,TowerHigh-121.8-10])
+      cube([6,8,12]);
+      
+      translate([TowerXoff+10,30-8,TowerHigh-121.8-10])
+      cube([6,8,12]);
+
+
       // front wing
       translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
       rotate([0,0,-30]){
@@ -184,8 +193,8 @@ Tthick2=4+tol;
     translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
     rotate([0,0,-30]){
       difference(){
-        translate([4,-6,4])
-        cube([40-8,8,180-8]);
+        translate([14,-6,4])
+        cube([30-8,8,180-8]);
         translate([44,-1,40])
         rotate([0,-20,0])
         cube([80-8,10,200-8]);
@@ -205,8 +214,8 @@ Tthick2=4+tol;
     translate([TowerXoff,-TowerWide/2-0.2,-TowerLow-5])
     rotate([0,0,-30]){
       difference(){
-        translate([4,-6,4])
-        cube([40-8,8,180-8]);
+        translate([14,-6,4])
+        cube([30-8,8,180-8]);
         translate([40,-1,46])
         rotate([0,-20,0])
         cube([80-8,10,200-8]);
@@ -308,22 +317,12 @@ Tthick2=4+tol;
     rotate([0,-90,0])
     cylinder(r=1.7,h=20,center=true,$fn=22);
 
-    // swing arm locking pin
-    translate([0,-1,-1])
-    for(i=[2:6]){
-      translate([0,-25-i*2,i*5])
-      translate([Tower3X,y1,TowerHigh-z1])  
-      rotate([0,-90,0])
-      cylinder(r=1,h=20,center=true,$fn=22);
-      translate([0,-25-i*2+6,i*5])
-      translate([Tower3X,y1,TowerHigh-z1])  
-      rotate([0,-90,0])
-      cylinder(r=1,h=20,center=true,$fn=22);
-      translate([0,-25-i*2-6,i*5])
-      translate([Tower3X,y1,TowerHigh-z1])  
-      rotate([0,-90,0])
-      cylinder(r=1,h=20,center=true,$fn=22);
-    }
+    // mounting for the swingcog
+    translate([0, -25, 25])
+    translate([0,-31/2,-31/2])
+    translate([Tower3X,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=60,center=true,$fn=22);
    
     // decorative hole
     translate([TowerXoff+5,0,TowerHigh-60])
@@ -335,6 +334,14 @@ Tthick2=4+tol;
       cylinder(r=60,h=24,center=true,$fn=88);
     }
   
+    // bolt holes in tabs on bottom for bolting to tower4
+    translate([TowerXoff+10,-30+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=30,center=true,$fn=22);
+    translate([TowerXoff+10,30-8+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=30,center=true,$fn=22);
+
   }
   
   // tiling in the decorative hole
@@ -351,7 +358,7 @@ Tthick2=4+tol;
     translate([TowerXoff,0,23])
     rotate([0,90,0])
     rotate([0,0,72/2])
-    linear_extrude(height=9,convexity=10)
+    linear_extrude(height=5,convexity=10)
     scale([8,8])
     penrose_tiling(n=4, w=0.2);
   }
@@ -414,7 +421,13 @@ Tthick2=4+tol;
         translate([0,0,-20])
         cylinder(r=91-0.5-tol,h=TowerHigh+12+tol+10,$fn=200);
 
-      }      
+      }     
+      // tabs on bottom for bolting to tower3
+        translate([TowerXoff,-30,TowerHigh-121.8-10])
+        cube([6,8,10]);
+        translate([TowerXoff,30-8,TowerHigh-121.8-10])
+        cube([6,8,10]);
+       
     }
     
     
@@ -440,6 +453,15 @@ Tthick2=4+tol;
         }
       }
     }
+    
+    // bolt holes in tabs on bottom for bolting to tower3
+    translate([TowerXoff,-30+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    translate([TowerXoff,30-8+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+
   }
 }
 
