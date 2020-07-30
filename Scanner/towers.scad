@@ -154,11 +154,11 @@ Tthick2=4+tol;
         
       }
       // support the bolt-on tabs on bottom oftower4
-      translate([TowerXoff+10,-30,TowerHigh-121.8-10])
-      cube([6,8,12]);
+      translate([TowerXoff+9.5,-30,TowerHigh-121.8-10])
+      cube([3.5,8,12]);
       
-      translate([TowerXoff+10,30-8,TowerHigh-121.8-10])
-      cube([6,8,12]);
+      translate([TowerXoff+9.5,30-8,TowerHigh-121.8-10])
+      cube([3.5,8,12]);
 
 
       // front wing
@@ -255,8 +255,12 @@ Tthick2=4+tol;
       rotate([0,0,-30])
       for(i=[0:Ntabo-1]){
         rotate([0,0,i*360/Ntabo]){
+            // M3x bolts
             translate([0,ood+4,-ohi/2-4])
             cylinder(r=1.7,h=20,$fn=22);
+            // countersink 
+            translate([0,ood+4,-ohi/2-2.6])
+            cylinder(r=3,h=3,$fn=22);
         }
       }
     }
@@ -286,15 +290,16 @@ Tthick2=4+tol;
     // elevation motor
     y1=0;
     z1=143;
-    color("red")
+    //color("red")
     translate([Tower3X+54,y1,TowerHigh-z1])  
     rotate([0,-90,0])
     rotate([0,0,90])
     xymotor(tol=0.2);
+    
     // elevation motor shaft extra clearance
     translate([Tower3X,y1,TowerHigh-z1])  
     rotate([0,-90,0])
-    cylinder(r=10,h=20,center=true);
+    cylinder(r=12,h=20,center=true,$fn=88);
 
     // elevation motor bolt holes
     translate([0,31/2,31/2])
@@ -316,6 +321,27 @@ Tthick2=4+tol;
     translate([Tower3X,y1,TowerHigh-z1])  
     rotate([0,-90,0])
     cylinder(r=1.7,h=20,center=true,$fn=22);
+
+    // countersink elevation motor bolt holes
+    translate([0,31/2,31/2])
+    translate([Tower3X+3,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    translate([0,-31/2,31/2])
+    translate([Tower3X+3,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    translate([0,-31/2,-31/2])
+    translate([Tower3X+3,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    translate([0,31/2,-31/2])
+    translate([Tower3X+3,y1,TowerHigh-z1])  
+    rotate([0,-90,0])
+    cylinder(r=3,h=3.1,$fn=22);
 
     // mounting for the swingcog
     translate([0, -25, 25])
@@ -341,6 +367,13 @@ Tthick2=4+tol;
     translate([TowerXoff+10,30-8+4,TowerHigh-121.8-10+4])
     rotate([0,90,0])
     cylinder(r=1.7,h=30,center=true,$fn=22);
+    // clearance for heads bolt holes in tabs on bottom for bolting to tower4
+    translate([TowerXoff+1.4,-30+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,center=true,$fn=22);
+    translate([TowerXoff+1.4,30-8+4,TowerHigh-121.8-10+4])
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,center=true,$fn=22);
 
   }
   

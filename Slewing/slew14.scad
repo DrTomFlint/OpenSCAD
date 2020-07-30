@@ -57,9 +57,9 @@ use <../Fractals/Lsystem.scad>
 CarrierOn = 0;    // 1=turned on, 0=turned off
 RollersOn = 0;    // use this only for design, see how roller fit
 RollerPrint = 0;  // use this only for printing the rollers
-OuterRaceOn = 0;
-InnerHiOn = 0;
-InnerLowOn = 0;
+OuterRaceOn = 1;
+InnerHiOn = 1;
+InnerLowOn = 1;
 InnerCapOn = 0;
 PulleyOn = 0;
 Pulley2On = 0;

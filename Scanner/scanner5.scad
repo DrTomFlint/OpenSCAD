@@ -34,23 +34,24 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=1;     // elevation axis, ewheel
-AzOn=1;     // azimuth axis, turntable
+ElOn=0;     // elevation axis, ewheel
+AzOn=0;     // azimuth axis, turntable
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 LidOn=0;    // rear lid
 TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
-BaseOn=1;   // base plate
+BaseOn=0;   // base plate
 
-TowerOn=3;  // towers
+TowerOn=2;  // towers
+Tower4On=0;
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
 
 Tower3X=-110;   // offset for elevation and left tower
 
-Arm2On=1;    // camera arm
+Arm2On=0;    // camera arm
 Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
@@ -153,7 +154,7 @@ thick5=10;
 
   // azimuth motor
   color("green")
-  translate([-ax1,ay1,-42.5-4])   //*******************
+  translate([-ax1,ay1,-42.5-4])  
   rotate([0,0,180])
   xymotor(tol=0.15);
 
@@ -180,29 +181,45 @@ thick5=10;
   translate([-ax1+31/2,ay1-31/2,6.1])
   cylinder(r=3,h=4,$fn=22);
 
-  // locking pin for swing arm
-  for(i=[-1:2]){
-    translate([-ax1+i*4,ay1-31/2-5-i*4,-1])
-    cylinder(r=1,h=42,$fn=12);
-    translate([-ax1+i*4-4,ay1-31/2-5-i*4,-1])
-    cylinder(r=1,h=42,$fn=12);
-    translate([-ax1+i*4-8,ay1-31/2-5-i*4,-1])
-    cylinder(r=1,h=42,$fn=12);
+  // extra holes for different swing arm mounts
+  if(1){
+    translate([-ax1-31/2-5,ay1+30,-10])
+    cylinder(r=1.7,h=30,$fn=12);
+    translate([-ax1-31/2+10,ay1+28,-10])
+    cylinder(r=1.7,h=30,$fn=12);
+    translate([-ax1-31/2-5,-ay1-30,-10])
+    cylinder(r=1.7,h=30,$fn=12);
+    translate([-ax1-31/2+10,-ay1-28,-10])
+    cylinder(r=1.7,h=30,$fn=12);
   }
-  
+
+  // locking pin for swing arm
+  if(0){
+    for(i=[-1:2]){
+      translate([-ax1+i*4,ay1-31/2-5-i*4,-1])
+      cylinder(r=1,h=42,$fn=12);
+      translate([-ax1+i*4-4,ay1-31/2-5-i*4,-1])
+      cylinder(r=1,h=42,$fn=12);
+      translate([-ax1+i*4-8,ay1-31/2-5-i*4,-1])
+      cylinder(r=1,h=42,$fn=12);
+    }
+  }
+
+/*
+  // cuts for elevation motor bolt holes?
   translate([-90,y1+31/2,-23.5+31/2])  
   rotate([0,-90,0])
-  cylinder(r=1.7,h=10,$fn=12);
+  #cylinder(r=1.7,h=10,$fn=12);
   translate([-90,y1-31/2,-23.5+31/2])  
   rotate([0,-90,0])
-  cylinder(r=1.7,h=10,$fn=12);
+  #cylinder(r=1.7,h=10,$fn=12);
   translate([-90,y1-31/2,-23.5-31/2])  
   rotate([0,-90,0])
-  cylinder(r=1.7,h=10,$fn=12);
+  #cylinder(r=1.7,h=10,$fn=12);
   translate([-90,y1+31/2,-23.5-31/2])  
   rotate([0,-90,0])
-  cylinder(r=1.7,h=10,$fn=12);
-
+  #cylinder(r=1.7,h=10,$fn=12);
+*/
         
   // shell
   translate([0,0,16])
@@ -249,7 +266,7 @@ module azimuth(){
     rotate([180,0,0])
     pulley();
     
-
+/*
     color("green")
     rotate([180,0,0])
     translate([31/2,-31/2,2])
@@ -391,6 +408,7 @@ module scanner(){
   }
     
   if(BaseOn){
+    color("tan")
     translate([0,0,-16])
     baseplate();
   }
@@ -401,14 +419,16 @@ module scanner(){
   }
   if(TowerOn==2){
     tower3();
-    color("red")
-    tower4();
   }
   if(TowerOn==3){
     tower3();
-    tower4();
     mirror([1,0,0])
     tower();
+  }
+
+  if(Tower4On){
+    color("red")
+    tower4();
   }
 
   if(BearingsOn){
