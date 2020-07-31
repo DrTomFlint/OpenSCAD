@@ -34,25 +34,28 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=0;     // elevation axis, ewheel
-AzOn=0;     // azimuth axis, turntable
-ShellOn=0;  // shell cover
-Shell2On=0;  // shell cover
-LidOn=0;    // rear lid
+ElOn=1;     // elevation axis, ewheel
+AzOn=1;     // azimuth axis, turntable
 TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
-BaseOn=0;   // base plate
+ShellOn=0;  // shell cover
+Shell2On=1;  // shell cover
+ShellFOn=0;
+ShellROn=1;
 
-TowerOn=2;  // towers
-Tower4On=0;
+LidOn=0;    // rear lid
+
+TowerOn=3;  // towers
+Tower4On=1;
+BaseOn=1;   // base plate
+Arm2On=1;    // camera arm
+Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
+
+
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers
 Tower2X=-110;   // offset for elevation and left tower
-
 Tower3X=-110;   // offset for elevation and left tower
-
-Arm2On=0;    // camera arm
-Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 WheelOn=0;  // show the ewheel by itself
 
@@ -115,8 +118,8 @@ thick5=10;
       }
 
       // tower support
-      translate([94,0,10])
-      cube([13,20,14],center=true);
+      //translate([94,0,10])
+      //#cube([13,24,14],center=true);
 
     }
 
@@ -194,7 +197,7 @@ thick5=10;
   }
 
   // locking pin for swing arm
-  if(0){
+  if(1){
     for(i=[-1:2]){
       translate([-ax1+i*4,ay1-31/2-5-i*4,-1])
       cylinder(r=1,h=42,$fn=12);
@@ -233,7 +236,7 @@ thick5=10;
     //tower3(tol=0.15);   
     tower4(tol=0.15); 
     mirror([1,0,0])
-    tower(tol=0.15);
+    tower5(tol=0.15);
   }    
     
 
@@ -266,7 +269,7 @@ module azimuth(){
     rotate([180,0,0])
     pulley();
     
-/*
+
     color("green")
     rotate([180,0,0])
     translate([31/2,-31/2,2])
@@ -384,8 +387,16 @@ module scanner(){
     shell();
   }
   if(Shell2On){
-    color("gray")
+    color("lightgray")
     shell2();
+  }
+  if(ShellFOn){
+    color("gray")
+    shellF();
+  }
+  if(ShellROn){
+    color("gray")
+    shellR();
   }
   
   // arm2
@@ -415,7 +426,7 @@ module scanner(){
   
   if(TowerOn==1){
     mirror([1,0,0])
-    tower();
+    tower5();
   }
   if(TowerOn==2){
     tower3();
@@ -423,7 +434,7 @@ module scanner(){
   if(TowerOn==3){
     tower3();
     mirror([1,0,0])
-    tower();
+    tower5();
   }
 
   if(Tower4On){

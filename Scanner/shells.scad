@@ -5,8 +5,19 @@ use <./towers.scad>
 F1=200;
 TowerHigh=104;
 
+rlip=95;
+alip=18.4;
+xlip=rlip*cos(alip);
+ylip=rlip*sin(alip);
+
+rlip2=92;
+alip2=7.6;
+xlip2=rlip2*cos(alip2);
+ylip2=rlip2*sin(alip2);
+
 //---------------------------------------------------------------------
 module shell(tol=0){
+
 
   translate([0,0,-10]){
     difference(){
@@ -21,13 +32,52 @@ module shell(tol=0){
       
       mirror([1,0,0])
       translate([0,0,10])
-      tower(tol=0.2,holes=0);
+      tower5(tol=0.2,holes=0);
+      
+      // cut for shell2 and the azimuth belt
+      translate([93,0,10])
+      cube([60,90,20],center=true);
       
     }
+    // add a lip near tower 3
+    color("red")
+    translate([-xlip,ylip,0])
+    cube([3+tol,1+tol,TowerHigh+10+tol]);  
+    color("green")
+    translate([-xlip,-ylip-1,0])
+    cube([3+tol,1+tol,TowerHigh+10+tol]);  
+
+    // add a lip near tower 5
+    color("red")
+    translate([xlip2,ylip2,21])
+    cube([3+tol,1+tol,TowerHigh-11]);  
+    color("green")
+    translate([xlip2,-ylip2-1,21])
+    cube([3+tol,1+tol,TowerHigh-11]);  
   }
 
 
 } // end shell  
+
+//---------------------------------------------------------------
+module shellF(tol=0){
+  
+  difference(){
+    shell();
+    translate([0,100,0])
+    cube([200,200,300],center=true);
+  }
+}
+//---------------------------------------------------------------
+module shellR(tol=0){
+  
+  difference(){
+    shell();
+    translate([0,-100,0])
+    cube([200,200,300],center=true);
+  }
+}
+
 //--------------------------------------------------------------------
 module shell2(tol=0){
   // azimuth motor
@@ -73,17 +123,27 @@ difference(){
   // cut for the main shell
   translate([0,0,-20])
   cylinder(r=92+tol/2,h=TowerHigh+10+tol,$fn=F1);
+  
+  // cuts for the shell lip near tower 5
+  translate([xlip2-1,ylip2,10])
+  cube([4+tol,1+tol,TowerHigh-11]);  
+  translate([xlip2-1,-ylip2-1,10])
+  cube([4+tol,1.5+tol,TowerHigh-10]);  
+
+  
   // cut for the tower
-  translate([0,0,-20])
+  translate([0,0,0])
   mirror([1,0,0])
-  tower(tol=0.2);
+  tower5(tol=0.2);
 
 }
 
 }
 //=============================================
 
-shell();
-shell2();
+//shell();
+//shell2();
+shellF();
+shellR();
 
 //===================================================

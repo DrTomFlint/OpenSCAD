@@ -34,7 +34,7 @@ TowerWide=14;
       cylinder(r=12,h=8,$fn=F2);
       
       // left bearing light shield
-      translate([-TowerXoff+2.5,0,TowerHigh])  
+      translate([-TowerXoff+1,0,TowerHigh])  
       rotate([0,-90,0])
       cylinder(r=16,h=4,$fn=F2);
       
@@ -500,11 +500,79 @@ Tthick2=4+tol;
 
 }
 
+//---------------------------------------------------------------------
+module tower5(tol=0,holes=1){
+
+TowerLow=17;
+TowerXoff=95;
+TowerWide=24;
+F1=200;
+
+  difference(){
+    union(){
+      difference(){
+        // tower
+        translate([-TowerXoff-3,-TowerWide/2,-TowerLow])
+        cube([8+tol,TowerWide+tol,TowerHigh+TowerLow+tol]);
+        // cut to match the inner radius of the shell
+        translate([0,0,-1])
+        cylinder(r=92-tol/2,h=TowerHigh+12+tol,$fn=F1);
+        // make I beams
+        translate([-TowerXoff-4,-TowerWide/2+4,-TowerLow])
+        cube([3+tol,16+tol,TowerHigh+TowerLow+tol]);
+      }
+
+      // make decorative panel
+      //color("red")
+      intersection(convexity=10){
+        translate([-TowerXoff-3,-TowerWide/2+4,16])
+        cube([2+tol,16+tol,TowerHigh-29]);
+        
+        translate([-TowerXoff-6,0,60])
+        rotate([0,90,0])
+        linear_extrude(height=6,convexity=10)
+        scale([4,4])
+        penrose_tiling(n=5, w=0.2);
+      }
+      // fill in at the base of panel
+      translate([-TowerXoff-3,-TowerWide/2+4,10])
+      cube([2+tol,16+tol,6]);
+
+          
+      // bearing housing
+      translate([-TowerXoff+5,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=12,h=8,$fn=F2);
+      
+      // bearing light shield
+      translate([-TowerXoff+1,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=16,h=4,$fn=F2);
+      
+      
+    }
+    
+
+    if(holes){
+      // cut left bearing insert
+      translate([-TowerXoff+2,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=11+0.15,h=9,$fn=F2);
+
+      // cut left bearing shaft 
+      translate([-TowerXoff+6,0,TowerHigh])  
+      rotate([0,-90,0])
+      cylinder(r=7,h=9,$fn=F2);
+    }
+  }
+  
+} // end tower  
 
 //===========================================
 
-tower3(holes=1);
+//tower3(holes=1);
 //tower4(holes=1);
+tower5(holes=1);
 
 //mirror([1,0,0])
 //tower();
