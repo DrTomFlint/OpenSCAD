@@ -224,18 +224,29 @@ t2=0.2;
 module mid1(){
   
   difference(){
+    /*
     union(){
       translate([-0.5,0,-4])
       cube([4,8,8],center=true);
-      translate([1,0,2])
-      cube([8,10,4],center=true);
-    }
+      
+      translate([1,0,1])
+      //cube([8,10,4],center=true);
+      scale([1,1.5,1])
+      cylinder(r=5,h=3,center=true,$fn=88);
+      */
+      sphere(r=7,$fn=88);
+      translate([0,0,12])
+      cube([20,20,20],center=true);
+    //}
     
     basecuts2();
     translate([1.25,0,0])
-    basecuts2();
+    basecuts2();    
     
-    mid2(tol=0.15);
+    mid3(tol=0.15);
+    
+    translate([4.5,0,-5])
+    cube([5,14,6],center=true);
     
   }
 

@@ -55,8 +55,8 @@ difference(){
             base1();
             base2();
             // top
-            //top2();
-            top3();
+            top2();            
+            //top3();
             
           }
         }
@@ -86,7 +86,7 @@ difference(){
   
 
 if(1){
-    // in-between light
+    // cut for in-between light
     for(i=[1,2,3,4,6,7,8,9]){
       a0=i*360/N0;
       x0=r0*1.0*cos(a0);
@@ -125,7 +125,7 @@ if(1){
 
 } // end diff
 
-if(1){
+if(0){
     // in-between light
 //    for(i=[1:N0-1]){
     for(i=[1,2,3,4,6,7,8,9]){
@@ -150,7 +150,7 @@ if(1){
 
 
 // crystals
-if(1){
+if(0){
 for(i=[0:N0-1]){
   a0=i*360/N0+180/N0;
   x0=r0*1.0*cos(a0);
@@ -257,7 +257,7 @@ if(0){
   }
 }
 // front token
-if(1){
+if(0){
   //difference(){
   intersection(){
   rotate([0,-90,0])
@@ -268,7 +268,7 @@ if(1){
 }
 
 // midsection:
-if(0){
+if(1){
   color("cyan")
   intersection(){
 
@@ -282,7 +282,7 @@ if(0){
   }
 }
 // lowsection:
-if(0){
+if(1){
   color("red")
   intersection(){
 
@@ -296,7 +296,7 @@ if(0){
   }
 }
 // topsection:
-if(0){
+if(1){
   intersection(){
 
     union(){

@@ -34,21 +34,21 @@ use <./towers.scad>
 use <./shells.scad>
 
 
-ElOn=1;     // elevation axis, ewheel
-AzOn=1;     // azimuth axis, turntable
+ElOn=0;     // elevation axis, ewheel
+AzOn=0;     // azimuth axis, turntable
 TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
 ShellOn=0;  // shell cover
-Shell2On=1;  // shell cover
+Shell2On=0;  // shell cover
 ShellFOn=0;
-ShellROn=1;
+ShellROn=0;
 
 LidOn=0;    // rear lid
 
-TowerOn=3;  // towers
-Tower4On=1;
+TowerOn=0;  // towers
+Tower4On=0;
 BaseOn=1;   // base plate
-Arm2On=1;    // camera arm
+Arm2On=0;    // camera arm
 Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 
@@ -100,7 +100,7 @@ thick5=10;
       hull(){
         // main disk
         translate([0,0,0])
-        cylinder(r=96,h=thick5,$fn=F2);
+        cylinder(r=96,h=thick5,$fn=222);
 
         // azimuth motor
         translate([132,18,0])
@@ -146,6 +146,16 @@ thick5=10;
     translate([0,0,-1])
 //    cylinder(r=58,h=25,$fn=F2,center=true);
     cylinder(r=58,h=25,$fn=F2,center=true);
+    
+    // additional cuts for material reduction   **************************************************************
+    if(1){
+    Ncut=16;
+    for (i=[0:Ncut-1]){
+      rotate([0,0,i*360/Ncut+180/Ncut])
+      translate([75,0,0])
+      cylinder(r=11,h=40,center=true,$fn=99);
+    }
+  }
     
     // rounding on azimuth mount
     translate([138,-52/2,-1])
