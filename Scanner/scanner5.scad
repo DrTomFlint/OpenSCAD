@@ -36,7 +36,7 @@ use <./shells.scad>
 
 ElOn=0;     // elevation axis, ewheel
 AzOn=0;     // azimuth axis, turntable
-TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
+TableOn=1;  // rotational table, 0=off, 1=flat, 2=pillar
 
 ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
@@ -45,11 +45,11 @@ ShellROn=0;
 
 LidOn=0;    // rear lid
 
-TowerOn=0;  // towers
-Tower4On=0;
-BaseOn=1;   // base plate
-Arm2On=0;    // camera arm
-Az=-10;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
+TowerOn=1;  // towers
+Tower4On=1;
+BaseOn=0;   // base plate
+Arm2On=1;    // camera arm
+Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 
 
 TowerHigh=104;  // adjusts hub height, 92 min
@@ -414,7 +414,8 @@ module scanner(){
     color("cyan")
     translate([0,0,TowerHigh])
     rotate([Az,0,0])
-    arm2();
+//    arm2();
+    arm3();
   }
     
   // lid
@@ -432,7 +433,40 @@ module scanner(){
     color("tan")
     translate([0,0,-16])
     baseplate();
+
   }
+  
+  // slice up the baseplate for multi-color print
+  if(0){
+    color("tan")
+    difference(){
+    //translate([0,0,-16])
+    baseplate();
+
+    translate([0,0,50])
+    cube([300,300,100],center=true);
+  }
+  }
+  if(0){
+    color("blue")
+    intersection(){
+    //translate([0,0,-16])
+    baseplate();
+
+    translate([0,0,2.5])
+    cube([300,300,5],center=true);
+  }
+  }
+  if(0){
+    color("red")
+    intersection(){
+    //translate([0,0,-16])
+    baseplate();
+
+    translate([0,0,50+5])
+    cube([300,300,100],center=true);
+  }
+}
   
   if(TowerOn==1){
     mirror([1,0,0])
