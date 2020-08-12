@@ -36,21 +36,21 @@ use <./shells.scad>
 
 ElOn=0;     // elevation axis, ewheel
 AzOn=0;     // azimuth axis, turntable
-TableOn=1;  // rotational table, 0=off, 1=flat, 2=pillar
+TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
 
-ShellOn=0;  // shell cover
+ShellOn=1;  // shell cover
 Shell2On=0;  // shell cover
 ShellFOn=0;
 ShellROn=0;
 
 LidOn=0;    // rear lid
 
-TowerOn=1;  // towers
-Tower4On=1;
+TowerOn=0;  // towers
+Tower4On=0;
 BaseOn=0;   // base plate
-Arm2On=1;    // camera arm
+Arm2On=0;    // camera arm
 Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
-
+CamOn=0;    // picamera
 
 TowerHigh=104;  // adjusts hub height, 92 min
 BearingsOn=0;   // show bearings in the towers

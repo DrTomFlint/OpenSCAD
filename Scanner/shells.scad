@@ -2,7 +2,7 @@
 // scanner part
 
 use <./towers.scad>
-F1=200;
+F1=600;
 TowerHigh=104;
 
 rlip=95;
@@ -143,7 +143,43 @@ difference(){
 
 //shell();
 //shell2();
+
 shellF();
-shellR();
+// add skirts for buildplate adhesion
+if(1){
+  rotate([0,0,-18])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+
+  rotate([0,0,-158])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+
+  rotate([0,0,-65])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+  rotate([0,0,-115])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+}
+
+//shellR();
+// add skirts for buildplate adhesion
+if(0){
+  rotate([0,0,10])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+
+  rotate([0,0,150])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+
+  rotate([0,0,50])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+  rotate([0,0,105])
+  translate([88,0,TowerHigh-0.6])
+  cube([10,12,0.6]);
+}
 
 //===================================================

@@ -107,12 +107,13 @@ Tthick2=4+tol;
   }
   
   // tiling in the decorative hole
-  translate([TowerXoff-1,0,TowerHigh-60])
-  rotate([0,90,0])
-  linear_extrude(height=9,convexity=10)
-  scale([9,9])
-  penrose_tiling(n=2, w=0.2);
-
+  if(0){
+    translate([TowerXoff-1,0,TowerHigh-60])
+    rotate([0,90,0])
+    linear_extrude(height=9,convexity=10)
+    scale([9,9])
+    penrose_tiling(n=2, w=0.2);
+  }
   
 } // end tower  
 
@@ -524,16 +525,19 @@ F1=200;
 
       // make decorative panel
       //color("red")
-      intersection(convexity=10){
-        translate([-TowerXoff-3,-TowerWide/2+4,16])
-        cube([2+tol,16+tol,TowerHigh-29]);
-        
-        translate([-TowerXoff-6,0,60])
-        rotate([0,90,0])
-        linear_extrude(height=6,convexity=10)
-        scale([4,4])
-        penrose_tiling(n=5, w=0.2);
+      if(0){
+        intersection(convexity=10){
+          translate([-TowerXoff-3,-TowerWide/2+4,16])
+          cube([2+tol,16+tol,TowerHigh-29]);
+          
+          translate([-TowerXoff-6,0,60])
+          rotate([0,90,0])
+          linear_extrude(height=6,convexity=10)
+          scale([4,4])
+          penrose_tiling(n=5, w=0.2);
+        }
       }
+      
       // fill in at the base of panel
       translate([-TowerXoff-3,-TowerWide/2+4,10])
       cube([2+tol,16+tol,6]);
