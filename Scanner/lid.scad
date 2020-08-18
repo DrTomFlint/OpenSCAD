@@ -1,8 +1,8 @@
 // lid.scad
 // scanner part
 
-F1=200;
-F2=88;
+F1=500;
+F2=222;
 //---------------------------------------------------------------------
 module dome(Rin=91,thick=1){
   
@@ -38,9 +38,15 @@ module lid(type=1){
       color("green")
       translate([0,0,-2])
       difference(){
+        // outer
         cylinder(r=Rin+2,h=4,$fn=F1);
+        // lower cut
         translate([0,0,-1])
-        cylinder(r=Rin+1,h=6,$fn=F1);
+        cylinder(r=Rin+1.2,h=3,$fn=F1);
+        // cut flush with innner dome
+        translate([0,0,0.9])
+        cylinder(r=Rin,h=6,$fn=F1);
+        // remove front part
         translate([0,-97,40])
         cube([200,200,100],center=true);    
       }
@@ -50,9 +56,19 @@ module lid(type=1){
         rotate([30,0,0])
         translate([0,0,-2])
         difference(){
-          cylinder(r=Rin+2,h=4,$fn=F1);
-          translate([0,0,-1])
-          cylinder(r=Rin+1,h=6,$fn=F1);
+          // outer
+          union(){
+            cylinder(r=Rin+2,h=4,$fn=F1);
+            translate([0,0,-1])
+            cylinder(r1=Rin+1,r2=Rin+2,h=1,$fn=F1);
+          }
+          // lower cut
+          translate([0,0,2])
+          cylinder(r=Rin+1,h=2.2,$fn=F1);
+          // cut flush with innner dome
+          translate([0,0,-1.5])
+          cylinder(r=Rin,h=6,$fn=F1);
+          // remove front part
           translate([0,-97,40])
           cube([200,200,100],center=true);    
         }
@@ -92,6 +108,26 @@ module lid2(){
 
 //==============================================================
 
-lid2();
+// the whole lid
+//lid2();
+
+// just the sections
+//lid(type=1);
+// printing support for the lip
+if(0){
+  Rin=92;
+  color("pink")
+  translate([0,0,-2])
+  difference(){
+    cylinder(r=Rin+1,h=2,$fn=F1);
+    translate([0,0,-1])
+    cylinder(r=Rin,h=4,$fn=F1);
+    translate([0,-97,40])
+    cube([200,200,100],center=true);    
+  }
+}
+
+lid(type=2);
+
 
 //=========================================================

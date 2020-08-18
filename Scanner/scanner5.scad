@@ -43,10 +43,10 @@ Shell2On=0;  // shell cover
 ShellFOn=0;
 ShellROn=0;
 
-LidOn=0;    // rear lid
+LidOn=1;    // lid
 
-TowerOn=0;  // towers
-Tower4On=0;
+TowerOn=1;  // towers
+Tower4On=1;
 BaseOn=0;   // base plate
 Arm2On=0;    // camera arm
 Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
