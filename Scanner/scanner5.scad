@@ -421,7 +421,8 @@ module scanner(){
   // lid
   if(LidOn){
     translate([0,0,TowerHigh]){
-      lid2();
+ //     lid2();
+      lid3();
     }
   }
   
