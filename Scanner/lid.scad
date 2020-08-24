@@ -315,6 +315,15 @@ difference(){
 // the single part lid
 lid3(tol=0);
 
+// add adhesion feet for printing
+if(1){
+  color("pink")
+  for(i=[1:8]){
+    rotate([0,0,360/8*i+180/8])
+  translate([94,0,-10])
+  cylinder(r=6,h=0.6);
+}
+}
 
 // the whole lid
 //lid2(tol=0.2);
