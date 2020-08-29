@@ -118,8 +118,8 @@ module lid3(tol=0){
   Rflat=12; // radius of the flat top 
   T1=1.2;   // thickness for shell part
   T2=1.4;   // thickness for the lip
-  F3=400;
-  F4=200;
+  F3=40;
+  F4=20;
 
 difference(){
 union(){

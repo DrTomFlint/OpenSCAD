@@ -35,19 +35,20 @@ use <./shells.scad>
 
 
 ElOn=0;     // elevation axis, ewheel
-AzOn=0;     // azimuth axis, turntable
-TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar
+AzOn=1;     // azimuth axis, turntable
+TableOn=3;  // rotational table, 0=off, 1=flat, 2=pillar, 3=modular
+TableHigh=80;   // height of table pedistal
 
 ShellOn=1;  // shell cover
 Shell2On=0;  // shell cover
 ShellFOn=0;
 ShellROn=0;
 
-LidOn=1;    // lid
+LidOn=0;    // lid
 
 TowerOn=1;  // towers
-Tower4On=1;
-BaseOn=0;   // base plate
+Tower4On=0;
+BaseOn=1;   // base plate
 Arm2On=0;    // camera arm
 Az=0;       // azimuth angle -80 min, 0=flat back, 90=overhead, 180=front
 CamOn=0;    // picamera
@@ -389,6 +390,7 @@ module scanner(){
   
   if(TableOn){
     table(type=TableOn);
+    riser1(hi=TableHigh);
   }
   
   // shell
