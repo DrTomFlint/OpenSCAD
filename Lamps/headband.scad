@@ -18,9 +18,11 @@ F1=150;
 translate([0,0,-zlow])
 
 difference(){
-  scale([1,0.85,1.25])
+//  scale([1,0.85,1.25])
+  scale([1,0.80,1.33])
   sphere(r=r0*gain+thick,$fn=F1);
-  scale([1,0.85,1.25])
+//  scale([1,0.85,1.25])
+  scale([1,0.80,1.33])
   sphere(r=r0*gain,$fn=F1);
  
   // lower cut  

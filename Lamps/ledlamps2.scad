@@ -1,6 +1,7 @@
 // ledlamps1.scad
 // Mounts to place chandelier crystals in front of cheap led lights
 use <../Fractals/Lsystem.scad>
+use <../Trace/bflyc3.scad>
 
 F1=88;
 F2=22;
@@ -424,6 +425,8 @@ module base1(){
 
 
   }
+  // translate down to make more space for the crystal base
+  translate([0,0,-1])
   basecuts();
 }
 
@@ -469,6 +472,45 @@ module base2(){
 }
 
 //---------------------------------------------
+module base3(){
+  
+  // lower boss
+  difference(){
+  union(){
+    // mid
+    translate([0,0,hfoot])
+    scale([1,s1,1])
+    rotate([0,0,180/F3])
+    cylinder(r1=rmid,r2=rtop,h=hmid,$fn=F3);
+    
+    // add a lip around xtal
+    translate([0,0,hfoot+hmid])
+    rotate([0,0,180/F3])
+    cylinder(r1=7,r2=6.5,h=1.5,$fn=F3);
+
+
+  }
+  basecuts();
+
+    // left led
+    translate([0,y1,z1+z2+1])
+    rotate([-a1,0,0])
+    rotate([0,0,-90])
+    led1(tol=t2,legs=leg);
+    // right led
+    translate([0,-y1,z1+z2+1])
+    rotate([a1,0,0])
+    rotate([0,0,90])
+    led1(tol=t2,legs=leg);
+
+    // cut for the wing
+    wing1(tol=0.15);
+}
+
+
+  
+}
+//---------------------------------------------
 module top2(){
   
 
@@ -489,6 +531,86 @@ module top2(){
   }
 
 }
+
+//---------------------------------------------
+module top4(){
+  
+
+  // top fastens the led in the pocket, xtal holds it down
+  difference(){
+    union(){
+      // top
+      translate([0,0,hfoot+hmid])
+      scale([1,s1,1])
+      rotate([0,0,180/F3])
+      cylinder(r1=rtop,r2=rlip,h=htop,$fn=F3);
+    }
+    translate([0,0,6])
+    xa(tol=0.15);
+    
+    wing1(tol=0.15);
+    
+    // add a lip around xtal
+    translate([0,0,hfoot+hmid-0.01])
+    rotate([0,0,180/F3])
+    cylinder(r1=7+0.25,r2=6.5+0.25,h=1.5+0.25,$fn=F3);
+  }
+
+}
+
+
+
+//---------------------------------------------  ****************************************************************************
+module top5(){
+  
+
+  // top fastens the led in the pocket, xtal holds it down
+  difference(){
+    union(){
+      // top
+      translate([0,0,hfoot+hmid])
+      scale([1,s1,1])
+      rotate([0,0,180/F3])
+      cylinder(r1=rtop,r2=rlip,h=htop,$fn=F3);
+
+      // left wing
+      translate([-9,-2,28])
+      rotate([0,0,110])
+      rotate([90,0,0])
+      scale([3,4,2])
+      bflyc3a();
+
+      // right wing
+      translate([-9,2,28])
+      rotate([0,0,70])
+      rotate([90,0,0])
+      scale([3,4,2])
+      mirror([1,0,0])
+      bflyc3a();
+      
+      // body post
+      translate([-7,0,11])
+      cylinder(r=3,h=22,$fn=22);
+      translate([-7,0,33])
+      sphere(r=3,$fn=22);
+    
+    }
+    translate([0,0,6])
+    xa(tol=0.15);
+        
+    // add a lip around xtal
+    translate([0,0,hfoot+hmid-0.01])
+    rotate([0,0,180/F3])
+    cylinder(r1=7+0.25,r2=6.5+0.25,h=1.5+0.25,$fn=F3);
+    
+    // cut a flat on the backside for printing
+    translate([-13,0,30])
+    cube([10,40,60],center=true);
+  }
+  
+
+}
+
 
 //---------------------------------------------
 module top3(type=1){
@@ -662,6 +784,48 @@ module cutbattery2(tol=0){
 
 }
 
+//------------------------------------------------------
+module wing1(tol=0){
+
+
+difference(){
+  translate([-2.5,0,3])
+  rotate([0,-7.5,0]){
+    translate([0,0,17])
+    cube([4,20,6],center=true);
+    
+    linear_extrude(scale=[1,3],height=20)
+    square([4+tol,4+tol],center=true);
+
+    translate([-2,10,25])
+    scale(0.5)
+    wing2();
+    translate([-2,-10,25])
+    scale(0.5)
+    mirror([0,1,0])
+    wing2();
+
+    translate([-2,0,25])
+    rotate([0,90,0])
+    cylinder(r1=7,r2=5,h=3,$fn=88);
+  }
+  
+  translate([0,0,6])
+  xa(tol=0.15,hole=0);
+}
+
+  
+}
+//----------------------------------------------
+module wing2(tol=0){
+  
+  rotate([0,90,0])
+  rotate([0,0,-20])
+  scale([2,1,1])
+  cylinder(r1=15,r2=13,h=8,$fn=88);
+}
+
+
 
 //===================================================
 
@@ -671,8 +835,23 @@ module cutbattery2(tol=0){
 
 
 
-translate([0,-120,0])
-front2();
+//translate([0,-120,0])
+//front2();
+
+//translate([0,0,-10])
+//base1();
+
+//base3();
+
+top5();
+
+//color("red")
+//wing1();
+//wing2();
+
+//color("gray")
+//translate([0,0,6])
+//xa();
 
 /*
 translate([0,80,0]){
