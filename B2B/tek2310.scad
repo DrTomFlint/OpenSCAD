@@ -1,9 +1,11 @@
+//=================================================================================
 // Tek2310.scad
 // Model for Teknic Motor PN M-2310P-LN-04K with encoder mounted
 // precision tech pn 755-0021425
 // This is the motor TI includes in the B2B test rig
-
-//-----------------------------------------------------------
+//
+// Dr Tom Flint, 16 Nov 2020
+//=================================================================================
 
 use <../Parts/rounder.scad>
 
