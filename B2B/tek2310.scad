@@ -19,7 +19,7 @@ x1=59.37;
 x2=x1/2;
 difference(){
   translate([2.4,0,0])
-  cube([4.8,x1,x1],center=true);
+  cube([4.8+tol,x1+tol,x1+tol],center=true);
 
   // round off corners
   translate([-1,-x2,-x2])
@@ -55,14 +55,14 @@ difference(){
 translate([4.8,0,0])
 rotate([0,90,0])
 rotate([0,0,22.5])
-cylinder(r=31.5,h=71.2,$fn=8);
+cylinder(r=31.5+tol,h=71.2+tol,$fn=8);
 
 // circular lip
 translate([-1.9,0,0])
 rotate([0,90,0])
 difference(){
-  cylinder(r=38.1/2,h=1.9,$fn=120);
-  cylinder(r=15.5/2,h=5,center=true,$fn=120);
+  cylinder(r=(38.1+tol)/2,h=2.0+tol,$fn=120);
+  cylinder(r=(15.5-tol)/2,h=5,center=true,$fn=120);
 }
 
 
@@ -70,7 +70,7 @@ difference(){
   // shaft
   translate([-1.9-18.6,0,0])
   rotate([0,90,0])
-  cylinder(r=9.5/2,h=1.9+18.6,$fn=88);
+  cylinder(r=(9.5+tol)/2,h=1.9+18.6,$fn=88);
 
   // keyway
   translate([-16,0,9.5/2-1.5])

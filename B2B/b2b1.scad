@@ -86,7 +86,7 @@ module bracket1(){
     // circular lip
     translate([-1.9,0,z0])
     rotate([0,90,0])
-    cylinder(r=38.1/2+0.1,h=1.91,$fn=120);
+    cylinder(r=38.1/2+0.15,h=2.2,$fn=120);
 
     // shaft clearance
     translate([-18,0,z0])
@@ -150,27 +150,73 @@ module bracket1(){
 
 
   
-/*
-  // side plates
-  hull(){
-    translate([-35,-30-4,-1])
-    cube([2,4,9]);
-    translate([40,-30-4,-1])
-    cube([2,4,9]);
-    translate([-12,-30-4,z0+30-2])
-    cube([12,4,2]);
-  }
-  translate([0,64,0])
-  hull(){
-    translate([-35,-30-4,-1])
-    cube([2,4,9]);
-    translate([40,-30-4,-1])
-    cube([2,4,9]);
-    translate([-12,-30-4,z0+30-2])
-    cube([12,4,2]);
-  }
-*/
+}
+
+//-----------------------------------------------------------------------------
+module bracket2(tol=0,type=1){
   
+  if(type==1){
+      
+   // slots for side panel
+    // front base
+    color("cyan")
+    translate([-30,-30.2,2.6])
+    cube([68,3.0,2.8]);  
+    // front vertical
+    color("blue")
+    translate([-7.9,-30.2,2.6])
+    cube([2.8,3.0,64]);
+    
+    difference(){
+      hull(){
+        translate([-30,-30-4,-1])
+        cube([2,4,9]);
+        translate([36,-30-4,-1])
+        cube([2,4,9]);
+        translate([-12,-30-4,z0+23])
+        cube([12,4,2]);
+      }
+      
+      translate([10,-26,24])
+      rotate([90,0,0])
+      cylinder(r=8,h=10,$fn=66);
+      translate([6,-26,39])
+      rotate([90,0,0])
+      cylinder(r=4,h=10,$fn=66);
+    }
+        
+  }
+    
+  if(type==2){  
+    // back base
+    color("green")
+    translate([-30,30-2.8,2.6])
+    cube([68,3.0,2.8]);
+    // back vertical
+    color("red")
+    translate([-7.9,30-2.8,2.6])
+    cube([2.8,3.0,64]);
+    
+    translate([0,64,0])
+    difference(){
+      hull(){
+        translate([-30,-30-4,-1])
+        cube([2,4,9]);
+        translate([36,-30-4,-1])
+        cube([2,4,9]);
+        translate([-12,-30-4,z0+23])
+        cube([12,4,2]);
+      }
+
+      translate([10,-26,24])
+      rotate([90,0,0])
+      cylinder(r=8,h=10,$fn=66);
+      translate([6,-26,39])
+      rotate([90,0,0])
+      cylinder(r=4,h=10,$fn=66);
+
+    }
+  }
 }
 
 //---------------------------------------------------------------------------------
@@ -235,8 +281,9 @@ if(1){
 
 //=================================================================================
 
-b2b1();
+//b2b1();
 
 //bracket1();
+bracket2();
 
 //=================================================================================
