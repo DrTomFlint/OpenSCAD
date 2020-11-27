@@ -16,7 +16,7 @@ z0 = 42;      // height of the shafts
 x1 = 40;      // x position of right motor
 
 //---------------------------------------------------------------------------------
-module bracket1(){
+module bracket1(type=1){
  
  
   
@@ -24,23 +24,27 @@ module bracket1(){
   difference(){
 //    translate([-35,-30,-1])
 //    cube([130,60,9]);
+
+  hull(){
     translate([-35,-30,-1])
     cube([77,60,9]);
+
+    translate([83,15,-1])
+    cylinder(r=8,h=9,$fn=22);
+    
+    translate([83,-15,-1])
+    cylinder(r=8,h=9,$fn=22);
+  }
+
 
     // round 4 corners
     translate([-35,-30,-1])
     rounder(r=5,h=12,f=44);
-    translate([-35,30,-1])
+    
+    translate([-35,30,-1])    
     rotate([0,0,-90])
     rounder(r=5,h=12,f=44);
     
-    translate([42,30,-1])
-    rotate([0,0,180])
-    rounder(r=5,h=12,f=44);
-    
-    translate([42,-30,-1])
-    rotate([0,0,90])
-    rounder(r=5,h=12,f=44);
     
     // cut for the T-slot
     translate([-150,0,-15])
@@ -50,18 +54,25 @@ module bracket1(){
     // M4 tie downs to the T-slot with countersink
     translate([-25,15,-1])
     cylinder(r=2,h=20,$fn=22);
-    translate([-25,15,6])
-    cylinder(r=3.8,h=4,$fn=22);
+//    translate([-25,15,6])
+//    cylinder(r=3.8,h=4,$fn=22);
     
     translate([-25,-15,-1])
     cylinder(r=2,h=20,$fn=22);
-    translate([-25,-15,6])
-    cylinder(r=3.8,h=4,$fn=22);
+//    translate([-25,-15,6])
+//    cylinder(r=3.8,h=4,$fn=22);
 
-    // material reduction
-//    translate([22,0,-2])
-//    scale([1.4,1,1])
-//    cylinder(r=10,h=20,$fn=44);
+    // tail end M4's
+    translate([83,15,-1])
+    cylinder(r=2,h=20,$fn=22);
+//    translate([83,15,6])
+//    cylinder(r=3.8,h=4,$fn=22);
+    
+    translate([83,-15,-1])
+    cylinder(r=2,h=20,$fn=22);
+//    translate([83,-15,6])
+//    cylinder(r=3.8,h=4,$fn=22);
+
     
     // slots for side panel
     translate([-50,-30.1,2.5])
@@ -73,6 +84,19 @@ module bracket1(){
     cube([100,3.1,3]);
     translate([-8,30-3,2.5])
     cube([3,3.1,100]);
+
+    translate([-10.8,-30.1,5])
+    rotate([0,45,0])
+    cube([6,3.1,6]);
+    translate([-10.8,30-3,5])
+    rotate([0,45,0])
+    cube([6,3.1,6]);
+    
+    // tail end grooves
+    translate([10,0,14])
+    rotate([0,94,0])
+    scale([1,1.6,1])
+    cylinder(r=6,h=120,$fn=44);    
     
   }
   
@@ -102,18 +126,29 @@ module bracket1(){
       cylinder(r=5.2/2,h=22,$fn=22);
     }
     
-    // body of the resolver
-    translate([0,0,z0])
-    rotate([180,0,0])
-    resbody(tol=0.15);
-    
-    // clearance to install resolver body
-    translate([-22,0,z0])
-    rotate([0,90,0])
-    cylinder(r=37/2,h=12,$fn=120);
-    
-    translate([-18,-23/2,z0+10])
-    cube([12,23,22]);
+    if(type==1){
+      // body of the resolver
+      translate([0,0,z0])
+      rotate([180,0,0])
+      resbody(tol=0.15);
+      
+      // bevel cut for install
+      translate([-12.1,0,z0])
+      rotate([0,90,0])
+      cylinder(r1=39/2,r2=34/2,h=5,$fn=120);
+
+      // wiring box
+//      translate([-18,-23/2,z0+10])
+//      cube([12,23,22]);
+
+      hull(){
+        translate([-11,-9,z0+10])
+        cylinder(r=4,h=22,$fn=45);
+        translate([-11,9,z0+10])
+        cylinder(r=4,h=22,$fn=45);
+      }
+    }
+        
     
     // round off upper corners
     translate([-13,-30,z0+30])
@@ -134,6 +169,14 @@ module bracket1(){
     cube([100,3.1,3]);
     translate([-8,30-3,2.5])
     cube([3,3.1,100]);
+
+    translate([-10.8,-30.1,5])
+    rotate([0,45,0])
+    cube([6,3.1,6]);
+    translate([-10.8,30-3,5])
+    rotate([0,45,0])
+    cube([6,3.1,6]);
+    
 
   }
 
@@ -169,12 +212,15 @@ module bracket2(tol=0,type=1){
     
     difference(){
       hull(){
-        translate([-30,-30-4,-1])
-        cube([2,4,9]);
-        translate([36,-30-4,-1])
-        cube([2,4,9]);
-        translate([-12,-30-4,z0+23])
-        cube([12,4,2]);
+        translate([-26,-30,4])
+        rotate([90,0,0])
+        cylinder(r=5,h=4,$fn=33);
+        translate([36,-30,4])
+        rotate([90,0,0])
+        cylinder(r=5,h=4,$fn=33);
+        translate([-6,-30,z0+19])
+        rotate([90,0,0])
+        cylinder(r=7,h=4,$fn=33);
       }
       
       translate([10,-26,24])
@@ -200,12 +246,15 @@ module bracket2(tol=0,type=1){
     translate([0,64,0])
     difference(){
       hull(){
-        translate([-30,-30-4,-1])
-        cube([2,4,9]);
-        translate([36,-30-4,-1])
-        cube([2,4,9]);
-        translate([-12,-30-4,z0+23])
-        cube([12,4,2]);
+        translate([-26,-30,4])
+        rotate([90,0,0])
+        cylinder(r=5,h=4,$fn=33);
+        translate([36,-30,4])
+        rotate([90,0,0])
+        cylinder(r=5,h=4,$fn=33);
+        translate([-6,-30,z0+19])
+        rotate([90,0,0])
+        cylinder(r=7,h=4,$fn=33);
       }
 
       translate([10,-26,24])
@@ -243,21 +292,34 @@ if(1){
   bracket1();
 }
 
-
+// side bracket 
 if(1){  
+  color("gray")
+  translate([x1,0,0])
+  bracket2();
+}
+if(1){  
+  color("gray")
+  translate([x1,0,0])
+  bracket2(type=2);
+}
+
+
+
+if(0){  
   translate([x1,0,z0])
   rotate([180,0,0])
   resbody();
 }
 
-if(1){
+if(0){
   color("cyan")
   translate([x1-10,0,z0])
   rotate([180,0,0])
   resrotor();
 }
 
-if(1){
+if(0){
   color("red")
   translate([x1-3,0,z0])
   rotate([0,0,180])
@@ -283,7 +345,10 @@ if(1){
 
 //b2b1();
 
-//bracket1();
-bracket2();
+bracket1();
+//bracket1(type=1);
+
+//bracket2();
+//bracket2(type=2);
 
 //=================================================================================
