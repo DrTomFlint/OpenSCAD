@@ -40,6 +40,49 @@ difference(){
 
 }
 
+//------------------------------------
+module bottomplug2(tol=0,cut=0){
+
+difference(){
+  union(){
+    color("cyan")
+    english_thread (diameter=1/2, threads_per_inch=19, length=0.23);
+
+    translate([0,0,0.23*25.4])
+    cylinder(r=7+tol,h=2,$fn=88);
+
+    translate([0,0,0.23*25.4+1.9])
+//    cylinder(r=12+tol,h=3,$fn=6);
+    difference(){
+      cylinder(r=18+tol,h=3,$fn=66);
+      translate([0,0,-0.01])
+      difference(){
+        cylinder(r=16+tol,h=2,$fn=66);
+        cylinder(r=7+tol,h=2,$fn=66);
+      }
+    }
+    
+    // block off the alternative line in
+    translate([0,0,0.23*25.4+2-13])
+    cylinder(r=11/2,h=13,$fn=88);
+  }
+  if(cut==0){
+    // bore hole
+    translate([0,0,-5.5])
+    cylinder(r=4.5,h=20,$fn=88);
+    
+    // taper to tank
+    translate([0,0,8.5])
+    cylinder(r1=4.5,r2=6.5,h=3,$fn=88);
+
+    // taper to pump
+    translate([0,0,-5.5])
+    cylinder(r1=5.3,r2=4.5,h=1.5,$fn=88);
+  }
+}  
+
+}
+
 //--------------------------------------
 module topplug(tol=0,cut=0){
   difference(){
@@ -419,6 +462,9 @@ cube([8,2.5,3]);
 //reservoir();
 
 //bottomplug();
+
+bottomplug2();    // A repair where original bottomplug broke off
+
 //topplug();
 //topbarb();
 
@@ -427,7 +473,7 @@ cube([8,2.5,3]);
 //funnel();
 
 // add support for printing splitblock
-if(1){
+if(0){
 difference(){
 union(){
   // base plate
@@ -444,7 +490,7 @@ union(){
 }
 }
 
-splitblock();
+//splitblock();
 
 
 // cutaway for splitblock
