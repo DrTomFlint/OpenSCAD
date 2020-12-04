@@ -55,7 +55,7 @@ difference(){
 translate([4.8,0,0])
 rotate([0,90,0])
 rotate([0,0,22.5])
-cylinder(r=31.5+tol,h=71.2+tol,$fn=8);
+cylinder(r=31.5+tol,h=71.2-4.8+tol,$fn=8);
 
 // circular lip
 translate([-1.9,0,0])

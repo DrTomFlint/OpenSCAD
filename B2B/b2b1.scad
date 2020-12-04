@@ -63,14 +63,14 @@ module bracket1(type=1){
     tslot1(type=2,len=300,tol=0.15);
     
     // M4 tie downs to the T-slot with countersink
-    translate([-20,15,-1])
+    translate([-19.5,15,-1])
     cylinder(r=2,h=20,$fn=22);
-    translate([-20,15,7])
+    translate([-19.5,15,7])
     cylinder(r=5,h=2,$fn=22);
     
-    translate([-20,-15,-1])
+    translate([-19.5,-15,-1])
     cylinder(r=2,h=20,$fn=22);
-    translate([-20,-15,7])
+    translate([-19.5,-15,7])
     cylinder(r=5,h=2,$fn=22);
 
     // tail end M4's
@@ -104,18 +104,18 @@ module bracket1(type=1){
     cube([6,3.1,6]);
     
     // tail end grooves
-    translate([10,0,9])
+    translate([10,0,10])
     rotate([0,90,0])
-    scale([1,1.4,1])
+    scale([1,1.6,1])
     cylinder(r=6,h=120,$fn=44);    
 
-    translate([10,18,9])
+    translate([10,17,10])
     rotate([0,90,0])
-    scale([1,1.2,1])
+    scale([1,1.6,1])
     cylinder(r=4,h=52,$fn=44);    
-    translate([10,-18,9])
+    translate([10,-17,10])
     rotate([0,90,0])
-    scale([1,1.2,1])
+    scale([1,1.6,1])
     cylinder(r=4,h=52,$fn=44);    
     
   }
@@ -162,9 +162,9 @@ module bracket1(type=1){
 //      cube([12,23,22]);
 
       hull(){
-        translate([-11,-9,z0+10])
+        translate([-11.8,-9,z0+10])
         cylinder(r=4,h=22,$fn=45);
-        translate([-11,9,z0+10])
+        translate([-11.8,9,z0+10])
         cylinder(r=4,h=22,$fn=45);
       }
     }
@@ -173,11 +173,11 @@ module bracket1(type=1){
     // round off upper corners
     translate([-13,-30,z0+30])
     rotate([0,90,0])
-    rounder(r=6,h=14,f=88);
+    rounder(r=5,h=14,f=88);
     translate([-13,30,z0+30])
     rotate([0,90,0])
     rotate([0,0,-90])
-    rounder(r=6,h=14,f=88);
+    rounder(r=5,h=14,f=88);
     
     // slots for side panel
     translate([-50,-30.1,2.5])
@@ -197,6 +197,8 @@ module bracket1(type=1){
     rotate([0,45,0])
     cube([6,3.1,6]);
     
+    translate([-8,-50,z0+30-3])
+    cube([3,100,3.1]);
 
   }
 
@@ -399,12 +401,13 @@ if(1){
 
 //=================================================================================
 
-b2b1();
+//b2b1();
+//tek2310();
 
 //coupler();
 
 //bracket1(type=2);
-//bracket1(type=1);
+bracket1(type=1);
 
 //bracket2();
 //bracket2(type=2);
