@@ -13,7 +13,9 @@ use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
 
 z0 = 42;      // height of the shafts
-x1 = 40;      // x position of right motor
+x1 = 26;      // x position of right motor with resolver
+x2 = -35;     // x position of left motor no resolver
+x3 = -5;       // x position of the coupler
 
 //---------------------------------------------------------------------------------
 module bracket1(type=1){
@@ -22,56 +24,65 @@ module bracket1(type=1){
   
   // base plate
   difference(){
-//    translate([-35,-30,-1])
-//    cube([130,60,9]);
 
-  hull(){
-    translate([-35,-30,-1])
-    cube([77,60,9]);
+    union(){
+      hull(){
+        translate([-35+10,-30,-1])
+        cube([77-10,60,9]);
 
-    translate([83,15,-1])
-    cylinder(r=8,h=9,$fn=22);
+        translate([83-8,15,-1])
+        cylinder(r=8,h=9,$fn=22);
+        
+        translate([83-8,-15,-1])
+        cylinder(r=8,h=9,$fn=22);
+      }
+
+      // fillets to vertical plate
+      translate([0,30,8])
+      rotate([90,0,0])
+      rounder(r=5,h=60,f=88);
+
+      translate([-12,30,8])
+      rotate([90,0,0])
+      rotate([0,0,90])
+      rounder(r=5,h=60,f=88);
+
+    }
     
-    translate([83,-15,-1])
-    cylinder(r=8,h=9,$fn=22);
-  }
-
-
-    // round 4 corners
-    translate([-35,-30,-1])
+    // round short corners
+    translate([-35+10,-30,-1])
     rounder(r=5,h=12,f=44);
     
-    translate([-35,30,-1])    
+    translate([-35+10,30,-1])    
     rotate([0,0,-90])
     rounder(r=5,h=12,f=44);
-    
-    
+
     // cut for the T-slot
     translate([-150,0,-15])
     rotate([0,90,0])
     tslot1(type=2,len=300,tol=0.15);
     
     // M4 tie downs to the T-slot with countersink
-    translate([-25,15,-1])
+    translate([-20,15,-1])
     cylinder(r=2,h=20,$fn=22);
-//    translate([-25,15,6])
-//    cylinder(r=3.8,h=4,$fn=22);
+    translate([-20,15,7])
+    cylinder(r=5,h=2,$fn=22);
     
-    translate([-25,-15,-1])
+    translate([-20,-15,-1])
     cylinder(r=2,h=20,$fn=22);
-//    translate([-25,-15,6])
-//    cylinder(r=3.8,h=4,$fn=22);
+    translate([-20,-15,7])
+    cylinder(r=5,h=2,$fn=22);
 
     // tail end M4's
-    translate([83,15,-1])
+    translate([83-7,15,-1])
     cylinder(r=2,h=20,$fn=22);
-//    translate([83,15,6])
-//    cylinder(r=3.8,h=4,$fn=22);
+    translate([83-7,15,7])
+    cylinder(r=5,h=2,$fn=22);
     
-    translate([83,-15,-1])
+    translate([83-7,-15,-1])
     cylinder(r=2,h=20,$fn=22);
-//    translate([83,-15,6])
-//    cylinder(r=3.8,h=4,$fn=22);
+    translate([83-7,-15,7])
+    cylinder(r=5,h=2,$fn=22);
 
     
     // slots for side panel
@@ -93,10 +104,19 @@ module bracket1(type=1){
     cube([6,3.1,6]);
     
     // tail end grooves
-    translate([10,0,14])
-    rotate([0,94,0])
-    scale([1,1.6,1])
+    translate([10,0,9])
+    rotate([0,90,0])
+    scale([1,1.4,1])
     cylinder(r=6,h=120,$fn=44);    
+
+    translate([10,18,9])
+    rotate([0,90,0])
+    scale([1,1.2,1])
+    cylinder(r=4,h=52,$fn=44);    
+    translate([10,-18,9])
+    rotate([0,90,0])
+    scale([1,1.2,1])
+    cylinder(r=4,h=52,$fn=44);    
     
   }
   
@@ -104,8 +124,8 @@ module bracket1(type=1){
   
   // vertical plate
   difference(){
-    translate([-12,-30,0])
-    cube([12,60,z0+30]);
+    translate([-12,-30,1])
+    cube([12,60,z0+30-1]);
 
     // circular lip
     translate([-1.9,0,z0])
@@ -115,7 +135,7 @@ module bracket1(type=1){
     // shaft clearance
     translate([-18,0,z0])
     rotate([0,90,0])
-    cylinder(r=13,h=22,$fn=120);
+    cylinder(r=15,h=22,$fn=120);
 
     // cut bolt holes
     translate([0,0,z0])
@@ -181,16 +201,7 @@ module bracket1(type=1){
   }
 
 
-  // fillets
-  translate([0,30,8])
-  rotate([90,0,0])
-  rounder(r=5,h=60,f=88);
-
-  translate([-12,30,8])
-  rotate([90,0,0])
-  rotate([0,0,90])
-  rounder(r=5,h=60,f=88);
-
+// was fillets
 
   
 }
@@ -203,8 +214,8 @@ module bracket2(tol=0,type=1){
    // slots for side panel
     // front base
     color("cyan")
-    translate([-30,-30.2,2.6])
-    cube([68,3.0,2.8]);  
+    translate([-20,-30.2,2.6])
+    cube([58,3.0,2.8]);  
     // front vertical
     color("blue")
     translate([-7.9,-30.2,2.6])
@@ -212,7 +223,7 @@ module bracket2(tol=0,type=1){
     
     difference(){
       hull(){
-        translate([-26,-30,4])
+        translate([-16,-30,4])
         rotate([90,0,0])
         cylinder(r=5,h=4,$fn=33);
         translate([36,-30,4])
@@ -223,10 +234,10 @@ module bracket2(tol=0,type=1){
         cylinder(r=7,h=4,$fn=33);
       }
       
-      translate([10,-26,24])
+      translate([14,-26,18])
       rotate([90,0,0])
       cylinder(r=8,h=10,$fn=66);
-      translate([6,-26,39])
+      translate([9,-26,36])
       rotate([90,0,0])
       cylinder(r=4,h=10,$fn=66);
     }
@@ -236,8 +247,8 @@ module bracket2(tol=0,type=1){
   if(type==2){  
     // back base
     color("green")
-    translate([-30,30-2.8,2.6])
-    cube([68,3.0,2.8]);
+    translate([-20,30-2.8,2.6])
+    cube([58,3.0,2.8]);
     // back vertical
     color("red")
     translate([-7.9,30-2.8,2.6])
@@ -246,7 +257,7 @@ module bracket2(tol=0,type=1){
     translate([0,64,0])
     difference(){
       hull(){
-        translate([-26,-30,4])
+        translate([-16,-30,4])
         rotate([90,0,0])
         cylinder(r=5,h=4,$fn=33);
         translate([36,-30,4])
@@ -257,14 +268,34 @@ module bracket2(tol=0,type=1){
         cylinder(r=7,h=4,$fn=33);
       }
 
-      translate([10,-26,24])
+      translate([14,-26,18])
       rotate([90,0,0])
       cylinder(r=8,h=10,$fn=66);
-      translate([6,-26,39])
+      translate([9,-26,36])
       rotate([90,0,0])
       cylinder(r=4,h=10,$fn=66);
 
     }
+  }
+}
+
+//---------------------------------------------------------------------------------
+module coupler(type=1){
+
+  difference(){
+    // body
+    rotate([0,90,0])
+    cylinder(r=25.5/2,h=32.8,center=true,$fn=99);
+    
+    // bore
+    rotate([0,90,0])
+    cylinder(r=9.5/2,h=35,center=true,$fn=99);
+  
+    // horizontal view cut
+    cube([20,40,8],center=true);
+
+    // vertical view cut
+    cube([20,8,40],center=true);
   }
 }
 
@@ -327,25 +358,52 @@ if(0){
 }
 
 
+// coupler
+if(1){
+  color("pink")
+  translate([x3,0,z0])
+  coupler();
+}
 
-/*
-  color("green")
-  translate([-40,0,z0])
+//  motor
+if(1){  
+  color("red")
+  translate([x2,0,z0])
   rotate([0,0,180])
   tek2310();
+}
   
-  translate([-40,0,z0])
+// bracket
+if(1){  
+  color("gray")
+  translate([x2,0,0])
   rotate([0,0,180])
-  resbody();
-*/
+  bracket1(type=2);
+}
+
+// side bracket 
+if(1){  
+  color("gray")
+  translate([x2,0,0])
+  rotate([0,0,180])
+  bracket2();
+}
+if(1){  
+  color("gray")
+  translate([x2,0,0])
+  rotate([0,0,180])
+  bracket2(type=2);
+}
   
 }
 
 //=================================================================================
 
-//b2b1();
+b2b1();
 
-bracket1();
+//coupler();
+
+//bracket1(type=2);
 //bracket1(type=1);
 
 //bracket2();
