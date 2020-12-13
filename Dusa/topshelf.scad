@@ -791,14 +791,58 @@ module estop_sup(){
     cylinder(r=4,h=39,$fn=44);
 }
 
+//----------------------------------------------------------------
+module estop_topa(){
+
+    difference(){
+      // top plate
+      cylinder(r1=20,r2=18,h=2,$fn=200);
+      // cut for switch barrel
+      translate([0,0,-10])
+      cylinder(r=6,h=60,$fn=88);
+    }
+    
+  }
+//----------------------------------------------------------------
+module estop_topb(){
+      color("red")
+      translate([0,-14,2])
+      linear_extrude(height=0.6,scale=1)
+      text("S", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+      color("red")
+      rotate([0,0,35])
+      translate([0,-14,2])
+      linear_extrude(height=0.6,scale=1)
+      text("T", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+      color("red")
+      rotate([0,0,70])
+      translate([0,-14,2])
+      linear_extrude(height=0.6,scale=1)
+      text("O", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+      color("red")
+      rotate([0,0,105])
+      translate([0,-14,2])
+      linear_extrude(height=0.6,scale=1)
+      text("P", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+}
 //===============================
 
-estop();
+//estop();
+
+//translate([0,0,43])
+//estop_topa();
+
+translate([0,0,43])
+estop_topb();
 
 //color("green")
 //estop_sup();
 
-if(1){
+if(0){
 color("red")
 translate([0,0,36])
 switch2();
