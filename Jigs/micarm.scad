@@ -145,9 +145,78 @@ difference(){
 
 }
 
+//-----------------------------------------------------------------------------------
+module micarm2(){
+
+tol1=0.15;  // between gimbal hub and boss
+
+translate([1,0,21])
+coldfoot(tol=0);
+
+difference(){
+  union(){
+    hull(){
+      translate([0,0,21])
+      cube([20,25,1],center=true);
+
+      rotate([0,90,0])
+      cylinder(r=21,h=20,center=true,$fn=222);
+    }
+    // blocks for the screw
+    translate([5,14,-20])
+    cube([10,3,15],center=true);
+    translate([5,-14,-20])
+    cube([10,3,15],center=true);
+  }
+
+  // cut for the gimbal hub
+  translate([-1.26,0,0])
+  rotate([0,90,0])
+  cylinder(r1=36/2+tol1,r2=34.75/2+tol1,h=17.5,center=true,$fn=222);
+  
+  // cut for gimbal post
+  translate([-3,0,-21])
+  cube([20,25,40],center=true);
+
+  // rounders on the screw blocks
+  translate([0,20,-27.5])
+  rotate([90,0,0])
+  rounder(r=5,h=40,f=88);
+
+  translate([10,20,-27.5])
+  rotate([90,0,0])
+  rotate([0,0,90])
+  rounder(r=5,h=40,f=88);
+
+  // rounders on the loop
+  translate([-10,20,-17])
+  rotate([90,0,0])
+  rounder(r=8,h=40,f=88);
+
+  // M3 bolt hole in the screw blocks
+  translate([5,0,-23])
+  rotate([90,0,0])
+  cylinder(r=1.7,h=40,center=true,$fn=44);
+
+  // remove most of the center hub area
+  translate([8,0,0])
+  rotate([0,90,0])
+  cylinder(r1=16.75,r2=17.0,h=6,center=true,$fn=222);
+
+  // cut near gimbal post
+  translate([10,0,-21])
+  cube([20,25,40],center=true);
+  
+}
+
+
+}
 //==================================================================================
 
 
-micarm();
+//micarm();
+
+micarm2();
+
 
 //==================================================================================
