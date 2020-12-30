@@ -82,45 +82,41 @@ difference(){
   union(){
   // base arm
   translate([-11,-12.5,0])
-  cube([22,46,6]);
+  cube([22,46,4]);
 
   // vertical post
   hull(){
-    translate([-11,-12.5+46-6,0])
-    cube([22,6,5]);
+    translate([-11,-12.5+46-4,0])
+    cube([22,4,14]);
 
-    translate([0,-12.5+46,50])
+    translate([-3,-12.5+46,50])
     rotate([90,0,0])
-    cylinder(r=11,h=6,$fn=123);
+    cylinder(r=8,h=4,$fn=123);
   }
 
-  translate([0,-12.5+48,50])
+  translate([-3,-12.5+46+1.2,50])
   rotate([90,0,0])
-  cylinder(r=8,h=6,$fn=99);
-
-  translate([0,-12.5+48+1.2,50])
-  rotate([90,0,0])
-  cylinder(r=6.5,h=6,$fn=99);
+  cylinder(r=6.5,h=4,$fn=99);
   
   }  // end union
 
   // cut for bolt
-  translate([0,-12.5+55,50])
+  translate([-3,-12.5+55,50])
   rotate([90,0,0])
   cylinder(r=4,h=20,$fn=99);
   
   // cut for washer
-  translate([0,-12.5+43.9,50])
+  translate([-3,-12.5+43.9,50])
   rotate([90,0,0])
-  cylinder(r=8.2,h=4,$fn=99);
+  cylinder(r1=9,r2=11,h=2,$fn=99);
   
   // rounder at elbow
   translate([-11,46-12.5,0])
   rotate([0,90,0])
   rotate([0,0,180])
-  rounder(r=15,h=22,f=123);
+  rounder(r=13,h=22,f=123);
   
-  // rounder at elbow
+  // rounder at tip
   translate([-11,-12.5,0])
   rotate([0,90,0])
   rotate([0,0,90])
@@ -129,20 +125,22 @@ difference(){
 } // end diff
 
   // fillet at elbow
-  translate([-11,46-12.5-6,6])
+  translate([-11,46-12.5-4,4])
   rotate([0,90,0])
   rotate([0,0,180])
   rounder(r=10,h=22,f=123);
 
-  translate([0,0,6])
+
+  
+  translate([0,0,4])
   coldfoot(tol=0);
   
   color("red")
-  translate([0,28,26.5])
+  translate([0,30,24])
   rotate([90,0,0])
-  rotate([0,0,-64])
-  linear_extrude(height=0.7,scale=1)
-  text("FLINT", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  rotate([0,0,-60])
+  linear_extrude(height=0.8,scale=1)
+  text("FLINT", font = "Open Sans:style=Bold", size=6.0,halign="center",valign="center",spacing=1.1);
 
 
 }
