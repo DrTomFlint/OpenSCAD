@@ -3,6 +3,8 @@
 //
 // End brackets for the 8-port USB charger for the Globes.
 //
+// @TODO add a power switch!
+//
 // Dr Tom Flint, 13 Dec 2020
 //=================================================================================
 

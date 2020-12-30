@@ -2,6 +2,8 @@
 // B2B1.scad
 // Back-to-back motor rig version 1
 // Two Tek2310 motors, coupler, resolver, 30x60 T-slot
+// Estop switch on one end
+// Feet.
 //
 // Dr Tom Flint, 16 Nov 2020
 //=================================================================================
@@ -11,11 +13,16 @@ use <./tek2310.scad>
 use <./resolver.scad>
 use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
+use <../Parts/estop.scad>
+use <../Parts/switch2.scad>
 
 z0 = 42;      // height of the shafts
-x1 = 26;      // x position of right motor with resolver
-x2 = -35;     // x position of left motor no resolver
-x3 = -5;       // x position of the coupler
+
+x1 = 100;      // x position of right motor with resolver
+x2 = x1-61;     // x position of left motor no resolver
+x3 = x1-31;       // x position of the coupler
+
+x4 = -100;    // x position of the estop
 
 //---------------------------------------------------------------------------------
 module bracket1(type=1){
@@ -301,14 +308,35 @@ module coupler(type=1){
   }
 }
 
-//---------------------------------------------------------------------------------
+//===================================================================================
+
 module b2b1(){
   
 // T-slot base
 if(1){  
   translate([-150,0,-15])
   rotate([0,90,0])
-  tslot1(type=2,len=300);
+  tslot1(type=2,len=480);
+}
+
+// estop
+if(1){
+  translate([x4,0,0]){
+    rotate([0,0,180])
+    estop();
+    translate([0,0,43])
+    estop_topa();
+    translate([0,0,43])
+    rotate([0,0,-45])
+    estop_topb();
+    //color("green")
+    //estop_sup();
+    if(1){
+    color("red")
+    translate([0,0,36])
+    switch2();
+    }
+  }
 }
 
 //  motor
@@ -401,13 +429,13 @@ if(1){
 
 //=================================================================================
 
-//b2b1();
+b2b1();
 //tek2310();
 
 //coupler();
 
 //bracket1(type=2);
-bracket1(type=1);
+//bracket1(type=1);
 
 //bracket2();
 //bracket2(type=2);
