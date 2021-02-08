@@ -199,7 +199,7 @@ difference(){
 
 //===========================
 
-/*
+
 difference(){
 base1();
 
@@ -243,13 +243,13 @@ hinge1();
                 text("VINGILOT", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
                 }
 
-*/
+
 
 
 // hinge1();
 //color("orange") clip1();
 
-hinge2();
+//hinge2();
 //translate([15,0,0]) clip2();
 
 //===========================
