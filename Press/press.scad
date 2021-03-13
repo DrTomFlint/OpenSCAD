@@ -7,6 +7,7 @@
 
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
+use <../Parts/presstime.scad>
 
 
 // vertical post
@@ -81,8 +82,8 @@ module railBlock(tol=0.2){
         cylinder(r=11,h=14,$fn=88);
         translate([railX,-railY,-6])
         cylinder(r=11,h=14,$fn=88);
-        translate([15-1,-56/2,-22])
-        cube([2,56,30]);
+        translate([15-1,-56/2,-6-6])
+        cube([2,56,14+6]);
         
       }
       sphere(r=1,$fn=88);
@@ -104,21 +105,25 @@ module railBlock(tol=0.2){
     tslot1(type=2,len=120);
     
     // M4 bolts to the post
-    translate([0,15,-12])
+    translate([0,15,0])
     rotate([0,90,0])
     cylinder(r=2,h=60,$fn=22);
-    translate([0,-15,-12])
+    translate([0,-15,0])
     rotate([0,90,0])
     cylinder(r=2,h=60,$fn=22);
 
     // clearance for bolt heads
-    translate([20,15,-12])
+    translate([20,15,0])
     rotate([0,90,0])
     cylinder(r=3.7,h=40,$fn=45);
-    translate([20,-15,-12])
+    translate([20,-15,0])
     rotate([0,90,0])
     cylinder(r=3.7,h=40,$fn=45);
 
+    // cut for the drive belt
+    translate([34,0,0])
+    scale([1,2,1])
+    cylinder(r=4,h=100,$fn=45,center=true);
   }
 
 }
@@ -216,7 +221,30 @@ difference(){
 
 }
 
+//---------------------------------------------------
+module pulley(){
+  
+  translate([0,5.75,36])
+  rotate([90,0,0])
+  presstime();
+  
+}
+
+//---------------------------------------------------
+module idler1(){
+  color("blue")
+  translate([26,4.5,75])
+  rotate([90,0,0])
+  idler();
+  
+}
+
 //====================================================
+
+idler1();
+
+translate([0,0,postHi])
+pulley();
 
 stand1();
 
@@ -230,7 +258,7 @@ color("cyan")
 railBlock();
 
 // cutaway sled
-if(1){
+if(0){
 difference(){
   translate([0,0,sledZ])
   sled();
