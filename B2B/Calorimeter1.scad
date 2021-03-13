@@ -9,6 +9,11 @@
 
 use <../Parts/rounder.scad>
 
+// Lid Angle
+LidAngle=180;
+// Lid Lift
+LidLift=200;
+
 //--------------------------------------------------
 module L1(len=10){
 
@@ -173,8 +178,12 @@ if(1){
   base2();
 }
 
+
+// lid
+if(1){
+translate([0,-LidLift,1.5*LidLift])
 translate([0,254,152+15.2])
-rotate([-120,0,0])
+rotate([-LidAngle,0,0])
 translate([0,-254,-152-15.2])
 {
 
@@ -185,6 +194,8 @@ if(1){
 
 if(1){
   lid2();
+}
+
 }
 
 }
