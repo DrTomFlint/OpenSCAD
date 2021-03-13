@@ -14,9 +14,12 @@ postHi=480;
 footLong=240;
 footSide=120;
 
-railX=45;    // position of the rails
-railY=30;
+railX=30;    // position of the rails
+railY=35;
 railZ=100;
+
+sledZ=200;
+sledHi=50;
 
 //----------------------------------------------------
 module stand1(){
@@ -41,24 +44,20 @@ module stand1(){
     tslot1(type=2,len=footLong);
 
     // right foot
-    color("green")
     translate([0,30,-15])
     rotate([-90,0,0])      
     tslot1(type=1,len=footSide);
 
-    color("green")
     translate([0,30,0])
     rotate([0,0,90])
     rotate([90,0,0])      
     tbrace();
 
     // left foot
-    color("red")
     translate([0,-30-footSide,-15])
     rotate([-90,0,0])      
     tslot1(type=1,len=footSide);
 
-    color("red")
     translate([0,-30,0])
     rotate([0,0,-90])
     rotate([90,0,0])      
@@ -123,19 +122,145 @@ module railBlock(tol=0.2){
   }
 
 }
+
+//-----------------------------------------------------
+module sled(tol=0.15){
+
+tabHi=25;
+
+difference(){
+  union(){
+    // sleeves around the LM10U bearings
+    hull(){
+      translate([railX,railY,0])
+      cylinder(r=19/2+3,h=29,$fn=88);
+
+      translate([railX,-railY,sledHi])
+      cylinder(r=19/2+3,h=29,$fn=88);
+
+      translate([railX,-railY,-sledHi])
+      cylinder(r=19/2+3,h=29,$fn=88);
+    }
+    
+    // bolt on tabs
+    color("pink")
+    hull(){
+      translate([railX,railY+20,29/2])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi,$fn=88,center=true);
+
+      translate([railX,railY,29/2])
+      rotate([0,90,0])
+      cylinder(r=10+6,h=tabHi,$fn=88,center=true);
+    }
+
+    color("pink")
+    hull(){
+      translate([railX,-railY-20,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi,$fn=88,center=true);
+      
+      translate([railX,-railY,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi,$fn=88,center=true);
+    }
+
+    color("pink")
+    hull(){
+      translate([railX,-railY-20,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi,$fn=88,center=true);
+      
+      translate([railX,-railY,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi,$fn=88,center=true);
+    }
+  }
+
+  // cuts for the bolt mounts
+  translate([railX,railY+20,29/2])
+  rotate([0,90,0])
+  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX,-railY-20,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX,-railY-20,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+  
+
+  // cut for the LM10Us
+  translate([railX,railY,-1])
+  cylinder(r=19/2+tol,h=29+2,$fn=88);
+
+  translate([railX,-railY,sledHi-1])
+  cylinder(r=19/2+tol,h=29+2,$fn=88);
+
+  translate([railX,-railY,-sledHi-1])
+  cylinder(r=19/2+tol,h=29+2,$fn=88);
+
+  // extra cut for right LM10U
+  translate([railX,railY,-19])
+  cylinder(r=19/2+tol,h=29+2,$fn=88);
+
+  // extra clearance for the rails
+  translate([railX,railY,0])
+  cylinder(r=5+1,h=330,$fn=66,center=true);
+  translate([railX,-railY,0])
+  cylinder(r=5+1,h=330,$fn=66,center=true);
+}
+
+  
+
+}
+
 //====================================================
 
 stand1();
+
 translate([0,0,railZ])
 color("cyan")
 railBlock();
 
-
 translate([0,0,railZ+330])
 rotate([180,0,0])
+color("cyan")
 railBlock();
 
+// cutaway sled
+if(1){
+difference(){
+  translate([0,0,sledZ])
+  sled();
 
+  translate([100+railX,0,sledZ])
+  cube(200,center=true);
+}
+}
 
+// full sled
+if(0){
+  translate([0,0,sledZ])
+  sled();
+}
+
+if(1){
+  // LM10U bearings
+  translate([0,0,sledZ]){
+    translate([railX,railY,0])
+    color("red")
+    cylinder(r=19/2,h=29,$fn=88);
+
+    translate([railX,-railY,sledHi])
+    color("green")
+    cylinder(r=19/2,h=29,$fn=88);
+
+    translate([railX,-railY,-sledHi])
+    color("green")
+    cylinder(r=19/2,h=29,$fn=88);
+  }
+}
 
 //====================================================
