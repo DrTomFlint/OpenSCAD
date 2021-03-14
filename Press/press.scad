@@ -9,6 +9,15 @@ use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/presstime.scad>
 
+// handle angle
+//handleAngle=-45;
+// sled position
+//sledZ=300;
+
+// handle angle
+handleAngle=-45+undulate($t)*90;
+// sled position
+sledZ=300-undulate($t)*27.0;
 
 // vertical post
 postHi=480;
@@ -19,8 +28,11 @@ railX=30;    // position of the rails
 railY=35;
 railZ=102;
 
-sledZ=200;
+
 sledHi=50;
+
+// for animation
+function undulate(t) = abs((t - .5) * 2);
 
 //----------------------------------------------------
 module stand1(){
@@ -308,18 +320,23 @@ module leverArm(mirror=0){
     rotate([90,0,0])
     cylinder(r=9.4/2+0.2,h=100,$fn=60,center=true);  
 
+    // cut for pulley bearing
+    translate([0,-10,36])
+    rotate([90,0,0])
+    cylinder(r=25/2,h=2,$fn=60,center=true);  
+
     // cut on the arm
     difference(){
       hull(){
-        translate([0,-12,36])
+        translate([0,-13,36])
         rotate([90,0,0])
         cylinder(r1=16,r2=17,h=6,$fn=200);
 
-        translate([120,-12,36])
+        translate([120,-13,36])
         rotate([90,0,0])
         cylinder(r1=6,r2=7,h=6,$fn=200);
       }
-      translate([0,-12,36])
+      translate([0,-13,36])
       rotate([90,0,0])
       cylinder(r1=14,r2=12,h=6,$fn=200);
     }
@@ -337,17 +354,18 @@ module leverArm(mirror=0){
   
 // Text on the arm
 if(mirror==0){
-  translate([80,-11,36])
+  translate([80,-12,36])
   rotate([90,0,0])
   linear_extrude(height=3,scale=1)
   text("FLINT", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
 }
+
 if(mirror==1){
-  translate([80,-11,36])
+  translate([80,-12,36])
   rotate([90,0,0])
   rotate([0,0,180])
   linear_extrude(height=3,scale=1)
-  text("FLINT", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+  text("2021", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
 }  
 
 }
@@ -465,15 +483,15 @@ difference(){
   // cuts for the bolt mounts
   translate([railX,railY+20,29/2])
   rotate([0,90,0])
-  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
 
   translate([railX,-railY-20,29/2+sledHi])
   rotate([0,90,0])
-  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
 
   translate([railX,-railY-20,29/2-sledHi])
   rotate([0,90,0])
-  cylinder(r=2,h=tabHi+2,$fn=88,center=true);
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
   
 
   // cut for the LM10Us
@@ -495,17 +513,119 @@ difference(){
   cylinder(r=5+1,h=330,$fn=66,center=true);
   translate([railX,-railY,0])
   cylinder(r=5+1,h=330,$fn=66,center=true);
+  
+  // strain releif for the bearings
+  translate([railX,railY-9.5,0])
+  cylinder(r=2,h=330,$fn=66,center=true);
+  translate([railX,-railY+9.5,0])
+  cylinder(r=2,h=330,$fn=66,center=true);
+  
+  // channel for the belt
+  translate([railX,0,20])
+  cube([15,10.5,120],center=true);
+  translate([railX+10,0,16])
+  cube([30,10.5,60],center=true);
+  
+  // access for screws
+  translate([railX-6,0,29/2])
+  rotate([0,90,0])
+  cylinder(r=17,h=20,$fn=122);
+  
+  // mating pins for the tool holder
+  translate([railX+10,35,29/2])
+  rotate([0,90,0])
+  cylinder(r1=5,r2=5.5,h=3,$fn=122);  
+  translate([railX+10,-35,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r1=5,r2=5.5,h=3,$fn=122);
+  translate([railX+10,-35,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r1=5,r2=5.5,h=3,$fn=122);
+  
+  // provide a way to remove the 2 left side bearings
+  translate([railX+6,-railY+7,29/2-34])
+  rotate([0,90,0])
+  cylinder(r=6,h=20,$fn=33,center=true);
+  translate([railX+6,-railY+7,29/2+34])
+  rotate([0,90,0])
+  cylinder(r=6,h=20,$fn=33,center=true);
+
+
 }
 
 
+if(0){
+  // show the belt clips
+  color("red")
+  translate([railX-31,0,29/2+sledHi-15])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  beltClip();
+
+  color("red")
+  translate([railX-31,0,29/2+sledHi-90])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  beltClip();
+}
+
+difference(){
+  union(){
+    color("green")
+    translate([railX-1,0,29/2+sledHi-30])
+    cube([15,10.5,8],center=true);
+
+    color("blue")
+    translate([railX-1,0,29/2+sledHi-70])
+    cube([15,10.5,8],center=true);
+  }
+  translate([railX-3,-1,29/2])
+  cylinder(r=1.65,h=200,center=true,$fn=23);
+} 
+
+}
+//--------------------------------------------------------------
+module beltClip(){
+difference(){
+    // base block
+    translate([-5,-9,24]) cube([10,21,14]);
+
+    // belt entry 
+    translate([-7.5,-10,34.9]) rotate([0,45,0]) cube([3,32,3]);
+    
+    // belt slot
+    translate([-8.5,-16,34.2]) cube([11.5,32,1.9]);
+    // angled entry
+    translate([-8.5,-16,36.4]) rotate([0,5,0]) cube([11.5,32,0.2]);
+    translate([-8.5,-16,33.6]) rotate([0,-5,0]) cube([11.5,32,0.2]);
+    
+    // belt teeth
+    for (_step =[-16:3:16]){
+      translate([-8.5,_step-0.4,33]) 
+      //cube([11.5,1.5,1.5]);
+      translate([0,0,0.9])
+      rotate([0,90,0])
+      scale([1.5,1,1])
+      cylinder(r=1,h=11.5,$fn=22);
+    }
+    
+    // screw hole
+    translate([-1,16,28]) 
+    rotate([90,0,0])
+    cylinder(r=1.6,h=30,$fn=22);
+    
+  }
+  
 }
 
 //====================================================
 
-stand1();
+//beltClip();
+
+//stand1();
 
 // bottom idlers
-if(1){
+if(0){
   translate([0,0,2]){
     idleBlock();
     rotate([0,0,180])
@@ -524,12 +644,30 @@ if(1){
   }
 }
 
-// top pulley
-if(1){
-  translate([0,0,postHi])
-  pulley();
+// animate?
+translate([0,0,postHi+36])
+rotate([0,handleAngle,0])
+translate([0,0,-postHi-36]){
+
+  // top pulley
+  if(0){
+    translate([0,0,postHi])
+    pulley();
+  }
+  // lever arm
+  if(0){
+    translate([0,0,postHi])
+    leverArm();
+
+    translate([0,0,postHi+36*2])
+    rotate([180,0,0])
+    leverArm(mirror=1);
+  }
+
 }
-if(1){
+
+// pulley block
+if(0){
   translate([0,0,postHi])
   pulleyBlock();
   translate([0,0,postHi])
@@ -537,19 +675,9 @@ if(1){
   pulleyBlock();
 }
 
-// lever arm
-if(1){
-  translate([0,0,postHi])
-  leverArm();
-
-  translate([0,0,postHi+36*2])
-  rotate([180,0,0])
-  leverArm(mirror=1);
-}
-
 
 // rail blocks
-if(1){
+if(0){
   translate([0,0,railZ])
   color("cyan")
   railBlock();
@@ -560,8 +688,8 @@ if(1){
   railBlock();
 }
 
-// cutaway sled
-if(1){
+// cutaway sled  
+if(0){
 difference(){
   translate([0,0,sledZ])
   sled();
@@ -572,12 +700,12 @@ difference(){
 }
 
 // full sled
-if(0){
+if(1){
   translate([0,0,sledZ])
   sled();
 }
 
-if(1){
+if(0){
   // LM10U bearings
   translate([0,0,sledZ]){
     translate([railX,railY,0])

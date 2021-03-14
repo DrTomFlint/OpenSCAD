@@ -146,7 +146,7 @@ module belt3(){
 type=1;
 X0=LeftX0;
 
-if(0){
+if(1){
 difference(){
     // vertical block
     color("cyan")
@@ -178,7 +178,7 @@ difference(){
 
 
 // left extruder belt slider
-if(1){
+if(0){
 X5=LeftX0;
 difference(){
 // belt attach movable
