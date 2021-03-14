@@ -514,7 +514,7 @@ difference(){
   translate([railX,-railY,0])
   cylinder(r=5+1,h=330,$fn=66,center=true);
   
-  // strain releif for the bearings
+  // strain relief for the bearings
   translate([railX,railY-9.5,0])
   cylinder(r=2,h=330,$fn=66,center=true);
   translate([railX,-railY+9.5,0])
@@ -527,20 +527,21 @@ difference(){
   cube([30,10.5,60],center=true);
   
   // access for screws
-  translate([railX-6,0,29/2])
+  translate([railX-7.5,0,29/2])
   rotate([0,90,0])
-  cylinder(r=17,h=20,$fn=122);
+  cylinder(r1=17,r2=22,h=22,$fn=122);
   
-  // mating pins for the tool holder
-  translate([railX+10,35,29/2])
+  // mating pins for the tool holder   ***********************
+  translate([railX+8,35,29/2])
   rotate([0,90,0])
-  cylinder(r1=5,r2=5.5,h=3,$fn=122);  
-  translate([railX+10,-35,29/2+sledHi])
+  cylinder(r1=5,r2=5.5,h=5,$fn=122);  
+  translate([railX+8,-35,29/2+sledHi])
   rotate([0,90,0])
-  cylinder(r1=5,r2=5.5,h=3,$fn=122);
-  translate([railX+10,-35,29/2-sledHi])
+  cylinder(r1=5,r2=5.5,h=5,$fn=122);
+  translate([railX+8,-35,29/2-sledHi])
   rotate([0,90,0])
-  cylinder(r1=5,r2=5.5,h=3,$fn=122);
+  cylinder(r1=5,r2=5.5,h=5,$fn=122);
+  cylinder(r1=5,r2=5.5,h=5,$fn=122);
   
   // provide a way to remove the 2 left side bearings
   translate([railX+6,-railY+7,29/2-34])
@@ -550,6 +551,19 @@ difference(){
   rotate([0,90,0])
   cylinder(r=6,h=20,$fn=33,center=true);
 
+  // better strain relief for the linear bearings
+  // had to use the heat gun to get smooth motion 
+  // assemble the rails, rail blocks, and the base 30x60 
+  // with the sled and the bearings on the rails but not yet inserted
+  // into the sled.  Heat until the bearings slide in and the travel 
+  // remains smooth.
+  // provide a way to remove the 2 left side bearings
+  translate([railX+6,-railY,-47])
+  cube([15,2,40],center=true);
+  translate([railX+6,-railY,75])
+  cube([15,2,40],center=true);  
+  translate([railX+6,railY,4])
+  cube([15,2,40],center=true);  
 
 }
 
@@ -572,12 +586,12 @@ if(0){
 difference(){
   union(){
     color("green")
-    translate([railX-1,0,29/2+sledHi-30])
-    cube([15,10.5,8],center=true);
+    translate([railX-3,0,29/2+sledHi-30])
+    cube([11,10.5,8],center=true);
 
     color("blue")
-    translate([railX-1,0,29/2+sledHi-70])
-    cube([15,10.5,8],center=true);
+    translate([railX-3,0,29/2+sledHi-70])
+    cube([11,10.5,8],center=true);
   }
   translate([railX-3,-1,29/2])
   cylinder(r=1.65,h=200,center=true,$fn=23);
@@ -618,10 +632,126 @@ difference(){
   
 }
 
-//====================================================
+//-----------------------------------------------------------------
+module sledShoe(){
+tabHi=25;   // height of tabs on the sled
+tabHi2=6;   // height of tabs on the shoe
+
+
+difference(){
+  union(){
+    // bolt on tabs
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2])
+      rotate([0,90,0])
+      cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+    
+    // mating pins for the tool holder
+    toolOff=0.15;
+    translate([railX+10,35,29/2])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);  
+    translate([railX+10,-35,29/2+sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+    translate([railX+10,-35,29/2-sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+  }
+
+  // cuts for the bolt mounts
+  translate([railX+15,railY+20,29/2])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX+15,-railY-20,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX+15,-railY-20,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  // cuts in the mating pins to create perimeters
+  translate([railX,35,29/2])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  translate([railX,-35,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  translate([railX,-35,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  
+}
+
+}
+//------------------------------------------------------------------------
+module post1(){
+
+post1Hi=8;
+post2Hi=12;
+post3Hi=1.2;
+    
+    rotate([-90,0,0])
+    cylinder(r=6.7/2,h=post1Hi,$fn=22);
+    translate([0,post1Hi,0])
+    rotate([-90,0,0])
+    cylinder(r1=6.7/2,r2=6,h=post2Hi,$fn=22);
+    translate([0,post1Hi+post2Hi,0])
+    rotate([-90,0,0])
+    cylinder(r=6,h=post3Hi,$fn=22);
+
+    
+
+}
+
+//------------------------------------------------------------------------
+module makita(){
+
+post1();
+//translate([
+    
+
+}
+
+
+//=========================================================================================================
+
+
+//makita();
 
 //beltClip();
 
+//color("gray")
 //stand1();
 
 // bottom idlers
@@ -703,6 +833,12 @@ difference(){
 if(1){
   translate([0,0,sledZ])
   sled();
+}
+
+// sled shoe
+if(0){
+  translate([0,0,sledZ])
+  sledShoe();
 }
 
 if(0){
