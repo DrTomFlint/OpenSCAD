@@ -323,7 +323,7 @@ module leverArm(mirror=0){
     // cut for pulley bearing
     translate([0,-10,36])
     rotate([90,0,0])
-    cylinder(r=25/2,h=2,$fn=60,center=true);  
+    cylinder(r=26/2,h=2,$fn=60,center=true);  
 
     // cut on the arm
     difference(){
@@ -515,10 +515,10 @@ difference(){
   cylinder(r=5+1,h=330,$fn=66,center=true);
   
   // strain relief for the bearings
-  translate([railX,railY-9.5,0])
-  cylinder(r=2,h=330,$fn=66,center=true);
-  translate([railX,-railY+9.5,0])
-  cylinder(r=2,h=330,$fn=66,center=true);
+//  translate([railX,railY-9.5,0])
+//  cylinder(r=2,h=330,$fn=66,center=true);
+//  translate([railX,-railY+9.5,0])
+//  cylinder(r=2,h=330,$fn=66,center=true);
   
   // channel for the belt
   translate([railX,0,20])
@@ -719,17 +719,24 @@ module post1(){
 
 post1Hi=8;
 post2Hi=12;
-post3Hi=1.2;
-    
-    rotate([-90,0,0])
-    cylinder(r=6.7/2,h=post1Hi,$fn=22);
-    translate([0,post1Hi,0])
-    rotate([-90,0,0])
-    cylinder(r1=6.7/2,r2=6,h=post2Hi,$fn=22);
-    translate([0,post1Hi+post2Hi,0])
-    rotate([-90,0,0])
-    cylinder(r=6,h=post3Hi,$fn=22);
+post3Hi=6;
 
+difference(){
+  union(){
+    rotate([0,0,90]){    
+      rotate([-90,0,0])
+      cylinder(r=6.7/2,h=post1Hi,$fn=22);
+      translate([0,post1Hi,0])
+      rotate([-90,0,0])
+      cylinder(r1=6.7/2,r2=8,h=post2Hi,$fn=22);
+      translate([0,post1Hi+post2Hi,0])
+      rotate([-90,0,0])
+      cylinder(r=10,h=post3Hi,$fn=22);
+    }
+  }
+  rotate([0,90,0])
+  cylinder(r=1.7,h=80,center=true,$fn=44);
+}
     
 
 }
@@ -737,9 +744,214 @@ post3Hi=1.2;
 //------------------------------------------------------------------------
 module makita(){
 
-post1();
-//translate([
+screwOff=38.5;
+tabHi=25;   // height of tabs on the sled
+tabHi2=6;   // height of tabs on the shoe
+post1Hi=8;
+post2Hi=12;
+post3Hi=6;
+
+postOff=12;  // Z-offset from posts to sled shoe
+
+
+d1=21.5;
+d2=27.7;
+d3=-27.2;
+d4=27.7;
+
+d5=-23.4;
+d6=-26.1;
+d7=25.4;
+d8=-28.2;
+
+difference(){
+  union(){
+  // post A
+  color("red")
+  translate([railX+screwOff,d1,d2+postOff])
+  post1();
+  // post B
+  color("blue")
+  translate([railX+screwOff,d3,d4+postOff])
+  post1();
+  //post C
+  color("cyan")
+  translate([railX+screwOff,d5,d6+postOff])
+  post1();
+  // post C
+  color("orange")
+  translate([railX+screwOff,d7,d8+postOff])
+  post1();
+
+
+  color("red")
+  hull(){
+    translate([railX+screwOff-post2Hi-post1Hi,d1,d2+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+screwOff-post2Hi-post1Hi,d7,d8+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+tabHi/2+tabHi2/2,railY,29/2])
+    rotate([0,90,0])
+    cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+  }    
+
+  color("orange")
+  hull(){
+    translate([railX+screwOff-post2Hi-post1Hi,d1,d2+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+screwOff-post2Hi-post1Hi,d3,d4+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+tabHi/2+tabHi2/2,-railY,29/2+sledHi])
+    rotate([0,90,0])
+    cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+  }    
+
+  color("cyan")
+  hull(){
+    translate([railX+screwOff-post2Hi-post1Hi,d5,d6+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+screwOff-post2Hi-post1Hi,d7,d8+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+
+    translate([railX+tabHi/2+tabHi2/2,-railY,29/2-sledHi])
+    rotate([0,90,0])
+    cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+  }    
+  
+  color("gray")
+  hull(){
+    translate([railX+screwOff-post2Hi-post1Hi,d1,d2+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d3,d4+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d5,d6+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d7,d8+postOff])
+    rotate([0,-90,0])
+    cylinder(r=10,h=post3Hi,$fn=22);
+  }
+
+    // bolt on tabs
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2])
+      rotate([0,90,0])
+      cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
     
+    // to get a flat base, make the mating pins a separate part
+/*    
+    // mating pins for the tool holder
+    toolOff=0.15;
+    translate([railX+10,35,29/2])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);  
+    translate([railX+10,-35,29/2+sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+    translate([railX+10,-35,29/2-sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+*/    
+  }
+
+    // cuts for mating pins for the tool holder
+    toolOff=0.15;
+    translate([railX+10,35,29/2])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);  
+    translate([railX+10,-35,29/2+sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+    translate([railX+10,-35,29/2-sledHi])
+    rotate([0,90,0])
+    cylinder(r1=5-toolOff,r2=5.5-toolOff,h=3,$fn=122);
+
+  // cuts for the bolt mounts
+  translate([railX+15,railY+20,29/2])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX+15,-railY-20,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  translate([railX+15,-railY-20,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+
+  // cuts in the mating pins to create perimeters
+  translate([railX,35,29/2])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  translate([railX,-35,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  translate([railX,-35,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2,h=25,$fn=122);  
+  
+  // material reduction hole in center
+    translate([railX+screwOff-post2Hi-post1Hi,0,0+postOff])
+    rotate([0,-90,0])
+    cylinder(r=20,h=40,$fn=22,center=true);
+      
+      
+  // holes to allow an M3 to reinforce the posts
+    translate([railX+screwOff-post2Hi-post1Hi,d1,d2+postOff])
+    rotate([0,-90,0])
+#    cylinder(r=3,h=6.1,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d3,d4+postOff])
+    rotate([0,-90,0])
+    cylinder(r=3,h=6.1,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d5,d6+postOff])
+    rotate([0,-90,0])
+    cylinder(r=3,h=6.1,$fn=22);
+    translate([railX+screwOff-post2Hi-post1Hi,d7,d8+postOff])
+    rotate([0,-90,0])
+    cylinder(r=3,h=6.1,$fn=22);
+  
+}
 
 }
 
@@ -747,7 +959,9 @@ post1();
 //=========================================================================================================
 
 
-//makita();
+translate([0,0,sledZ])
+makita();
+
 
 //beltClip();
 
@@ -830,7 +1044,7 @@ difference(){
 }
 
 // full sled
-if(1){
+if(0){
   translate([0,0,sledZ])
   sled();
 }
