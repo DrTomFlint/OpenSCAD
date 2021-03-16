@@ -28,6 +28,7 @@ railX=30;    // position of the rails
 railY=35;
 railZ=102;
 
+makitaHi = 3;
 
 sledHi=50;
 
@@ -635,7 +636,9 @@ difference(){
 //-----------------------------------------------------------------
 module sledShoe(){
 tabHi=25;   // height of tabs on the sled
-tabHi2=6;   // height of tabs on the shoe
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=makitaHi;   // height of tabs on the shoe
+
 
 
 difference(){
@@ -719,7 +722,8 @@ module post1(){
 
 post1Hi=8;
 post2Hi=12;
-post3Hi=6;
+//post3Hi=6;
+post3Hi=makitaHi;
 
 difference(){
   union(){
@@ -744,12 +748,15 @@ difference(){
 //------------------------------------------------------------------------
 module makita(){
 
-screwOff=38.5;
+screwOff=38.5-makitaHi;
+
 tabHi=25;   // height of tabs on the sled
-tabHi2=6;   // height of tabs on the shoe
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=makitaHi;   // height of tabs on the shoe
 post1Hi=8;
 post2Hi=12;
-post3Hi=6;
+//post3Hi=6;
+post3Hi=makitaHi;
 
 postOff=12;  // Z-offset from posts to sled shoe
 
@@ -940,7 +947,7 @@ difference(){
   // holes to allow an M3 to reinforce the posts
     translate([railX+screwOff-post2Hi-post1Hi,d1,d2+postOff])
     rotate([0,-90,0])
-#    cylinder(r=3,h=6.1,$fn=22);
+    cylinder(r=3,h=6.1,$fn=22);
     translate([railX+screwOff-post2Hi-post1Hi,d3,d4+postOff])
     rotate([0,-90,0])
     cylinder(r=3,h=6.1,$fn=22);
