@@ -253,7 +253,9 @@ module thread_polyhedron (radius, pitch, internal, n_starts, thread_size,
    local_rectangle = rectangle ? rectangle : 1;
 
    h = (square || rectangle) ? thread_size*local_rectangle/2 : thread_size / (2 * tan(angle));
-   outer_r = radius + (internal ? h/20 : 0); // Adds internal relief.
+// TF TEST add some more clearance for internal cut   *******************************************************************************************
+//   outer_r = radius + (internal ? h/20 : 0); // Adds internal relief.
+   outer_r = radius + (internal ? h/8 : 0); // Adds internal relief.
    //echo (str ("outer_r: ", outer_r));
 
    // A little extra on square thread -- make sure overlaps cylinder.
