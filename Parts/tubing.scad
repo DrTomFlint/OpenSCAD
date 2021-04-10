@@ -40,7 +40,7 @@ difference(){
 }
 }
 //----------------------------------
-// water pump to silicon soft tube
+// water pump to silicon soft tube used on Dusa
 module adaptB(){
 difference(){
   union(){
@@ -83,8 +83,49 @@ difference(){
 
 }
 
+//----------------------------------  *******************************************************************************
+// water pump to silicon soft tube used on Calorimeter, 6mm
+module adaptB2(){
+difference(){
+  union(){
+    color("cyan")
+    english_thread (diameter=1/2, threads_per_inch=19, length=0.23);
+
+    translate([0,0,0.23*25.4])
+    cylinder(r=9,h=2.5,$fn=6);
+
+    // add a barb to connect to the silicon tubing
+    translate([0,0,8])
+    cylinder(r1=7,r2=3.6,h=3,$fn=88);
+
+    for(i=[0:5]){
+      translate([0,0,11+i*3])
+      cylinder(r1=7.6/2,r2=6.4/2,h=3,$fn=88);
+    }
+    color("red")
+    translate([0,0,29])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+  }
+
+  color("green")
+  translate([0,0,28])
+  cylinder(r1=1.45,r2=2.7,h=2.1,$fn=88);
+
+  // bore hole
+  translate([0,0,9])
+  cylinder(r=2.1,h=21.1,$fn=88);
+
+  // tapered inlet since pump bores are offset
+  translate([0,0,-0.01])
+  cylinder(r1=5,r2=2.1,h=9.1,$fn=88);
+
+}  
+
+
+}
+
 //----------------------------------
-// radiator to silicon soft tube
+// radiator to silicon soft tube used on Dusa
 module adaptC(){
 difference(){
   union(){
@@ -140,7 +181,7 @@ difference(){
 
   // bore hole
   translate([0,0,0])
-  cylinder(r=3.5,h=5,$fn=88);
+  #cylinder(r1=3.5,r2=2.5,h=4,$fn=88);
 
 }  
 
@@ -161,12 +202,12 @@ cube([20,20,40]);
 }
 }
 
-adaptB();
+//adaptB2();
 
 // cutaway view:
 if(0){
 difference(){
-adaptB();
+adaptB2();
 translate([-10,0,-1])
 cube([20,20,40]);
 }
@@ -184,7 +225,7 @@ cube([20,20,40]);
 }
 }
 
-//adaptD();
+adaptD();
 
 // cutaway view:
 if(0){
