@@ -133,6 +133,56 @@ difference(){
 
 }
 
+//---------------------------------- 
+// flow meter to silicon soft tube used on Calorimeter, 6mm
+// slightly different inside profile and tip
+module adaptB3(){
+difference(){
+  union(){
+    translate([0,0,-1])
+    cylinder(r1=5.0,r2=5.5,h=1,$fn=89);
+
+    color("cyan")
+    english_thread (diameter=1/2, threads_per_inch=19, length=0.30, leadin=3);
+
+    translate([0,0,0.30*25.4])
+    cylinder(r=12,h=4.0,$fn=8);
+
+    // add a barb to connect to the silicon tubing
+    translate([0,0,10.5])
+    cylinder(r1=9,r2=5.5,h=3,$fn=88);
+
+    for(i=[0:5]){
+      translate([0,0,12+i*3])
+      cylinder(r1=7.6/2,r2=6.4/2,h=3,$fn=88);
+    }
+    color("red")
+    translate([0,0,30])
+    cylinder(r1=3.2,r2=2.5,h=1,$fn=88);
+  }
+
+  color("green")
+  translate([0,0,29])
+  cylinder(r1=1.45,r2=2.7,h=2.1,$fn=88);
+
+	// alternate cut method for O ring, metric 113
+    translate([0,0,0.30*25.4+0.6-1])
+	rotate_extrude($fn=99){
+		translate([19.5/2-3.3+0.6,0])
+		offset(r=0.6,$fn=44)
+		//square([3.80-1.2,2.45-1.2+1]);
+		square([3.30-1.2,1.95-1.2+1]);
+	}
+
+  // bore hole
+  cylinder(r=2.1,h=70,$fn=88,center=true);
+
+
+}  
+
+
+}
+
 //----------------------------------
 // radiator to silicon soft tube used on Dusa
 module adaptC(){
@@ -273,7 +323,36 @@ difference(){
 
 }
 
+//--------------------------------------------------------
+module rtdplug(){
+
+  difference(){
+  union(){
+    // lower section is cylinder
+    cylinder(r1=3.9/2,r2=3.8/2,h=24,$fn=88);
+    // foot
+    cylinder(r=6.5/2,h=2,$fn=88);
+    // just for print stability
+    cylinder(r=4.4,h=0.3,$fn=88);
+  }
+  
+  // bore
+  translate([0,0,-1])
+  cylinder(r=0.8,h=28,$fn=88);
+
+  // top taper
+  translate([0,0,19])
+  cylinder(r1=0.9,r2=1.2,h=5.1,$fn=88);
+
+  // base taper
+  translate([0,0,-0.1])
+  cylinder(r2=0.7,r1=3.0/2,h=1.1,$fn=88);
+}
+  
+}
 //===================================
+
+rtdplug();
 
 //adaptA();
 
@@ -287,14 +366,14 @@ cube([20,20,40]);
 }
 }
 
-//adaptB2();
+//adaptB3();
 
 // cutaway view:
 if(0){
 difference(){
-adaptB2();
-translate([-20,0,-1])
-cube([40,40,40]);
+adaptB3();
+translate([-20,0,-20])
+cube([40,40,80]);
 }
 }
 
@@ -313,7 +392,7 @@ cube([40,40,40]);
 }
 
 //adaptD();
-adaptD2();
+//adaptD2();
 
 // cutaway view:
 if(0){
