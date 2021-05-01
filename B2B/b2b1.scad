@@ -15,6 +15,7 @@ use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
 use <../Parts/estop.scad>
 use <../Parts/switch2.scad>
+use <./foot1.scad>
 
 z0 = 42;      // height of the shafts
 
@@ -427,9 +428,60 @@ if(1){
   
 }
 
+//----------------------------------------------------------------------------
+// mount the Analog Devices AD2S1210 Eval board to the B2B base rail
+module ADIboard(){
+
+difference(){
+  // foot
+  union(){
+    translate([-2,-25,15-0.5])
+    cube([22,50,4]);
+    
+    hull(){
+      translate([-2,-25,15-0.5])
+      cube([4,50,4]);
+
+      translate([-2,-2,15-0.5+15])
+      cube([4,4,4]);
+    }
+    
+    translate([2,25,18])
+    rotate([90,0,0])
+    rounder(r=3,h=50,f=67);
+  }
+
+  // cut for the board
+  translate([0,-1.7/2,17])
+  cube([96.50,1.6+0.2,127]);
+
+  // cut for the base rail
+  translate([-100,0,0])
+  rotate([0,90,0])
+  tslot1(type=2,len=300,tol=0.15);
+  
+  // M4 tie downs to the T-slot
+  translate([10,-15,-1])
+  cylinder(r=2,h=20,$fn=22);
+  translate([10,15,-1])
+  cylinder(r=2,h=20,$fn=22);
+  
+  // cut for the base rail
+  translate([20,-25,10])
+  rotate([0,0,90])
+  rounder(r=10,h=10,f=67);
+  translate([20,25,10])
+  rotate([0,0,180])
+  rounder(r=10,h=10,f=67);
+}
+
+}
+
 //=================================================================================
 
-b2b1();
+ADIboard();
+
+//b2b1();
 //tek2310();
 
 //coupler();
@@ -439,5 +491,15 @@ b2b1();
 
 //bracket2();
 //bracket2(type=2);
+
+if(0){
+translate([-150,0,0])
+foot();
+
+translate([480-150,0,0])
+rotate([0,0,180])
+foot();
+}
+
 
 //=================================================================================
