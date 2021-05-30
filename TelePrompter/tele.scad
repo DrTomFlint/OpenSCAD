@@ -121,6 +121,113 @@ module bracket(){
     cylinder(r=31,h=40,center=true,$fn=222);
   }
 }
+
+
+
+//-----------------------------------------------------------------------
+module bridge2(){
+  
+  // top pads
+  translate([-8,40,topThick])
+  cube([16,20,topThick*2],center=true);
+
+  translate([-8,-40,topThick])
+  cube([16,20,topThick*2],center=true);
+  
+  // top bridge
+  translate([-8,0,bridgeThick/2+topThick])
+  cube([16,100-16,bridgeThick],center=true);
+}
+  
+
+//-----------------------------------------------------------------------
+module bracket2(){
+  
+  // sides
+  color("orange")
+  difference(){
+    hull(){
+      // around the screw
+      translate([-41,55,-15])
+      rotate([-90,0,0])
+      cylinder(r=10,h=sideThick);
+
+      // vertical side plate
+      translate([-8,55+sideThick/2,bridgeThick/2+topThick/2])
+      cube([16,sideThick,160+topThick+bridgeThick],center=true);
+
+    }
+    
+    // mount hole for the 3/8 screw to fluid head
+    translate([-41,55,-15])
+    rotate([-90,0,0])
+    cylinder(r=9.3/2,h=sideThick*4,center=true);
+    
+    // material reduce
+    hull(){
+      translate([-18,55,-22])
+      rotate([-90,0,0])
+      cylinder(r=10,h=sideThick*3,center=true);
+      
+      translate([-11,55,-68])
+      rotate([-90,0,0])
+      cylinder(r=3,h=sideThick*3,center=true);
+    }
+
+    hull(){
+      translate([-20,55,20])
+      rotate([-90,0,0])
+      cylinder(r=10,h=sideThick*3,center=true);
+      
+      translate([-13,55,63])
+      rotate([-90,0,0])
+      cylinder(r=3,h=sideThick*3,center=true);
+    }
+
+  }  
+
+  color("cyan")
+  translate([-41,55-2.5,-15])
+  rotate([-90,0,0])
+  difference(){
+    cylinder(r=10,h=sideThick+2.5);
+    cylinder(r=17.5/2,h=sideThick+10,center=true);
+  }
+
+  color("pink")
+  translate([-32.5,53.75,-52+bridgeThick/2+topThick/2])
+  rotate([0,-29.3,0])
+  cube([1.5,2.5,63.5+topThick+bridgeThick],center=true);
+
+  color("blue")
+  translate([-29,53.75,-0.25])
+  rotate([0,68,0])
+  cube([1.5,2.5,29],center=true);
+
+  color("red")
+  translate([-8,50+sideThick,-4+bridgeThick/2+topThick/2])
+  cube([16,sideThick*2,8+topThick+bridgeThick],center=true);
+ 
+  color("green")
+  translate([-2,50+sideThick,bridgeThick/2+topThick/2])
+  cube([4,sideThick*2,160+topThick+bridgeThick],center=true);
+
+  color("blue")
+  translate([-8,50+sideThick+1,-86])
+  cube([16,sideThick*2+2,8+topThick+bridgeThick],center=true);
+
+  color("cyan")
+  translate([-8,50+sideThick+1,79])
+  cube([16,sideThick*2+2,8+topThick+bridgeThick],center=true);
+
+  color("pink")
+  translate([-32.3,53.75,37.5])
+  rotate([0,19.5,0])
+  cube([1.5,2.5,100],center=true);
+
+
+  
+}
 //------------------------------------------------------------------------------
 module L1(){
 
@@ -190,12 +297,15 @@ module L1(){
 //=================================================================================
 
 
-//bracket();
+bracket2();
 
-//L1();
+color("gray")
+bridge2();
 
-mirror([0,1,0])
-L1();
+
+//color("gray")
+//mirror([0,1,0])
+//bracket2();
 
 //=================================================================================
   
