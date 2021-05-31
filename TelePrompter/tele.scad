@@ -191,11 +191,11 @@ module bracket2(){
 //bridge2();
 
 //color("cyan")
-bracket2();
+//bracket2();
 
 //color("cyan")
-//mirror([0,1,0])
-//bracket2();
+mirror([0,1,0])
+bracket2();
 
 //=================================================================================
   
