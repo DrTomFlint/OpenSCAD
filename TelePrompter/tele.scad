@@ -38,9 +38,55 @@ module bridge2(){
   translate([-8,-51,topThick])
   cube([10,14,topThick],center=true);
   
-  // top bridge
-  translate([-8,0,bridgeThick/2+topThick])
-  cube([16,100-16,bridgeThick],center=true);
+  
+  // support for lens tunnel
+  difference(){
+    union(){
+      // top bridge
+      translate([-8,0,bridgeThick/2+topThick])
+      cube([16,100-16,bridgeThick],center=true);
+
+      hull(){
+        translate([-16,16,29])
+        rotate([0,90,0])
+        cylinder(r=40/2+2,h=16,$fn=333);
+        
+        translate([-8,16,5])
+        cube([16,64,1],center=true);
+      }
+      
+      // flange around lens hole
+      difference(){
+        translate([-1.2,16,29])
+        rotate([0,90,0])
+        cylinder(r=42/2+6,h=1.2,$fn=333);
+      
+        translate([-8,0,topThick/2])
+        cube([18,100-30,topThick],center=true);
+      }            
+      
+    }
+    // lens bore
+    translate([-17,16,29])
+    rotate([0,90,0])
+    cylinder(r=42/2,h=18,$fn=333);
+
+    // smaller holes down low
+    translate([-17,16-23,12])
+    rotate([0,90,0])
+    cylinder(r=4,h=18);
+    translate([-17,16+23,12])
+    rotate([0,90,0])
+    cylinder(r=4,h=18);
+  }  
+
+  // text
+  color("red")
+  translate([-8,-33,4.5])
+  rotate([0,0,-90])
+  linear_extrude(height=2)
+  text("Flint", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.2);
+
 }
   
 
@@ -187,13 +233,13 @@ module bracket2(){
 //=================================================================================
 
 
-//color("gray")
-//bridge2();
+color("gray")
+bridge2();
 
-//color("cyan")
-//bracket2();
+color("cyan")
+bracket2();
 
-//color("cyan")
+color("cyan")
 mirror([0,1,0])
 bracket2();
 
