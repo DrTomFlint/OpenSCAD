@@ -3,13 +3,13 @@
 // 
 // Fiberglass 8 mm diameter
 
-thick=10;
+thick=16;
 
 difference(){
-    cylinder(h=thick,r=22.0,$fn=88);
+    cylinder(h=thick,r=23.0,$fn=222);
     
     translate([0,0,-0.5])
-    cylinder(h=thick+1,r=18.5,$fn=88);
+    cylinder(h=thick+1,r=18.5,$fn=222);
 
     translate([-50,-110,-0.5])
     cube([100,100,thick+1]);
@@ -19,10 +19,10 @@ difference(){
 // right side loop
 translate([40,8,0])
 difference(){
-    cylinder(h=thick,r=4.2+3.5,$fn=88);
+    cylinder(h=thick,r=4.2+3.5,$fn=222);
     
     translate([0,0,-0.5])
-    cylinder(h=thick+1,r=4.2,$fn=88);
+    cylinder(h=thick+1,r=4.2,$fn=222);
 
     translate([0,-2,-0.5])
     rotate([0,0,55])
@@ -45,10 +45,10 @@ mirror([1,0,0]){
 // right side loop
 translate([40,8,0])
 difference(){
-    cylinder(h=thick,r=4.2+3.5,$fn=88);
+    cylinder(h=thick,r=4.2+3.5,$fn=222);
     
     translate([0,0,-0.5])
-    cylinder(h=thick+1,r=4.2,$fn=88);
+    cylinder(h=thick+1,r=4.2,$fn=222);
 
     translate([0,-2,-0.5])
     rotate([0,0,55])
