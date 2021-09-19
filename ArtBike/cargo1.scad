@@ -146,7 +146,7 @@ module pad2(){
 }
 //============================================================
 
-if(1){
+if(0){
   intersection(){
   //difference(){
     difference(){
@@ -170,9 +170,9 @@ if(1){
   }
 }
 
-//pad2();
+pad2();
 
-if(0){
+if(1){
   color("gray")
   corner();
 }
