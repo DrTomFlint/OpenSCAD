@@ -2,8 +2,11 @@
 // bigcam.scad
 //
 // For Raspberry Pi HQ Camera and Lenses
+// - add a focus ring using continuous servo and worm gear
+// - might need to use a pinion and regular gear since focus moves teeth
+// - legos use a straight rack and helical worm so should be ok
 //
-// Dr Tom Flint, 16 Oct 2021
+// Dr Tom Flint, 19 Oct 2021
 //=================================================================================
 
 use <../Parts/rounder.scad>
@@ -126,11 +129,11 @@ module hqcam(extraX=0){
 
 }
 //-----------------------------------------------------------------------------------
-module shortLens(extraX=0){
+module shortLens(extraX=0,focus=1.5){
 
   difference(){
     union(){
-      color("pink")
+      color("orange")
       translate([(10.5+1.35)/2+0.25+extraX,0,11.2+38/2])
       rotate([0,90,0])
       cylinder(r=30.0/2,h=9.8,$fn=189);
@@ -138,20 +141,20 @@ module shortLens(extraX=0){
       color("gray")
       translate([(10.5+1.35)/2+0.25+extraX+9.8,0,11.2+38/2])
       rotate([0,90,0])
-      cylinder(r=28.5/2,h=1.5,$fn=189);
+      cylinder(r=28.5/2,h=focus,$fn=189);
 
-      color("orange")
-      translate([(10.5+1.35)/2+0.25+extraX+9.8+1.5, 0,11.2+38/2])
+      color("gray")
+      translate([(10.5+1.35)/2+0.25+extraX+9.8+focus, 0,11.2+38/2])
       rotate([0,90,0])
       cylinder(r=30/2,h=8,$fn=189);
 
       color("gray")
-      translate([(10.5+1.35)/2+0.25+extraX+9.8+1.5+8, 0,11.2+38/2])
+      translate([(10.5+1.35)/2+0.25+extraX+9.8+focus+8, 0,11.2+38/2])
       rotate([0,90,0])
       cylinder(r=28.5/2,h=1.5,$fn=189);
 
       color("gray")
-      translate([(10.5+1.35)/2+0.25+extraX+9.8+1.5+8+1.5, 0,11.2+38/2])
+      translate([(10.5+1.35)/2+0.25+extraX+9.8+focus+8+1.5, 0,11.2+38/2])
       rotate([0,90,0])
       cylinder(r=30/2,h=9,$fn=189);
     }
@@ -171,9 +174,11 @@ module shortLens(extraX=0){
 
 //=================================================================================
 
-x1=1.5;
+x1=2.0;
+x2=1.5;
 
-//hqcam(extraX=x1);
-shortLens(extraX=x1);
+hqcam(extraX=x1);
+shortLens(extraX=x1,focus=x2);
+
 //=================================================================================
 
