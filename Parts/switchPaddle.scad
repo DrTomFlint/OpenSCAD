@@ -60,11 +60,26 @@ module switchPaddle(position=1){
   square([8,3],center=true);
     
 }
+
+//------------------------------------------------------------
+module switchNut(){
+
+  translate([0,0,3])
+  cylinder(r=21/2,h=2,$fn=89);
+  cylinder(r=21/2,h=5,$fn=6);
+}
+
 //====================================================================
 
 switchPaddle();
+color("gray")
+translate([0,0,-8])
+switchNut();
 
-translate([20,0,0])
+translate([22,0,0])
 switchPaddle(position=-1);
+color("gray")
+translate([22,0,-12])
+switchNut();
 
 //====================================================================
