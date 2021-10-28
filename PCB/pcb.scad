@@ -30,7 +30,7 @@ arm2x0 = arm1x*cos(arm1angle);
 arm2y0 = arm1x*sin(arm1angle);
 
 
-arm3x = 60;     // length of arm3
+arm3x = 40;     // length of arm3
 arm3angle = 90;
 
 arm4x = 40;     // length of arm2
@@ -180,7 +180,8 @@ module arm5(ang=0,pin=0,pang=20){
         translate([arm4x-sin(pang)*10,0,0])
         intersection(){
           rotate([0,-pang,0])
-          cylinder(r=2,h=6,$fn=89);
+          translate([0,0,-1])
+          cylinder(r=2,h=8,$fn=89);
           translate([0,0,3])
           cube([20,20,6],center=true);
         }
@@ -197,6 +198,7 @@ module arm5(ang=0,pin=0,pang=20){
       // cut for the pin
       translate([arm4x-sin(pang)*10,0,0])
       rotate([0,-pang,0])
+      translate([0,0,-1])
       cylinder(r=0.5+0.1,h=20,$fn=77);
 
       // strain relief for the pin
@@ -207,15 +209,15 @@ module arm5(ang=0,pin=0,pang=20){
       // cuts for the wiring
       translate([arm4x-20,0,-5])
       rotate([0,0,0])
-      cylinder(r=0.8,h=20,$fn=77);
+      cylinder(r=1.0,h=20,$fn=77);
 
       translate([arm4x-25,0,-5])
       rotate([0,0,0])
-      cylinder(r=0.8,h=20,$fn=77);
+      cylinder(r=1.0,h=20,$fn=77);
 
       translate([arm4x-30,0,-5])
       rotate([0,0,0])
-      cylinder(r=0.8,h=20,$fn=77);
+      cylinder(r=1.0,h=20,$fn=77);
 
    }
     
@@ -522,9 +524,9 @@ if(0){
 }
 
 // for printing
-//arm3();
+arm3();
 //arm5(pang=20);
-post2();
+//post2();
 
 
 
