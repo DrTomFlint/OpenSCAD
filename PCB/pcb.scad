@@ -23,13 +23,24 @@ y1 = 192.2+30;       // distance between front and back rail centers
 zpost = 30;      // height of the post
 
 arm1x = 40;     // length of arm1
-arm1angle = 0;
+arm1angle = 45;
 
 arm2x = 40;     // length of arm2
-arm2angle = 90;
+arm2angle = 130;
 arm2x0 = arm1x*cos(arm1angle);
 arm2y0 = arm1x*sin(arm1angle);
 
+arm3x = 40;     // length of arm1
+arm3angle = 45;
+
+arm4x = 40;     // length of arm2
+arm4angle = 60;
+arm4x0 = arm3x*cos(arm3angle);
+arm4y0 = arm3x*sin(arm3angle);
+
+
+
+$fn=89;
 
 //---------------------------------------------------------------------------------
 // dcc board 
@@ -101,12 +112,64 @@ thick=1.5;
 }
 
 //-------------------------------------------------------------------------------
-// mounts for left side
-module mount1(){
+// mounts for the PCB, left or right side
+module mount1(x0=0){
   
-  translate([0,9,0])
-  cylinder(r=2.5,h=20);
 
+  // lower body
+  difference(){
+    union(){
+      translate([-10.5-0.5,9-7,-15])
+      cube([6,14,30]);
+
+      // post up to the pcb
+      translate([x0,9,10])
+      cylinder(r=2.5-0.15,h=9.5);
+      
+      translate([x0,9,10])
+      cylinder(r=3.5,h=9.5-1.5);
+
+      hull(){
+        translate([x0,9,10])
+        cylinder(r=3.5,h=5);
+
+        translate([-10.5-0.5,9-7,10])
+        cube([8,14,5]);
+      }
+      
+      translate([-5,16,10])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(h=14,r=2,f=45);
+
+    }
+    
+    // cut for M3x16
+    translate([x0,9,7])
+    cylinder(r=1.7,h=16);
+      
+    // cut for t-slot
+    translate([-10.5,0,0])
+    translate([-15,0,0])
+    rotate([-90,0,0])
+    tslot1(type=1,len=y1-30,tol=0.2);
+    
+    // cut for M4x12 bolt, 6 mm thread space
+    translate([-11,9,0])
+    rotate([0,90,0])
+    cylinder(r=2.0,h=6);
+    
+    // 45 degree cut at bottom
+    translate([-10,-10,-15])
+    rotate([0,45,0])
+    cube([20,40,20]);
+
+    // 45 degree trim to clear the arm posts
+    translate([-35,-10,18.5])
+    rotate([0,45,0])
+    cube([20,40,20]);
+    
+  }
   
 }
 
@@ -124,6 +187,16 @@ module pin1(){
   cylinder(r=1.0/2,h=25.4);
   
 }
+
+//-------------------------------------------------------------------------------
+module washer1(){
+  
+  difference(){
+    cylinder(r1=4.5,r2=3.5,h=2.0);
+    cylinder(r=1.6,h=5,center=true);
+  }
+}
+
 
 //-------------------------------------------------------------------------------
 // second arm
@@ -214,6 +287,15 @@ module arm1(ang=0){
 
       translate([arm1x,0,-1])
       cylinder(r=1.7,h=6+2,$fn=89);
+
+      // cuts for the wiring
+      translate([arm1x-15,0,-5])
+      rotate([0,20,0])
+      #cylinder(r=1.0,h=20,$fn=77);
+
+      translate([15,0,-5])
+      rotate([0,-20,0])
+      #cylinder(r=1.0,h=20,$fn=77);
     }
   }
 }
@@ -262,12 +344,9 @@ module post2(nuts=0){
     
   }    
     
-    color("pink")
-    translate([0,30,zpost-6+0])
-    rotate([0,90,0])
-    rounder(r=3,h=14,f=45);
-
-
+  translate([0,30,zpost-6+0])
+  rotate([0,90,0])
+  rounder(r=3,h=14,f=45);
 
   // bolt and nut
   if(nuts==1){
@@ -337,15 +416,52 @@ module base1(){
 
 //=================================================================================
 
-translate([-10.5,0,0])
-base1();
+// t-slot base, whole frame
+if(1){
+  translate([-10.5,0,0])
+  color("silver")
+  base1();
+}
 
 
-mount1();
+// left rail only
+if(0){
+  translate([-10.5,0,0])
+  translate([-15,0,0])
+  rotate([-90,0,0])
+  tslot1(type=1,len=y1-30);
+}
+
+// left rail mounts
+if(1){
+  mount1(x0=0);
+  translate([0,58.2-9,0])
+  mount1(x0=0);
+  translate([0,121.2-9,0])
+  mount1(x0=0);
+  translate([0,181.35-9,0])
+  mount1(x0=0);
+}
+
+// right rail mounts
+if(1){
+  translate([157,18,0])
+  rotate([0,0,180])
+  mount1(x0=0);
+  translate([157,9+58.2,0])
+  rotate([0,0,180])
+  mount1(x0=0);
+  translate([157,9+121.2,0])
+  rotate([0,0,180])
+  mount1(x0=0);
+  translate([157,9+181.35,0])
+  rotate([0,0,180])
+  mount1(x0=0);
+}
 
 // example probe arm
 if(1){
-  translate([50,-30,15]){
+  translate([60,-30,15]){
     post2(nuts=1);
     
     translate([7,30+6,zpost])
@@ -357,23 +473,39 @@ if(1){
   }
 }
 
-
-// into board-frame
+// example probe arm
 if(1){
-  translate([0,0,18]){
+  translate([10,-30,15]){
+    post2(nuts=1);
     
-    dcc();
-
+    translate([7,30+6,zpost])
+    arm1(ang=arm3angle);
+    
+    translate([7+arm4x0,30+6+arm4y0,zpost-6])
+    arm2(ang=arm4angle,pin=1,pang=20);
+    
   }
-  
+}
+
+// PCB
+if(1){
+  translate([0,0,18])
+  dcc();
+
 }
 
 // for printing
 //arm3();
 //arm5(pang=20);
 //post2();
+//mount1(x0=0);
 
-
+if(0){
+for(i=[0:7]){
+  translate([0,8.75*i,0])
+  washer1();
+}
+}
 
  
 //=================================================================================
