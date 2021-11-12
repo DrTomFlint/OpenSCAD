@@ -38,9 +38,9 @@ arm4angle = 60;
 arm4x0 = arm3x*cos(arm3angle);
 arm4y0 = arm3x*sin(arm3angle);
 
-x2 = 340;   // length of front rail
-y2 = 130;   // distance between front and back rails
-z2 = 18;    // height of cyclone board
+x2 = 330;   // length of front rail
+y2 = 140;   // distance between front and back rails
+z2 = 20.5;    // height of cyclone board
 
 $fn=89;
 
@@ -625,32 +625,65 @@ module base1(){
 module base2(){
   
   // front rail
-  translate([-30,15,0])
+  translate([15,0,0])
   rotate([0,90,0])
   tslot1(type=1,len=x2);
 
   // back rail
-  translate([0,15+y2,0])
+  translate([-15,y2,0])
   rotate([0,90,0])
   tslot1(type=1,len=x2);
 
   // left rail
-  translate([-15,30,0])
+  translate([0,-15,0])
   rotate([-90,0,0])
   tslot1(type=1,len=y2);
 
   // right rail
-  translate([x2-15,0,0])
+  translate([x2,15,0])
   rotate([-90,0,0])
   tslot1(type=1,len=y2);
 
   // left front
   color("pink")
-  translate([-30,0,-15])
+  translate([-15,-15,-15])
   rotate([0,0,-90])
   rotate([0,180,0])
   lbrace();
 
+}
+//--------------------------------------------------------------
+module foot2(){
+
+  difference(){
+    // main boss
+    hull(){
+      translate([7,7,-0.5])
+      cylinder(r=7,h=6);
+      translate([7,7+15+1,-0.5])
+      cylinder(r=7,h=6);
+    }
+    
+    // cut for tslot
+    translate([0,15,-15])
+    rotate([0,90,0])
+    tslot1(type=1, len=60);
+    
+    // cut for M4x12
+    translate([7,15,-1])
+    cylinder(r=2,h=8);
+    
+    // cut for M3x6 and brass heat set insert
+    translate([7,25,-1]){
+      cylinder(r=1.8,h=7);
+      cylinder(r=2.3,h=3.0+1);
+    }
+    
+    // diagonal cut
+    translate([0,0,0])
+    rotate([30,0,0])
+    cube([16,16,10]);
+  }
 }
 
 //=================================================================================
@@ -735,29 +768,48 @@ if(0){
 
 // Cyclone Board
 if(1){
-  translate([0,0,z2])
+  translate([2,0,z2])
   cyclone();
 
 }
 
+// Feet for cyclone
+if(1){
+  color("white"){
+  translate([0,-20,15])
+  foot2();
+  translate([14,150,15])
+  rotate([0,0,180])
+  foot2();
+
+  translate([150,-20,15])
+  foot2();
+  translate([14+150,150,15])
+  rotate([0,0,180])
+  foot2();
+}
+}
+
 // ADC Board
-if(0){
+if(1){
   translate([159.93-7.75,37.5,0])
   translate([-10.8,-3.5,0])  
-  translate([0,0,z2+11.6])
+  translate([2,0,z2+11.6])
   adc();
 
 }
 
 if(1){
   color("silver")
+  translate([-15,-5,0])
   base2();
 }
 
 // thermocouple board in pmod
 // unsure which row of sockets the pmods will use, Z offset may differ?
 zoff=1.5;
-if(1){
+if(0){
+  translate([2,0]){
   translate([38.25,130,z2+zoff])
   thermo();
   translate([38.25+23,130,z2+zoff])
@@ -766,6 +818,7 @@ if(1){
   thermo();
   translate([38.25+69,130,z2+zoff])
   thermo();
+}
 }
 
 // for printing
