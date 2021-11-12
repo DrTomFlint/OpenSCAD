@@ -38,9 +38,215 @@ arm4angle = 60;
 arm4x0 = arm3x*cos(arm3angle);
 arm4y0 = arm3x*sin(arm3angle);
 
-
+x2 = 340;   // length of front rail
+y2 = 130;   // distance between front and back rails
+z2 = 18;    // height of cyclone board
 
 $fn=89;
+
+//---------------------------------------------------------------------------------
+// adi ad7768 fmc board 
+// no mounting holes provided?
+
+module adc(tol=0,plugs=1){
+
+thick=1.6;
+  
+  // board
+  color("green")
+  difference(){
+    cube([174,103,thick]);
+    
+    translate([-0.1,103-34,-thick])
+    cube([17.1,34.1,3*thick]);
+    
+    translate([10.8,3.5,0])
+    cylinder(r=2.5/2,h=3*thick,center=true);
+
+    translate([10.8,3.5+62.5,0])
+    cylinder(r=2.5/2,h=3*thick,center=true);
+
+  }
+  
+  // connectors
+  // J2 Vrefs
+  translate([77.5,0,thick])
+  cube([19.2,8,8.5]);
+  
+  // Power plug
+  translate([138.5,0,thick])
+  cube([9,14,11]);
+  
+  // J3 Vrefs
+  translate([174-7.5,4.5,thick])
+  cube([7.5,11.5,9]);
+  
+  // J8-J9 terminal block
+  translate([174-9.4,19.5,thick])
+  cube([9.4,31.25,7.2]);
+  
+  // J16 terminal block
+  translate([174-9.4,51.6,thick])
+  cube([9.4,12.2,7.2]);
+  
+  // J13-J14 terminal block
+  translate([174-9.4,64.5,thick])
+  cube([9.4,31.25,7.2]);
+  
+  // FMC connector
+  translate([2,6,-7])
+  cube([13.5,56.65,7]);
+    
+  if(plugs==1){
+    // J8-J9 terminal block
+    color("green")
+    translate([174,19.5,-2])
+    cube([9.4,31.25,11.2]);
+    
+    // J16 terminal block
+    color("green")
+    translate([174,51.6,-2])
+    cube([9.4,12.2,11.2]);
+    
+    // J13-J14 terminal block
+    color("green")
+    translate([174,64.5,-2])
+    cube([9.4,31.25,11.2]);
+  }
+  
+}
+//---------------------------------------------------------------------------------
+// Max31855 Thermocouple PMOD board 
+module thermo(tol=0,plug=1,wire=1){
+
+thick=1.6;
+  
+  // board
+  color("green")
+  cube([19.4,47.3,thick]);
+  
+  // main connector
+  color("silver")
+  translate([1.5,25.5,thick])
+  cube([16.5,22,6.2]);
+ 
+  // pmod pins
+  color("black")
+  translate([1.5,0,thick])
+  cube([16.5,5.0,3.6]);
+  
+  // plug
+  if(plug==1){
+    color("yellow")
+    translate([1.0,47.3,-0.5])
+    cube([17,20.5,8.2]);
+
+    color("gray")
+    translate([19.4/2,47.3+20.5,3.5])
+    rotate([-90,0,0])
+    cylinder(r1=7.6/2,r2=5.7/2,h=18,$fn=89);
+  }
+  // wire
+  if(wire==1){
+    color("brown")
+    translate([19.4/2,47.3+20.5,3.5])
+    rotate([-90,0,0])
+    cylinder(r=1.2,h=35,$fn=89);
+  }
+}
+
+//---------------------------------------------------------------------------------
+// cyclone board 
+// mounting holes fit an M3 nicely
+
+module cyclone(tol=0){
+
+thick=2.0;
+  
+  // board
+  color("green")
+  difference(){
+    cube([159.93,130.0,thick]);
+    
+    // mounting holes
+    translate([5,5,0])
+    cylinder(r=3.2/2,h=3*thick,center=true);
+
+    translate([5,130-5,0])
+    cylinder(r=3.2/2,h=3*thick,center=true);
+
+    translate([159.93-5,130-5,0])
+    cylinder(r=3.2/2,h=3*thick,center=true);
+
+    translate([159.93-5,5,0])
+    cylinder(r=3.2/2,h=3*thick,center=true);
+
+    translate([159.93-7.75,37.5,0])
+    cylinder(r=2.5/2,h=3*thick,center=true);
+
+    translate([159.93-7.75,37.5+62.5,0])
+    cylinder(r=2.5/2,h=3*thick,center=true);
+
+  }
+  
+  // connectors
+  // hdmi
+  translate([18.75,0,thick])
+  cube([16.5,12.6,6]);
+  
+  // usb
+  translate([44,0,thick])
+  cube([15,18,16]);
+
+  // usb
+  translate([68,0,thick])
+  cube([15,18,16]);
+
+  // ethernet
+  translate([92,-3,thick])
+  cube([16,21.5,13.8]);
+
+  // SD card 
+  translate([118,-1,thick])
+  cube([14.3,18,2]);
+  
+  // micro usb
+  translate([0,72,thick])
+  cube([7,8,3]);
+  
+  // micro usb
+  translate([0,88,thick])
+  cube([7,8,3]);
+  
+  // power plug
+  translate([0,106,thick])
+  cube([15,9,11]);
+  
+  // pmod
+  translate([40,130-16.5,thick])
+  cube([16,16.5,5.5]);
+  
+  // pmod
+  translate([63,130-16.5,thick])
+  cube([16,16.5,5.5]);
+  
+  // pmod
+  translate([86,130-16.5,thick])
+  cube([16,16.5,5.5]);
+  
+  // pmod
+  translate([108.5,130-16.5,thick])
+  cube([16,16.5,5.5]);
+  
+  // fmc connector
+  translate([143.6,40.5,thick])
+  cube([13.5,57.5,6.5]);
+  
+  
+
+
+
+}
 
 //---------------------------------------------------------------------------------
 // dcc board 
@@ -382,7 +588,7 @@ module post2(nuts=0){
 }
 
 //-------------------------------------------------------------------------------
-// t-slot base
+// t-slot base for DCC
 module base1(){
   
   // front rail
@@ -414,10 +620,43 @@ module base1(){
 
 }
 
+//-------------------------------------------------------------------------------
+// t-slot base for DAQ
+module base2(){
+  
+  // front rail
+  translate([-30,15,0])
+  rotate([0,90,0])
+  tslot1(type=1,len=x2);
+
+  // back rail
+  translate([0,15+y2,0])
+  rotate([0,90,0])
+  tslot1(type=1,len=x2);
+
+  // left rail
+  translate([-15,30,0])
+  rotate([-90,0,0])
+  tslot1(type=1,len=y2);
+
+  // right rail
+  translate([x2-15,0,0])
+  rotate([-90,0,0])
+  tslot1(type=1,len=y2);
+
+  // left front
+  color("pink")
+  translate([-30,0,-15])
+  rotate([0,0,-90])
+  rotate([0,180,0])
+  lbrace();
+
+}
+
 //=================================================================================
 
 // t-slot base, whole frame
-if(1){
+if(0){
   translate([-10.5,0,0])
   color("silver")
   base1();
@@ -433,7 +672,7 @@ if(0){
 }
 
 // left rail mounts
-if(1){
+if(0){
   mount1(x0=0);
   translate([0,58.2-9,0])
   mount1(x0=0);
@@ -444,7 +683,7 @@ if(1){
 }
 
 // right rail mounts
-if(1){
+if(0){
   translate([157,18,0])
   rotate([0,0,180])
   mount1(x0=0);
@@ -460,7 +699,7 @@ if(1){
 }
 
 // example probe arm
-if(1){
+if(0){
   translate([60,-30,15]){
     post2(nuts=1);
     
@@ -474,7 +713,7 @@ if(1){
 }
 
 // example probe arm
-if(1){
+if(0){
   translate([10,-30,15]){
     post2(nuts=1);
     
@@ -487,11 +726,46 @@ if(1){
   }
 }
 
-// PCB
-if(1){
+// DCC board
+if(0){
   translate([0,0,18])
   dcc();
 
+}
+
+// Cyclone Board
+if(1){
+  translate([0,0,z2])
+  cyclone();
+
+}
+
+// ADC Board
+if(0){
+  translate([159.93-7.75,37.5,0])
+  translate([-10.8,-3.5,0])  
+  translate([0,0,z2+11.6])
+  adc();
+
+}
+
+if(1){
+  color("silver")
+  base2();
+}
+
+// thermocouple board in pmod
+// unsure which row of sockets the pmods will use, Z offset may differ?
+zoff=1.5;
+if(1){
+  translate([38.25,130,z2+zoff])
+  thermo();
+  translate([38.25+23,130,z2+zoff])
+  thermo();
+  translate([38.25+46,130,z2+zoff])
+  thermo();
+  translate([38.25+69,130,z2+zoff])
+  thermo();
 }
 
 // for printing
