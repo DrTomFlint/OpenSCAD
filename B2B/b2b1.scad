@@ -15,15 +15,21 @@ use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
 use <../Parts/estop.scad>
 use <../Parts/switch2.scad>
+use <../Parts/torqueMeter.scad>
+use <../Parts/flexCoupler.scad>
 use <./foot1.scad>
 
 z0 = 42;      // height of the shafts
 
-x1 = 100;      // x position of right motor with resolver
-x2 = x1-61;     // x position of left motor no resolver
-x3 = x1-31;       // x position of the coupler
+x1 = 190;      // x position of right motor with resolver - green
+x2 = 14;     // x position of left motor no resolver  = red
+x3 = x1-31;       // x position of the TI coupler
 
-x4 = -100;    // x position of the estop
+x4 = -110;    // x position of the estop
+x5 = 100;      // x position of the torque meter
+
+x7 = 157;    // x position of the right flex coupler - green
+x6 = 43;    // x position of the left flex coupler - red
 
 //---------------------------------------------------------------------------------
 module bracket1(type=1){
@@ -368,7 +374,7 @@ if(1){
 
 
 
-if(0){  
+if(1){  
   translate([x1,0,z0])
   rotate([180,0,0])
   resbody();
@@ -390,7 +396,7 @@ if(0){
 
 
 // coupler
-if(1){
+if(0){
   color("pink")
   translate([x3,0,z0])
   coupler();
@@ -424,6 +430,29 @@ if(1){
   translate([x2,0,0])
   rotate([0,0,180])
   bracket2(type=2);
+}
+  
+// torqueMeter
+if(1){
+  color("blue")
+  translate([x5,0,z0])
+  torqueMeter();
+  
+}
+  
+// left flex coupler
+if(1){
+  color("red")
+  translate([x6,0,z0])
+  flexCoupler();
+  
+}
+// right flex coupler
+if(1){
+  color("green")
+  translate([x7,0,z0])
+  flexCoupler();
+  
 }
   
 }
@@ -477,14 +506,36 @@ difference(){
 
 }
 
+//------------------------------------------------------------------------
+module shield1(lift=0){
+
+d0=150;   // outer diameter
+d1=145; // inner diameter
+len=304.8;   // tube length
+
+  translate([-50,0,d0/2-55+lift])
+  rotate([0,90,0])
+  difference(){
+    cylinder(r=d0/2,h=len,$fn=99);
+    translate([0,0,-1])
+    cylinder(r=d1/2,h=len+2,$fn=99);
+  }
+
+
+}
 //=================================================================================
 
-ADIboard();
+//ADIboard();
 
-//b2b1();
+b2b1();
 //tek2310();
 
-//coupler();
+coupler();
+
+// lift to touch bottom of 30x60 for better air circulation around the motors
+// might want a small fan too
+color("silver",alpha=0.35)
+shield1(lift=16);
 
 //bracket1(type=2);
 //bracket1(type=1);
@@ -492,7 +543,7 @@ ADIboard();
 //bracket2();
 //bracket2(type=2);
 
-if(0){
+if(1){
 translate([-150,0,0])
 foot();
 
