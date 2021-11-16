@@ -285,6 +285,100 @@ $fn=89;
   tubtab2();
   
 }
+//------------------------------------------------------------------------
+// top of the tub
+// zero is center of xy, bottom of cube
+module top1(tol=0){
+
+  difference(){
+    union(){
+      // lip
+      linear_extrude(height=5.6)
+      offset(r=11.0,$fn=55)
+      square([252,151],center=true);   
+      
+      // outer cube
+      linear_extrude(height=20.1,scale=250/252)
+      offset(r=5.5,$fn=55)
+      square([252-6,151-6],center=true);
+
+   
+    }
+    
+    // innner cube
+    translate([0,0,-0.1])
+    linear_extrude(height=20.1-2.5,scale=250/252)
+    offset(r=3,$fn=45)
+    square([252-6,151-6],center=true);
+  }
+  
+  // outer tabs
+  translate([-222/2,173/2,0])
+  rotate([0,0,90])
+  tubtab2();
+  translate([0,173/2,0])
+  rotate([0,0,90])
+  tubtab2();
+  translate([222/2,173/2,0])
+  rotate([0,0,90])
+  tubtab2();
+  
+  translate([-222/2,-173/2,0])
+  rotate([0,0,-90])
+  tubtab2();
+  translate([0,-173/2,0])
+  rotate([0,0,-90])
+  tubtab2();
+  translate([222/2,-173/2,0])
+  rotate([0,0,-90])
+  tubtab2();
+  
+  // corner tabs
+  difference(){
+    translate([(252-11)/2,(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([(242)/2,(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([-(252-11)/2,(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([-(242)/2,(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([-(252-11)/2,-(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([-(242)/2,-(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([(252-11)/2,-(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([(242)/2,-(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+
+  // inner tabs
+  translate([182.2/2,137/2,18])
+  rotate([0,0,-90])
+  rotate([180,0,0])
+  tubtab1();
+  translate([-182.2/2,137/2,18])
+  rotate([0,0,-90])
+  rotate([180,0,0])
+  tubtab1();
+
+  translate([182.2/2,-137/2,18])
+  rotate([0,0,90])
+  rotate([180,0,0])
+  tubtab1();
+  translate([-182.2/2,-137/2,18])
+  rotate([0,0,90])
+  rotate([180,0,0])
+  tubtab1();
+
+}
 
 //=================================================================================
 
@@ -293,15 +387,17 @@ $fn=89;
 
 
 // base section
-if(0){
+if(1){
   base1();
 }
-if(0){
+if(1){
   base2();
 }
 
 // tub
 if(1){
+  color("silver")
+  translate([330/2,255/2,15.2])
   tub1();
 }
 
@@ -312,12 +408,23 @@ if(0){
   cube([274,173,2],center=true);
 }
 
+// top
+TopAngle = 100;
+if(1){
+  translate([330/2,255/2,80+15.2+2.5])
+  color("silver", alpha=0.7)
+  translate([0,100-TopAngle*0.5,0])
+  rotate([-TopAngle,0,0])
+  translate([0,-100,0])
+  top1();
+}
+
 // lid
 if(0){
-translate([0,-LidLift,1.5*LidLift])
-translate([0,254,152+15.2])
-rotate([-LidAngle,0,0])
-translate([0,-254,-152-15.2])
+  translate([0,-LidLift,1.5*LidLift])
+  translate([0,254,152+15.2])
+  rotate([-LidAngle,0,0])
+  translate([0,-254,-152-15.2])
 {
 
 // lid
