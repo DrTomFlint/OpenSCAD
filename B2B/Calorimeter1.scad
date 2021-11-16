@@ -164,28 +164,156 @@ if(1){
   cube([330+2*(15.2+3),15.2,152]);
 
 }
+//------------------------------------------
+module tubtab1(){
+
+translate([-7,-4,0])
+difference(){
+  union(){
+    cube([7,8,8]);
+    translate([7,4,0])
+    cylinder(r=4,h=8,$fn=89);
+  }
+  translate([7,4,2])
+  cylinder(r=2,h=7,$fn=89);
+}
+}
+
+//------------------------------------------
+module tubtab2(){
+
+translate([-13/2,-13/2,0])
+difference(){
+  union(){
+    cube([13,13,12.2]);
+    translate([13,13/2,0])
+    cylinder(r=13/2,h=12.2,$fn=89);
+  }
+  translate([13,13/2,-1])
+  cylinder(r=2,h=18,$fn=89);
+}
+}
 
 //-----------------------------------------------------------------------------
+// zero point is at center of xy and bottom outside z
 module tub1(){
+$fn=89;
+ 
+  translate([0,0,2.5])
+  difference(){
+    union(){
+      // outer cube
+      translate([0,0,-2.5])
+      linear_extrude(height=80+2.5,scale=252/249.2)
+      offset(r=5.5)
+      square([249.2-6,148.2-6],center=true);
+
+      // lip
+      translate([0,0,80-5.6])
+      linear_extrude(height=5.6)
+      offset(r=11.0)
+      square([252,151],center=true);      
+    }
+    
+    // innner cube
+    linear_extrude(height=80.1,scale=252/249.2)
+    offset(r=3)
+    square([249.2-6,148.2-6],center=true);
+  }
+
+  // inner tabs 
+  translate([-230/2,0,2.5])
+  tubtab1();
+  translate([-230/2,38,2.5])
+  tubtab1();
+  translate([-230/2,-38,2.5])
+  tubtab1();
+
+  translate([230/2,0,2.5])
+  rotate([0,0,180])
+  tubtab1();
+  translate([230/2,38,2.5])
+  rotate([0,0,180])
+  tubtab1();
+  translate([230/2,-38,2.5])
+  rotate([0,0,180])
+  tubtab1();
+
+  translate([182.2/2,137/2,2.5])
+  rotate([0,0,-90])
+  tubtab1();
+  translate([-182.2/2,137/2,2.5])
+  rotate([0,0,-90])
+  tubtab1();
+
+  translate([182.2/2,-137/2,2.5])
+  rotate([0,0,90])
+  tubtab1();
+  translate([-182.2/2,-137/2,2.5])
+  rotate([0,0,90])
+  tubtab1();
+
+  // corner tabs
+  translate([(252-14)/2,(151-14)/2,2.5+4])
+  cube([12,12,8],center=true);
+  translate([-(252-14)/2,(151-14)/2,2.5+4])
+  cube([12,12,8],center=true);
+  translate([-(252-14)/2,-(151-14)/2,2.5+4])
+  cube([12,12,8],center=true);
+  translate([(252-14)/2,-(151-14)/2,2.5+4])
+  cube([12,12,8],center=true);
+  
+  // outer tabs
+  translate([-222/2,173/2,80-12.2+2.5])
+  rotate([0,0,90])
+  tubtab2();
+  translate([0,173/2,80-12.2+2.5])
+  rotate([0,0,90])
+  tubtab2();
+  translate([222/2,173/2,80-12.2+2.5])
+  rotate([0,0,90])
+  tubtab2();
+  
+  translate([-222/2,-173/2,80-12.2+2.5])
+  rotate([0,0,-90])
+  tubtab2();
+  translate([0,-173/2,80-12.2+2.5])
+  rotate([0,0,-90])
+  tubtab2();
+  translate([222/2,-173/2,80-12.2+2.5])
+  rotate([0,0,-90])
+  tubtab2();
   
 }
 
 //=================================================================================
 
+// AL angles in the corners of metal box
 //L1(len=60);
 
 
 // base section
-if(1){
+if(0){
   base1();
 }
-if(1){
+if(0){
   base2();
 }
 
+// tub
+if(1){
+  tub1();
+}
+
+// dimension check!
+if(0){
+  color("silver", alpha=0.7)
+  translate([0,0,80+3])
+  cube([274,173,2],center=true);
+}
 
 // lid
-if(1){
+if(0){
 translate([0,-LidLift,1.5*LidLift])
 translate([0,254,152+15.2])
 rotate([-LidAngle,0,0])
@@ -193,11 +321,11 @@ translate([0,-254,-152-15.2])
 {
 
 // lid
-if(1){
+if(0){
   lid1();
 }
 
-if(1){
+if(0){
   lid2();
 }
 

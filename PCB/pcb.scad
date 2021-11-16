@@ -686,6 +686,100 @@ module foot2(){
   }
 }
 
+//--------------------------------------------------------------
+// support for the ADC signal header
+module foot3(){
+
+  difference(){
+    // main boss
+    union(){
+      translate([11,34-12,0])
+      cube([6,103+24,31]);
+      translate([1,34-12,-0.5])
+      cube([28,103+24,4.5]);
+
+      // reinforce ends for M4x12
+      hull(){
+        translate([1,150-12,0])
+        cube([28,12,4]);
+        translate([10,150-12,31-4])
+        cube([10,12,4]);
+      }
+      
+      // reinforce ends for M4x12
+      hull(){
+        translate([1,33-12,0])
+        cube([28,12,4]);
+        translate([10,33-12,31-4])
+        cube([10,12,4]);
+      }
+      
+      // fillets
+      translate([11,28,4])
+      rotate([-90,0,0])
+      rotate([0,0,180])
+      rounder(r=10,h=120,f=89);
+
+      translate([17,28,4])
+      rotate([-90,0,0])
+      rotate([0,0,-90])
+      rounder(r=10,h=120,f=89);
+    }
+
+    // cuts for pcb
+    translate([5,33,15])
+    cube([20,104.5,2]);
+    
+    // cuts tall connector
+    translate([5,33+3,15])
+    cube([20,17,11]);
+    
+    // cuts tall connector backside pins
+    translate([-1,33+3,11])
+    cube([17,17,11]);
+    
+    // cuts for pcb
+    translate([5,33+3,15])
+    cube([20,95,9]);
+    
+    // cut for tslot
+    translate([15,0,-15])
+    rotate([-90,0,0])
+    tslot1(type=1, len=160, tol=0.2);
+    
+    // cut for M4x16 and head clearance
+    translate([15,150-7,-1])
+    cylinder(r=2,h=40);
+    translate([15,150-7,-6+16])
+    cylinder(r=4,h=24);
+    
+    // cut for M4x16 and head clearance
+    translate([15,33-7,-1])
+    cylinder(r=2,h=40);
+    translate([15,33-7,-6+16])
+    cylinder(r=4,h=24);
+    
+    // bottom side cut for material reduction
+    translate([14,128/2+42/2,-2])
+    rotate([90,0,0])
+    scale([1,1.3,1])
+    cylinder(r=7,h=100,$fn=99,center=true);
+
+    // round off the top rail
+    translate([8,20,31])
+    rotate([-90,0,0])
+    rotate([0,0,0])
+    rounder(r=6,h=160,f=89);
+
+    translate([23,20,31])
+    rotate([-90,0,0])
+    rotate([0,0,90])
+    rounder(r=8,h=160,f=89);
+
+  }
+
+}
+
 //=================================================================================
 
 // t-slot base, whole frame
@@ -794,10 +888,21 @@ if(1){
 if(1){
   translate([159.93-7.75,37.5,0])
   translate([-10.8,-3.5,0])  
-  translate([2,0,z2+11.6])
-  adc();
+  translate([2,0,z2+9.6])
+  adc(plugs=1);
 
 }
+
+// ADC board foot
+if(1){
+//  difference(){
+  translate([300,0,15])  
+  foot3();
+//  translate([300,0,15])  
+//  cube([100,100,100]);
+//}
+}
+
 
 if(1){
   color("silver")
@@ -808,7 +913,7 @@ if(1){
 // thermocouple board in pmod
 // unsure which row of sockets the pmods will use, Z offset may differ?
 zoff=1.5;
-if(0){
+if(1){
   translate([2,0]){
   translate([38.25,130,z2+zoff])
   thermo();
