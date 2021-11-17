@@ -8,6 +8,7 @@
 
 
 use <../Parts/rounder.scad>
+use <../Parts/ti.scad>
 
 // Lid Angle
 LidAngle=180;
@@ -165,17 +166,18 @@ if(1){
 
 }
 //------------------------------------------
-module tubtab1(){
+module tubtab1(tol=0){
 
 translate([-7,-4,0])
 difference(){
   union(){
-    cube([7,8,8]);
-    translate([7,4,0])
-    cylinder(r=4,h=8,$fn=89);
+    translate([-tol/2,-tol/2,-tol/2])
+    cube([7+tol,8+tol,8+tol]);
+    translate([7,4,-tol/2])
+    cylinder(r=4+tol/2,h=8+tol,$fn=89);
   }
-  translate([7,4,2])
-  cylinder(r=2,h=7,$fn=89);
+  translate([7+tol/2,4+tol/2,2])
+  cylinder(r=2-tol/2,h=7,$fn=89);
 }
 }
 
@@ -379,60 +381,76 @@ module top1(tol=0){
   tubtab1();
 
 }
+
+
+//--------------------------------------------------------------------
+module spiderfoot(){
+
+  difference(){
+    translate([182.2/2,137/2+0.5,12])
+    cube([20,11,11],center=true);
+    
+    translate([182.2/2,137/2,18])
+    rotate([0,0,-90])
+    rotate([180,0,0])
+    tubtab1(tol=0.2);
+    
+    translate([182.2/2-15,137/2+6,18])
+    rotate([0,90,0])
+    rotate([0,0,-90])
+    rounder(r=3,h=30,f=66);  
+
+    translate([182.2/2,137/2,0])
+    cylinder(r=2.25,h=20,$fn=22);
+  }
+
+  // foot outside the moat
+  translate([182.2/2,137/2-7,12-0.5])
+  cube([20,4,10],center=true);
+  
+}
 //--------------------------------------------------------------------
 module spider1(){
+
+z1=40;
+y1=30;
   
-    // corner tabs
-  difference(){
-    translate([(252-11)/2,(151-11)/2,4+10])
-    cube([10,10,8],center=true);
-    translate([(242)/2,(141)/2,0])
-    cylinder(r=2,h=17.5,$fn=89);
+// feet bolt to top
+spiderfoot();
+mirror([0,1,0])
+spiderfoot();
+
+// crossbar
+  hull(){
+    translate([182.2/2,(137/2-7),12-0.5])
+    cube([20,4,10],center=true);
+
+    translate([182.2/2,(137/2-7-y1),12-0.5-z1])
+    cube([20,4,10],center=true);
   }
-  difference(){
-    translate([-(252-11)/2,(151-11)/2,4+10])
-    cube([10,10,8],center=true);
-    translate([-(242)/2,(141)/2,0])
-    cylinder(r=2,h=17.5,$fn=89);
-  }
-  difference(){
-    translate([-(252-11)/2,-(151-11)/2,4+10])
-    cube([10,10,8],center=true);
-    translate([-(242)/2,-(141)/2,0])
-    cylinder(r=2,h=17.5,$fn=89);
-  }
-  difference(){
-    translate([(252-11)/2,-(151-11)/2,4+10])
-    cube([10,10,8],center=true);
-    translate([(242)/2,-(141)/2,0])
-    cylinder(r=2,h=17.5,$fn=89);
+  
+  hull(){
+    translate([182.2/2,-(137/2-7),12-0.5])
+    cube([20,4,10],center=true);
+
+    translate([182.2/2,-(137/2-7-y1),12-0.5-z1])
+    cube([20,4,10],center=true);
   }
 
-  // inner tabs
-  translate([182.2/2,137/2,18])
-  rotate([0,0,-90])
-  rotate([180,0,0])
-  tubtab1();
-  translate([-182.2/2,137/2,18])
-  rotate([0,0,-90])
-  rotate([180,0,0])
-  tubtab1();
+  color("red")
+  translate([182.2/2,0,12-0.5-z1])
+  cube([20,120-2*y1,10],center=true);
 
-  translate([182.2/2,-137/2,18])
-  rotate([0,0,90])
-  rotate([180,0,0])
-  tubtab1();
-  translate([-182.2/2,-137/2,18])
-  rotate([0,0,90])
-  rotate([180,0,0])
-  tubtab1();
+
 }
 
 //=================================================================================
 
-
-xcut=80;
-ycut=500;
+// disable cutaway views if printing or working single parts
+if(1){
+  
+xcut=280;
+ycut=200;
 zcut=500;
 
 cutcube = 600;
@@ -444,10 +462,10 @@ intersection(){
   union(){
 
     // base section
-    if(1){
+    if(0){
       base1();
     }
-    if(1){
+    if(0){
       base2();
     }
 
@@ -469,11 +487,20 @@ intersection(){
     TopAngle = 0;
     if(1){
       translate([330/2,255/2,80+15.2+3+2.5])
-      color("silver", alpha=0.7)
       translate([0,100-TopAngle*0.5,0])
       rotate([-TopAngle,0,0])
-      translate([0,-100,0])
-      top1();
+      translate([0,-100,0]){
+        color("silver", alpha=0.7)
+        top1();
+        spider1();
+        mirror([1,0,0])
+        spider1();
+        translate([-129.8/2,58.5/2,-25])
+        rotate([180,0,0]){
+          launch();
+          gan();
+        }        
+      }
     }
 
     // lid
@@ -493,11 +520,30 @@ intersection(){
     }
   }
 }
+}
 // for printing and individual part editing, do below this line ---
 
-//top1();
-//translate([0,0,-8])
-//spider1();
+if(0){
+  color("silver", alpha=0.7)
+  top1();
+  spider1();
+  mirror([1,0,0])
+  spider1();
+  translate([-129.8/2,58.5/2,-35])
+  rotate([180,0,0]){
+    launch();
+    gan();
+  }
+  
+}
+
+
+//    cube([129.8,58.5,1.7]);
+ 
+//difference(){
+//tubtab1(tol=0.2);
+//tubtab1(tol=0);
+//}
 
 // AL angles in the corners of metal box
 //L1(len=60);
