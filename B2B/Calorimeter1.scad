@@ -12,7 +12,7 @@ use <../Parts/rounder.scad>
 // Lid Angle
 LidAngle=180;
 // Lid Lift
-LidLift=200;
+LidLift=40;
 
 //--------------------------------------------------
 module L1(len=10){
@@ -379,66 +379,130 @@ module top1(tol=0){
   tubtab1();
 
 }
+//--------------------------------------------------------------------
+module spider1(){
+  
+    // corner tabs
+  difference(){
+    translate([(252-11)/2,(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([(242)/2,(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([-(252-11)/2,(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([-(242)/2,(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([-(252-11)/2,-(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([-(242)/2,-(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+  difference(){
+    translate([(252-11)/2,-(151-11)/2,4+10])
+    cube([10,10,8],center=true);
+    translate([(242)/2,-(141)/2,0])
+    cylinder(r=2,h=17.5,$fn=89);
+  }
+
+  // inner tabs
+  translate([182.2/2,137/2,18])
+  rotate([0,0,-90])
+  rotate([180,0,0])
+  tubtab1();
+  translate([-182.2/2,137/2,18])
+  rotate([0,0,-90])
+  rotate([180,0,0])
+  tubtab1();
+
+  translate([182.2/2,-137/2,18])
+  rotate([0,0,90])
+  rotate([180,0,0])
+  tubtab1();
+  translate([-182.2/2,-137/2,18])
+  rotate([0,0,90])
+  rotate([180,0,0])
+  tubtab1();
+}
 
 //=================================================================================
+
+
+xcut=80;
+ycut=500;
+zcut=500;
+
+cutcube = 600;
+
+intersection(){
+  translate([-cutcube+xcut,-cutcube+ycut,-cutcube+zcut])
+  cube([cutcube,cutcube,cutcube]);
+  
+  union(){
+
+    // base section
+    if(1){
+      base1();
+    }
+    if(1){
+      base2();
+    }
+
+    // tub
+    if(1){
+      color("silver")
+      translate([330/2,255/2,15.2+3])
+      tub1();
+    }
+
+    // dimension check!
+    if(0){
+      color("silver", alpha=0.7)
+      translate([0,0,80+3])
+      cube([274,173,2],center=true);
+    }
+
+    // top
+    TopAngle = 0;
+    if(1){
+      translate([330/2,255/2,80+15.2+3+2.5])
+      color("silver", alpha=0.7)
+      translate([0,100-TopAngle*0.5,0])
+      rotate([-TopAngle,0,0])
+      translate([0,-100,0])
+      top1();
+    }
+
+    // lid
+    if(0){
+      translate([0,LidLift,LidLift])
+      translate([0,254,152+15.2])
+      rotate([-LidAngle,0,0])
+      translate([0,-254,-152-15.2])
+      {
+        if(1){
+          lid1();
+        }
+        if(1){
+          lid2();
+        }
+      }
+    }
+  }
+}
+// for printing and individual part editing, do below this line ---
+
+//top1();
+//translate([0,0,-8])
+//spider1();
 
 // AL angles in the corners of metal box
 //L1(len=60);
 
 
-// base section
-if(1){
-  base1();
-}
-if(1){
-  base2();
-}
-
-// tub
-if(1){
-  color("silver")
-  translate([330/2,255/2,15.2])
-  tub1();
-}
-
-// dimension check!
-if(0){
-  color("silver", alpha=0.7)
-  translate([0,0,80+3])
-  cube([274,173,2],center=true);
-}
-
-// top
-TopAngle = 100;
-if(1){
-  translate([330/2,255/2,80+15.2+2.5])
-  color("silver", alpha=0.7)
-  translate([0,100-TopAngle*0.5,0])
-  rotate([-TopAngle,0,0])
-  translate([0,-100,0])
-  top1();
-}
-
-// lid
-if(0){
-  translate([0,-LidLift,1.5*LidLift])
-  translate([0,254,152+15.2])
-  rotate([-LidAngle,0,0])
-  translate([0,-254,-152-15.2])
-{
-
-// lid
-if(0){
-  lid1();
-}
-
-if(0){
-  lid2();
-}
-
-}
-
-}
 //=================================================================================
 
 
