@@ -9,6 +9,7 @@
 
 use <../Parts/rounder.scad>
 use <../Parts/ti.scad>
+use <./quickie.scad>
 
 // Lid Angle
 LidAngle=180;
@@ -198,7 +199,7 @@ difference(){
 
 //-----------------------------------------------------------------------------
 // zero point is at center of xy and bottom outside z
-module tub1(){
+module tub1(quickie=1){
 $fn=89;
  
   translate([0,0,2.5])
@@ -221,8 +222,27 @@ $fn=89;
     linear_extrude(height=80.1,scale=252/249.2)
     offset(r=3)
     square([249.2-6,148.2-6],center=true);
+    
+    // cuts for coolant connectors APPROXIMATE
+    translate([83,100,55+2.5])
+    rotate([90,0,0])
+    cylinder(r=17.6/2,h=30,$fn=89);   
+    translate([-100,100,23+2.5])
+    rotate([90,0,0])
+    cylinder(r=17.6/2,h=30,$fn=89);   
+    
   }
 
+  // quick connects for the coolant
+  if(quickie==1){
+    translate([83,77,55+2.5])
+    rotate([0,0,90])
+    quickie(nut=2.3);
+    translate([-100,77,23+2.5])
+    rotate([0,0,90])
+    quickie(nut=2.3);
+  }
+  
   // inner tabs 
   translate([-230/2,0,2.5])
   tubtab1();
@@ -303,8 +323,6 @@ module top1(tol=0){
       linear_extrude(height=20.1,scale=250/252)
       offset(r=5.5,$fn=55)
       square([252-6,151-6],center=true);
-
-   
     }
     
     // innner cube
@@ -312,6 +330,12 @@ module top1(tol=0){
     linear_extrude(height=20.1-2.5,scale=250/252)
     offset(r=3,$fn=45)
     square([252-6,151-6],center=true);
+
+    // wiring holes 
+    translate([16.4+7.9,33.3+7.9,0])
+    cylinder(r=7.9,h=30,$fn=89);
+    translate([57.0+7.9,31.3+7.9,0])
+    cylinder(r=7.9,h=30,$fn=89);   
   }
   
   // outer tabs
@@ -388,7 +412,7 @@ module spiderfoot(){
 
   difference(){
     translate([182.2/2,137/2+0.5,12])
-    cube([20,11,11],center=true);
+    cube([14,11,11],center=true);
     
     translate([182.2/2,137/2,18])
     rotate([0,0,-90])
@@ -401,56 +425,62 @@ module spiderfoot(){
     rounder(r=3,h=30,f=66);  
 
     translate([182.2/2,137/2,0])
-    cylinder(r=2.25,h=20,$fn=22);
+    cylinder(r=2.5,h=20,$fn=22);
   }
 
   // foot outside the moat
   translate([182.2/2,137/2-7,12-0.5])
-  cube([20,4,10],center=true);
+  cube([14,4,10],center=true);
   
 }
 //--------------------------------------------------------------------
-module spider1(){
+module spider1(z1=45,y1=30,x1=0){
 
-z1=40;
-y1=30;
-  
 // feet bolt to top
 spiderfoot();
 mirror([0,1,0])
 spiderfoot();
 
-// crossbar
   hull(){
-    translate([182.2/2,(137/2-7),12-0.5])
-    cube([20,4,10],center=true);
+    translate([182.2/2+x1,(137/2-7),12-0.5])
+    cube([14,4,10],center=true);
 
-    translate([182.2/2,(137/2-7-y1),12-0.5-z1])
-    cube([20,4,10],center=true);
+    translate([182.2/2+x1+2,(137/2-7-y1),12-0.5-z1])
+    cube([10,4,6],center=true);
   }
   
   hull(){
-    translate([182.2/2,-(137/2-7),12-0.5])
-    cube([20,4,10],center=true);
+    translate([182.2/2+x1,-(137/2-7),12-0.5])
+    cube([14,4,10],center=true);
 
-    translate([182.2/2,-(137/2-7-y1),12-0.5-z1])
-    cube([20,4,10],center=true);
+    translate([182.2/2+x1+2,-(137/2-7-y1),12-0.5-z1])
+    cube([10,4,6],center=true);
   }
 
+  $fn=23;
+  
+  // crossbar
   color("red")
-  translate([182.2/2,0,12-0.5-z1])
-  cube([20,120-2*y1,10],center=true);
-
-
+  difference(){
+    translate([182.2/2+x1+2,0,12-0.5-z1])
+    cube([10,120-2*y1,6],center=true);
+    translate([182.2/2+x1+2,0,12-0.5-z1])
+    cylinder(r=1.65,h=20,center=true);
+    translate([182.2/2+x1+2,60-y1-10,12-0.5-z1])
+    cylinder(r=1.65,h=20,center=true);
+    translate([182.2/2+x1+2,-(60-y1-10),12-0.5-z1])
+    cylinder(r=1.65,h=20,center=true);
+    
+  }
 }
 
 //=================================================================================
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=280;
-ycut=200;
+ycut=600;
 zcut=500;
 
 cutcube = 600;
@@ -484,7 +514,7 @@ intersection(){
     }
 
     // top
-    TopAngle = 0;
+    TopAngle = 10;
     if(1){
       translate([330/2,255/2,80+15.2+3+2.5])
       translate([0,100-TopAngle*0.5,0])
@@ -495,7 +525,8 @@ intersection(){
         spider1();
         mirror([1,0,0])
         spider1();
-        translate([-129.8/2,58.5/2,-25])
+        translate([129.8/2,-58.5/2,-30])
+        rotate([0,0,180])
         rotate([180,0,0]){
           launch();
           gan();
@@ -537,6 +568,10 @@ if(0){
   
 }
 
+spider1();
+
+//top1();
+//tub1();
 
 //    cube([129.8,58.5,1.7]);
  

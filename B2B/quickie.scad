@@ -7,6 +7,33 @@
 
 use <../Parts/threads.scad>
 
+
+//--------------------------------------------------------
+module quickie(tol=0,nut=6){
+
+rotate([0,-90,0]){
+    // outer flange with o-ring
+    translate([0,0,-8.5-13])
+    cylinder(r=22/2,h=13);
+    translate([0,0,-8.5])
+    cylinder(r=33/2,h=8.5);
+    cylinder(r=8,h=12.5);
+    translate([0,0,12.5])
+    cylinder(r=7.5/2,h=16.5);    
+    
+    translate([0,0,-15])
+    rotate([0,90,0])
+    scale([1,1.5,1])
+    cylinder(r=6,h=16.5);  
+    
+    if(nut>0){
+	translate([0,0,nut])
+	cylinder(r=23.7/2,h=5.2,$fn=6);    
+    }  
+}
+    
+}
+
 //--------------------------------------------------------
 module flangeIn(){
   
@@ -57,7 +84,8 @@ module flangeOut(){
 //====================================================
 
 //flangeIn();
-flangeOut();
+//flangeOut();
+quickie();
 
 if(0){
 difference(){
