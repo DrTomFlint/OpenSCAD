@@ -336,6 +336,8 @@ module top1(tol=0){
     cylinder(r=7.9,h=30,$fn=89);
     translate([57.0+7.9,31.3+7.9,0])
     cylinder(r=7.9,h=30,$fn=89);   
+    translate([-35.0-7.9,31.5+7.9,0])
+    cylinder(r=7.9,h=30,$fn=89);   
   }
   
   // outer tabs
@@ -460,7 +462,6 @@ spiderfoot();
   $fn=23;
   
   // crossbar
-  color("red")
   difference(){
     translate([182.2/2+x1+2,0,12-0.5-z1])
     cube([10,120-2*y1,6],center=true);
@@ -474,13 +475,102 @@ spiderfoot();
   }
 }
 
+//--------------------------------------------------------------------------------
+// carrier for the TI Delfino LaunchPadXL and GaN Inverter
+module carrier1b(z1=45,y1=30,x1=0){
+
+    difference(){
+      union(){
+        translate([-(193/2+2),-(63-y1),8.5-z1-6])
+        cube([12,13,6]);  
+        translate([-(193/2),-(63-y1),8.5-z1-2])
+        cube([193/2,7,2]);
+        translate([-(193/2),-(63-y1),8.5-z1-6])
+        cube([193/2,3,6]);
+        translate([-(193/2)+10,-(63-y1-7),8.5-z1-2])
+        rounder(r=6,h=2,f=44);
+        translate([-(185/2),-(60-y1-10),12-0.5-z1-9])
+        cylinder(r=6,h=6,$fn=33);
+      }
+      translate([-(185/2),-(60-y1-10),12-0.5-z1])
+      cylinder(r=1.65,h=20,center=true,$fn=33);
+      translate([-(193/2)-2,-(63-y1),8.5-z1-8])
+      rounder(r=3,h=10,f=44);
+    }
+    
+}
+
+//--------------------------------------------------------------------------------
+// carrier for the TI Delfino LaunchPadXL and GaN Inverter
+module carrier1(z1=45,y1=30,x1=0){
+
+  carrier1b();
+  mirror([1,0,0])
+  carrier1b();
+
+  // risers for cal heater
+  color("blue")
+  translate([-(38),-(63-y1),8.5-z1-28])
+  cube([8,3,28]);  
+  color("green")
+  translate([(70),-(63-y1),8.5-z1-28])
+  cube([8,3,28]);  
+    
+}
+  
+//--------------------------------------------------------------------------------
+// carrier for the TI Delfino LaunchPadXL, GaN Inverter, and cal heater
+module carrier2(z1=45,y1=30,x1=0){
+
+    difference(){
+      cube([10,4,33]);
+      
+      translate([0,2,3]) 
+      cube([30,8,1.8]); 
+      translate([0,2,3+12]) 
+      cube([30,8,1.7]); 
+      translate([0,2,3+24]) 
+      cube([30,8,3.2]); 
+      
+      translate([5,0,10])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+      translate([15,0,10])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+      translate([25,0,10])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+
+      translate([5,0,22])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+      translate([15,0,22])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+      translate([25,0,22])
+      rotate([90,0,0])
+      cylinder(r=3,h=20,$fn=6,center=true);
+     
+    }  
+      
+}
+  
+//--------------------------------------------------------------------
+module calheater(){
+ 
+ translate([0,0,3.2/2]) 
+ cube([126.6, 59.8, 3.2],center=true); 
+ 
+}  
+
 //=================================================================================
 
 // disable cutaway views if printing or working single parts
 if(0){
   
-xcut=280;
-ycut=600;
+xcut=650;
+ycut=660;
 zcut=500;
 
 cutcube = 600;
@@ -514,7 +604,7 @@ intersection(){
     }
 
     // top
-    TopAngle = 10;
+    TopAngle = 0;
     if(1){
       translate([330/2,255/2,80+15.2+3+2.5])
       translate([0,100-TopAngle*0.5,0])
@@ -522,15 +612,25 @@ intersection(){
       translate([0,-100,0]){
         color("silver", alpha=0.7)
         top1();
+        color("white")
         spider1();
         mirror([1,0,0])
+        color("white")
         spider1();
-        translate([129.8/2,-58.5/2,-30])
+        //color("white")
+        carrier1();
+        mirror([0,1,0])
+        color("white")
+        carrier1();
+        translate([129.8/2-21,-58.5/2,-30])
         rotate([0,0,180])
         rotate([180,0,0]){
           launch();
           gan();
-        }        
+        }   
+        color("red",alpha=0.7)
+        translate([15,0,-68])
+        calheater();     
       }
     }
 
@@ -568,7 +668,9 @@ if(0){
   
 }
 
-spider1();
+//spider1();
+//carrier1();
+carrier2();
 
 //top1();
 //tub1();

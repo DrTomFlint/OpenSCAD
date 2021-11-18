@@ -3,6 +3,8 @@
 // fixtures for LEM current sensors
 //
 // Dr Tom Flint, 30 April 2021
+// add new LEM cases to allow use of 12 AWG wiring, 18 Nov 2021
+//
 //=================================================================================
 
 
@@ -126,9 +128,117 @@ if(0){
 
 }
   
+//---------------------------------------------------------------------------------
+// replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
+// wire through the loop
+module lemcase(round=1){
+
+thick=1.0;
+
+  // outer body
+  difference(){
+    translate([0,thick/2,0])
+    cube([20.0+2*thick,11+1*thick,21.32+2*thick],center=true);
+
+    if(round==1){
+      translate([10+thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2+thick,h=14,f=99);
+
+      translate([-10-thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2+thick,h=14,f=99);
+    }
+    
+    // bore for conductor
+    translate([1,0,0.6])
+    rotate([90,0,0])
+    cylinder(r=5/2,h=15,center=true,$fn=45);
+    
+    // cut for pcb signal wires
+    translate([-10,-6-thick/2,-21.32/2-thick-0.1])
+    cube([2.8,12,3]);
+
+    difference(){
+      // main hole
+      cube([20.0,11.1,21.32],center=true);
+      translate([10,5,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2,h=11.1,f=33);
+      translate([-10,5,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2,h=11.1,f=33);
+
+      // bottom right notches
+      translate([10-0.5,0,-21.32/2+1.8])
+      cube([1.0,11+2,0.73],center=true);
+      translate([10-0.5,0,-21.32/2+1.5+2.2])
+      cube([1.0,11+2,0.73],center=true);
+
+      // left side notches
+      translate([-10+3.0,0,-21.32/2])
+      cube([0.55,11+2,0.45],center=true);
+      translate([-10+5.25,0,21.32/2-0.4])
+      cube([1.0,11+2,1.0],center=true);
+      
+      // right side isn't as deep
+      translate([-4,3.75+1,-21.32/2])
+      cube([14,1,25]);
+      
+      // bore for conductor
+      translate([1,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2+0.8,h=15,center=true,$fn=45);
+    }
+  }  
+}
+//-------------------------------
+module lemcase3(){
+
+  difference(){
+    lemcase(round=0);
+    translate([-10-1,8,21.32/2+1])
+    rotate([90,0,0])
+    rotate([0,0,-90])
+    rounder(r=3,h=14.1,f=33);
+  }
+  translate([21,0,0])
+  lemcase(round=0);
+  difference(){
+    translate([42,0,0])
+    lemcase(round=0);
+    translate([53,8,21.32/2+1])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    rounder(r=3,h=14.1,f=33);
+  }
+  
+  
+if(0){  
+  difference(){  
+    translate([-11,-5.5,23/2])
+    cube([64,12,0.6]);
+    
+    color("red")
+    translate([22,0,23/2])
+    linear_extrude(height=0.6,scale=1)
+    text("Aero Amp", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+  }
+}
+
+}
+  
 //=================================================================================
 
-lemPack3();
+
+//lemcase();
+lemcase3();
+
+//lemPack3();
 
 
 if(0){
