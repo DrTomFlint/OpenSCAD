@@ -507,30 +507,23 @@ module carrier1(z1=45,y1=30,x1=0){
   carrier1b();
   mirror([1,0,0])
   carrier1b();
-
-  // risers for cal heater
-  color("blue")
-  translate([-(38),-(63-y1),8.5-z1-28])
-  cube([8,3,28]);  
-  color("green")
-  translate([(70),-(63-y1),8.5-z1-28])
-  cube([8,3,28]);  
     
 }
   
 //--------------------------------------------------------------------------------
 // carrier for the TI Delfino LaunchPadXL, GaN Inverter, and cal heater
-module carrier2(z1=45,y1=30,x1=0){
+module carrier2(wide=30){
 
     difference(){
-      cube([10,4,33]);
+      translate([0,0,1])
+      cube([wide,7,33]);
       
-      translate([0,2,3]) 
-      cube([30,8,1.8]); 
-      translate([0,2,3+12]) 
-      cube([30,8,1.7]); 
-      translate([0,2,3+24]) 
-      cube([30,8,3.2]); 
+      translate([-1,2,3]) 
+      cube([32,8,1.8]); 
+      translate([-1,2,3+12]) 
+      cube([32,8,1.7]); 
+      translate([-1,2,3+24.5]) 
+      cube([32,8,3.5]); 
       
       translate([5,0,10])
       rotate([90,0,0])
@@ -555,6 +548,44 @@ module carrier2(z1=45,y1=30,x1=0){
     }  
       
 }
+
+//--------------------------------------------------------------------
+module carrier3(){
+ 
+  carrier1b();
+  mirror([1,0,0])
+  carrier1b();
+ 
+  translate([15,-58.5/2-3.75,-35.5])
+  rotate([0,180,0])
+  carrier2();
+  
+  translate([87,-58.5/2-3.75,-35.5])
+  rotate([0,180,0])
+  carrier2(wide=20);
+  
+  translate([87,-58.5/2-0.75+4,-42.5])
+  rotate([90,0,0])
+  rotate([0,0,-90])
+  rounder(r=6,h=7,f=66);  
+
+  translate([87-20,-58.5/2-0.75,-42.5])
+  rotate([90,0,0])
+  rotate([0,0,180])
+  rounder(r=6,h=3,f=66);  
+
+  translate([-15,-58.5/2-0.75,-42.5])
+  rotate([90,0,0])
+  rotate([0,0,180])
+  rounder(r=6,h=3,f=66);  
+
+  translate([-15+30,-58.5/2-0.75,-42.5])
+  rotate([90,0,0])
+  rotate([0,0,-90])
+  rounder(r=6,h=3,f=66);  
+
+}
+ 
   
 //--------------------------------------------------------------------
 module calheater(){
@@ -612,24 +643,26 @@ intersection(){
       translate([0,-100,0]){
         color("silver", alpha=0.7)
         top1();
+        
         color("white")
         spider1();
         mirror([1,0,0])
         color("white")
         spider1();
-        //color("white")
-        carrier1();
+
+        carrier3();
         mirror([0,1,0])
-        color("white")
-        carrier1();
+        carrier3();
+                
         translate([129.8/2-21,-58.5/2,-30])
         rotate([0,0,180])
         rotate([180,0,0]){
           launch();
           gan();
         }   
+        
         color("red",alpha=0.7)
-        translate([15,0,-68])
+        translate([30,0,-66.3])
         calheater();     
       }
     }
@@ -670,7 +703,8 @@ if(0){
 
 //spider1();
 //carrier1();
-carrier2();
+mirror([0,1,0])
+carrier3();
 
 //top1();
 //tub1();
