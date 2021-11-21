@@ -127,6 +127,42 @@ if(0){
 }
 
 }
+//-------------------------------
+module lemcase3(){
+
+  difference(){
+    lemcase(round=0);
+    translate([-10-1,8,21.32/2+1])
+    rotate([90,0,0])
+    rotate([0,0,-90])
+    rounder(r=3,h=14.1,f=33);
+  }
+  translate([21,0,0])
+  lemcase(round=0);
+  difference(){
+    translate([42,0,0])
+    lemcase(round=0);
+    translate([53,8,21.32/2+1])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    rounder(r=3,h=14.1,f=33);
+  }
+  
+  
+if(0){  
+  difference(){  
+    translate([-11,-5.5,23/2])
+    cube([64,12,0.6]);
+    
+    color("red")
+    translate([22,0,23/2])
+    linear_extrude(height=0.6,scale=1)
+    text("Aero Amp", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+  }
+}
+
+}
+  
   
 //---------------------------------------------------------------------------------
 // replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
@@ -196,47 +232,123 @@ thick=1.0;
     }
   }  
 }
-//-------------------------------
-module lemcase3(){
+//---------------------------------------------------------------------------------
+// replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
+// wire through the loop
+module lemcase2(round=1){
 
+thick=1.0;
+
+  // outer body
   difference(){
-    lemcase(round=0);
-    translate([-10-1,8,21.32/2+1])
-    rotate([90,0,0])
-    rotate([0,0,-90])
-    rounder(r=3,h=14.1,f=33);
-  }
-  translate([21,0,0])
-  lemcase(round=0);
-  difference(){
-    translate([42,0,0])
-    lemcase(round=0);
-    translate([53,8,21.32/2+1])
-    rotate([90,0,0])
-    rotate([0,0,180])
-    rounder(r=3,h=14.1,f=33);
-  }
-  
-  
-if(0){  
-  difference(){  
-    translate([-11,-5.5,23/2])
-    cube([64,12,0.6]);
+    translate([0,thick/2,0])
+    cube([20.0+2*thick,12+1*thick,21.32+2*thick],center=true);
+
+    if(round==1){
+      translate([10+thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2+thick,h=14,f=99);
+
+      translate([-10-thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2+thick,h=14,f=99);
+    }
     
-    color("red")
-    translate([22,0,23/2])
-    linear_extrude(height=0.6,scale=1)
-    text("Aero Amp", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
-  }
+    // bore for conductor
+    translate([1,0,0.6])
+    rotate([90,0,0])
+    cylinder(r=5/2,h=15,center=true,$fn=45);
+    
+    // cut for pcb signal wires
+    translate([-10,-6-thick/2,-21.32/2-thick-0.1])
+    cube([2.8,12,3]);
+
+    difference(){
+      // main hole
+      cube([20.0,12.1,21.32],center=true);
+      translate([10,5,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2,h=12.1,f=33);
+      translate([-10,5,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2,h=12.1,f=33);
+
+      // bottom right notches
+      translate([10-0.5,0,-21.32/2+1.8])
+      cube([1.0,8+2,0.73],center=true);
+      translate([10-0.5,0,-21.32/2+1.5+2.2])
+      cube([1.0,8+2,0.73],center=true);
+
+      // left side notches
+      translate([-10+3.0,0,-21.32/2])
+      cube([0.55,8+2,0.45],center=true);
+      translate([-10+5.25,0,21.32/2-0.4])
+      cube([1.0,8+2,1.0],center=true);
+      
+      // right side isn't as deep
+      translate([-4,3.75+1,-21.32/2])
+      cube([14,1,25]);
+      
+      // bore for conductor
+      translate([1,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2+0.8,h=15,center=true,$fn=45);
+    }
+  }  
 }
 
+//---------------------------------------------------------------------------------
+// replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
+// wire through the loop
+module lemlid2(round=1){
+
+thick=-0.1;
+
+  // outer body
+  translate([0,-5.5,0])
+  difference(){
+    translate([0,thick/2,0])
+    cube([20.0+2*thick,0.9,21.32+2*thick],center=true);
+
+    if(round==1){
+      translate([10+thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2+thick,h=14,f=99);
+
+      translate([-10-thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2+thick,h=14,f=99);
+    }
+    
+    // bore for conductor
+    translate([1,0,0.6])
+    rotate([90,0,0])
+    cylinder(r=5/2+1,h=15,center=true,$fn=45);
+    
+    // cut for pcb signal wires
+    translate([-10,-6-thick/2,-21.32/2-thick-0.1])
+    cube([2.8,12,3]);
+
+  }  
 }
-  
+
 //=================================================================================
 
-
+//color("red",alpha=0.7)
 //lemcase();
-lemcase3();
+
+color("red")
+//lemcase2();
+//translate([0,10,0])
+lemlid2();
+
+//lemcase3();
 
 //lemPack3();
 

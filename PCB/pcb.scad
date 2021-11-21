@@ -22,7 +22,7 @@ y1 = 192.2+30;       // distance between front and back rail centers
 
 zpost = 30;      // height of the post
 
-arm1x = 40;     // length of arm1
+arm1x = 50;     // length of arm1
 arm1angle = 45;
 
 arm2x = 40;     // length of arm2
@@ -424,9 +424,11 @@ module arm2(ang=0,pin=0,pang=20){
         }
       }
 
-      // cut for M3x16 bolt
-      translate([0,0,-1])
-      cylinder(r=1.7,h=10,$fn=22);
+      // cut for M3x6 and brass heat set insert
+      translate([0,0,-1]){
+        cylinder(r=1.6,h=7);
+        cylinder(r=2.3,h=3.0+1);
+      }
 
       // cut for nut and washer
       translate([0,0,-10])
@@ -444,17 +446,17 @@ module arm2(ang=0,pin=0,pang=20){
       cube([8,0.5,40]);
 
       // cuts for the wiring
-      translate([arm2x-20,0,-5])
-      rotate([0,0,0])
-      cylinder(r=1.0,h=20,$fn=77);
+      translate([arm2x-10,0,-5])
+      rotate([0,-30,0])
+      #cylinder(r=1.0,h=20,$fn=77);
 
-      translate([arm2x-25,0,-5])
-      rotate([0,0,0])
-      cylinder(r=1.0,h=20,$fn=77);
+//      translate([arm2x-25,0,-5])
+//      rotate([0,0,0])
+//      cylinder(r=1.0,h=20,$fn=77);
 
       translate([arm2x-30,0,-5])
-      rotate([0,0,0])
-      cylinder(r=1.0,h=20,$fn=77);
+      rotate([0,30,0])
+      #cylinder(r=1.0,h=20,$fn=77);
 
    }
     
@@ -490,17 +492,21 @@ module arm1(ang=0){
       // cuts for M3x16 bolts
       translate([0,0,-1])
       cylinder(r=1.7,h=6+2,$fn=89);
+      translate([0,0,4])
+      cylinder(r=5.6/2,h=3,$fn=89);
 
       translate([arm1x,0,-1])
       cylinder(r=1.7,h=6+2,$fn=89);
+      translate([arm1x,0,4])
+      cylinder(r=5.6/2,h=3,$fn=89);
 
       // cuts for the wiring
-      translate([arm1x-15,0,-5])
-      rotate([0,20,0])
+      translate([arm1x-10,0,-5])
+      rotate([0,-30,0])
       #cylinder(r=1.0,h=20,$fn=77);
 
-      translate([15,0,-5])
-      rotate([0,-20,0])
+      translate([10,0,-5])
+      rotate([0,30,0])
       #cylinder(r=1.0,h=20,$fn=77);
     }
   }
@@ -547,6 +553,127 @@ module post2(nuts=0){
     translate([-10,-10,-3])
     rotate([45,0,0])
     cube([100,100,100]);        
+    
+  }    
+    
+  translate([0,30,zpost-6+0])
+  rotate([0,90,0])
+  rounder(r=3,h=14,f=45);
+
+  // bolt and nut
+  if(nuts==1){
+    color("red"){
+      // nut and washer space
+      translate([7,30+6,zpost-6-3])
+      cylinder(r=7/2,h=3,$fn=22);
+
+      // M3 shaft
+      translate([7,30+6,zpost-6])
+      cylinder(r=3/2,h=12,$fn=22);
+
+      // head and washer space
+      translate([7,30+6,zpost+6])
+      cylinder(r=7/2,h=3.6,$fn=22);
+    }
+    translate([arm2x0,arm2y0,0])
+    color("blue"){
+      // nut and washer space
+      translate([7,30+6,zpost-6-3])
+      cylinder(r=7/2,h=3,$fn=22);
+
+      // M3 shaft
+      translate([7,30+6,zpost-6])
+      cylinder(r=3/2,h=12,$fn=22);
+
+      // head and washer space
+      translate([7,30+6,zpost+6])
+      cylinder(r=7/2,h=3.6,$fn=22);
+    }
+  }
+    
+}
+
+//-------------------------------------------------------------------------------
+module post3(nuts=0,num=8){
+  
+  difference(){
+    
+    // post
+    union(){
+      translate([0,0,-0.5])
+      cube([14,30,zpost+0.5]);
+    
+      // tab for arm 1
+      hull(){
+        translate([7,30+6,zpost-6])
+        cylinder(r=5,h=6,$fn=99);
+
+        translate([0,0,zpost-6])
+        cube([14,30,6]);
+      }
+    }
+
+    // cut for M3x6 and brass heat set insert
+    translate([7,30+6,zpost-6]){
+      cylinder(r=1.6,h=7);
+      cylinder(r=2.3,h=3.0+1);
+    }
+//    cylinder(r=1.7,h=10,$fn=22);
+    
+    // cut on base for tslot
+    translate([0,15,-15])
+    rotate([0,90,0])
+    tslot1(type=1,len=30);
+
+    // cut for access to tbolt
+    translate([7,15,4])
+    cylinder(r1=7.4/2,r2=8.5/2,h=zpost,$fn=99);
+  
+    // M4x12 tie downs to the T-slot
+    translate([7,15,-8])
+    cylinder(r=2.15,h=12,$fn=22);
+  
+    // diagonal cut for material reduction
+    translate([-10,-10,-3])
+    rotate([45,0,0])
+    cube([100,100,100]);        
+
+    // wire pass-through into the base
+    translate([2,10,14.5])
+    rotate([100,0,0])
+    cylinder(r=1.0,h=60,$fn=22,center=true);
+    
+    // wire pass-through into the base
+    translate([12,10,14.5])
+    rotate([100,0,0])
+    cylinder(r=1.0,h=60,$fn=22,center=true);
+    
+    // material reduction and pcb edge clearance near base
+    translate([0,30,4])
+    rotate([0,90,0])
+    scale([2,1,1])
+    cylinder(r=6,h=60,$fn=99,center=true);
+    
+    // text numbers
+    color("red")
+    translate([7,8,14.3])
+    rotate([45,0,0])
+    linear_extrude(height=0.5,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([-0.01+0.3,23,20])
+    rotate([0,0,-90])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([14.01-0.3,23,20])
+    rotate([0,0,90])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
     
   }    
     
@@ -675,7 +802,7 @@ module foot2(){
     
     // cut for M3x6 and brass heat set insert
     translate([7,25,-1]){
-      cylinder(r=1.8,h=7);
+      cylinder(r=1.6,h=7);
       cylinder(r=2.3,h=3.0+1);
     }
     
@@ -839,10 +966,10 @@ if(0){
   }
 }
 
-// example probe arm
+// example probe arm *******************************************
 if(0){
   translate([10,-30,15]){
-    post2(nuts=1);
+    post3(nuts=1);
     
     translate([7,30+6,zpost])
     arm1(ang=arm3angle);
@@ -861,14 +988,14 @@ if(0){
 }
 
 // Cyclone Board
-if(1){
+if(0){
   translate([2,0,z2])
   cyclone();
 
 }
 
 // Feet for cyclone
-if(1){
+if(0){
   color("white"){
   translate([0,-20,15])
   foot2();
@@ -885,7 +1012,7 @@ if(1){
 }
 
 // ADC Board
-if(1){
+if(0){
   translate([159.93-7.75,37.5,0])
   translate([-10.8,-3.5,0])  
   translate([2,0,z2+9.6])
@@ -894,7 +1021,7 @@ if(1){
 }
 
 // ADC board foot
-if(1){
+if(0){
 //  difference(){
   translate([300,0,15])  
   foot3();
@@ -904,7 +1031,7 @@ if(1){
 }
 
 
-if(1){
+if(0){
   color("silver")
   translate([-15,-5,0])
   base2();
@@ -913,7 +1040,7 @@ if(1){
 // thermocouple board in pmod
 // unsure which row of sockets the pmods will use, Z offset may differ?
 zoff=1.5;
-if(1){
+if(0){
   translate([2,0]){
   translate([38.25,130,z2+zoff])
   thermo();
@@ -927,10 +1054,17 @@ if(1){
 }
 
 // for printing
-//arm3();
-//arm5(pang=20);
-//post2();
+arm1();
+//arm2(pang=20);
+//post3(num=1);
 //mount1(x0=0);
+
+if(0){
+  for(i=[2:4]){
+    translate([40*i,0,0])
+    post3(num=i);
+  }
+}
 
 if(0){
 for(i=[0:7]){
