@@ -293,7 +293,11 @@ module single(nuts=0,print=0){
     // end block
     endblock1();
   }
-  
+  if(print==3){
+    // other end block, not symmetric after cutting for 13s
+    rotate([0,0,180])
+    endblock1();
+  }
 
 }
 
@@ -376,13 +380,13 @@ module tension(tol=0){
 
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
-xcut=100;
-ycut=100;
-zcut=100;
+xcut=200;
+ycut=200;
+zcut=200;
 
-cutcube = 200;
+cutcube = 400;
 
 intersection(){
   translate([-cutcube+xcut,-cutcube+ycut,-cutcube+zcut])
@@ -392,7 +396,19 @@ intersection(){
 
 
   //single();
-  multi(numY=2);
+  //multi(numY=2,bars=1);
+  
+  difference(){
+    // trim a larger block down to size so get places for the tension bars
+    intersection(){
+      multi(numY=9,bars=0,print=1);
+      translate([-150,6,-50])
+      cube([300,22*7+10,100]);
+    }
+    // cut out 1 cell
+    translate([-100,148,-7])
+    cube([200,28,28]);
+  }
 
   //tension();
 
@@ -434,8 +450,9 @@ intersection(){
 // for printing
 //multi(numY=2,print=2);
 //tension();
-endblock1();
+//endblock1();
 
+//multi(numY=2,print=2);
 
 //=================================================================================
 
