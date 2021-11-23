@@ -22,7 +22,7 @@ y1 = 192.2+30;       // distance between front and back rail centers
 
 zpost = 30;      // height of the post
 
-arm1x = 50;     // length of arm1
+arm1x = 40;     // length of arm1
 arm1angle = 45;
 
 arm2x = 40;     // length of arm2
@@ -1060,7 +1060,7 @@ arm1();
 //mount1(x0=0);
 
 if(0){
-  for(i=[2:4]){
+  for(i=[11:14]){
     translate([40*i,0,0])
     post3(num=i);
   }
