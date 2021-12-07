@@ -103,6 +103,112 @@ cube([long,1,2*thick],center=true);
 }
 
 //-----------------------------------------------------------------------------------
+module hedwig(){
+h0=24;
+h1=25;
+thick=0.6;
+long=270;
+high=26;
+cutwide=0.25;
+
+difference(){
+  cube([long,high,thick],center=true);
+  
+  color("red")
+  translate([0,0,-1])
+  linear_extrude(height=2,scale=1)
+  text("HEDWIGS HOLIDAY", font = "Open Sans:style=Bold", size=16,halign="center",valign="center",spacing=1.1);
+
+  // cuts to make it flex, left to right order
+  translate([-108,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([-91,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([-72,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([-45,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([-36,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([-16,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([5,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([29,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([50,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([65,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([74,0,0])
+  rotate([0,0,0])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([94,0,0])
+  rotate([0,0,-18])
+#  cube([cutwide,h1,1],center=true);
+
+  translate([110,0,0])
+  rotate([0,0,18])
+#  cube([cutwide,h1,1],center=true);
+
+  }
+  // D needs support
+  color("blue")
+  translate([-84,0,0])
+  rotate([0,0,0])
+  cube([1.6,22,thick],center=true);
+
+  // O needs support
+  color("green")
+  translate([39,0,0])
+  rotate([0,0,0])
+  cube([1.6,22,thick],center=true);
+
+  // D needs support
+  color("red")
+  translate([80,0,0])
+  rotate([0,0,0])
+  cube([1.6,22,thick],center=true);
+
+  // A needs support
+  color("pink")
+  translate([100,0,0])
+  rotate([0,0,-19])
+  cube([1.6,22,thick],center=true);
+  
+  // add spines
+  color("pink")
+  translate([0,high/2-0.5,thick])
+  cube([long,1,2*thick],center=true);
+
+  color("pink")
+  translate([0,-high/2+0.5,thick])
+  cube([long,1,2*thick],center=true);
+
+}
+
+//-----------------------------------------------------------------------------------
 module dots(){
 h0=24;
 h1=25;
@@ -201,7 +307,14 @@ cube([long,1,2*thick],center=true);
 
 //water1();
 
-dots();
+//dots();
+
+difference(){
+//intersection(){
+hedwig();
+translate([6,-20,-2])
+cube([200,80,10]);
+}
 
 //======================================================================================
 

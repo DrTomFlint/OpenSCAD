@@ -598,9 +598,9 @@ module calheater(){
 //=================================================================================
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
-xcut=650;
+xcut=260;
 ycut=660;
 zcut=500;
 
@@ -650,6 +650,7 @@ intersection(){
         color("white")
         spider1();
 
+        rotate([0,0,180]){
         carrier3();
         mirror([0,1,0])
         carrier3();
@@ -662,8 +663,10 @@ intersection(){
         }   
         
         color("red",alpha=0.7)
-        translate([30,0,-66.3])
+        translate([20,0,-66.3])
         calheater();     
+      
+      }
       }
     }
 
@@ -703,8 +706,8 @@ if(0){
 
 //spider1();
 //carrier1();
-mirror([0,1,0])
-carrier3();
+//mirror([0,1,0])
+//carrier3();
 
 //top1();
 //tub1();

@@ -18,18 +18,19 @@ use <../Parts/switch2.scad>
 use <../Parts/torqueMeter.scad>
 use <../Parts/flexCoupler.scad>
 use <./foot1.scad>
+use <../Fractals/Lsystem.scad>
 
 z0 = 42;      // height of the shafts
 
 x1 = 190;      // x position of right motor with resolver - green
-x2 = 14;     // x position of left motor no resolver  = red
+x2 = 19;     // x position of left motor no resolver  = red
 x3 = x1-31;       // x position of the TI coupler
 
 x4 = -110;    // x position of the estop
-x5 = 100;      // x position of the torque meter
+x5 = 105;      // x position of the torque meter
 
-x7 = 157;    // x position of the right flex coupler - green
-x6 = 43;    // x position of the left flex coupler - red
+x7 = 160;    // x position of the right flex coupler - green
+x6 = 48;    // x position of the left flex coupler - red
 
 //---------------------------------------------------------------------------------
 module bracket1(type=1){
@@ -327,7 +328,7 @@ if(1){
 }
 
 // estop
-if(1){
+if(0){
   translate([x4,0,0]){
     rotate([0,0,180])
     estop();
@@ -434,22 +435,33 @@ if(1){
   
 // torqueMeter
 if(1){
-  color("blue")
+  color("CornflowerBlue")
   translate([x5,0,z0])
+  rotate([120,0,0])
+  rotate([0,0,180])
   torqueMeter();
-  
+
+}
+// torqueFoot
+if(1){
+  color("cyan")
+  translate([x5,0,z0])
+  rotate([180,0,0])
+  rotate([0,0,180])
+  torqueFoot();
+
 }
   
 // left flex coupler
 if(1){
-  color("red")
+  color("red",alpha=0.4)
   translate([x6,0,z0])
   flexCoupler();
   
 }
 // right flex coupler
 if(1){
-  color("green")
+  color("green",alpha=0.4)
   translate([x7,0,z0])
   flexCoupler();
   
@@ -509,8 +521,8 @@ difference(){
 //------------------------------------------------------------------------
 module shield1(lift=0){
 
-d0=150;   // outer diameter
-d1=145; // inner diameter
+d0=151;   // outer diameter, 150 to 153, slighly oval
+d1=146; // inner diameter
 len=304.8;   // tube length
 
   translate([-50,0,d0/2-55+lift])
@@ -523,19 +535,258 @@ len=304.8;   // tube length
 
 
 }
+//------------------------------------------------------------------------
+module endcap1(lift=0,fan=1){
+
+d0=151;   // outer diameter, 150 to 153, slighly oval
+d1=146; // inner diameter
+len=30;   // tube length
+
+
+  translate([-50-10,0,d0/2-55+lift])
+  rotate([0,90,0])
+  difference(){
+    union(){
+      // lip
+      translate([0,0,6])
+      cylinder(r=d0/2+3,h=10,$fn=299);
+      
+      // end cap
+      difference(){
+        translate([0,0,1])
+        cylinder(r2=d0/2+3,r1=d0/2,h=5,$fn=299);
+      
+        translate([0,0,0])
+        cylinder(r2=d0/2-3,r1=d0/2-3,h=5,$fn=299);
+      }
+      
+      // alternative end cap
+      if(1){
+        translate([0,0,1])
+        intersection(){
+          linear_extrude(height=4,convexity=10)
+          scale([8,8])
+          penrose_tiling(n=5, w=0.2);
+          
+          cylinder(r=d0/2-2,h=20,center=true);
+        }
+
+      if(fan==1){
+        // reinforce where fan will be cut
+        zfan=-38;
+        translate([zfan,0,1])
+        cylinder(r=26,h=4,$fn=99);
+        
+        translate([zfan+20,20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan+20,-20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan-20,20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan-20,-20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+      }
+      }
+
+      // reinforce cut for the rail and wiring
+      translate([76-32,0,3])
+      cube([22,104,4],center=true);
+
+      // reinforce cut for motor foot
+      translate([76-15,0,3])
+      cube([84,54,4],center=true);
+
+    }
+    // inner space
+    translate([0,0,6])
+    cylinder(r1=d1/2-5,r2=d1/2-2,h=len-3,$fn=99);
+    translate([0,0,4])
+    cylinder(r1=d1/2-7,r2=d1/2-5,h=2.1,$fn=99);
+
+    // cut for the tube
+    translate([0,0,9])
+    difference(){
+      cylinder(r=d0/2+0.4,h=len,$fn=99);
+      translate([0,0,-1])
+      cylinder(r=d1/2-0.4,h=len+2,$fn=99);
+    }
+    
+    // base cut for the rail and wiring
+    translate([76,0,0])
+    cube([80,100,50],center=true);
+
+    // cut for motor foot
+    translate([76-15,0,0])
+    cube([80,50,50],center=true);
+
+    // cut for the fan
+    if(fan==1){
+      zfan=-38;
+      translate([zfan,0,-15])
+      cylinder(r=24,h=40,$fn=99);
+      translate([zfan+20,20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan+20,-20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan-20,20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan-20,-20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+    }
+  
+    // cut for text
+    if(0){
+      color("red")
+      translate([7,0,1.6])
+      rotate([0,0,90])
+      rotate([0,180,0])
+      linear_extrude(height=0.7,scale=1)
+      text("Aero Amp", font = "Open Sans:style=Bold", size=14,halign="center",valign="center",spacing=1.1);
+    }
+    
+
+  }
+
+  
+}
+//------------------------------------------------------------------------
+module endcap2(lift=0,fan=1){
+
+d0=151;   // outer diameter, 150 to 153, slighly oval
+d1=146; // inner diameter
+len=30;   // tube length
+
+
+  translate([-50-10,0,d0/2-55+lift])
+  rotate([0,90,0])
+  difference(){
+    union(){
+      // lip
+      translate([0,0,6])
+      cylinder(r=d0/2+2,h=12,$fn=299);
+      
+      // end cap
+      difference(){
+        translate([0,0,1])
+        cylinder(r2=d0/2+2,r1=d0/2-1,h=5,$fn=299);
+      
+        translate([0,0,0])
+        cylinder(r=d0/2-7,h=5,$fn=299);
+      }
+      
+      // alternative end cap
+      if(1){
+        translate([0,0,1])
+        intersection(){
+          translate([3,0,0])
+          rotate([0,0,180])
+          linear_extrude(height=4,convexity=10)
+          scale([8,8])
+          penrose_tiling(n=5, w=0.2);
+          
+          cylinder(r=d0/2-2,h=20,center=true);
+        }
+
+      if(fan==1){
+        // reinforce where fan will be cut
+        zfan=-38;
+        translate([zfan,0,1])
+        cylinder(r=26,h=4,$fn=99);
+        
+        translate([zfan+20,20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan+20,-20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan-20,20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+        translate([zfan-20,-20,1])
+        cylinder(r=4.2,h=4,$fn=99);
+      }
+      }
+
+      // reinforce cut for the rail and wiring
+      translate([76-33,0,3])
+      cube([19,104,4],center=true);
+
+      // reinforce cut for motor foot
+      translate([76-15,0,3])
+      cube([84,54,4],center=true);
+
+    }
+    // inner space
+    translate([0,0,6])
+    cylinder(r1=d1/2-3,r2=d1/2-1,h=len-3,$fn=99);
+    translate([0,0,4])
+    cylinder(r1=d1/2-5,r2=d1/2-3,h=2.1,$fn=99);
+
+    // cut for the tube
+    translate([0,0,12])
+    difference(){
+      cylinder(r=d0/2+0.4,h=len,$fn=99);
+      translate([0,0,-1])
+      cylinder(r=d1/2-0.4,h=len+2,$fn=99);
+    }
+    
+    // base cut for the rail and wiring
+    translate([76,0,0])
+    cube([80,100,50],center=true);
+
+    // cut for motor foot
+    translate([76-15,0,0])
+    cube([80,50,50],center=true);
+
+    // cut for the fan
+    if(fan==1){
+      zfan=-38;
+      translate([zfan,0,-15])
+      cylinder(r=24,h=40,$fn=99);
+      translate([zfan+20,20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan+20,-20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan-20,20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+      translate([zfan-20,-20,-15])
+      cylinder(r=2.2,h=40,$fn=99);
+    }
+  
+    // cut for test printing
+    if(0){
+      color("red")
+      translate([0,0,12])
+      cube([300,300,10],center=true);
+      
+      color("green")
+      translate([0,0,-2])
+      cube([300,300,10],center=true);
+    }
+    
+
+  }
+
+  
+}
 //=================================================================================
 
 //ADIboard();
 
-b2b1();
+//b2b1();
 //tek2310();
 
-coupler();
+//coupler();
 
 // lift to touch bottom of 30x60 for better air circulation around the motors
 // might want a small fan too
-color("silver",alpha=0.35)
-shield1(lift=16);
+if(0){
+  color("silver",alpha=0.35)
+  shield1(lift=16);
+}
+
+//endcap1(lift=16);
+//translate([205,0,0])
+//rotate([0,0,180])
+//endcap1(lift=16,fan=0);
+endcap2(lift=16,fan=1);
 
 //bracket1(type=2);
 //bracket1(type=1);
@@ -543,7 +794,7 @@ shield1(lift=16);
 //bracket2();
 //bracket2(type=2);
 
-if(1){
+if(0){
 translate([-150,0,0])
 foot();
 

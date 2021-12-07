@@ -85,9 +85,9 @@ module flangeOut(){
 
 //flangeIn();
 //flangeOut();
-quickie();
+//quickie();
 
-if(0){
+if(1){
 difference(){
 flangeOut();
 	translate([0,-20,0])

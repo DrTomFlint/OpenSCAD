@@ -14,14 +14,14 @@ use <../Parts/rounder.scad>
 //---------------------------------------------------------------------------------
 module cell1(tol=0){
 translate([0,0,-tol/2])
-cylinder(r=18.40/2+tol/2,h=65.0+tol,$fn=123);
+cylinder(r=18.40/2+tol/2,h=65.0+tol,$fn=22);
 
 }
 
 //---------------------------------------------------------------------------------
 module end1(tol=0){
 
-$fn=77;
+$fn=22;
 
   // main flat
   translate([0,0,-tol/2])
@@ -82,7 +82,7 @@ module wire1(tol=0){
   color("red"){
     // tab
     translate([0,0,-0.8+5.6/2-tol/2])
-    cylinder(r=5.5/2+tol/2,h=0.80+tol,$fn=66);
+    cylinder(r=5.5/2+tol/2,h=0.80+tol,$fn=22);
 
     // tab to barrel
     translate([2,0,-0.4+5.6/2])
@@ -91,8 +91,8 @@ module wire1(tol=0){
     // wire and insulator barrel
     translate([5.5/2,0,0])
     rotate([0,90,0]){
-      cylinder(r=5.6/2+tol/2,h=13+tol,$fn=66);
-      cylinder(r=1.6/2+tol/2,h=19+tol,$fn=66);
+      cylinder(r=5.6/2+tol/2,h=13+tol,$fn=22);
+      cylinder(r=1.6/2+tol/2,h=19+tol,$fn=22);
     }
   }
 }
@@ -113,14 +113,14 @@ module wire1cut(tol=0){
     translate([5.5/2,0,0])
     rotate([0,90,0]){
       hull(){
-        cylinder(r=5.6/2+tol/2,h=13+tol,$fn=66);
+        cylinder(r=5.6/2+tol/2,h=13+tol,$fn=22);
         translate([-10,0,0])
-        cylinder(r=5.6/2+tol/2,h=13+tol,$fn=66);
+        cylinder(r=5.6/2+tol/2,h=13+tol,$fn=22);
       }
       hull(){
-        cylinder(r=1.6/2+tol/2,h=19+tol,$fn=66);
+        cylinder(r=1.6/2+tol/2,h=19+tol,$fn=22);
         translate([-10,0,0])
-        cylinder(r=1.6/2+tol/2,h=19+tol,$fn=66);
+        cylinder(r=1.6/2+tol/2,h=19+tol,$fn=22);
       }
     }
   }
@@ -228,11 +228,11 @@ module support1(both=0){
     translate([0,-11,-11])
     rotate([0,-90,0])
     color("blue")
-    cylinder(r=3,h=200,center=true,$fn=67);
+    cylinder(r=3,h=200,center=true,$fn=22);
     translate([0,11,-11])
     rotate([0,-90,0])
     color("blue")
-    cylinder(r=3,h=200,center=true,$fn=67);
+    cylinder(r=3,h=200,center=true,$fn=22);
   }
 
 }
@@ -347,16 +347,121 @@ depth=3;
   }
 }
 
+//--------------------------------------------------------------------------------
+// pretty cap, but needs to also hold the BMS and control the wiring.  
+// need strain relief for the main cable
+module multiCap(numY=4,bars=0,print=0){
+
+depth=3;
+
+    difference(){
+      minkowski(){
+        difference(){
+        union(){
+          translate([79/2+10,11*9,-11])
+          cube([3-2,22*9-2,44+6-2],center=true);
+          // add legs, this assumes a 13s1p battery
+          translate([79/2+10,22*1,-11])
+          cube([3-2,12-2,44+20-2],center=true);
+          translate([79/2+10,22*7,-11-11-5])
+          cube([3-2,12-2,22+10-2],center=true);
+          translate([79/2+10,22*6,5])
+          cube([3-2,12-2,22+10-2],center=true);
+        }
+        // cut out 1 cell
+        translate([-100,148,-7])
+        cube([200,28,28]);
+
+        // cut ends instead of using intersection?
+        translate([-100,-54,-50])
+        cube([200,60,80]);
+        translate([-100,148+22,-50])
+        cube([200,60,80]);
+      }
+      // minkowski
+        sphere(r=2,$fn=22);
+      }
+      
+  for(i=[0:numY-1]){
+      // cuts for tension bars
+      translate([0,-11+22*i,-depth])
+      tension(tol=0.3);
+      translate([0,11+22*i,-depth])
+      tension(tol=0.3);
+
+      // cuts for tension bars
+      translate([0,-11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+      translate([0,11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+    }
+    
+    // text cut
+    color("red")
+    translate([47.6,80,-10])
+    rotate([0,-90,0])
+    rotate([0,0,-90])
+    linear_extrude(height=0.6,scale=1)
+    text("Aero Amp", font = "Open Sans:style=Bold", size=13,halign="center",valign="center",spacing=1.1);
+
+    color("green")
+    translate([47.6+4,80,-10])
+    rotate([0,90,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.6,scale=1)
+    text("Aero Amp", font = "Open Sans:style=Bold", size=13,halign="center",valign="center",spacing=1.1);
+
+  }
+  
+}
+
 
 //--------------------------------------------------------------------------------
 module tension(tol=0){
 
   difference(){
     
+    union(){
     // beam
     translate([0,0,11])
     cube([104,3.5+tol,6+tol],center=true);
 
+    // for anti-wracking
+    difference(){
+      translate([25,0,6])
+      cube([6.3+10,3.5+tol,6+tol],center=true);
+
+      translate([25+9,5,3])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      cylinder(r=5,h=10,$fn=22);
+
+      translate([25-9,5,3])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      cylinder(r=5,h=10,$fn=22);
+    }
+    
+
+    difference(){
+      translate([-25,0,6])
+      cube([6.3+10,3.5+tol,6+tol],center=true);
+
+      translate([-25+9,5,3])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      cylinder(r=5,h=10,$fn=22);  
+            
+      translate([-25-9,5,3])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      cylinder(r=5,h=10,$fn=22);
+    }
+    
+  }
+  
     // end block
     translate([79/2,0,0])
     translate([2.8,0,0])
@@ -375,12 +480,152 @@ module tension(tol=0){
   }
 
 }
+//--------------------------------------------------------------------------------
+module bms(tol=0){
+    
+    // body
+    color("silver")
+    translate([-tol/2,-tol/2,-tol/2])
+    cube([108.7+tol,60.6+tol,10.5+tol]);
+    
+    // main wires
+    color("black")
+    translate([58,4,0])
+    cylinder(r=4.6/2+tol/2,h=15,$fn=22);
+
+    color("blue")
+    translate([13,56,0])
+    cylinder(r=4.6/2+tol/2,h=15,$fn=22);
+
+    color("black")
+    translate([84,56,0])
+    cylinder(r=4.6/2+tol/2,h=15,$fn=22);
+    
+    // balance wires
+    color("white")
+    translate([101-tol/2,12.5-tol/2,4-tol/2])
+    cube([10.5+tol,37.3+tol,6.5+tol]);
+    
+}
+//--------------------------------------------------------------------------------
+// BMS holder and feet
+module multiCap2(numY=4,bars=0,print=0){
+
+depth=3;
+
+    difference(){
+      union(){
+        // add legs, this assumes a 13s1p battery
+        translate([79/2+11.5,33,15])
+        cube([33,12,14],center=true);
+
+      }
+      
+      // cut for bms
+      translate([62.5,135,-41])
+      rotate([0,0,-90])
+      rotate([90,0,0])
+      bms(tol=0.3);
+      
+      // cut for endcap
+      translate([79/2,0,0])
+      translate([2.8,33,0])
+      cube([8+0.4,22+0.4,22+0.4],center=true);
+
+      // cut oval
+      translate([79/2-11,33,23])
+      rotate([90,0,0])
+      scale([2,1,1])
+      cylinder(r=9,h=40,center=true,$fn=89);
+
+      translate([79/2+28,45,22])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=4,h=30,f=66);      
+      
+      i=1;
+        
+      // cuts for tension bars
+      translate([0,-11+22*i,-depth])
+      tension(tol=0.3);
+      translate([0,11+22*i,-depth])
+      tension(tol=0.3);
+
+      // cuts for tension bars
+      translate([0,-11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+      translate([0,11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+    }
+
+
+  
+}
+//--------------------------------------------------------------------------------
+// non-BMS holder and feet
+module multiCap3(numY=4,bars=0,print=0){
+
+depth=3;
+
+    difference(){
+      union(){
+        // add legs, this assumes a 13s1p battery
+        translate([79/2+10-7.75+1.5,33,15])
+        cube([33-15.5,12,14],center=true);
+
+      }
+      
+      // cut for bms
+      translate([62.5,135,-41])
+      rotate([0,0,-90])
+      rotate([90,0,0])
+      bms(tol=0.3);
+      
+      // cut for endcap
+      translate([79/2,0,0])
+      translate([2.8,33,0])
+      cube([8+0.4,22+0.4,22+0.4],center=true);
+
+      // cut oval
+      translate([79/2-12,33,23])
+      rotate([90,0,0])
+      scale([2,1,1])
+      cylinder(r=9,h=40,center=true,$fn=89);
+
+      translate([79/2+12.5,45,22])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=3,h=30,f=66);      
+      
+      i=1;
+        
+      // cuts for tension bars
+      translate([0,-11+22*i,-depth])
+      tension(tol=0.3);
+      translate([0,11+22*i,-depth])
+      tension(tol=0.3);
+
+      // cuts for tension bars
+      translate([0,-11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+      translate([0,11+22*i,-22+depth])
+      rotate([180,0,0])
+      tension(tol=0.3);
+    }
+
+
+  
+}
+
 
 //=================================================================================
 
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=200;
 ycut=200;
@@ -388,69 +633,76 @@ zcut=200;
 
 cutcube = 400;
 
-intersection(){
-  translate([-cutcube+xcut,-cutcube+ycut,-cutcube+zcut])
-  cube([cutcube,cutcube,cutcube]);
+//intersection(){
+//  translate([-cutcube+xcut,-cutcube+ycut,-cutcube+zcut])
+//  cube([cutcube,cutcube,cutcube]);
   
-  union(){
+//  union(){
 
 
-  //single();
-  //multi(numY=2,bars=1);
+  color("cyan")
+  multiCap2(numY=9,bars=0);
+  translate([0,22*4,0])
+  multiCap2(numY=9,bars=0);
+
+  translate([0,22*3,-22])
+  rotate([180,0,0])
+  multiCap2(numY=9,bars=0);
+  translate([0,22*7,-22])
+  rotate([180,0,0])
+  multiCap2(numY=9,bars=0);
+
+  mirror([1,0,0]){
+    color("blue")
+    multiCap3(numY=9,bars=0);
+    translate([0,22*4,0])
+    multiCap3(numY=9,bars=0);
+
+    translate([0,22*3,-22])
+    rotate([180,0,0])
+    multiCap3(numY=9,bars=0);
+    translate([0,22*7,-22])
+    rotate([180,0,0])
+    multiCap3(numY=9,bars=0);
+  }
   
-  difference(){
-    // trim a larger block down to size so get places for the tension bars
-    intersection(){
-      multi(numY=9,bars=0,print=1);
-      translate([-150,6,-50])
-      cube([300,22*7+10,100]);
-    }
-    // cut out 1 cell
-    translate([-100,148,-7])
-    cube([200,28,28]);
-  }
-
-  //tension();
-
-  if(0){
-    translate([100,0,0])
-    end1();
-
-    translate([50,0,0])
-    bar1();
-
-    translate([150,0,0])
-    cell1();
-
-    two1();
-
-    translate([-50,0,0])
-    wire1();
-  }
-
-
-  //two1cut(wire=3,tol=0.25);
-
-  if(0){
+  
+  color("green",alpha=0.5)
+  translate([62.5,126,-41])
+  rotate([0,0,-90])
+  rotate([90,0,0])
+  bms();
+  
+  if(1){
     difference(){
-      translate([2.8,0,0])
-      cube([8,42,18],center=true);
+      // trim a larger block down to size so get places for the tension bars
+      multi(numY=9,bars=1,print=0);
 
-      translate([0,0,0])
-      rotate([0,-90,0])
-      two1cut(wire=3,tol=0.2);
+      // cut out 1 cell
+      translate([-100,148,-7])
+      cube([200,28,28]);
+
+      // cut ends instead of using intersection?
+      translate([-100,-54,-50])
+      cube([200,60,80]);
+      translate([-100,148+22,-50])
+      cube([200,60,80]);
     }
   }
 
-  }
-}
-}
+//  }
 
+
+
+}
 
 // for printing
 //multi(numY=2,print=2);
 //tension();
 //endblock1();
+//bms();  
+
+multiCap3(numY=9,bars=0);
 
 //multi(numY=2,print=2);
 

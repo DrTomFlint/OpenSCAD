@@ -352,7 +352,7 @@ module rtdplug(){
 }
 //===================================
 
-rtdplug();
+//rtdplug();
 
 //adaptA();
 
@@ -366,7 +366,7 @@ cube([20,20,40]);
 }
 }
 
-//adaptB3();
+adaptB2();
 
 // cutaway view:
 if(0){
