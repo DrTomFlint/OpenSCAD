@@ -10,6 +10,60 @@
 use <../Parts/rounder.scad>
 
 //---------------------------------------------------------------------
+module slidePotKnob1(tol=0,pos=0){
+
+x0 = 60.0;
+y0 = 9.2;
+z0 = 6.48;
+
+    color("cyan")
+    
+  difference(){
+    // main body
+    linear_extrude(height=12,scale=0.8){
+      offset(r=1,$fn=99)
+      square([10,3],center=true);
+    }
+    
+    // cut for the slider post
+    translate([0,0,4.49])
+    cube([4.2,1.4,9],center=true);
+
+    // cut for marker
+    if(0){
+//    translate([0,0,11])
+    translate([0,0,12])
+    rotate([90,0,0])
+    cylinder(r=0.75,h=7,center=true,$fn=89);
+}
+
+    // cut for finger shape
+    if(0){
+      translate([0,0,12])
+      rotate([90,0,0])
+      scale([6,1,1])
+      cylinder(r=1,h=7,center=true,$fn=89);
+    }
+  }
+  
+  
+}
+
+
+//---------------------------------------------------------------------
+module slidePotCut1(tol=0,pos=0){
+
+x0 = 60.0;
+y0 = 9.2;
+z0 = 6.48;
+
+    // main body
+    translate([-tol/2,-tol/2,-tol/2])
+    cube([x0+tol,y0+tol,z0+tol]);
+}
+
+
+//---------------------------------------------------------------------
 module slidePot1(tol=0,pos=0){
 
 x0 = 60.0;
@@ -104,8 +158,16 @@ z0 = 6.48;
 
 //=================================================================================
 
-slidePot1(pos=0);
-translate([0,20,0])
-slidePot2(pos=0);
+//slidePot1(pos=0);
+//difference(){
+slidePotKnob1();
+//translate([0,0,-1])
+//cube([40,40,40]);
+//}
+
+if(0){
+  translate([0,20,0])
+  slidePot2(pos=0);
+}
 
 //=================================================================================

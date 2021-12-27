@@ -9,14 +9,25 @@
 
 use <../Parts/rounder.scad>
 
+//----------------------------------------------------------------------
+module switchPaddleCut(tol=0){
+  // switch body
+  translate([0,0,-14.5])
+  intersection(){
+    cylinder(r=14.5/2+tol/2, h=14.5+tol, $fn=67);
+    cube([20+tol,13.6+tol,30+tol],center=true);
+  }
+
+}
+
 //---------------------------------------------------------------------
-module switchPaddle(position=1){
+module switchPaddle(position=1,tol=0){
   
   // switch body
   translate([0,0,-14.5])
   intersection(){
-    cylinder(r=14.5/2, h=14.5, $fn=67);
-    cube([20,13.6,30],center=true);
+    cylinder(r=14.5/2+tol/2, h=14.5+tol, $fn=67);
+    cube([20+tol,13.6+tol,30+tol],center=true);
   }
   
   // tabs

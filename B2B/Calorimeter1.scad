@@ -17,6 +17,66 @@ LidAngle=180;
 LidLift=40;
 
 //--------------------------------------------------
+module prop1(){
+
+  // U shape for base
+  difference(){
+    union(){
+      cube([20,50,10],center=true);
+    
+      translate([0,10,17])
+      cube([20,13,30],center=true);
+
+      // fillets
+      translate([-10,3.5,5])
+      rotate([0,90,0])
+      rotate([0,0,180])
+      rounder(r=6,h=20,f=89);
+
+      translate([-10,16.5,5])
+      rotate([0,90,0])
+      rotate([0,0,90])
+      rounder(r=6,h=20,f=89);  
+    }
+    
+    translate([0,0,-2])
+    cube([11.2,50.2,6.1],center=true);
+
+    translate([2,10,21])
+    cube([17,6.8,32],center=true);
+    
+    translate([12,18,32])
+    rotate([90,0,0])
+    scale([1,1.5,1])
+    cylinder(r=14,h=20,center=true,$fn=99);
+
+    translate([12,0,32])
+    rotate([90,0,0])
+    scale([0.6,1.5,1])
+    cylinder(r=14,h=20,center=true,$fn=99);
+
+    translate([10,25,-6])
+    rotate([0,0,180])
+    rounder(r=10,h=20,f=89);  
+
+    translate([-10,25,-6])
+    rotate([0,0,-90])
+    rounder(r=10,h=20,f=89);  
+
+    translate([10,-25,-6])
+    rotate([0,0,90])
+    rounder(r=10,h=20,f=89);  
+
+    translate([-10,-25,-6])
+    rotate([0,0,0])
+    rounder(r=10,h=20,f=89);  
+
+  }
+    
+
+}
+
+//--------------------------------------------------
 module L1(len=10){
 
 difference(){
@@ -598,7 +658,7 @@ module calheater(){
 //=================================================================================
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=260;
 ycut=660;
@@ -703,6 +763,11 @@ if(0){
   }
   
 }
+
+//prop1();
+translate([40,0,0])
+mirror([1,0,0])
+prop1();
 
 //spider1();
 //carrier1();
