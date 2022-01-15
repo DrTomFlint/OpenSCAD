@@ -11,6 +11,8 @@
 // OpenScad coding could have been better so this takes a while to 
 // render, 30 seconds on my laptop for the spring.
 // 
+// Add adapter for spools that have large center hole.
+//
 // DrTomFlint July 2020
 //=====================================================================
 // Customizer parameters:
@@ -149,14 +151,77 @@ module spring(){
   cylinder(r=1.5,h=6.6,$fn=44);
 }
 
+//------------------------------------------------------------------
+// side near the clutch
+module spoolAdapter1(){
+
+$fn=222;
+  
+  difference(){
+    union(){
+      cylinder(r1=78/2,r2=75/2,h=8);
+      cylinder(r=86/2,h=2);
+    }
+    translate([0,0,-0.1])
+    cylinder(r1=38/2,r2=30/2,h=4.2);
+    
+    // cut to make lip
+    translate([0,0,3])
+    cylinder(r1=69/2,r2=73/2,h=6);
+    
+    // material reduction
+    for(i=[0:9]){
+      rotate([0,0,i*360/10])
+      translate([27,0,0])
+      cylinder(r=7,h=20,center=true);
+    }
+  }
+  
+}
+
+//------------------------------------------------------------------
+// side away from the clutch
+module spoolAdapter2(){
+
+$fn=222;
+  
+  difference(){
+    union(){
+      cylinder(r1=75/2,r2=72/2,h=8);
+      cylinder(r=86/2,h=2);
+    }
+    // cut for taper nut
+    translate([0,0,-0.1])
+    cylinder(r1=42/2,r2=34/2,h=4.2);
+    
+    // cut to make lip
+    translate([0,0,3])
+    cylinder(r1=66/2,r2=70/2,h=6);
+    
+    // material reduction
+    for(i=[0:9]){
+      rotate([0,0,i*360/10])
+      translate([27,0,0])
+      cylinder(r=5,h=20,center=true);
+    }
+  }
+}
+
 //==================================================================
 
+spoolAdapter2();
+
+//translate([0,200,0])
+//spoolAdapter2();
+
+if(0){
 // un-mirrored parts for left side of the Dusa only
 if(SpringOn){
   spring();
 }
 if(HousingOn){
   house();
+}
 }
 
 // mirrored parts for the MMU and right side of Dusa
