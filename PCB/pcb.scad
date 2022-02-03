@@ -715,6 +715,140 @@ module post3(nuts=0,num=8){
 }
 
 //-------------------------------------------------------------------------------
+module post4(nuts=0,num=8){
+  
+  difference(){
+    
+    // post
+    union(){
+      translate([0,0,-0.5])
+      cube([14,30,zpost+0.5]);
+    
+      // tab for arm 1
+      hull(){
+        translate([7,30+6,zpost-6])
+        cylinder(r=5,h=6,$fn=99);
+
+        translate([0,0,zpost-6])
+        cube([14,30,6]);
+      }
+    }
+
+    // cut for M3x6 and brass heat set insert
+    translate([7,30+6,zpost-6]){
+      cylinder(r=1.6,h=7);
+      cylinder(r=2.3,h=3.0+1);
+    }
+//    cylinder(r=1.7,h=10,$fn=22);
+    
+    // cut on base for tslot
+    translate([0,15,-15])
+    rotate([0,90,0])
+    tslot1(type=1,len=30);
+
+    // cut for access to tbolt
+    translate([7,15,4])
+    cylinder(r1=7.4/2,r2=8.5/2,h=zpost,$fn=99);
+  
+    // M4x12 tie downs to the T-slot
+    translate([7,15,-8])
+    cylinder(r=2.15,h=12,$fn=22);
+  
+    // diagonal cut for material reduction
+    translate([-10,-10,-3])
+    rotate([45,0,0])
+    cube([100,100,100]);        
+
+    // wire pass-through into the base
+    translate([2,10,14.5])
+    rotate([100,0,0])
+    cylinder(r=1.0,h=60,$fn=22,center=true);
+    
+    // wire pass-through into the base
+    hull(){
+      translate([12,10,14.0])
+      rotate([90,0,0])
+      cylinder(r=1.0,h=10,$fn=22,center=true);
+      translate([16,10,14.0])
+      rotate([90,0,0])
+      cylinder(r=1.0,h=10,$fn=22,center=true);
+    }
+      translate([12,10,14.0])
+      rotate([90,0,0])
+      cylinder(r=1.0,h=60,$fn=22,center=true);
+    
+    // cut to add a 0.1" pin for digital probes 
+    translate([12,11,10])
+    rotate([0,0,0])
+    cube([2.5,2.5,20]);
+    
+    // material reduction and pcb edge clearance near base
+    translate([0,30,4])
+    rotate([0,90,0])
+    scale([2,1,1])
+    cylinder(r=6,h=60,$fn=99,center=true);
+    
+    // text numbers
+    color("red")
+    translate([7,8,14.3])
+    rotate([45,0,0])
+    linear_extrude(height=0.5,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([-0.01+0.3,23,20])
+    rotate([0,0,-90])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
+    color("red")
+    translate([14.01-0.3,23,20])
+    rotate([0,0,90])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    
+  }    
+    
+  translate([0,30,zpost-6+0])
+  rotate([0,90,0])
+  rounder(r=3,h=14,f=45);
+
+  // bolt and nut
+  if(nuts==1){
+    color("red"){
+      // nut and washer space
+      translate([7,30+6,zpost-6-3])
+      cylinder(r=7/2,h=3,$fn=22);
+
+      // M3 shaft
+      translate([7,30+6,zpost-6])
+      cylinder(r=3/2,h=12,$fn=22);
+
+      // head and washer space
+      translate([7,30+6,zpost+6])
+      cylinder(r=7/2,h=3.6,$fn=22);
+    }
+    translate([arm2x0,arm2y0,0])
+    color("blue"){
+      // nut and washer space
+      translate([7,30+6,zpost-6-3])
+      cylinder(r=7/2,h=3,$fn=22);
+
+      // M3 shaft
+      translate([7,30+6,zpost-6])
+      cylinder(r=3/2,h=12,$fn=22);
+
+      // head and washer space
+      translate([7,30+6,zpost+6])
+      cylinder(r=7/2,h=3.6,$fn=22);
+    }
+  }
+    
+}
+
+//-------------------------------------------------------------------------------
 // t-slot base for DCC
 module base1(){
   
@@ -1054,10 +1188,11 @@ if(0){
 }
 
 // for printing
-arm1();
+//arm1();
 //arm2(pang=20);
 //post3(num=1);
 //mount1(x0=0);
+post4(num=1);
 
 if(0){
   for(i=[11:14]){

@@ -47,8 +47,8 @@ F3=22;
     // boss
     translate([0,0,z1/2])
     intersection(){
-        cube([42.4,42.4,z1],center=true);
-        cylinder(r=53/2,h=z1,center=true,$fn=F2);
+        cube([42.4+tol,42.4+tol,z1+tol],center=true);
+        cylinder(r=53/2+tol/2,h=z1+tol,center=true,$fn=F2);
     }
 
     // stator stack smaller than end plates

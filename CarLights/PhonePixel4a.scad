@@ -167,30 +167,33 @@ module hinge1(
 
 //--------------------------
 // Hinge
-module hinge2(
-){
+module hinge2(){
+$fn=99;
+    
 difference(){
     union(){
     translate([2,0,0])
     linear_extrude(height=2)
-    offset(r=2,$fn=22)
+    offset(r=2)
     translate([0,2,0])
     square([44,5]);
         
-    translate([25.5-2,4.5,-5])
-    cylinder(r1=2.2,r2=2.6,h=7,$fn=22);
-    translate([25.5-18.5-2,4.5,-5])
-    cylinder(r1=2.2,r2=2.6,h=7,$fn=22);
-    translate([25.5+18.5-2,4.5,-5])
-    cylinder(r1=2.2,r2=2.6,h=7,$fn=22);
+    translate([25.5-2,4.5,-6])
+    cylinder(r1=2.2,r2=2.6,h=8);
+    translate([25.5-18.5-2,4.5,-6])
+    cylinder(r1=2.2,r2=2.6,h=8);
+    translate([25.5+18.5-2,4.5,-6])
+    cylinder(r1=2.2,r2=2.6,h=8);
     }   // end union
-    
-    translate([25.5-2,4.5,-5])
-    cylinder(r1=0.4,r2=0.8,h=7,$fn=22);
-    translate([25.5-18.5-2,4.5,-5])
-    cylinder(r1=0.4,r2=0.8,h=7,$fn=22);
-    translate([25.5+18.5-2,4.5,-5])
-    cylinder(r1=0.4,r2=0.8,h=7,$fn=22);
+
+/*    
+    translate([25.5-2,4.5,-7])
+    cylinder(r1=0.4,r2=0.8,h=10);
+    translate([25.5-18.5-2,4.5,-7])
+    cylinder(r1=0.4,r2=0.8,h=10);
+    translate([25.5+18.5-2,4.5,-7])
+    cylinder(r1=0.4,r2=0.8,h=10);
+    */
     }   // end diff
 }
 

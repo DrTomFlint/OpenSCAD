@@ -56,7 +56,7 @@ InnerLowOn = 1;
 PulleyOn = 1;
 
 OuterTab = 1; // 0=off, 1=inner, 2=outer
-InnerTab = 2; // 0=off, 1=inner, 2=outer
+InnerTab = 1; // 0=off, 1=inner, 2=outer
 
 CutawayOn = 0;    // turn this on to make a sectional view
 CutawayAngle = 0; // adjust the angle of the sectional cut
@@ -546,6 +546,6 @@ if(CutawayOn){
 }
 
 //=======================
-slew10();
+slew12();
 
 //=====================================================================
