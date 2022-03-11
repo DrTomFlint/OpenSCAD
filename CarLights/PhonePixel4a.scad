@@ -318,13 +318,13 @@ if(0){
 
 }    
 
-//clip2();
+clip2();
 //clip2(Cdeep=11.6);
 
 //hinge1();
 //color("orange") clip1();
 
-hinge2();
+//hinge2();
 //translate([15,0,0]) clip2();
 
 //===========================

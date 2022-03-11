@@ -22,7 +22,7 @@ y1 = 192.2+30;       // distance between front and back rail centers
 
 zpost = 30;      // height of the post
 
-arm1x = 40;     // length of arm1
+arm1x = 60;     // length of arm1
 arm1angle = 45;
 
 arm2x = 40;     // length of arm2
@@ -349,6 +349,72 @@ module mount1(x0=0){
       rounder(h=14,r=2,f=45);
 
     }
+    
+    // cut for M3x16
+    translate([x0,9,7])
+    cylinder(r=1.7,h=16);
+      
+    // cut for t-slot
+    translate([-10.5,0,0])
+    translate([-15,0,0])
+    rotate([-90,0,0])
+    tslot1(type=1,len=y1-30,tol=0.2);
+    
+    // cut for M4x12 bolt, 6 mm thread space
+    translate([-11,9,0])
+    rotate([0,90,0])
+    cylinder(r=2.0,h=6);
+    
+    // 45 degree cut at bottom
+    translate([-10,-10,-15])
+    rotate([0,45,0])
+    cube([20,40,20]);
+
+    // 45 degree trim to clear the arm posts
+    translate([-35,-10,18.5])
+    rotate([0,45,0])
+    cube([20,40,20]);
+    
+  }
+  
+}
+
+//-------------------------------------------------------------------------------
+// mounts for the PCB, left or right side, mount2 adds the brass heat-set nut
+module mount2(x0=0){
+  
+
+  // lower body
+  difference(){
+    union(){
+      translate([-10.5-0.5,9-7,-15])
+      cube([6,14,30]);
+
+      // post up to the pcb
+      translate([x0,9,10])
+      cylinder(r=2.5-0.15,h=9.5);
+      
+      translate([x0,9,10])
+      cylinder(r=3.5,h=9.5-1.5);
+
+      hull(){
+        translate([x0,9,10])
+        cylinder(r=3.5,h=5);
+
+        translate([-10.5-0.5,9-7,10])
+        cube([8,14,5]);
+      }
+      
+      translate([-5,16,10])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(h=14,r=2,f=45);
+
+    }
+
+    // cut for M3x6 and brass heat set insert
+    translate([x0,9,9.9])
+    cylinder(r=2.3,h=3.0+1);    
     
     // cut for M3x16
     translate([x0,9,7])
@@ -1192,7 +1258,8 @@ if(0){
 //arm2(pang=20);
 //post3(num=1);
 //mount1(x0=0);
-post4(num=1);
+//mount2(x0=0);
+//post4(num=1);
 
 if(0){
   for(i=[11:14]){
@@ -1201,7 +1268,7 @@ if(0){
   }
 }
 
-if(0){
+if(1){
 for(i=[0:7]){
   translate([0,8.75*i,0])
   washer1();

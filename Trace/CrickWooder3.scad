@@ -12,17 +12,17 @@ use <./C3text2.scad>
 
 if(1){
 intersection(){
-  cylinder(r=36,h=1.2,$fn=300);
+  cylinder(r=37,h=1.5,$fn=300);
 
-  scale([80,80,1.2]){
+  scale([80,80,1.5]){
     
     //color("white")
     //C3white();
     //color("purple")
-    //C3purple();
+    C3purple();
     //color("white")
     //C3text();
-    C3text2();
+    //C3text2();
 
     }
   }
@@ -32,15 +32,15 @@ intersection(){
 if(0){
   color("black")
 difference(){
-  cylinder(r=36,h=1.2,$fn=300);
+  cylinder(r=37,h=1.2,$fn=300);
 
   translate([0,0,-1])
   scale([80,80,4]){
   
   C3purple();
   C3white();
-//  C3text();
-  C3text2();
+  C3text();
+//  C3text2();
   
   }
   

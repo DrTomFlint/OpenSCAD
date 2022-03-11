@@ -9,9 +9,11 @@ use <./ms3orange.scad>
 use <./ms3purple.scad>
 use <./ms3yellow.scad>
 
+use <./diskClip.scad>
+
 //=====================================================
 
-if(1){
+if(0){
 intersection(){
   translate([0.6,-1,0])
 //  cylinder(r=50,h=1.5,$fn=300);
@@ -20,9 +22,9 @@ intersection(){
 //scale([100,100,1.5]){
 scale([80,80,1.5]){
   
-//  ms3blue();  
-//  ms3green();  
-//  ms3purple();  
+  ms3blue();  
+  ms3green();  
+  ms3purple();  
   ms3yellow();
   
 }
@@ -30,7 +32,7 @@ scale([80,80,1.5]){
 }
 
 // get black by subtraction so no voids between parts
-if(0){
+if(1){
 difference(){
   translate([0.3,-1,0])
 //  cylinder(r=49,h=1.5,$fn=300);
@@ -56,7 +58,7 @@ difference(){
 }
 }
 
-
+diskClip();
 
 //=====================================================
 
