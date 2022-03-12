@@ -151,8 +151,8 @@ module S4blue(){
       cylinder(r=smag/2+10,h=12);
     }
     // add some color on right side
-    translate([-soff+10,40,-1])
-    cylinder(r=10,h=10);
+    translate([-soff+10,45,-1])
+    cylinder(r=10,h=10,$fn=99);
 }
 //------------------------------------------------------------------
 module S4red(){
@@ -168,8 +168,8 @@ module S4red(){
     }
     
     // add some color on left side
-    translate([-soff+10,-40,-1])
-    cylinder(r=10,h=10);
+    translate([-soff+10,-45,-1])
+    cylinder(r=10,h=10,$fn=99);
     
 }
 //------------------------------------------------------------------
@@ -375,7 +375,7 @@ module unfanBlack(){
 //unfanBlue();
 //unfanRed();
 //unfanWhite();
-unfanBlack();
+//unfanBlack();
 
 //blade1();
 //fan1();
@@ -383,7 +383,7 @@ unfanBlack();
 
 //blade1edge();
 //fan1edge();
-//unfan1edge();
+unfan1edge();
 
 
 
