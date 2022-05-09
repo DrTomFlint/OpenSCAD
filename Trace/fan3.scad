@@ -9,19 +9,29 @@ use <./fan2green.scad>
 use <./fan2red.scad>
 use <./fan2white.scad>
 
-thick = 1.2;    // thickness of the blades
+thick = 2.1;    // thickness of the blades
+thin = 1.5;     // thin parts of the blade
+
 tall = 190;     // distance between hub and center of tip circle
 stub = 0;      // distance hub to base circle
+mid = 70;
 
 edge = 1.2;     // width of clear edge on blades
-rbase = 8;      // radius of the base circle
-rbasehole = 5;
-rtip = 23;      // radius of the tip circle
+rbase = 16;      // radius of the base circle
+rbasehole = 8;
+rmid1=8;
+rmid2=14;
+
+rtip = 24;      // radius of the tip circle
 tipscale = 1.3;
 
 Nblade=9;          // number of blades
 full = 160;
+folded = 5;
+
 delta=full/Nblade;   // angle between blades when open
+deltaFold=folded/Nblade;   // angle between blades when open
+
 doff = 0.866*(180-full);
 //doff = full/Nblade/2;
 
@@ -31,10 +41,10 @@ yfix = 100;
 smag = 420;    // stealie magnification, scales on x and y
 soff = 100;    // stealie offset in X
 
-ribbonx = 0.80;
-ribbony = 5;
-ribbond = 8;
-ribbont = 185;    // height along blade to place ribbon 
+ribbonx = 1.2;
+ribbony = 7;
+ribbond = 5;
+ribbont = 70;    // height along blade to place ribbon 
 
 //------------------------------------------------------------------
 module tip1(){
@@ -50,14 +60,31 @@ module blade1(){
 $fn = 89;
 
   difference(){
-    hull(){
+    union(){
+      // at the pivot
       translate([0,-stub,0])
       cylinder(r=rbase,h=thick);
-      translate([0,tall,0])
-      scale([tipscale,1,1])
-      cylinder(r=rtip,h=thick);
-    }
+      
+      // first section
+      hull(){
+        translate([0,-stub,0])
+        cylinder(r=rbase-10,h=thick);
 
+        translate([0,mid-10,0])
+        cylinder(r=rmid1,h=thick);
+      }
+      
+      // second section
+      hull(){
+        translate([0,mid,0])
+        cylinder(r=rmid2,h=thin);
+        
+        translate([0,tall,0])
+        scale([tipscale,1,1])
+        cylinder(r=rtip,h=thin);
+      }
+    }
+    
     // pivot hole
     cylinder(r=rbasehole,h=3*thick,center=true);
     
@@ -105,6 +132,17 @@ module fan1(){
   for(i=[0:Nblade-1]){
     translate([0,0,i*thick])
     rotate([0,0,i*delta+doff])
+    color([i/Nblade, i/Nblade, i/Nblade])
+    blade1();
+  }
+}
+
+//------------------------------------------------------------------
+module fan1Folded(){
+
+  for(i=[0:Nblade-1]){
+    translate([0,0,i*thick])
+    rotate([0,0,i*deltaFold+doff])
     color([i/Nblade, i/Nblade, i/Nblade])
     blade1();
   }
@@ -387,11 +425,13 @@ $fn=89;
 
 //====================================================================
 
-intersection(){
-//difference(){
-  pivot();
-  translate([0,0,0])
-  cube([20,20,10],center=true);
+if(0){
+  intersection(){
+  //difference(){
+    pivot();
+    translate([0,0,0])
+    cube([20,20,10],center=true);
+  }
 }
 
 //fanred();
@@ -416,7 +456,8 @@ intersection(){
 //unfanBlack(6,8);
 
 //blade1();
-//fan1();
+fan1();
+//fan1Folded();
 //unfan1();
 
 //color("red")
