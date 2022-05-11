@@ -9,6 +9,10 @@
 
 
 use <../Parts/threads.scad>
+use <./fan5white.scad>
+use <./fan5purple.scad>
+use <./fan5orange.scad>
+use <./fan5notblack.scad>
 
 
 layer = 0.2;          // thickness of 1 layer
@@ -41,11 +45,12 @@ doff = (180-full);
 //doff = 0.866*(180-full);
 //doff = full/Nblade/2;
 
-spread = 44;    // distance between blades when unfan
-yfix = 100;
+spread = 58;    // distance between blades when unfan
+yfix = 125;
 
-smag = 420;    // stealie magnification, scales on x and y
-soff = 100;    // stealie offset in X
+smagx = 380;    // image magnification, scales on x and y
+smagy = 380;    // image magnification, scales on x and y
+soff = 90;    // image offset in X
 
 ribbonx = 1.2;
 ribbony = 7;
@@ -316,9 +321,6 @@ $fn=99;
     cube([rmid1*2+10,edge+0.2,thick]);
        
   }
-    
-
-
   
 }  
 
@@ -329,11 +331,11 @@ module fan1(){
   for(i=[0:Nblade-1]){
     translate([0,0,i*thick])
     rotate([0,0,i*delta+doff]){
-    color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, i/Nblade*0.5+0.5])
-      blade1();
-    color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, 0.5])
-      blade2();
-    color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, i/Nblade*0.5+0.5])
+    //color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, i/Nblade*0.5+0.5])
+    //  blade1();
+    //color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, 0.5])
+    //  blade2();
+    //color([i/Nblade*0.5+0.5, i/Nblade*0.5+0.5, i/Nblade*0.5+0.5])
     blade2edge();
     }
   }
@@ -354,7 +356,7 @@ module fan1Folded(){
 //------------------------------------------------------------------
 module fan1edge(){
 
-  for(i=[0:Nblade-1]){
+  for(i=[first:last]){
     translate([0,0,i*thick])
     rotate([0,0,i*delta+doff])
     color([i/Nblade,i/Nblade,i/Nblade])
@@ -375,7 +377,7 @@ module unfan1edge(first=0,last=Nblade-1){
     translate([0,0,i*thick])
     rotate([0,0,i*delta+doff])
     color([i/Nblade,i/Nblade,i/Nblade])
-    blade1edge();
+    blade2edge();
   }
 }
 
@@ -400,24 +402,83 @@ module unfan1(first=0,last=Nblade-1){
 //------------------------------------------------------------------
 module fanwhite(){
     
-  intersection(){
-    for(i=[0:Nblade-1]){
+  intersection(first=0,last=Nblade-1){
+      for(i=[first:last]){
         translate([0,0,i*thick])
         rotate([0,0,i*delta+doff])
         color([i/Nblade,i/Nblade,i/Nblade])
-        blade1();
+        blade2();
     }
 
     translate([-soff,0,-1])
     rotate([0,0,90])
-    scale([smag,smag,20])
-    fan2white();
+    scale([smagx,smagy,20])
+    fan5white();
   }
     
 }
 
 //------------------------------------------------------------------
-module unfanWhite(first=0,last=Nblade-1){
+module fanorange(first=0,last=Nblade-1){
+    
+  intersection(){
+      for(i=[first:last]){
+        translate([0,0,i*thick])
+        rotate([0,0,i*delta+doff])
+        color([i/Nblade,i/Nblade,i/Nblade])
+        blade2();
+    }
+
+    translate([-soff,0,-1])
+    rotate([0,0,90])
+    scale([smagx,smagy,20])
+    fan5orange();
+  }
+    
+}
+
+//------------------------------------------------------------------
+module fanpurple(first=0,last=Nblade-1){
+    
+  intersection(){
+      for(i=[first:last]){
+        translate([0,0,i*thick])
+        rotate([0,0,i*delta+doff])
+        color([i/Nblade,i/Nblade,i/Nblade])
+        blade2();
+    }
+
+    translate([-soff,0,-1])
+    rotate([0,0,90])
+    scale([smagx,smagy,20])
+    fan5purple();
+  }
+    
+}
+
+//------------------------------------------------------------------
+module fanblack(first=0,last=Nblade-1){
+    
+  difference(){
+    union(){
+      for(i=[first:last]){
+          translate([0,0,i*thick])
+          rotate([0,0,i*delta+doff])
+          color([i/Nblade,i/Nblade,i/Nblade])
+          blade2();
+      }
+    }
+
+    translate([-soff,0,-1])
+    rotate([0,0,90])
+    scale([smagx,smagy,20])
+    fan5notblack();
+  }
+    
+}
+
+//------------------------------------------------------------------
+module unfanwhite(first=0,last=Nblade-1){
 
   for(i=[first:last]){
     // unform the fan
@@ -430,12 +491,85 @@ module unfanWhite(first=0,last=Nblade-1){
       translate([0,0,i*thick])
       rotate([0,0,i*delta+doff])
       color([i/Nblade,i/Nblade,i/Nblade])
-      blade1();
+      blade2();
 
       translate([-soff,0,-1])
       rotate([0,0,90])
-      scale([smag,smag,20])
-      fan2white();
+      scale([smagx,smagy,20])
+      fan5white();
+    }
+  }
+}
+
+//------------------------------------------------------------------
+module unfanpurple(first=0,last=Nblade-1){
+
+  for(i=[first:last]){
+    // unform the fan
+    translate([spread*i,0,-i*thick])
+    rotate([0,0,180*i])
+    translate([0,-yfix,0])
+    rotate([0,0,-i*delta-doff])
+    
+    intersection(){
+      translate([0,0,i*thick])
+      rotate([0,0,i*delta+doff])
+      color([i/Nblade,i/Nblade,i/Nblade])
+      blade2();
+
+      translate([-soff,0,-1])
+      rotate([0,0,90])
+      scale([smagx,smagy,20])
+      fan5purple();
+    }
+  }
+}
+
+//------------------------------------------------------------------
+module unfanorange(first=0,last=Nblade-1){
+
+  for(i=[first:last]){
+    // unform the fan
+    translate([spread*i,0,-i*thick])
+    rotate([0,0,180*i])
+    translate([0,-yfix,0])
+    rotate([0,0,-i*delta-doff])
+    
+    intersection(){
+      translate([0,0,i*thick])
+      rotate([0,0,i*delta+doff])
+      color([i/Nblade,i/Nblade,i/Nblade])
+      blade2();
+
+      translate([-soff,0,-1])
+      rotate([0,0,90])
+      scale([smagx,smagy,20])
+      fan5orange();
+    }
+  }
+}
+
+
+//------------------------------------------------------------------
+module unfanblack(first=0,last=Nblade-1){
+
+  for(i=[first:last]){
+    // unform the fan
+    translate([spread*i,0,-i*thick])
+    rotate([0,0,180*i])
+    translate([0,-yfix,0])
+    rotate([0,0,-i*delta-doff])
+    
+    difference(){
+      translate([0,0,i*thick])
+      rotate([0,0,i*delta+doff])
+      color([i/Nblade,i/Nblade,i/Nblade])
+      blade2();
+
+      translate([-soff,0,-1])
+      rotate([0,0,90])
+      scale([smagx,smagy,20])
+      fan5notblack();
     }
   }
 }
@@ -498,18 +632,42 @@ if(0){
   }
 }
 
+
+//fan5notblack();
+
 //pivota();
 //pivotb();
 
-//fanred();
-//unfanRed(0,2);
-//unfanRed(3,5);
-//unfanRed(6,8);
+//fan1edge();
+fanwhite();
+fanblack();
+fanorange();
+//fanpurple();
+
+//unfanwhite(0,2);
+//unfanwhite(3,5);
+//unfanwhite(6);
+
+//unfanblack(0,2);
+//unfanblack(3,5);
+//unfanblack(6);
+
+//unfanorange(0,2);
+//unfanorange(3,5);
+//unfanorange(6);
+
+//unfanpurple(0,2);
+//unfanpurple(3,5);
+//unfanpurple(6);
+
+//unfan1edge(0,2);
+//unfan1edge(3,5);
+//unfan1edge(6);
 
 //blade1();
 //translate([0,0,thick+0.5])
 //color("blue")
-blade1();
+//blade1();
 //color("cyan")
 //blade2();
 //translate([0,0,10])
@@ -520,7 +678,8 @@ blade1();
 //translate([0,0,40])
 //fan1Folded();
 //unfan1();
-
+//translate([0,0,30])
+//fan5white();
 
 //blade1edge();
 //fan1edge();
