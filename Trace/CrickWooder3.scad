@@ -12,14 +12,14 @@ use <./C3text2.scad>
 
 if(1){
 intersection(){
-  cylinder(r=37,h=1.5,$fn=300);
+  cylinder(r=36,h=1.2,$fn=300);
 
-  scale([80,80,1.5]){
+  scale([80,80,1.2]){
     
     //color("white")
-    //C3white();
+    C3white();
     //color("purple")
-    C3purple();
+    //C3purple();
     //color("white")
     //C3text();
     //C3text2();

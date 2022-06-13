@@ -8,7 +8,7 @@ use <./Lightning1white.scad>
 use <./Lightning1blue.scad>
 use <./Lightning1red.scad>
 
-thick = 1.2;    // thickness of the blades
+thick = 2.1;    // thickness of the blades
 
 mag=40;
 R0=16;
@@ -80,17 +80,17 @@ module L1black(){
 
     // hanger hole
     translate([0,0.6+R0+0.5,0])
-    cylinder(r=0.6,h=3*thick, center=true, $fn=222);
+    cylinder(r=0.8,h=3*thick, center=true, $fn=222);
   }
 
 }
 
 //===============================================================
 
-//L1white();
+L1white();
 //L1blue();
 //L1red();
-L1black();
+//L1black();
 
 //===============================================================
 

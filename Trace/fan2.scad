@@ -8,6 +8,8 @@
 use <./fan2green.scad>
 use <./fan2red.scad>
 use <./fan2white.scad>
+use <../Parts/threads.scad>
+
 
 thick = 1.2;    // thickness of the blades
 tall = 190;     // distance between hub and center of tip circle
@@ -385,14 +387,67 @@ $fn=89;
 
 }
 
+//---------------------------------------------------------
+module pivota(){
+
+$fn=89;
+  difference(){
+    cylinder(r=6.5/2,h=8.3);
+
+    //cylinder(r=0.6,h=20*thick,center=true);
+    metric_thread (diameter=4.5, pitch=1, length=8.3, internal=true);
+  }
+
+
+  difference(){
+    translate([0,0,8.3])
+    cylinder(r1=rbasehole+1,r2=rbasehole,h=thick);
+    
+    translate([15,0,10])
+    cube([20,20,20],center=true);
+    translate([-15,0,10])
+    cube([20,20,20],center=true);
+  }
+  
+  
+}
+
+//---------------------------------------------------------
+module pivotb(){
+
+$fn=89;
+
+  difference(){
+    metric_thread (diameter=4.2,  pitch=1, length=7.0, internal=false, leadin=1);
+    //cylinder(r=0.6,h=20*thick,center=true);
+  }
+  
+  difference(){
+    translate([0,0,-thick])
+    cylinder(r1=rbasehole,r2=rbasehole+1,h=thick);
+    translate([15,0,0])
+    cube([20,20,20],center=true);
+    translate([-15,0,0])
+    cube([20,20,20],center=true);
+  }
+
+}
+
 //====================================================================
 
-intersection(){
-//difference(){
-  pivot();
-  translate([0,0,0])
-  cube([20,20,10],center=true);
+if(1){
+  difference(){
+    union(){    
+      pivota();
+      pivotb();
+    }
+    translate([-10,0,-5])
+    cube([20,20,20]);
+  }
 }
+
+//pivota();
+//pivotb();
 
 //fanred();
 //fanwhite();
