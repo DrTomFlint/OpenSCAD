@@ -1118,7 +1118,7 @@ if(0){
 
 
 // left rail only
-if(0){
+if(1){
   translate([-10.5,0,0])
   translate([-15,0,0])
   rotate([-90,0,0])
@@ -1126,7 +1126,7 @@ if(0){
 }
 
 // left rail mounts
-if(0){
+if(1){
   mount1(x0=0);
   translate([0,58.2-9,0])
   mount1(x0=0);
@@ -1167,7 +1167,7 @@ if(0){
 }
 
 // example probe arm *******************************************
-if(0){
+if(1){
   translate([10,-30,15]){
     post3(nuts=1);
     
@@ -1181,7 +1181,7 @@ if(0){
 }
 
 // DCC board
-if(0){
+if(1){
   translate([0,0,18])
   dcc();
 
@@ -1268,7 +1268,7 @@ if(0){
   }
 }
 
-if(1){
+if(0){
 for(i=[0:7]){
   translate([0,8.75*i,0])
   washer1();

@@ -84,13 +84,36 @@ module L1black(){
   }
 
 }
+//------------------------------------------------------------
+module L1blackB(){
+  
+  difference(){
+    
+    translate([0,0.6,0])
+    cylinder(r=R0,h=thick, $fn=222);
+    
+    translate([0,0,-1])
+    scale([mag,mag,10]){
+      Lightning1red();
+      Lightning1white();
+      Lightning1blue();
+    }
+
+    // trim out thin line between red-white-blue
+    translate([0,0.6,0])
+    cylinder(r=R0-1.6,h=thick, $fn=222);
+
+  }
+
+}
 
 //===============================================================
 
-L1white();
+//L1white();
 //L1blue();
 //L1red();
-//L1black();
+//L1black();    // with hanger hole
+L1blackB();   // no hanger hole
 
 //===============================================================
 

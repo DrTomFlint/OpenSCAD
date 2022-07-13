@@ -41,7 +41,7 @@ qtrap=1.5;
 
 F=400;       // $fn for major parts
 
-screw=0;
+screw=1;
 
 //--------------------------------------------------------------------
 
@@ -60,6 +60,7 @@ module base(){
     cylinder(r=rpost+3*thick,h=tall,$fn=89);
     translate([0,0,tall-3*thick])
     if(screw==1){
+      $fn=0;
       metric_thread (diameter=rpost*2, pitch=2, length=tall+4*thick, internal=true);
     }else{
       cylinder(r=rpost,h=tall+4*thick,$fn=23);
@@ -147,6 +148,7 @@ module post(){
 
   translate([0,0,tall-2*thick])
   if(screw==1){
+    $fn=0;
     metric_thread (diameter=rpost*2-0.3, pitch=2, length=tall, internal=false, leadin=3);
   }else{
     cylinder(r=rpost-0.125, h=tall, $fn=22);
@@ -237,6 +239,58 @@ difference(){
 }
 
 }
+
+//-----------------------------------------------------------------------
+module screen2(){
+  
+rflow1=1;
+rflow2=4;
+aflow=80;
+  
+  difference(){
+    // insert section
+    translate([0,0,-thick/2])
+    cube([xport-scroff,yport-scroff,thick*1],center=true);
+
+    // cut for thru port
+    translate([0,0,2*thick])
+    cube([xport-2*thick,2.5,20],center=true);
+  }
+  
+  difference(){
+    union(){
+      // boss
+      translate([0,0,3.5])
+      rotate([0,aflow,0])
+      cylinder(r1=rflow1,r2=rflow2,h=xport+10,center=true,$fn=F);
+
+    }
+
+    // cut inside boss
+    translate([0,0,3.5])
+    rotate([0,aflow,0])
+    cylinder(r1=rflow1-1,r2=rflow2-1,h=xport+10+0.1,center=true,$fn=F);
+    
+    // trim bottom off
+    translate([0,0,-10])
+    cube([3*xport,3*yport,thick*0+20],center=true);
+
+    // cut for the main slot, must be <3.0 mm to keep out bees
+//    translate([0,0,10+thick])
+//    cube([40,2.5,20],center=true);
+
+    // cut for thru port
+//    translate([0,0,2*thick])
+//    cube([xport-2*thick,2.5,20],center=true);
+
+    // bevel for thru port
+//    translate([0,0,thick+0.5])
+//    rotate([0,45,0])
+//    cube([11,2.5,11],center=true);
+  }
+    
+}
+
 //====================================================================
 
 if(0){
@@ -255,6 +309,7 @@ if(0){
           rotate([0,0,120*i])
           translate([rport,0,thick])
           screen();
+          //screen2();
         }
       }
 
@@ -278,8 +333,8 @@ if(0){
 //perch();
 //lid();
 //post();
-//screen();
+screen();
 
-trap();
+//trap();
 
 //====================================================================
