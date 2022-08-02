@@ -786,10 +786,10 @@ if(0){
 //translate([205,0,0])
 //rotate([0,0,180])
 //endcap1(lift=16,fan=0);
-endcap2(lift=16,fan=0);
+//endcap2(lift=16,fan=0);
 
 //bracket1(type=2);
-//bracket1(type=1);
+bracket1(type=1);
 
 //bracket2();
 //bracket2(type=2);

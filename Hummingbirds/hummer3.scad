@@ -24,7 +24,8 @@ tall=12;    // total height of the base cup
 rport=25;   // radius to the feeding ports
 xport=16;    // x for port cut
 yport=6;   // y for port cut
-scroff=0.4;  // offset clearance for screen inserts
+//scroff=0.4;  // offset clearance for screen inserts
+scroff=0;  // offset clearance for screen inserts
 
 rpost=4;    // radius of the center post
 hpost=80;   // height of center post
@@ -293,16 +294,16 @@ aflow=80;
 
 //====================================================================
 
-if(0){
-  difference(){
+if(1){
+//  difference(){
     union(){
       color("gray")
-      base();
-      perch();
+      //base();
+      //perch();
       //translate([0,0,0.1])
       //color("cyan")
       lid();
-      post();
+      //post();
       translate([0,0,tall]){
         // screens
         for(i=[0:2]){
@@ -314,9 +315,9 @@ if(0){
       }
 
     }
-    translate([0,100,0])
-    cube([200,200,100],center=true);
-  }
+//    translate([0,100,0])
+//    cube([200,200,100],center=true);
+//  }
 }
 
 if(0){
@@ -333,7 +334,7 @@ if(0){
 //perch();
 //lid();
 //post();
-screen();
+//screen();
 
 //trap();
 

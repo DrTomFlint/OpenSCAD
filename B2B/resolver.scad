@@ -84,11 +84,11 @@ difference(){
   rotate([0,90,0]){
     union(){
       translate([0,0,0])
-      linear_extrude(scale=0.95,height=7)
+      linear_extrude(scale=[0.90,0.95],height=7)
         square([3.75,14.9],center=true);
 
       translate([0,0,0])
-      linear_extrude(scale=0.95,height=7)
+      linear_extrude(scale=[0.95,0.90],height=7)
         square([14.9,3.75],center=true);
       
       cylinder(r=6,h=7,$fn=99);
@@ -104,7 +104,7 @@ difference(){
     // shaft
     translate([-1.9-18.6,0,0])
     rotate([0,90,0])
-    cylinder(r=9.5/2,h=1.9+18.6,$fn=88);
+    cylinder(r=9.5/2+0.15,h=1.9+18.6,$fn=88);
 
     // keyway
     translate([-16,0,9.5/2-0.75])
@@ -117,12 +117,21 @@ difference(){
   
   // cut to make it install
   translate([3,0,-7])
-  cube([13,0.4,6],center=true);
+  cube([13,0.8,6],center=true);
+
+  rotate([120,0,0])
+  translate([3,0,-4])
+  cube([13,0.8,6],center=true);
+
+  rotate([-120,0,0])
+  translate([3,0,-4])
+  cube([13,0.8,6],center=true);
 
   // trim off excess inner key
   translate([-6,0,0])
   rotate([0,90,0])
-  cylinder(r=9.5/2,h=6,$fn=88);
+  cylinder(r=9.5/2+0.15,h=6,$fn=88);
+  
   // make the 45 slope for printing
   translate([-0.1,0,0])
   rotate([0,90,0])
