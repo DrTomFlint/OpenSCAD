@@ -8,8 +8,10 @@
 //====================================================================
 
 
-wire=10;
 use <./rounder.scad>
+
+Num=4;    // Number of connectors
+wire=10;  // Length of wire to show, 0 is allowed
 
 //--------------------------------------------------------------------
 module shell1(wire=0){
@@ -96,9 +98,9 @@ T=0.2;
 }
 
 //--------------------------------------------------------------------
-module shell6(){
+module shell4(N=4){
 
-  for (i=[0:5]){
+  for (i=[0:N-1]){
     translate([0,7.9*i,0])
     shell1(wire=10);
   }
@@ -106,9 +108,9 @@ module shell6(){
 }
 
 //--------------------------------------------------------------------
-module shell6cut(){
+module shell4cut(N=4){
 
-  for (i=[0:5]){
+  for (i=[0:N-1]){
     translate([0,7.9*i,0])
     shell1cut(wire=0);
   }
@@ -118,14 +120,14 @@ module shell6cut(){
 //--------------------------------------------------------------------
 // Tub wall is about 9 degrees off vertical, compensate the attachment
 // tabs to account for this fact.
-module innerMount(){
+module innerMount4(N=4){
   
   difference(){
     // main body
     translate([-10.5,-8,-6])
-    cube([24.6-9.9, 6*8+8, 12]);
+    cube([24.6-9.9, N*8+8, 12]);
 
-    shell6cut();
+    shell4cut(N=N);
   }
   
   translate([-20,0,0]){
@@ -149,21 +151,21 @@ module innerMount(){
     rounder(r=3,h=12,f=60);
     
     difference(){
-      translate([24.6-9.9-1,6*8+8-8,-6])
+      translate([24.6-9.9-1,N*8+8-8,-6])
       cube([6, 8, 8+4]);
 
-      translate([10, 6*8+5, 0])
+      translate([10, N*8+5, 0])
       rotate([0,90,0])
       cylinder(r=1.6,h=12,$fn=22);
 
       // cut for 9 degree tub walls
-      translate([24.6-9.9-1+3,6*8+8-8,-6])
+      translate([24.6-9.9-1+3,N*8+8-8,-6])
       rotate([0,9,0])
       cube([6, 8, 8+6]);
       
     }
 
-    translate([24.6-9.9-1,6*8,-6])
+    translate([24.6-9.9-1,N*8,-6])
     rotate([0,0,90])
     rounder(r=3,h=12,f=60);
   }  
@@ -171,14 +173,14 @@ module innerMount(){
 }
 
 //--------------------------------------------------------------------
-module outerMount(){
+module outerMount4(N=4){
   
   difference(){
     // main body
     translate([-10.5,-8,-6])
-    cube([24.6-9.9, 6*8+8, 12]);
+    cube([24.6-9.9, N*8+8, 12]);
 
-    shell6cut();
+    shell4cut(N=N);
   }
     
     // mounting tabs
@@ -196,18 +198,25 @@ module outerMount(){
     rounder(r=3,h=14.7,f=90);
     
     difference(){
-      translate([-10.5,6*8,2])
+      translate([-10.5,N*8,2])
       cube([24.6-9.9, 12, 4]);
 
-      translate([-3, 6*8+8, 0])
+      translate([-3, N*8+8, 0])
       cylinder(r=2,h=12,$fn=22);        
     }
     
-    translate([-10.5,6*8,2])
+    translate([-10.5,N*8,2])
     rotate([0,90,0])
     rotate([0,0,0])
     rounder(r=3,h=14.7,f=90);
     
+    // setup for 4 connectors
+    translate([-5,12,-6])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.2,scale=1)
+    text("AeroAmp", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
   
 }
 
@@ -222,24 +231,19 @@ module outerMount(){
 //  shell1(wire=wire);
 //}
 
-
 //  color("cyan")
-//  shell6();
+//  shell4(N=Num);
 
-//  translate([0,0,40])
-//  color("pink")
-//  shell6cut();
-
-//  innerMount();
+//  innerMount4(N=Num);
 
 //  color("pink")
 //  translate([24.6-7.8,0,0])
 //  rotate([0,180,0])
-//  shell6();
+//  shell4(N=Num);
 
 //  translate([24.6-7.8,0,0])
 //  rotate([0,180,0])
-  outerMount();
+  outerMount4(N=Num);
 
 
 //====================================================================
