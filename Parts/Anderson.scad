@@ -130,7 +130,7 @@ module innerMount4(N=4){
     shell4cut(N=N);
   }
   
-  translate([-20,0,0]){
+  translate([-15,0,0]){
     // mounting tabs
     difference(){
       translate([24.6-9.9-1,-8-8,-6])
@@ -140,9 +140,9 @@ module innerMount4(N=4){
       rotate([0,90,0])
       cylinder(r=1.6,h=12,$fn=22);
       
-      // cut for 9 degree tub walls
+      // cut for 6 degree tub walls
       translate([24.6-9.9-1+3,-8-8,-6])
-      rotate([0,9,0])
+      rotate([0,6,0])
       cube([6, 8, 8+6]);
       
     }
@@ -158,9 +158,9 @@ module innerMount4(N=4){
       rotate([0,90,0])
       cylinder(r=1.6,h=12,$fn=22);
 
-      // cut for 9 degree tub walls
+      // cut for 6 degree tub walls
       translate([24.6-9.9-1+3,N*8+8-8,-6])
-      rotate([0,9,0])
+      rotate([0,6,0])
       cube([6, 8, 8+6]);
       
     }
@@ -178,17 +178,18 @@ module outerMount4(N=4){
   difference(){
     // main body
     translate([-10.5,-8,-6])
-    cube([24.6-9.9, N*8+8, 12]);
+    cube([24.6-9.9, N*8+8, 12+1.8]);
 
     shell4cut(N=N);
   }
     
     // mounting tabs
     difference(){
-      translate([-10.5,-20,2])
-      cube([24.6-9.9, 12, 4]);
+      translate([-10.5,-22,2])
+      cube([24.6-9.9+2, 14, 4+1.8]);
 
-      translate([-3, -15, 0])
+      translate([2, -15, 0])
+      scale([1,1.5,1])
       cylinder(r=2,h=12,$fn=22);        
     }
     
@@ -199,9 +200,10 @@ module outerMount4(N=4){
     
     difference(){
       translate([-10.5,N*8,2])
-      cube([24.6-9.9, 12, 4]);
+      cube([24.6-9.9+2, 14, 4+1.8]);
 
-      translate([-3, N*8+8, 0])
+      translate([2, N*8+8, 0])
+      scale([1,1.5,1])
       cylinder(r=2,h=12,$fn=22);        
     }
     
@@ -210,12 +212,17 @@ module outerMount4(N=4){
     rotate([0,0,0])
     rounder(r=3,h=14.7,f=90);
     
+    
     // setup for 4 connectors
     translate([-5,12,-6])
     rotate([180,0,0])
-    rotate([0,0,90])
+    rotate([0,0,-90])
     linear_extrude(height=0.2,scale=1)
     text("AeroAmp", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
+    // back lip
+    translate([-10.5,-8-14,7])
+    cube([5, N*8+8+28, 6]);
 
   
 }
