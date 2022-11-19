@@ -45,6 +45,8 @@ y2 = 140;   // distance between front and back rails
 z2 = 20.5;    // height of cyclone board
 
 $fn=89;
+//start=64;   // 65 = A, labels are start+num
+start=48;     // 49 = 1, labels are start+num
 
 
 //---------------------------------------------------------------------------------
@@ -517,26 +519,26 @@ module post3(nuts=0,num=8){
     scale([2,1,1])
     cylinder(r=6,h=60,$fn=99,center=true);
     
-    // text numbers
+    // text numbers, 64+num makes ABC...
     color("red")
     translate([7,8,14.3])
     rotate([45,0,0])
     linear_extrude(height=0.5,scale=1)
-    text(chr(64+num), font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+    text(chr(start+num), font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
 
     color("red")
     translate([-0.01+0.3,23,20])
     rotate([0,0,-90])
     rotate([90,0,0])
     linear_extrude(height=0.3,scale=1)
-    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    text(chr(start+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
 
     color("red")
     translate([14.01-0.3,23,20])
     rotate([0,0,90])
     rotate([90,0,0])
     linear_extrude(height=0.3,scale=1)
-    text(chr(64+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    text(chr(start+num), font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
     
   }    
     
@@ -626,13 +628,13 @@ module res1(){
 //=================================================================================
 
 // t-slot base, whole frame
-if(1){
+if(0){
   translate([-10.5,0,0])
   color("silver")
   base1();
 }
 
-if(1){
+if(0){
   res1();
 }
 
@@ -703,14 +705,14 @@ if(0){
 }
 
 // DCC board
-if(1){
+if(0){
   translate([0,0,18])
   dcc();
 
 }
 
 // for printing
-//arm1();
+arm1();
 //arm2(pang=20);
 //post3(num=1);
 //mount1(x0=0);
@@ -720,7 +722,7 @@ if(1){
 //arm4(pang=20);
 
 if(0){
-  for(i=[18:20]){
+  for(i=[7:9]){
     translate([40*i,0,0])
     post3(num=i);
   }

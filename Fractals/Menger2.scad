@@ -1,4 +1,5 @@
 // Menger sponge created by cutting up a large cube
+// Jerusalem cross version, adjust w2 and w3 to size the arms
 
 l = 68;  // length of side
 //l=20;
@@ -10,8 +11,8 @@ T = 3;
 echo("Smallest arm is ", 0.333*l/pow(3,T), " mm");
 
 
-//difference(){
-intersection(){
+difference(){
+//intersection(){
 
 rotate([0,0,0])
 rotate([0,35,0])

@@ -92,6 +92,98 @@ module hat1(){
 
 
 }
+//------------------------------------------------------------
+module strip1(){
+
+M=10;
+  
+  difference(){
+    translate([0,-8,0])
+    cube([200,16,thick]);
+    
+    // cuts for sewing or leds
+    for(i=[0:M]){
+      translate([i*20+15,-5,0])
+      cylinder(r=1.5,h=10,center=true,$fn=23);
+    }
+    for(i=[0:M]){
+      translate([i*20+1,-2,0])
+      cylinder(r=1.5,h=10,center=true,$fn=23);
+    }
+    
+    // top hole
+    for(i=[0:M]){
+      translate([i*20+1,10,0])
+      rotate([0,0,30])
+      scale([1.2,1,1])
+      cylinder(r=7,h=10,center=true,$fn=55);
+    }
+  }
+
+  for(i=[0:M-1]){
+    translate([i*20+4,-3,6])
+    rotate([0,0,30])
+    holder1();
+  }  
+
+}
+
+//------------------------------------------------------------
+module strip2(){
+
+M=7;
+  
+  difference(){
+    translate([0,-8,0])
+    cube([200,16,thick]);
+    
+    // cuts for sewing or leds
+    for(i=[0:M-2]){
+      translate([i*30+30,-5,0])
+      cylinder(r=2,h=10,center=true,$fn=23);
+      translate([i*30+30,-7,0])
+      cube([1,3,3*thick],center=true);
+    }
+    
+    for(i=[0:M-2]){
+      translate([i*30+20,-5,0])
+      cylinder(r=2,h=10,center=true,$fn=23);
+      translate([i*30+20,-7,0])
+      cube([1,3,3*thick],center=true);
+    }
+    
+    // upper sew holes
+    for(i=[0:M-1]){
+      translate([i*30+6,5,0])
+      cylinder(r=1,h=10,center=true,$fn=23);
+    }
+    for(i=[0:M-1]){
+      translate([i*30+16,5,0])
+      cylinder(r=1,h=10,center=true,$fn=23);
+    }
+
+    // end holes
+    translate([2.5,-5,0])
+    cylinder(r=1.5,h=10,center=true,$fn=23);
+    translate([196,-5,0])
+    cylinder(r=1.5,h=10,center=true,$fn=23);
+
+    // top hole
+    for(i=[0:M]){
+      translate([i*30-4,10,0])
+      rotate([0,0,60])
+      scale([1.2,1,1])
+      cylinder(r=8,h=10,center=true,$fn=55);
+    }
+  }
+
+  for(i=[0:M-1]){
+    translate([i*30+4,-3,6])
+    rotate([0,0,30])
+    holder1();
+  }  
+
+}
 
 //============================================================
 
@@ -109,6 +201,12 @@ if(0){
   }
 }
 
-hat1();
+//hat1();
+
+//strip1
+strip2();
+translate([0,30,0])
+mirror([0,1,0])
+strip2();
 
 //============================================================
