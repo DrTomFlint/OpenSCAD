@@ -195,6 +195,72 @@ module mount2(x0=0){
 }
 
 //-------------------------------------------------------------------------------
+// mounts for the Ascent PCB on the long side
+module mount3(x0=11){
+  
+
+  // lower body
+  difference(){
+    union(){
+      translate([-10.5-0.5,9-7,-15])
+      cube([6,14,30]);
+
+      // post up to the pcb
+      translate([x0,9,10])
+      cylinder(r=2.25-0.15,h=9.5);
+      
+      translate([x0,9,10])
+      cylinder(r=3.5,h=9.5-1.5);
+
+      hull(){
+        translate([x0,9,10])
+        cylinder(r=3.5,h=5);
+
+        translate([-10.5-0.5,9-7,10])
+        cube([8,14,5]);
+      }
+      
+      translate([-5,16,10])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(h=14,r=2,f=45);
+
+    }
+
+    // cut for M3x6 and brass heat set insert
+    translate([x0,9,9.9])
+    cylinder(r=2.3,h=3.0+1);    
+    
+    // cut for M3x16
+    translate([x0,9,7])
+    cylinder(r=1.7,h=16);
+      
+    // cut for t-slot
+    translate([-10.5,0,0])
+    translate([-15,0,0])
+    rotate([-90,0,0])
+    tslot1(type=1,len=y1-30,tol=0.2);
+    
+    // cut for M4x12 bolt, 6 mm thread space
+    translate([-11,9,0])
+    rotate([0,90,0])
+    cylinder(r=2.0,h=6);
+    
+    // 45 degree cut at bottom
+    translate([-10,-10,-15])
+    rotate([0,45,0])
+    cube([20,40,20]);
+
+    // 45 degree trim to clear the arm posts
+    translate([-35,-10,18.5])
+    rotate([0,45,0])
+    cube([20,40,20]);
+    
+  }
+  
+}
+
+//-------------------------------------------------------------------------------
 module pin1(){
   
   $fn=16;
@@ -648,7 +714,8 @@ if(0){
 
 // left rail mounts
 if(0){
-  mount2(x0=0);
+//  mount2(x0=0);
+  mount3();
   translate([0,58.2-9,0])
   mount2(x0=0);
   translate([0,121.2-9,0])
@@ -712,7 +779,7 @@ if(0){
 }
 
 // for printing
-arm1();
+//arm1();
 //arm2(pang=20);
 //post3(num=1);
 //mount1(x0=0);
@@ -720,6 +787,9 @@ arm1();
 //post4(num=1);
 //arm3();
 //arm4(pang=20);
+
+//mount3();
+mount2();
 
 if(0){
   for(i=[7:9]){

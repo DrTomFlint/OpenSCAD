@@ -1,13 +1,13 @@
 // Menger sponge created by cutting up a large cube
 
 //l = 54;  // length of side
-//l=40;
-l=15;
+l=30;
+//l=15;
 
 // Order
 //T = 3;
-//T=2;
-T=1;
+T=2;
+//T=1;
 
 echo("Smallest cube is ", l/pow(3,T), " mm");
 
@@ -16,7 +16,7 @@ echo("Smallest cube is ", l/pow(3,T), " mm");
 intersection(){
 
 rotate([0,0,0])
-rotate([0,35,0])
+rotate([0,35.5,0])
 rotate([45,0,0])
 
 difference(){

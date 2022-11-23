@@ -1,7 +1,7 @@
 // copyright aeropic 2017
 
 // order of sierpinski fractal
-order = 4; //[0,1,2,3,4,5,6,7]
+order = 3; //[0,1,2,3,4,5,6,7]
 // size of smallest pyramid
 size = 2.5; //[2:50]
 

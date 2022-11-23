@@ -18,8 +18,10 @@ epsy = 0.12;        // translate for cube cuts
 // try to make multiple objects for multi color print
 layer = 0.3;
 //thick = 17.5;  // break at the layer
-thick = 4;
+thick = 7.2;
 z=0;
+//cutout=48;
+cutout=48;
 
 scale([1,1,0.93])
 difference() {
@@ -30,6 +32,10 @@ difference() {
     
     translate([-120,-120,thick*z-80])cube([240,240,80]);
     translate([-120,-120,thick*z+thick])cube([240,240,80]);
+    
+//    cube([cutout,cutout,12],center=true);     // center cutout
+//    linear_extrude(scale=1.25,height=thick+0.1)
+//    square([cutout,cutout],center=true);
 }
 
 if(0){
