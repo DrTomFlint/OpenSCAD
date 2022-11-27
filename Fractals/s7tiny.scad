@@ -48,8 +48,9 @@ module s7(){
         if(1){
             // cut out top section
             size2=7.2*size;
-            translate([0,0,17.2]){
-                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
+//            translate([0,0,17.2]){
+            translate([0,0,17]){
+                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.05*size2, $fn=4);
                 mirror([0,0,1])
                 rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
             }
@@ -166,39 +167,6 @@ difference(){
 }
 
 
-//--------------------------------------------------------------------
-module insert1(tol=1.4,z0=-26,tdeep=tdeep){
-
-hi0=-z0;
-intersection(){
-    translate([51,0,29.5])
-    cylinder(r=11,h=100,center=true,$fn=22);
-    
-    difference(){
-        
-        translate([0,0,z0])
-        cylinder(r1=53-2,r2=53-2,h=hi0+5,$fn=5);
-        
-        for(i=[0:4]){
-            rotate([0,0,72*i])
-
-            rotate([0,90,0])
-            translate([0,0,-35.4])
-            s7cut(tol=0.4);
-
-            rotate([0,0,72*i])
-            translate([51,0,-28])
-            scale([1,1.4,1])
-            cylinder(r=4.8+2,h=50,$fn=99);
-        }
-
-        translate([35,0,11])
-        rotate([0,45,0])
-        cube([20,20,20],center=true);
-    }
-}
-}
-
 
 //----------------------------------------------------------------
 // tray to hold 5 pyramids in s7small shape
@@ -262,7 +230,6 @@ if(0){
     translate([0,0,z0-2.01])
     cylinder(r1=37,r2=35,h=2,$fn=5);
 
-if(tdeep>0){
     color("red")
     rotate([0,0,72*0])
     translate([-35,0,z0-2+tdeep])
@@ -302,7 +269,7 @@ if(tdeep>0){
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
     text("SPIRIT", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.2);
-}
+
 
 
 }
@@ -446,8 +413,6 @@ if(0){
     }
 }
 
-color("cyan")
-insert1();
 
 //tray7();
 
@@ -471,7 +436,7 @@ if(0){
  }
 }
 
-//s7();
+s7();
 
 
 //translate([50,0,0])

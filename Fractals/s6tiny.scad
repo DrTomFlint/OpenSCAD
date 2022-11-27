@@ -31,7 +31,7 @@ difference() {
 //    translate([-120,-120,thick*z+thick])cube([240,240,80]);
 }
 
-if(1){
+if(0){
 mirror([0,0,1])
 difference() {
     ss(order-1);

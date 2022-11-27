@@ -1,11 +1,17 @@
-// copyright aeropic 2017
+// s9 for folding pyramids
+
+use <../Gears/gears.scad>
+
+// Fold angle
+//ang1 = 0;      //[0:90]
+
+/* [Hidden] */
 
 // order of sierpinski fractal
 order = 4; //[0,1,2,3,4,5,6,7]
 // size of smallest pyramid
 size = 2.5; //[2:50]
 
-/* [Hidden] */
 eps = 0.25;         // translate for pyramids
 //epsr = 0.1;
 epsr = 0.05;
@@ -22,6 +28,9 @@ z=3;
 
 tdeep = 1.5;    // text depth
 z0=-26;         // top of lid before bevel
+
+//------------------------------------------------------------------
+function undulate(t) = abs((t - .5) * 2);
 
 //-----------------------------------------------------------------
 module s7(){
@@ -45,7 +54,7 @@ module s7(){
     //    translate([-120,-120,thick*z-80])cube([240,240,80]);
     //    translate([-120,-120,thick*z+thick])cube([240,240,80]);
 
-        if(1){
+        if(0){
             // cut out top section
             size2=7.2*size;
             translate([0,0,17.2]){
@@ -76,14 +85,17 @@ module s7cut(tol=0.2){
     
     size2=size*14+tol;
         
-    translate([0,0,-0.01])
-    rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-    
-    mirror([0,0,1])
-    difference() {
-    rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-        translate([-120,-120,6])
-        cube([240,240,80]);
+    scale([1,1,0.98]){
+
+        translate([0,0,-0.01])
+        rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
+        
+        mirror([0,0,1])
+        difference() {
+        rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
+            translate([-120,-120,6])
+            cube([240,240,80]);
+        }
     }
 }
 
@@ -119,86 +131,6 @@ module ss(ord){
     } // end diff    
    } // end else
  } // end module ss
-
-//----------------------------------------------------------------
-// tray to hold 5 pyramids in s7small shape
-module tray7(tol=1.4,z0=-25){
-    
-//z0=-25;
-hi0=15;
-    
-difference(){    
-    translate([0,0,z0])
-    union(){
-        cylinder(r1=52,r2=52,h=hi0,$fn=5);
-        translate([0,0,-2])
-        cylinder(r1=50,r2=52,h=2,$fn=5);
-    }
-    
-    for(i=[0:4]){
-        rotate([0,0,72*i])
-
-        rotate([0,90,0])
-        translate([0,0,-35.4])
-        s7cut(tol=tol);
-
-        rotate([0,0,72*i])
-        translate([50,0,-30])
-        scale([1,1.5,1])
-        cylinder(r=4.8,h=30,$fn=99);
-    }
-    
-
-    for(i=[0:4]){
-        rotate([0,0,72*i+72/2])
-        translate([0,0,-4])
-        rotate([0,90,0])
-        translate([0,0,30])
-        cylinder(r=17,h=30,$fn=99);
-    }
-
-    translate([0,0,z0-0.1])
-    cylinder(r=35,h=25.2,$fn=5);
-    translate([0,0,z0-2.01])
-    cylinder(r1=37,r2=35,h=2,$fn=5);
-}
-    
-}
-
-
-//--------------------------------------------------------------------
-module insert1(tol=1.4,z0=-26,tdeep=tdeep){
-
-hi0=-z0;
-intersection(){
-    translate([51,0,29.5])
-    cylinder(r=11,h=100,center=true,$fn=22);
-    
-    difference(){
-        
-        translate([0,0,z0])
-        cylinder(r1=53-2,r2=53-2,h=hi0+5,$fn=5);
-        
-        for(i=[0:4]){
-            rotate([0,0,72*i])
-
-            rotate([0,90,0])
-            translate([0,0,-35.4])
-            s7cut(tol=0.4);
-
-            rotate([0,0,72*i])
-            translate([51,0,-28])
-            scale([1,1.4,1])
-            cylinder(r=4.8+2,h=50,$fn=99);
-        }
-
-        translate([35,0,11])
-        rotate([0,45,0])
-        cube([20,20,20],center=true);
-    }
-}
-}
-
 
 //----------------------------------------------------------------
 // tray to hold 5 pyramids in s7small shape
@@ -262,7 +194,6 @@ if(0){
     translate([0,0,z0-2.01])
     cylinder(r1=37,r2=35,h=2,$fn=5);
 
-if(tdeep>0){
     color("red")
     rotate([0,0,72*0])
     translate([-35,0,z0-2+tdeep])
@@ -302,7 +233,7 @@ if(tdeep>0){
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
     text("SPIRIT", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.2);
-}
+
 
 
 }
@@ -355,87 +286,64 @@ module labels(z0=-26,tdeep=tdeep){
 
     
 }    
-//----------------------------------------------------------------
-// tray to hold 5 pyramids in s7small shape
-module trayPins8(tol=1.4){
-    
-z0=-25;
-hi0=25;
-    
-    
+
+//--------------------------------------------------------------------
+module hinge1(ang1=90,fold=0.5){
+
+    for(i=[0:0]){
+        rotate([0,0,72*i])
+        translate([0,34+fold,0])
+        rotate([ang1,0,0])
+        translate([0,25,0])
+        s7cut(tol=0);
+    }
+
+}
+
+//--------------------------------------------------------------------
+module gear1(){
+    bevel_gear(modul=1, tooth_number=8,  partial_cone_angle=72/2, tooth_width=3, bore=2, pressure_angle=20, helix_angle=20);
+}
+
+//--------------------------------------------------------------------
+module hinge2(ang1=0,fold=0.5){
+
+zoff=-2;
+
     for(i=[0:4]){
         rotate([0,0,72*i])
-        translate([51,0,0]){
-            intersection(){
-                scale([1,1.5,1])
-                cylinder(r=4.8,h=50,$fn=99,center=true);
-                translate([-3,0,0])
-                scale([0.5,1.5,1])
-                cylinder(r=4.2,h=50,$fn=99,center=true);
-            }
-            intersection(){
-                translate([0,0,25])
-                scale([1,1.5,1])
-                sphere(r=4.8,$fn=99);
-                translate([-3,0,25])
-                scale([0.5,1.5,0.5])
-                sphere(r=4.2,$fn=99);
-            }
-            intersection(){
-                translate([0,0,-25])
-                scale([1,1.5,1])
-                sphere(r=4.8,$fn=99);
-                translate([-3,0,-25])
-                scale([0.5,1.5,0.5])
-                sphere(r=4.2,$fn=99);
+        translate([0,40+fold+zoff,-zoff]){
+        
+            rotate([ang1,0,0]){        
+                translate([0,25-0,6+zoff])
+                s7cut(tol=0);
+                
+                
+                rotate([0,90,0])
+                cylinder(r=1,h=54,$fn=22,center=true);
+                
+                translate([24,0,0])
+                rotate([0,90,0])
+                gear1();
+
+                translate([-24,0,0])
+                rotate([0,-90,0])
+                rotate([0,0,180/8])
+                gear1();
             }
         }
     }
-    
+
 
 }
-
-//----------------------------------------------------------------
-// tray to hold 5 pyramids in s7small shape
-module trayPin(tol=1.4){
-    
-z0=-25;
-hi0=25;
-
-i=0;    
-    
-        rotate([0,0,72*i])
-        translate([50,0,0]){
-            intersection(){
-                scale([1,1.5,1])
-                cylinder(r=4.8,h=50,$fn=99,center=true);
-                translate([-3,0,0])
-                scale([0.5,1.5,1])
-                cylinder(r=4.2,h=50,$fn=99,center=true);
-            }
-            intersection(){
-                translate([0,0,25])
-                scale([1,1.5,1])
-                sphere(r=4.8,$fn=99);
-                translate([-3,0,25])
-                scale([0.5,1.5,0.5])
-                sphere(r=4.2,$fn=99);
-            }
-            intersection(){
-                translate([0,0,-25])
-                scale([1,1.5,1])
-                sphere(r=4.8,$fn=99);
-                translate([-3,0,-25])
-                scale([0.5,1.5,0.5])
-                sphere(r=4.2,$fn=99);
-            }
-        }
-    
-
-}
-
 
 //=====================================================================
+
+hinge2(ang1=undulate($t)*90);
+//rotate([0,180,0])
+//hinge2(ang1=ang1);
+
+
 
 if(0){
     difference(){
@@ -446,8 +354,6 @@ if(0){
     }
 }
 
-color("cyan")
-insert1();
 
 //tray7();
 
