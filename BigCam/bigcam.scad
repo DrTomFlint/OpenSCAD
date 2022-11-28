@@ -275,58 +275,43 @@ servo1();
 
 }
 //------------------------------------------------------------------------------
-module lowerWorm(spur=1,worm=1){
+module lowerWorm2(spur=1,worm=1){
+
+
+  translate([0,0,10-1])  
+  rotate([0,90,0])
+  worm_gear(modul=1, tooth_number=42, thread_starts=1, width=5, length=26, worm_bore=0.6, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
 
 if(spur==1){
-  translate([0,0,10])  
-  rotate([0,90,0])
-  worm_gear(modul=0.5, tooth_number=80, thread_starts=1, width=4, length=20, worm_bore=0.2, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
-
-//  color("cyan")
-  translate([0,27,8.5])  
-  rotate([90,0,0])
-  cylinder(r=6.5,h=4,center=true,$fn=99);
-
-  //color("cyan")
-  translate([0,23,8.5])  
-  rotate([90,0,0])
-  cylinder(r=4,h=4,center=true,$fn=99);
-
-//  color("pink")
-  translate([0,21,8.5])  
-  rotate([90,0,0])
-  cylinder(r=3,h=9,center=true,$fn=99);
-
-  translate([0,15,8.5])  
-  rotate([90,0,0])
-  cylinder(r1=2.5,r2=2.1,h=4,center=true,$fn=6);
-
   
 }
+zworm1=6;
 
 if(worm==1){
-  translate([0,11,8.5])  
+  translate([0,11,zworm1])  
   rotate([90,0,0])
   cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
 
   difference(){
-    translate([0,11+4,8.5])  
+    translate([0,11+4,zworm1])  
     rotate([90,0,0])
     cylinder(r=4,h=4,center=true,$fn=99);
-    translate([0,11+4.01,8.5])  
+    color("cyan")
+    translate([0,11+4.01,zworm1])  
     rotate([90,0,0])
     cylinder(r=2.5,h=4,center=true,$fn=6);
   }
 
-  translate([0,-11,8.5])  
+
+  translate([0,-11,zworm1])  
   rotate([90,0,0])
   cylinder(r1=2,r2=4,h=4,center=true,$fn=99);
 
-  translate([0,-11-4,8.5])  
+  translate([0,-11-4,zworm1])  
   rotate([90,0,0])
   cylinder(r=4,h=4,center=true,$fn=99);
 
-  translate([0,-11-4-4,8.5])  
+  translate([0,-11-4-4,zworm1])  
   rotate([90,0,0])
   cylinder(r=3-0.15,h=4,center=true,$fn=99);
 }
@@ -334,34 +319,84 @@ if(worm==1){
 }
 
 //--------------------------------------------------------------------------------
-module upperWorm(spur=1,worm=1){
+module upperWorm2(spur=1,worm=1,left=1){
 
-translate([0,27,15.7])  
+translate([0,27,13.0])  
 rotate([90,0,0])
 rotate([0,0,90])
-worm_gear(modul=0.5, tooth_number=30, thread_starts=1, width=4, length=14, worm_bore=1.7, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
+worm_gear(modul=1.0, tooth_number=14, thread_starts=1, width=5, length=15, worm_bore=1.7, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
 
-difference(){
-  translate([-11,27,15.7+1.5])  
-  rotate([0,90,0])
-  cylinder(r=4,h=4,center=true,$fn=99);
+zspur2=6;
 
-  translate([-11,27,15.7+1.5])  
-  rotate([0,90,0])
-  cylinder(r=2.5,h=4.2,center=true,$fn=6);
+if(spur==1){
+  if(left==1){
+    color("green")
+    translate([0,27,zspur2])  
+    rotate([90,0,0])
+    cylinder(r=5.5,h=5,center=true,$fn=99);
+
+    color("cyan")
+    translate([0,23,zspur2])  
+    rotate([90,0,0])
+    cylinder(r=4,h=4,center=true,$fn=99);
+
+    color("pink")
+    translate([0,21,zspur2])  
+    rotate([90,0,0])
+    cylinder(r=3,h=9,center=true,$fn=99);
+
+    color("orange")
+    translate([0,15,zspur2])  
+    rotate([90,0,0])
+    cylinder(r1=2.5,r2=2.1,h=4,center=true,$fn=6);
+  }else{
+      color("green")
+      translate([0,27,zspur2])  
+      rotate([90,0,0])
+      cylinder(r=5.5,h=5,center=true,$fn=99);
+
+      color("cyan")
+      translate([0,31,zspur2])  
+      rotate([90,0,0])
+      cylinder(r=4,h=4,center=true,$fn=99);
+
+      color("pink")
+      translate([0,33,zspur2])  
+      rotate([90,0,0])
+      cylinder(r=3,h=9,center=true,$fn=99);
+
+      color("orange")
+      translate([0,39,zspur2])  
+      rotate([90,0,0])
+      cylinder(r2=2.5,r1=2.1,h=4,center=true,$fn=6);      
+  }
 }
 
-translate([-7,27,15.7+1.5])  
-rotate([0,90,0])
-cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
+zworm2=16;
 
-translate([7,27,15.7+1.5])  
-rotate([0,90,0])
-cylinder(r1=2,r2=4,h=4,center=true,$fn=99);
+if(worm==1){
 
-translate([10,27,15.7+1.5])  
-rotate([0,90,0])
-cylinder(r1=2,r2=1.8,h=4,center=true,$fn=99);
+  difference(){
+    translate([-11,27,zworm2])  
+    rotate([0,90,0])
+    cylinder(r=4,h=4,center=true,$fn=99);
+
+    translate([-11,27,zworm2])  
+    rotate([0,90,0])
+    cylinder(r=2.5,h=4.2,center=true,$fn=6);
+  }
+  translate([-7,27,zworm2])  
+  rotate([0,90,0])
+  cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
+
+  translate([7,27,zworm2])  
+  rotate([0,90,0])
+  cylinder(r1=2,r2=4,h=4,center=true,$fn=99);
+
+  translate([10,27,zworm2])  
+  rotate([0,90,0])
+  cylinder(r1=2,r2=1.8,h=4,center=true,$fn=99);
+}
 
 }
 
@@ -370,13 +405,13 @@ module focus3(){
 
 // aperature 
 translate([24,0,0])
-lowerWorm();
+lowerWorm2(spur=1,worm=1);
 
 // upperWorm
 translate([24,0,0])  
-upperWorm();
+upperWorm2(spur=1,worm=1,left=1);
 
-translate([-22,27,22.4])  
+translate([-22,27,21.5])  
 rotate([0,90,0])
 servo1();
 
@@ -384,12 +419,12 @@ servo1();
 if(1){
   translate([37,0,0])
   rotate([0,0,180])
-  lowerWorm(spur=1,worm=0);
+  lowerWorm2(spur=1,worm=1);
 
   translate([37,-54,0])  
-  upperWorm(spur=1,worm=1);
+  upperWorm2(spur=1,worm=1,left=0);
 
-  translate([-22,-27,22.4])  
+  translate([-22,-27,21.5])  
   rotate([0,90,0])
   servo1();
 }
@@ -403,7 +438,7 @@ if(1){
 //hqcam(extraX=x1);
 //shortLens(extraX=x1,focus=x2);
 
-if(1){
+if(0){
   difference(){
     union(){
 
@@ -414,18 +449,17 @@ if(1){
 
   focus3();
 
-  //translate([10,0,0])
-  //mirror([0,1,0])
-  //focus();
-
     }
     translate([0,0,200])
     cube([200,200,200],center=true);
   }
 }
 
-//lowerWorm(spur=1,worm=0);
-//lowerWorm(spur=0,worm=1);
+//lowerWorm2(spur=0,worm=1);
+//lowerWorm2(spur=1,worm=0);
+
+//upperWorm2(spur=1,worm=0);
+upperWorm2(spur=0,worm=1);
 
 //=================================================================================
 
