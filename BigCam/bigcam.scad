@@ -277,67 +277,119 @@ servo1();
 //------------------------------------------------------------------------------
 module lowerWorm(spur=1,worm=1){
 
-translate([21,0,10])  
-rotate([0,90,0])
-worm_gear(modul=0.5, tooth_number=80, thread_starts=1, width=5, length=20, worm_bore=0.2, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
+if(spur==1){
+  translate([0,0,10])  
+  rotate([0,90,0])
+  worm_gear(modul=0.5, tooth_number=80, thread_starts=1, width=4, length=20, worm_bore=0.2, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
+
+//  color("cyan")
+  translate([0,27,8.5])  
+  rotate([90,0,0])
+  cylinder(r=6.5,h=4,center=true,$fn=99);
+
+  //color("cyan")
+  translate([0,23,8.5])  
+  rotate([90,0,0])
+  cylinder(r=4,h=4,center=true,$fn=99);
+
+//  color("pink")
+  translate([0,21,8.5])  
+  rotate([90,0,0])
+  cylinder(r=3,h=9,center=true,$fn=99);
+
+  translate([0,15,8.5])  
+  rotate([90,0,0])
+  cylinder(r1=2.5,r2=2.1,h=4,center=true,$fn=6);
+
+  
+}
 
 if(worm==1){
-  translate([21,11,8.5])  
+  translate([0,11,8.5])  
   rotate([90,0,0])
   cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
 
   difference(){
-    translate([21,11+4,8.5])  
+    translate([0,11+4,8.5])  
     rotate([90,0,0])
     cylinder(r=4,h=4,center=true,$fn=99);
-    translate([21,11+4.01,8.5])  
+    translate([0,11+4.01,8.5])  
     rotate([90,0,0])
     cylinder(r=2.5,h=4,center=true,$fn=6);
   }
 
-  translate([21,-11,8.5])  
+  translate([0,-11,8.5])  
   rotate([90,0,0])
   cylinder(r1=2,r2=4,h=4,center=true,$fn=99);
 
-  translate([21,-11-4,8.5])  
+  translate([0,-11-4,8.5])  
   rotate([90,0,0])
-  cylinder(r1=2,r2=1.7,h=4,center=true,$fn=99);
+  cylinder(r=4,h=4,center=true,$fn=99);
+
+  translate([0,-11-4-4,8.5])  
+  rotate([90,0,0])
+  cylinder(r=3-0.15,h=4,center=true,$fn=99);
 }
+
+}
+
+//--------------------------------------------------------------------------------
+module upperWorm(spur=1,worm=1){
+
+translate([0,27,15.7])  
+rotate([90,0,0])
+rotate([0,0,90])
+worm_gear(modul=0.5, tooth_number=30, thread_starts=1, width=4, length=14, worm_bore=1.7, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=spur, show_worm=worm);
+
+difference(){
+  translate([-11,27,15.7+1.5])  
+  rotate([0,90,0])
+  cylinder(r=4,h=4,center=true,$fn=99);
+
+  translate([-11,27,15.7+1.5])  
+  rotate([0,90,0])
+  cylinder(r=2.5,h=4.2,center=true,$fn=6);
+}
+
+translate([-7,27,15.7+1.5])  
+rotate([0,90,0])
+cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
+
+translate([7,27,15.7+1.5])  
+rotate([0,90,0])
+cylinder(r1=2,r2=4,h=4,center=true,$fn=99);
+
+translate([10,27,15.7+1.5])  
+rotate([0,90,0])
+cylinder(r1=2,r2=1.8,h=4,center=true,$fn=99);
 
 }
 
 //--------------------------------------------------------------------------------
 module focus3(){
 
+// aperature 
+translate([24,0,0])
 lowerWorm();
 
 // upperWorm
-translate([21,27,15.7])  
-rotate([90,0,0])
-rotate([0,0,90])
-worm_gear(modul=0.5, tooth_number=30, thread_starts=1, width=4, length=10, worm_bore=1.7, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
+translate([24,0,0])  
+upperWorm();
 
-translate([-16,27,22.4])  
+translate([-22,27,22.4])  
 rotate([0,90,0])
 servo1();
 
+// focus
 if(1){
-  translate([60,0,0])
+  translate([37,0,0])
   rotate([0,0,180])
-  lowerWorm();
+  lowerWorm(spur=1,worm=0);
 
-if(0){
-  translate([21+18,0,10])  
-  rotate([0,90,0])
-  worm_gear(modul=0.5, tooth_number=80, thread_starts=1, width=5, length=16, worm_bore=1.7, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
-}
+  translate([37,-54,0])  
+  upperWorm(spur=1,worm=1);
 
-  translate([21+18,-27,15.7])  
-  rotate([90,0,0])
-  rotate([0,0,90])
-  worm_gear(modul=0.5, tooth_number=30, thread_starts=1, width=4, length=10, worm_bore=1.7, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
-
-  translate([-16,-27,22.4])  
+  translate([-22,-27,22.4])  
   rotate([0,90,0])
   servo1();
 }
@@ -367,7 +419,7 @@ if(1){
   //focus();
 
     }
-    translate([0,200,0])
+    translate([0,0,200])
     cube([200,200,200],center=true);
   }
 }

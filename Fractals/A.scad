@@ -280,11 +280,21 @@ difference(){
         cube([4,14,10],center=true);
     }
 
-    // cut center bore
+if(lip==0){
+    // cut center bore LID
     translate([0,0,-0.1])
     cylinder(r=rout-12,h=60,center=true,$fn=5);
     translate([0,0,z0-2.01])
     cylinder(r1=rout-10,r2=rout-12,h=2,$fn=5);
+}
+if(lip==1){
+    // cut center bore BASE
+    translate([0,0,-0.1])
+    cylinder(r=rout-14,h=60,center=true,$fn=5);
+    translate([0,0,z0-2.01])
+    cylinder(r1=rout-12,r2=rout-12,h=2,$fn=5);
+}
+
 
 Roff=-19.4;
 
@@ -414,7 +424,7 @@ difference(){
 
 //----------------------------------------------------------------
 // tray to hold 5 pyramids in s7small shape
-module trayB(tol=0.3,z0=-13,lip=1,tdeep=0){
+module trayB(tol=0.3,z0=-13,lip=1,tdeep=1.5){
     
 hi0=-z0+2.49;
 rout=31.5;
@@ -462,13 +472,24 @@ difference(){
 
     }
 
-    // cut center bore
+if(lip==0){
+    // cut center bore LID
     translate([0,0,-0.1])
-    cylinder(r=rout-15,h=60,center=true,$fn=5);
+    cylinder(r=rout-12,h=60,center=true,$fn=5);
     translate([0,0,z0-2.01])
-    cylinder(r1=rout-13,r2=rout-15,h=2,$fn=5);
+    cylinder(r1=rout-10,r2=rout-12,h=2,$fn=5);
+}
+if(lip==1){
+    // cut center bore BASE
+    translate([0,0,-0.1])
+    cylinder(r=rout-16,h=60,center=true,$fn=5);
+    translate([0,0,z0-2.01])
+    cylinder(r1=rout-14,r2=rout-16,h=2,$fn=5);
+}
+
 
 Roff=-19.0;
+tsize=4;
 
 if(tdeep>0){
     color("red")
@@ -477,7 +498,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("EARTH", font = "Open Sans:style=Bold", size=3.5,halign="center",valign="center",spacing=1.2);
+    text("EARTH", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
     rotate([0,0,72*1])
@@ -485,7 +506,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("AIR", font = "Open Sans:style=Bold", size=3.5,halign="center",valign="center",spacing=1.2);
+    text("AIR", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
     rotate([0,0,72*2])
@@ -493,7 +514,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("FIRE", font = "Open Sans:style=Bold", size=3.5,halign="center",valign="center",spacing=1.2);
+    text("FIRE", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
     rotate([0,0,72*3])
@@ -501,7 +522,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("WATER", font = "Open Sans:style=Bold", size=3.5,halign="center",valign="center",spacing=1.2);
+    text("WATER", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
     rotate([0,0,72*4])
@@ -509,7 +530,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("SPIRIT", font = "Open Sans:style=Bold", size=3.5,halign="center",valign="center",spacing=1.2);
+    text("SPIRIT", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
 }
 
 
@@ -553,10 +574,10 @@ if(0){
 //trayPin();
 
 if(1){
-    //trayB(lip=0);
+    trayB(lip=0,tdeep=0);
     //translate([0,0,0.1])
     //rotate([180,0,0])
-    trayB(lip=0);
+    //trayB(lip=1);
 }
 
 
