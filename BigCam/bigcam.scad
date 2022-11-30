@@ -330,42 +330,42 @@ zspur2=6;
 
 if(spur==1){
   if(left==1){
-    color("green")
+    //color("green")
     translate([0,27,zspur2])  
     rotate([90,0,0])
     cylinder(r=5.5,h=5,center=true,$fn=99);
 
-    color("cyan")
+    //color("cyan")
     translate([0,23,zspur2])  
     rotate([90,0,0])
     cylinder(r=4,h=4,center=true,$fn=99);
 
-    color("pink")
+    //color("pink")
     translate([0,21,zspur2])  
     rotate([90,0,0])
     cylinder(r=3,h=9,center=true,$fn=99);
 
-    color("orange")
+    //color("orange")
     translate([0,15,zspur2])  
     rotate([90,0,0])
     cylinder(r1=2.5,r2=2.1,h=4,center=true,$fn=6);
   }else{
-      color("green")
+      //color("green")
       translate([0,27,zspur2])  
       rotate([90,0,0])
       cylinder(r=5.5,h=5,center=true,$fn=99);
 
-      color("cyan")
+      //color("cyan")
       translate([0,31,zspur2])  
       rotate([90,0,0])
       cylinder(r=4,h=4,center=true,$fn=99);
 
-      color("pink")
+      //color("pink")
       translate([0,33,zspur2])  
       rotate([90,0,0])
       cylinder(r=3,h=9,center=true,$fn=99);
 
-      color("orange")
+      //color("orange")
       translate([0,39,zspur2])  
       rotate([90,0,0])
       cylinder(r2=2.5,r1=2.1,h=4,center=true,$fn=6);      
@@ -401,6 +401,98 @@ if(worm==1){
 }
 
 //--------------------------------------------------------------------------------
+module lowerWormSupport(){
+
+// lowerWorm supports
+difference(){
+  color("cyan")
+  hull(){
+    translate([24,19,6])  
+    rotate([90,0,0])
+    cylinder(r=8,h=4,center=true,$fn=99);
+
+    translate([37,19,6])  
+    rotate([90,0,0])
+    cylinder(r=8,h=4,center=true,$fn=99);
+
+    translate([30,19,-6])  
+    cube([30,4,2],center=true);
+  }
+
+  // cut for worm axle focus
+  hull(){
+    translate([37,19,6])  
+    rotate([90,0,0])
+    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+
+    translate([37,19,26])  
+    rotate([90,0,0])
+    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+  }
+  
+  // cut for worm axle apperature
+  hull(){
+    translate([24,19,6])  
+    rotate([90,0,0])
+    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+
+    translate([24,19,26])  
+    rotate([90,0,0])
+    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+  }
+}
+
+}
+
+//--------------------------------------------------------------------------------
+module upperWormSupport(){
+xuw=27;
+
+// upperWorm supports
+difference(){
+  color("blue")
+  hull(){
+    translate([9,xuw,16])  
+    rotate([0,90,0])
+    cylinder(r=6,h=4,center=true,$fn=99);
+
+    translate([9,xuw,-4])  
+    cube([4,12,6],center=true);
+
+  }
+
+  // cut for worm axle
+  translate([9,xuw,16])  
+  rotate([0,90,0])
+  cylinder(r=3+0.1,h=6,center=true,$fn=99);
+
+}
+
+xuw2=35.25;
+
+difference(){
+  color("cyan")
+  hull(){
+    translate([xuw2,27,16])  
+    rotate([0,90,0])
+    cylinder(r=6,h=4,center=true,$fn=99);
+
+    translate([xuw2,27,-4])  
+    cube([4,12,6],center=true);
+
+  }
+
+  // cut for worm axle
+  translate([xuw2,27,16])  
+  rotate([0,90,0])
+  cylinder(r=2.0+0.1,h=6,center=true,$fn=99);
+
+}
+
+}
+
+
+//--------------------------------------------------------------------------------
 module focus3(){
 
 // aperature 
@@ -411,7 +503,7 @@ lowerWorm2(spur=1,worm=1);
 translate([24,0,0])  
 upperWorm2(spur=1,worm=1,left=1);
 
-translate([-22,27,21.5])  
+translate([-26,27,21.5])  
 rotate([0,90,0])
 servo1();
 
@@ -424,12 +516,46 @@ if(1){
   translate([37,-54,0])  
   upperWorm2(spur=1,worm=1,left=0);
 
-  translate([-22,-27,21.5])  
+  translate([-26,-27,21.5])  
   rotate([0,90,0])
   servo1();
 }
 
+
+// base block
+color("gray")
+difference(){
+  union(){
+    translate([0,0,-3.5])  
+    cube([16,66,7],center=true);
+  
+    translate([20,25,-5])  
+    cube([50,16,4],center=true);
+
+    translate([20,-25,-5])  
+    cube([60.5,16,4],center=true);
+  }  
+  
+  cylinder(r=6.5/2,h=20,center=true,$fn=23);
 }
+
+// lower worm support
+lowerWormSupport();
+translate([0,-38,0])  
+lowerWormSupport();
+
+// upper worm support
+upperWormSupport();
+translate([13,-54,0])  
+upperWormSupport();
+
+
+
+
+
+}
+
+
 
 //=================================================================================
 
@@ -438,14 +564,14 @@ if(1){
 //hqcam(extraX=x1);
 //shortLens(extraX=x1,focus=x2);
 
-if(0){
+if(1){
   difference(){
     union(){
 
   x1=0;
   x2=1.0;
-  hqcam(extraX=x1);
-  longLens(extraX=x1,focus=x2);
+  //hqcam(extraX=x1);
+  //longLens(extraX=x1,focus=x2);
 
   focus3();
 
@@ -459,7 +585,7 @@ if(0){
 //lowerWorm2(spur=1,worm=0);
 
 //upperWorm2(spur=1,worm=0);
-upperWorm2(spur=0,worm=1);
+//upperWorm2(spur=0,worm=1);
 
 //=================================================================================
 
