@@ -528,6 +528,52 @@ difference(){
 
 }
 
+
+//--------------------------------------------------------------------------------
+module drive1(){
+  // drive shaft
+  color("orange")
+  translate([5,27.0,16.5])
+  rotate([0,-90,0]){
+    servoMate();
+
+    difference(){
+      union(){
+        translate([0,0,-6])
+        cylinder(r=3-0.15,h=6,$fn=89);    
+        translate([0,0,-9])
+        cylinder(r2=2.5,r1=2.1,h=4,$fn=6);
+
+      }
+    translate([0,0,-30])
+    cylinder(r=0.5,h=40);
+  }  
+  }
+}
+
+//--------------------------------------------------------------------------------
+module drive2(){
+
+  // drive shaft
+  color("pink")
+  translate([5,-27.0,16.5])
+  rotate([0,-90,0]){
+    servoMate();
+
+    difference(){
+      union(){
+        translate([0,0,-19])
+        cylinder(r=3-0.15,h=19,$fn=89);    
+        translate([0,0,-23])
+        cylinder(r2=2.5,r1=2.1,h=4,$fn=6);
+      }
+    translate([0,0,-30])
+    cylinder(r=0.5,h=40);
+  }  
+}
+}
+
+
 //--------------------------------------------------------------------------------
 // aperature 
 module aperature(){
@@ -539,10 +585,15 @@ module aperature(){
   translate([24,0,0])  
   upperWorm2(spur=1,worm=1,left=1);
 
-  translate([-28,27,10.75])  
+if(1){
+  translate([-25,27,10.75])  
   rotate([0,90,0])
   rotate([0,0,180])
   servo1();
+}
+
+drive1();
+
 }
 
 //--------------------------------------------------------------------------------
@@ -555,10 +606,15 @@ module focus(){
   translate([37,-54,0])  
   upperWorm2(spur=1,worm=1,left=0);
 
-  translate([-28,-27,10.75])  
+if(1){
+  translate([-25,-27,10.75])  
   rotate([0,90,0])
   rotate([0,0,180])
   servo1();
+}
+
+drive2();
+
 }
 
 
@@ -600,7 +656,8 @@ difference(){
     }
   }  
 
-  translate([-28,27,10.75])  
+  // cut for servo
+  translate([-25,27,10.75])  
   rotate([0,90,0])
   rotate([0,0,180])
   servo1cut(tol=0.2);
@@ -656,6 +713,8 @@ difference(){
 //shortLens(extraX=x1,focus=x2);
 
 //servoMate();
+//drive1();
+//drive2();
 
 if(1){
   difference(){
