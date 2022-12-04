@@ -266,7 +266,7 @@ difference(){
 
 //------------------------------------------------------------------------------
 // lower Worm 3
-module lowerWorm3(left=1){
+module lowerWorm3(){
   
   // worm gear
   translate([0,0,10-1])  
@@ -279,15 +279,9 @@ module lowerWorm3(left=1){
   rotate([90,0,0])
   cylinder(r1=4,r2=2,h=4,center=true,$fn=99);
 
-  difference(){
-    translate([0,11+4,zworm1])  
-    rotate([90,0,0])
-    cylinder(r=4,h=4,center=true,$fn=99);
-    color("cyan")
-    translate([0,11+4.01,zworm1])  
-    rotate([90,0,0])
-    cylinder(r=2.5,h=4,center=true,$fn=6);
-  }
+  translate([0,11+4,zworm1])  
+  rotate([90,0,0])
+  cylinder(r=4,h=4,center=true,$fn=99);
 
   translate([0,-11,zworm1])  
   rotate([90,0,0])
@@ -309,47 +303,20 @@ module lowerWorm3(left=1){
 
   zspur2=6;
 
-  if(left==1){
-    //color("green")
-    translate([0,27,zspur2])  
-    rotate([90,0,0])
-    cylinder(r=5.5,h=5,center=true,$fn=99);
+  //color("green")
+  translate([0,27,zspur2])  
+  rotate([90,0,0])
+  cylinder(r=5.5,h=5,center=true,$fn=99);
 
-    //color("cyan")
-    translate([0,23,zspur2])  
-    rotate([90,0,0])
-    cylinder(r=4,h=4,center=true,$fn=99);
+  //color("cyan")
+  translate([0,23,zspur2])  
+  rotate([90,0,0])
+  cylinder(r=4,h=4,center=true,$fn=99);
 
-    //color("pink")
-    translate([0,21,zspur2])  
-    rotate([90,0,0])
-    cylinder(r=3,h=9,center=true,$fn=99);
-
-    //color("orange")
-    translate([0,15,zspur2])  
-    rotate([90,0,0])
-    cylinder(r1=2.5,r2=2.1,h=4,center=true,$fn=6);
-  }else{
-      //color("green")
-      translate([0,27,zspur2])  
-      rotate([90,0,0])
-      cylinder(r=5.5,h=5,center=true,$fn=99);
-
-      //color("cyan")
-      translate([0,31,zspur2])  
-      rotate([90,0,0])
-      cylinder(r=4,h=4,center=true,$fn=99);
-
-      //color("pink")
-      translate([0,33,zspur2])  
-      rotate([90,0,0])
-      cylinder(r=3,h=9,center=true,$fn=99);
-
-      //color("orange")
-      translate([0,39,zspur2])  
-      rotate([90,0,0])
-      cylinder(r2=2.5,r1=2.1,h=4,center=true,$fn=6);      
-  }
+  //color("pink")
+  translate([0,21,zspur2])  
+  rotate([90,0,0])
+  cylinder(r=3,h=9,center=true,$fn=99);
 
 }
 
@@ -421,7 +388,7 @@ difference(){
     rotate([90,0,0])
     cylinder(r=6,h=4,center=true,$fn=99);
 
-    translate([-6,19,2])  
+    translate([-6,19,1.5])  
     cube([4,4,12],center=true);
   }
 
@@ -511,9 +478,20 @@ difference(){
 // spur gear on the lens
 module camGearL(){
 
+intersection(){
   translate([24,0,10-1])  
   rotate([0,90,0])
   worm_gear(modul=1, tooth_number=42, thread_starts=1, width=5, length=26, worm_bore=0.6, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=0);
+
+  union(){
+    translate([24,0,30])  
+    rotate([0,90,0])
+    cylinder(r=19.8,h=20,center=true,$fn=99);
+    
+    translate([24,0,15])  
+    cube([30,60,30],center=true);  
+  }
+}
 
 }
 
@@ -521,9 +499,20 @@ module camGearL(){
 // spur gear on the lens
 module camGearR(){
 
+intersection(){
   translate([24+13,0,10-1])  
   rotate([0,90,0])
   worm_gear(modul=1, tooth_number=42, thread_starts=1, width=5, length=26, worm_bore=0.6, gear_bore=38, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=0);
+
+  union(){
+    translate([24+13,0,30])  
+    rotate([0,90,0])
+    cylinder(r=19.8,h=20,center=true,$fn=99);
+    
+    translate([24+13,0,15])  
+    cube([30,60,30],center=true);  
+  }
+}
 
 }
 
@@ -680,11 +669,7 @@ difference(){
 //hqcam(extraX=x1);
 //shortLens(extraX=x1,focus=x2);
 
-//servoMate();
-//drive1();
-//drive2();
-
-if(1){
+if(0){
   difference(){
     union(){
 
@@ -710,8 +695,21 @@ if(1){
 }
 
 //lowerWorm3();
+//upperWorm3(left=1);
+upperWorm3(left=0);
+
+//halfBlock(left=1);
+
+//mirror([0,1,0])
+//halfBlock(left=0);
+
+//centerBlock();
+
 //camGearL();
 //aperature2();
+
+//camGearR();
+//focus2();
 
 //=================================================================================
 
