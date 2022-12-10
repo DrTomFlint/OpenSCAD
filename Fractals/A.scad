@@ -349,7 +349,7 @@ if(tdeep>0){
 module lipB(wide=1.7){
 // 1.5 wide for outer cut
 
-rout=31.6;    
+rout=31.7;    
 hi0=5;
 
 translate([0,0,-2.5])
@@ -472,24 +472,16 @@ difference(){
 
     }
 
-if(lip==0){
-    // cut center bore LID
-    translate([0,0,-0.1])
-    cylinder(r=rout-12,h=60,center=true,$fn=5);
-    translate([0,0,z0-2.01])
-    cylinder(r1=rout-10,r2=rout-12,h=2,$fn=5);
-}
-if(lip==1){
-    // cut center bore BASE
+    // cut center bore
     translate([0,0,-0.1])
     cylinder(r=rout-16,h=60,center=true,$fn=5);
     translate([0,0,z0-2.01])
     cylinder(r1=rout-14,r2=rout-16,h=2,$fn=5);
-}
 
 
-Roff=-19.0;
-tsize=4;
+Roff=-18.5;
+tsize=5;
+tspace=1.1;
 
 if(tdeep>0){
     color("red")
@@ -498,7 +490,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("EARTH", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
+    text("Earth", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
 
     color("red")
     rotate([0,0,72*1])
@@ -506,7 +498,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("AIR", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
+    text("Air", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
 
     color("red")
     rotate([0,0,72*2])
@@ -514,7 +506,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("FIRE", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
+    text("Fire", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
 
     color("red")
     rotate([0,0,72*3])
@@ -522,7 +514,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("WATER", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
+    text("Water", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
 
     color("red")
     rotate([0,0,72*4])
@@ -530,7 +522,7 @@ if(tdeep>0){
     rotate([180,0,0])
     rotate([0,0,90])
     linear_extrude(height=2,scale=1)
-    text("SPIRIT", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=1.2);
+    text("Spirit", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
 }
 
 
@@ -574,10 +566,10 @@ if(0){
 //trayPin();
 
 if(1){
-    trayB(lip=0,tdeep=0);
+    //trayB(lip=0);
     //translate([0,0,0.1])
     //rotate([180,0,0])
-    //trayB(lip=1);
+    trayB(lip=1);
 }
 
 
@@ -594,8 +586,8 @@ if(0){
     rotate([0,90,0])
     translate([0,0,-17.25])
     color([1,0.3+0.1*i,0.3+0.1*i],alpha=0.6)
-    //s7cut(tol=0);
-    s7();
+    s7cut(tol=0);
+    //s7();
  }
 }
 

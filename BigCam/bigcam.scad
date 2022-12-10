@@ -244,8 +244,13 @@ module servoMate(){
 difference(){
 
   // body
-  translate([0,0,-0.6])
-  cylinder(r=2.4+1.5,h=2.3+0.6,$fn=12);
+  union(){
+    translate([0,0,-0.6])
+    cylinder(r=2.4+1.5,h=2.3+0.6,$fn=99);
+
+    translate([0,0,-0.6-2])
+    cylinder(r1=2.4,r2=2.4+1.5,h=2,$fn=99);
+  }
 
   // center hole
   translate([0,0,0])
@@ -376,42 +381,44 @@ module upperWorm3(left=1){
 //--------------------------------------------------------------------------------
 module lowerWormSupport(){
 
+tol=0.25;
+
 // lowerWorm supports
 difference(){
   color("cyan")
   hull(){
     translate([24,19,6])  
     rotate([90,0,0])
-    cylinder(r=6,h=4,center=true,$fn=99);
+    cylinder(r=6,h=4-tol,center=true,$fn=99);
 
     translate([37,19,6])  
     rotate([90,0,0])
-    cylinder(r=6,h=4,center=true,$fn=99);
+    cylinder(r=6,h=4-tol,center=true,$fn=99);
 
     translate([-6,19,1.5])  
-    cube([4,4,12],center=true);
+    cube([4,4-tol,12],center=true);
   }
 
   // cut for worm axle focus
   hull(){
     translate([37,19,6])  
     rotate([90,0,0])
-    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+    cylinder(r=3+tol/2,h=6,center=true,$fn=99);
 
     translate([37,19,16])  
     rotate([90,0,0])
-    cylinder(r=3-0.1,h=6,center=true,$fn=99);
+    cylinder(r=3+tol/2,h=6,center=true,$fn=99);
 }
   
   // cut for worm axle apperature
   hull(){
     translate([24,19,6])  
     rotate([90,0,0])
-    cylinder(r=3+0.1,h=6,center=true,$fn=99);
+    cylinder(r=3+tol/2,h=6,center=true,$fn=99);
 
     translate([24,19,16])  
     rotate([90,0,0])
-    cylinder(r=3-0.1,h=6,center=true,$fn=99);
+    cylinder(r=3+tol/2,h=6,center=true,$fn=99);
   }
 }
 
@@ -420,6 +427,7 @@ difference(){
 //--------------------------------------------------------------------------------
 module upperWormSupport(){
 xuw=27;
+tol=0.25;
 
 // upperWorm supports
 difference(){
@@ -427,10 +435,10 @@ difference(){
   hull(){
     translate([9,xuw,16])  
     rotate([0,90,0])
-    cylinder(r=5,h=4,center=true,$fn=99);
+    cylinder(r=5,h=4-tol,center=true,$fn=99);
 
     translate([9,xuw,20])  
-    cube([4,10,5],center=true);
+    cube([4-tol,10,5],center=true);
 
   }
 
@@ -453,10 +461,10 @@ difference(){
   hull(){
     translate([xuw2,27,16])  
     rotate([0,90,0])
-    cylinder(r=5,h=4,center=true,$fn=99);
+    cylinder(r=5,h=4-tol,center=true,$fn=99);
 
     translate([xuw2,27,20])  
-    cube([4,10,5],center=true);
+    cube([4-tol,10,5],center=true);
 
   }
 
@@ -464,11 +472,11 @@ difference(){
   hull(){
     translate([xuw2,27,16])  
     rotate([0,90,0])
-    cylinder(r=2.0+0.1,h=6,center=true,$fn=99);
+    cylinder(r=2.0+tol/2,h=6,center=true,$fn=99);
 
     translate([xuw2,27,6])  
     rotate([0,90,0])
-    cylinder(r=2.0-0.1,h=6,center=true,$fn=99);
+    cylinder(r=2.0+tol/2,h=6,center=true,$fn=99);
   }
 }
 
@@ -612,7 +620,7 @@ difference(){
   translate([-4,30,-6])  
   cube([24,30,2],center=true);
   
-  translate([0,-10,-5])  
+  translate([0,-9.875,-5])  
   cube([18,54,10],center=true);
 
   // hole for camera mount
@@ -675,16 +683,16 @@ if(0){
 
   x1=0;
   x2=1.0;
-  hqcam(extraX=x1);
-  longLens(extraX=x1,focus=x2);
+  //hqcam(extraX=x1);
+  //longLens(extraX=x1,focus=x2);
 
-  aperature2();
-  camGearL();
-  focus2();
-  camGearR();
+  //aperature2();
+  //camGearL();
+  //focus2();
+  //camGearR();
   halfBlock(left=1);
-  mirror([0,1,0])
-  halfBlock(left=0);
+  //mirror([0,1,0])
+  //halfBlock(left=0);
   
   centerBlock();
 
@@ -696,12 +704,12 @@ if(0){
 
 //lowerWorm3();
 //upperWorm3(left=1);
-upperWorm3(left=0);
+//upperWorm3(left=0);
 
 //halfBlock(left=1);
 
-//mirror([0,1,0])
-//halfBlock(left=0);
+mirror([0,1,0])
+halfBlock(left=0);
 
 //centerBlock();
 
