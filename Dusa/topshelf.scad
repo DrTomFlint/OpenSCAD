@@ -1028,18 +1028,72 @@ module estop_topb(){
 }
 
 //----------------------------------------------------------------------------------
-
+// 12" x 12" x 3mm blanks = 304.8 mm x 304.8 mm x 3 mm
 module dryBox(){
 
-  color("cyan")
-  translate([-x2+90,yoff-220,30+z1+15])
+  // base
+  color("silver")
   cube([280,250,3]);
+
+  // left side
+//  translate([0,3,3])
+//  cube([3,250-6,220-3]);
+  
+  // right side
+  translate([280-3,3,3])
+  cube([3,250-6,220-3]);
+  
+  // front side
+  color("cyan")
+  translate([0,0,3])
+  cube([280,3,220-3]);
+  
+  // back side
+  color("green")
+  translate([0,250-3,3])
+  cube([280,3,220-3]);
+  
+  
+}
+
+//----------------------------------------------------------------------------------
+// 12" x 12" x 3mm blanks = 304.8 mm x 304.8 mm x 3 mm
+// ??? Is there enough scrap from the box to make lips for the lid ?
+
+module dryLid(){
+
+  // top
+  translate([-3,-3,220])
+  cube([280+6,250+6,3]);
+
+  // left side
+  translate([-3,-3,220-30])
+  cube([3,250+6,30]);
+
+if(0){  
+  // right side
+  translate([280-3,3,3])
+  cube([3,250-6,30]);
+  
+  // front side
+  color("cyan")
+  translate([0,0,3])
+  cube([280,3,30]);
+  
+  // back side
+  color("green")
+  translate([0,250-3,3])
+  cube([280,3,30]);
+}
   
 }
 
 //===============================
 
-dryBox();
+translate([-x2+90,yoff-220,30+z1+15]){
+  dryBox();
+  //dryLid();
+}
 
 //estop();
 
@@ -1077,7 +1131,7 @@ reelPlus();
 }
 
 // reel brackets
-if(1){
+if(0){
 translate([0,yoff-90,z1+130+3])
 reelBracket3();
 
@@ -1098,7 +1152,7 @@ reelBracket4();
 }
 
 // t-slot frame
-topshelf();
+//topshelf();
 
 // radiator and pump
 if(0){
