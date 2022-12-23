@@ -34,31 +34,31 @@ Bed0=0;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=0;
+frameOn=1;
 
 // Show top z brackets
-tops=0;  
+tops=1;  
 
 // Show z axis left
-leftZon=0;
+leftZon=1;
 
 // Show z axis right
-rightZon=0;
+rightZon=1;
 
 // Show x axis left
-leftXon=0;
+leftXon=1;
 
 // Show x axis right
 rightXon=1;
 
 // Show extruder left
-leftEon=0;
+leftEon=1;
 
 // Show extruder right
 rightEon=1;
 
 // Show ybed 
-ybed=0;    
+ybed=1;    
 
 // ----- dimensions -------------------
 // Length front, back, top rail

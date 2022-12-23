@@ -480,57 +480,189 @@ difference(){
 
 
 Roff=-18.5;
-tsize=5;
+tsize=4.5;
 tspace=1.1;
 
-if(tdeep>0){
-    color("red")
-    rotate([0,0,72*0])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("Earth", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
+if(0){
+    if(tdeep>0){
+        color("red")
+        rotate([0,0,72*0])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Earth", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
 
-    color("red")
-    rotate([0,0,72*1])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("Air", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
+        color("red")
+        rotate([0,0,72*1])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Air", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
 
-    color("red")
-    rotate([0,0,72*2])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("Fire", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
+        color("red")
+        rotate([0,0,72*2])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Fire", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
 
-    color("red")
-    rotate([0,0,72*3])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("Water", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
+        color("red")
+        rotate([0,0,72*3])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Water", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
 
-    color("red")
-    rotate([0,0,72*4])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("Spirit", font = "Open Sans:style=Regular", size=tsize,halign="center",valign="center",spacing=tspace);
+        color("red")
+        rotate([0,0,72*4])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Spirit", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+    //    text("Soul", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+    }
+}
+
+if(1){
+    if(tdeep>0){
+        color("red")
+        rotate([0,0,72*0])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Dark", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*1])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Moon", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*2])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Dark", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*3])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=2,scale=1)
+        text("Crystal", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+    }
 }
 
 
-}
+}   // end difference()
 
 
 }
 
+//-----------------------------------------------------------------------
+module Letters(z0=-13,tdeep=1.5){
+    
+Roff=-18.5;
+tsize=4.5;
+tspace=1.1;
+
+if(0){
+    if(tdeep>0){
+        color("red")
+        rotate([0,0,72*0])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Earth", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*1])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Air", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*2])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Fire", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*3])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Water", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*4])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Spirit", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+    //    text("Soul", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+    }
+}
+
+if(1){
+    if(tdeep>0){
+        color("red")
+        rotate([0,0,72*0])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Dark", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*1])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Moon", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*2])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Dark", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+        color("red")
+        rotate([0,0,72*3])
+        translate([Roff,0,z0-2+tdeep])
+        rotate([180,0,0])
+        rotate([0,0,90])
+        linear_extrude(height=tdeep,scale=1)
+        text("Crystal", font = "Open Sans:style=Bold", size=tsize,halign="center",valign="center",spacing=tspace);
+
+    }
+}
+
+
+
+}
 
 //=====================================================================
 
@@ -565,20 +697,34 @@ if(0){
 
 //trayPin();
 
-if(1){
-    //trayB(lip=0);
+if(0){
+    trayB(lip=0);
     //translate([0,0,0.1])
     //rotate([180,0,0])
-    trayB(lip=1);
+    //trayB(lip=1);
 }
 
+//Letters();
 
+if(0){
+// slice to print in multi colors
+// be sure slice offset and thickness are multiples of layer height
+difference(){
+//intersection(){
+    trayB(lip=0);
+    
+    union(){
+    translate([0,0,-11.4])
+    cube([100,100,5*0.3],center=true);
 
-//trayB(lip=0);
-//color("cyan")
-//lipB();
+    translate([0,0,-1.5])
+    cube([100,100,5*0.3],center=true);
 
-//lip9();
+    translate([0,0,1.8])
+    cube([100,100,5*0.3],center=true);
+}
+}    
+}
 
 if(0){
     for(i=[0:4]){
@@ -591,7 +737,7 @@ if(0){
  }
 }
 
-//s7();
+s7();
 
 //color("cyan")
 //translate([0,0,0])

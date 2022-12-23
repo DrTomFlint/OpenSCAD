@@ -513,6 +513,7 @@ h6=16;    // thickness of wingnuts
 
   
 }
+//-----------------------------------------------------------------------------
 module reelLegs(){
 
   difference(){
@@ -691,6 +692,174 @@ module reelLegs(){
   }
 
 }
+
+//-----------------------------------------------------------------------------
+// increase height to keep reels inside box
+module reelLegs2(){
+
+  difference(){
+    //color("cyan")
+    union(){
+      hull(){
+        // tab near axle
+        translate([-9.5,6,20])
+        rotate([0,90,0])
+        cylinder(r=6.8,h=10,$fn=89);
+        // tab on front rail
+        translate([-9.5,63,-85.5])
+        cube([10,25,8]);
+      }
+      hull(){  
+        // tab near axle
+        translate([-9.5,-6,20])
+        rotate([0,90,0])
+        cylinder(r=6.8,h=10,$fn=89);
+        // tab on back rail
+        translate([-9.5,-87,-85.5])
+        cube([10,25,8]);
+      }
+      
+      // crossbrace
+      translate([-9.5,-50,-45])
+      cube([10,100,10]);
+      
+      // top crossbrace fillet
+      translate([-9.5,-10,10])
+      cube([10,20,10]);
+      
+      // front crossbrace fillet
+      translate([-9.5,33,-43])
+      rotate([60,0,0])
+      cube([10,10,10]);
+      
+      // back crossbrace fillet
+      translate([-9.5,-33,-43])
+      rotate([30,0,0])
+      cube([10,10,10]);
+      
+      // front foot
+      translate([-9.5,63,-85.5])
+      cube([20,25,8]);
+      translate([-2.4,63,-78.5])
+      rotate([0,45,0])
+      cube([4,23,4]);
+
+      // back foot
+      translate([-9.5,-87,-85.5])
+      cube([20,25,8]);
+      translate([-2.4,-87+2,-78.5])
+      rotate([0,45,0])
+      cube([4,23,4]);
+    
+    }  // end of union
+     
+    // cut for the axlebox
+    translate([-4.5,0,3.5+20])
+    cube([12,16,20],center=true);
+
+    // cuts for the rails
+    // undo the translate for reelBracket
+    translate([0,-(yoff-90),-(z1+130)]){
+      // top rail
+      translate([-x2,yoff,15+z1+15])
+      rotate([0,90,0])
+      tslot1(type=2,len=x1,tol=0.2);
+        
+      // back rail
+      translate([-x2,yoff-165,15+z1+15])
+      rotate([0,90,0])
+      tslot1(type=1,len=x1,tol=0.2);
+    }
+    
+    // M4 screws for rail attach
+    translate([6,60+15,-90])
+    cylinder(r=2,h=20,$fn=22);
+    translate([6,-(60+15),-90])
+    cylinder(r=2,h=20,$fn=22);
+    
+    // M3x20 screws in front foot to prevent layers delaminating
+    // use M3x40 when joining center pair
+    translate([-6.5,(60+8),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,(60+8),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    translate([-6.5,(60+22),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,(60+22),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    // M3x20 screws in back foot to prevent layers delaminating
+    // use M3x40 when joining center pair
+    translate([-6.5,-(60+8),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,-(60+8),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    translate([-6.5,-(60+22),-81])   // screw
+    rotate([0,90,0])
+    cylinder(r=1.5,h=20,$fn=22);
+    translate([-9.6,-(60+22),-81])   // countersink
+    rotate([0,90,0])
+    cylinder(r=3,h=3.1,$fn=22);
+    
+    
+    // front material reduction, create ribs
+    hull(){
+      translate([-7,12,-12+20]) // upper inside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77); 
+      translate([-7,61,-72])  // lower inside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+    hull(){
+      translate([-7,13,-4+20])  // upper outside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77);
+      translate([-7,74,-72])   // lower outside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+
+    // back material reduction, create ribs
+    hull(){
+      translate([-7,-12,-12+20]) // upper inside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77); 
+      translate([-7,-61,-72])  // lower inside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+    hull(){
+      translate([-7,-13,-4+20])  // upper outside
+      rotate([0,90,0])
+      cylinder(r1=1,r2=2,h=8,$fn=77);
+      translate([-7,-74,-72])   // lower outside
+      rotate([0,90,0])
+      cylinder(r1=3,r2=4,h=8,$fn=77);
+    }
+
+    // crossbar material reduction, create ribs
+    hull(){
+      translate([-7,31,-50+10])  // front
+      rotate([0,90,0])
+      cylinder(r1=2,r2=3,h=8,$fn=77); 
+      translate([-7,-31,-50+10])   // back
+      rotate([0,90,0])
+      cylinder(r1=2,r2=3,h=8,$fn=77); 
+    }
+
+
+
+
+  }
+
+}
 //-----------------------------------------
 module reelBracket1(){
   
@@ -716,6 +885,34 @@ module reelBracket2(){
   reelLegs();
  
 }
+//-----------------------------------------
+// increase height to keep reel inside box
+module reelBracket3(){
+  
+  // active box
+  rotate([0,90,0])
+  translate([-20,0,-6.5])
+  axleBoxA();
+  
+  // legs 
+  reelLegs2();
+ 
+}
+//-----------------------------------------
+// increase height to keep reel inside box
+module reelBracket4(){
+  
+  // passive box
+  rotate([0,90,0])
+  translate([-20,0,-6.5+9.0])
+  axleBoxP();
+  
+  // legs 
+  mirror([1,0,0])
+  reelLegs2();
+ 
+}
+
 
 //-----------------------------------------
 module estop(){
@@ -829,15 +1026,28 @@ module estop_topb(){
       text("P", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
 
 }
+
+//----------------------------------------------------------------------------------
+
+module dryBox(){
+
+  color("cyan")
+  translate([-x2+90,yoff-220,30+z1+15])
+  cube([280,250,3]);
+  
+}
+
 //===============================
+
+dryBox();
 
 //estop();
 
 //translate([0,0,43])
 //estop_topa();
 
-translate([0,0,43])
-estop_topb();
+//translate([0,0,43])
+//estop_topb();
 
 //color("green")
 //estop_sup();
@@ -854,42 +1064,43 @@ switch2();
 //reelBracket2();
 
 // reels
-if(0){
+if(1){
   
-translate([0,yoff-90,z1+130])
+translate([0,yoff-90,z1+150+3])
 rotate([0,90,0])
 reelPlus();
 
-translate([-19.1,yoff-90,z1+130])
+translate([-19.1,yoff-90,z1+150+3])
 mirror([1,0,0])
 rotate([0,90,0])
 reelPlus();
 }
 
 // reel brackets
-if(0){
-translate([0,yoff-90,z1+130])
-reelBracket1();
+if(1){
+translate([0,yoff-90,z1+130+3])
+reelBracket3();
 
-translate([110,yoff-90,z1+130])
-reelBracket2();
-
-color("green")
-translate([-19.1,yoff-90,z1+130])
-mirror([1,0,0])
-reelBracket1();
+translate([110,yoff-90,z1+130+3])
+reelBracket4();
 
 color("green")
-translate([-19.1-110,yoff-90,z1+130])
+translate([-19.1,yoff-90,z1+130+3])
 mirror([1,0,0])
-reelBracket2();
+reelBracket3();
+
+color("green")
+translate([-19.1-110,yoff-90,z1+130+3])
+mirror([1,0,0])
+reelBracket4();
 
 
 }
 
+// t-slot frame
+topshelf();
 
-//topshelf();
-
+// radiator and pump
 if(0){
 translate([-x2+70,yoff-165,30+z1+20]){
   color("gray")
@@ -922,7 +1133,7 @@ pi4case();
 
 // Duet bracket board...
 if(0){
-translate([x2-70,-82,z1+60])
+translate([x2-65,-82,z1+60])
 rotate([0,-90,180]){
   duet3();
   duet3bracket();
