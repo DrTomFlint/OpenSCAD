@@ -483,7 +483,7 @@ Roff=-18.5;
 tsize=4.5;
 tspace=1.1;
 
-if(0){
+if(1){
     if(tdeep>0){
         color("red")
         rotate([0,0,72*0])
@@ -528,7 +528,7 @@ if(0){
     }
 }
 
-if(1){
+if(0){
     if(tdeep>0){
         color("red")
         rotate([0,0,72*0])
@@ -578,7 +578,7 @@ Roff=-18.5;
 tsize=4.5;
 tspace=1.1;
 
-if(0){
+if(1){
     if(tdeep>0){
         color("red")
         rotate([0,0,72*0])
@@ -623,7 +623,7 @@ if(0){
     }
 }
 
-if(1){
+if(0){
     if(tdeep>0){
         color("red")
         rotate([0,0,72*0])
@@ -704,14 +704,14 @@ if(0){
     //trayB(lip=1);
 }
 
-//Letters();
+Letters();
 
 if(0){
 // slice to print in multi colors
 // be sure slice offset and thickness are multiples of layer height
 difference(){
 //intersection(){
-    trayB(lip=0);
+    trayB(lip=1);
     
     union(){
     translate([0,0,-11.4])
@@ -737,7 +737,7 @@ if(0){
  }
 }
 
-s7();
+//s7();
 
 //color("cyan")
 //translate([0,0,0])

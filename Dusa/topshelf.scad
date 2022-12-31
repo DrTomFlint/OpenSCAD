@@ -1029,29 +1029,65 @@ module estop_topb(){
 
 //----------------------------------------------------------------------------------
 // 12" x 12" x 3mm blanks = 304.8 mm x 304.8 mm x 3 mm
+// Actual size 299 mm square, 3 mm thick.
 module dryBox(){
+
+x0=280;
+y0=230;
+z0=110;
+c0=40;
+
+z1=2*z0;
 
   // base
   color("silver")
-  cube([280,250,3]);
+  translate([0,0,1.5])
+  cube([x0,y0,3],center=true);
 
+if(0){
   // left side
-//  translate([0,3,3])
-//  cube([3,250-6,220-3]);
+  translate([-x0/2+1.5,0,z0+1.5])
+  cube([3,y0-6,z1-3],center=true);
+}
   
   // right side
-  translate([280-3,3,3])
-  cube([3,250-6,220-3]);
-  
+  translate([x0/2-1.5,0,z0+1.5])
+  cube([3,y0-6,z1-3],center=true);
+
+if(0){
   // front side
   color("cyan")
-  translate([0,0,3])
-  cube([280,3,220-3]);
-  
+  translate([0,-y0/2+1.5,z0+1.5])
+  cube([x0,3,z1-3],center=true);
+}
+
   // back side
   color("green")
-  translate([0,250-3,3])
-  cube([280,3,220-3]);
+  translate([0,y0/2-1.5,z0+1.5])
+  cube([x0,3,z1-3],center=true);
+  
+  // center wall
+  color("pink")
+  translate([0,0,z0+1.5-c0/2])
+  cube([3,y0-6,c0],center=true);
+  
+  // heater
+  color("red")
+  translate([0,0,0.2+3])
+  cube([250,220,0.4],center=true);
+
+if(1){
+  // reels
+  x1=12;    
+  translate([x1,0,z0])
+  rotate([0,90,0])
+  reelPlus();
+
+  translate([-x1,0,z0])
+  mirror([1,0,0])
+  rotate([0,90,0])
+  reelPlus();
+}
   
   
 }
@@ -1064,36 +1100,126 @@ module dryLid(){
 
   // top
   translate([-3,-3,220])
-  cube([280+6,250+6,3]);
+  cube([x0+6,y0+6,3]);
 
   // left side
-  translate([-3,-3,220-30])
-  cube([3,250+6,30]);
+  translate([-3,-3,220-33])
+  cube([3,y0+6,30]);
 
 if(0){  
   // right side
-  translate([280-3,3,3])
-  cube([3,250-6,30]);
+  translate([x0-3,3,3])
+  cube([3,y0-6,30]);
   
   // front side
   color("cyan")
   translate([0,0,3])
-  cube([280,3,30]);
+  cube([x0,3,30]);
   
   // back side
   color("green")
-  translate([0,250-3,3])
-  cube([280,3,30]);
+  translate([0,y0-3,3])
+  cube([x0,3,30]);
+}
+  
+}
+
+//--------------------------------------------------------------------
+// inner corners
+module inner(){
+  
+u=25;
+t=1.5;  
+$fn=99;
+
+intersection(){ 
+  union(){
+  difference(){ 
+    cube([u,u,u]);
+    
+    translate([t,t,t])
+    cube([u,u,u]);
+    
+    translate([u/2,u/2,0])
+    cylinder(r=1.7,h=2*u,center=true);
+
+    translate([u/2,0,u/2])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=2*u,center=true);
+
+    translate([0,u/2,u/2])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=2*u,center=true);
+  }
+  
+  translate([t,t,0])
+  rounder(r=t,h=u,f=99);
+  translate([t,u,t])
+  rotate([90,0,0])
+  rounder(r=t,h=u,f=99);
+  translate([u,t,t])
+  rotate([0,-90,0])
+  rounder(r=t,h=u,f=99);
+}
+
+  sphere(u);
+}
+  
+}
+
+//--------------------------------------------------------------------
+// outer corners
+module outer(){
+  
+u=25;
+t=1.5;  
+$fn=99;
+
+intersection(){ 
+  union(){
+  difference(){ 
+    cube([u,u,u]);
+    
+    translate([t,t,t])
+    cube([u,u,u]);
+    
+    translate([u/2,u/2,0])
+    cylinder(r=1.7,h=2*u,center=true);
+
+    translate([u/2,0,u/2])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=2*u,center=true);
+
+    translate([0,u/2,u/2])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=2*u,center=true);
+
+    rounder(r=t,h=u,f=99);
+    translate([0,u,0])
+    rotate([90,0,0])
+    rounder(r=t,h=u,f=99);
+
+    translate([u,0,0])
+    rotate([0,-90,0])
+    rounder(r=t,h=u,f=99);
+  }
+  
+}
+
+  sphere(u);
 }
   
 }
 
 //===============================
 
-translate([-x2+90,yoff-220,30+z1+15]){
-  dryBox();
+//inner();
+outer();
+
+//translate([-x2+90,yoff-220,30+z1+15]){
+//  dryBox();
   //dryLid();
-}
+//}
 
 //estop();
 
@@ -1118,7 +1244,7 @@ switch2();
 //reelBracket2();
 
 // reels
-if(1){
+if(0){
   
 translate([0,yoff-90,z1+150+3])
 rotate([0,90,0])
