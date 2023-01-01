@@ -1044,7 +1044,7 @@ z1=2*z0;
   translate([0,0,1.5])
   cube([x0,y0,3],center=true);
 
-if(0){
+if(1){
   // left side
   translate([-x0/2+1.5,0,z0+1.5])
   cube([3,y0-6,z1-3],center=true);
@@ -1067,22 +1067,36 @@ if(0){
   cube([x0,3,z1-3],center=true);
   
   // center wall
-  color("pink")
-  translate([0,0,z0+1.5-c0/2])
-  cube([3,y0-6,c0],center=true);
+  if(1){
+    color("pink")
+    translate([0,0,z0+1.5-c0/2])
+    cube([3,y0-6,c0],center=true);
+  }
+  
+  // center mount for reels
+  color("cyan")
+  centerBlock();
+  
+  // end mount for reels
+  color("green")
+  endBlock();
+  rotate([0,0,180])
+  endBlock();
   
   // heater
   color("red")
   translate([0,0,0.2+3])
   cube([250,220,0.4],center=true);
 
+
+  x1=12;    
 if(1){
   // reels
-  x1=12;    
   translate([x1,0,z0])
   rotate([0,90,0])
   reelPlus();
-
+}
+if(1){
   translate([-x1,0,z0])
   mirror([1,0,0])
   rotate([0,90,0])
@@ -1091,6 +1105,96 @@ if(1){
   
   
 }
+
+//---------------------------------------------------------------------------
+module centerBlock(){
+x0=280;
+y0=230;
+z0=110;
+c0=40;
+
+z1=2*z0;
+
+  
+    difference(){
+    union(){
+      translate([0,0,z0+1.5-c0/2+10])
+      cube([10,24,13+10],center=true);
+
+      translate([0,0,z0+1.5-c0/2+21.5])
+      rotate([90,0,0])
+      cylinder(r=5,h=24,center=true,$fn=99);
+    }    
+    translate([0,0,z0+1.5-c0/2-10])
+    cube([3.2,y0-6,c0],center=true);
+  }  
+
+  translate([-5,8,z0+1.5-c0/2+8.5])
+  rotate([90,0,0])
+  rotate([0,0,180])
+  bevel(x=7,y=10,h=16);
+
+  translate([5,8,z0+1.5-c0/2+8.5])
+  rotate([90,0,0])
+  rotate([0,0,-90])
+  bevel(x=10,y=7,h=16);
+  
+  translate([5,0,z0+1.5-c0/2+15])
+  rotate([0,90,0])
+  axleBoxA();
+
+  translate([-5,0,z0+1.5-c0/2+15])
+  rotate([0,0,180])
+  rotate([0,90,0])
+  axleBoxA();
+
+}
+
+  
+//---------------------------------------------------------------------------
+module endBlock(){
+x0=280;
+y0=230;
+z0=110;
+c0=40;
+
+z1=2*z0;
+
+  difference(){
+    translate([x0/2-10,0,z0+1.5-c0/2+18])
+    cube([14,24,18],center=true);
+
+    hull(){
+      translate([x0/2-10,0,z0+1.5-c0/2+18])
+      rotate([0,90,0])
+      cylinder(r=7.6/2,h=15,center=true,$fn=99);
+
+      translate([x0/2-10,0,z0+1.5-c0/2+18+16])
+      rotate([0,90,0])
+      cylinder(r=7.6/2,h=15,center=true,$fn=99);
+    }
+    
+    translate([x0/2-10-1.2,0,z0+1.5-c0/2+18+17])
+    rotate([45,0,0])
+    cube([14,20,20],center=true);
+  }
+
+  difference(){
+    translate([x0/2-4+0.4,0,z0+1.5-c0/2+18])
+    cube([1.2,36,28],center=true);
+   
+    translate([x0/2-4,0,z0+1.5-c0/2+18])
+    rotate([0,90,0])
+    cylinder(r=2,h=15,center=true,$fn=99);
+  }
+
+  translate([x0/2-1.2-3,12,z0+1.5-11])
+  rotate([90,0,0])
+  rotate([0,0,180])
+  rounder(r=5,h=24,f=99);
+
+}
+
 
 //----------------------------------------------------------------------------------
 // 12" x 12" x 3mm blanks = 304.8 mm x 304.8 mm x 3 mm
@@ -1211,13 +1315,56 @@ intersection(){
   
 }
 
+//--------------------------------------------------------------
+module port(){
+
+$fn=99;
+
+tol=0.1;  
+  
+  // wall of drybox
+  if(0){
+    difference(){
+      cube([3,30,30],center=true);
+      rotate([0,90,0])
+      cylinder(r=0.5*25.4/2,h=10,center=true);
+    }
+  }
+  
+  // plug
+  difference(){
+    
+    union(){
+      // main plug
+      rotate([0,90,0])
+      cylinder(r1=0.5*25.4/2-2*tol,r2=0.5*25.4/2-tol,h=3,center=true);
+
+      // lip
+      translate([1.5+0.5,0,0])
+      rotate([0,90,0])
+      cylinder(r1=0.7*25.4/2-tol,r2=0.7*25.4/2-3*tol,h=1,center=true);
+    }
+    
+    // cut for tubing
+    rotate([0,40,0])
+    cylinder(r=2.15,h=20,center=true);
+  }
+  
+}
+
+
 //===============================
 
+port();
+
 //inner();
-outer();
+//outer();
+
+//centerBlock();
+//endBlock();
 
 //translate([-x2+90,yoff-220,30+z1+15]){
-//  dryBox();
+  //dryBox();
   //dryLid();
 //}
 
