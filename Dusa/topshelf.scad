@@ -1352,10 +1352,105 @@ tol=0.1;
   
 }
 
+//----------------------------------------------------------------
+module blower2(){
+  
+  translate([26,26,0])
+  cylinder(r=48/2,h=14.8);
+  
+  difference(){
+    hull(){
+      cube([19.5,3,14.8]);
+      translate([2,26,0])
+      cube([19.5,3,14.8]);
+    }
+      
+    translate([1.3,-0.01,1.3])
+    cube([19.5-2.6,3,14.8-2.6]);
+  }
+  difference(){
+    hull(){
+      translate([4.5,45,0])
+      cylinder(r=6.7/2,h=14.8);
+      translate([4.5+10,45-10,0])
+      cylinder(r=6.7/2,h=14.8);
+    }
+    translate([4.5,45,-1])
+    cylinder(r=4.5/2,h=16);
+  }
+  difference(){
+    hull(){
+      translate([47,7,0])
+      cylinder(r=6.7/2,h=14.8);
+      translate([47-10,7+10,0])
+      cylinder(r=6.7/2,h=14.8);
+    }
+    translate([47,7,-1])
+    cylinder(r=4.5/2,h=16);
+  }
+}
+//----------------------------------------------------------------
+module blowerBox(){
+
+  // taper section
+  difference(){
+    hull(){
+      translate([0,0,-8])
+      cube([19.5,2,8]);
+
+      translate([0,52,-8])
+      cube([50,2,8]);
+    }
+
+    hull(){
+      translate([1.3,-0.01,-8+1.3])
+      cube([19.5-2.6,2,8-2.6]);
+
+      translate([1.3,52.01,-8+1.3])
+      cube([50-2.6,2,8-2.6]);
+    }
+  }
+
+  // tab at backside
+  translate([0,52.8,0])
+  cube([50,1.2,4]);
+  
+  translate([0,52.8,0])
+  rotate([0,90,0])
+  rotate([0,0,180])
+  rounder(r=3,h=50,f=88);
+  
+  // flow combiner section
+  difference(){
+    translate([0,-30,-8])
+    cube([19.5,30,14.8+8]);
+
+    translate([1.3,-30.1,-8+1.3])
+    cube([19.5-2.6,30.2,14.8+8-2.6]);
+  }
+
+  // tab to center wall
+  translate([19.5-1.3,-30.1,14.8])
+  cube([1.3,30,10]);
+
+}
+
 
 //===============================
+//color("silver")
+//blower2();
 
-port();
+//difference(){
+ intersection(){
+
+  blowerBox();
+  
+  translate([10,50+0.1,0])
+  cube([100,100,100],center=true);
+
+}
+
+//port();
 
 //inner();
 //outer();
