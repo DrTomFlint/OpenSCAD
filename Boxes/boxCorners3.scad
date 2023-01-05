@@ -1,7 +1,8 @@
 //=================================================================================
-// boxCorners.scad
+// boxCorners2.scad
 //
 // For Fairy Crystal storage box.
+// Adjusted for the small boxes.
 //
 // Dr Tom Flint, 1 Jan 2023
 //=================================================================================
@@ -15,28 +16,37 @@ use <../Fractals/Lsystem.scad>
 r1=4;   // radius of knob
 $fn=8;
 
+// medium box
+xbox=75;  
+ybox=50;  
+ztop=25;
+zbase=30;
+baseScale=0.4;
+baseWide=0.2;
+
+
 //-----------------------------------------------------------------------------------
 module top1(){
 
-extra=3.0;
+extra=2.0;
 
 difference(){
   union(){
-    translate([125,100, 84-extra])
+    translate([xbox,ybox, zbase-extra])
     rotate([0,0,180/8])
-    cylinder(r=r1,h=26+extra);
+    cylinder(r=r1,h=ztop+extra);
 
-    translate([125,100, 84+26])
+    translate([xbox,ybox, zbase+ztop])
     rotate([90,0,0])
     rotate([0,0,180/8])
-    cylinder(r=r1,h=100+extra);
+    cylinder(r=r1,h=ybox+extra);
 
-    translate([125,100, 84+26])
+    translate([xbox,ybox, zbase+ztop])
     rotate([0,-90,0])
     rotate([0,0,180/8])
-    cylinder(r=r1,h=125+extra);
+    cylinder(r=r1,h=xbox+extra);
 
-    translate([125.2,100.2, 84+26])
+    translate([xbox+0.2,ybox+0.2, zbase+ztop])
     rotate([0,0,180/8])
     sphere(r=r1);
   }
@@ -53,11 +63,11 @@ foot=10;
 
 difference(){
   union(){
-    translate([125,100, -foot])
+    translate([xbox,ybox, -foot])
     rotate([0,0,180/8])
-    cylinder(r=r1,h=84+extra+foot);
+    cylinder(r=r1,h=zbase+extra+foot);
 
-    translate([125-13,100-3, -foot]){
+    translate([xbox-13,ybox-3, -foot]){
       difference(){
         cube([13,4,foot]);
         translate([-2.5,0,-1])
@@ -66,7 +76,7 @@ difference(){
       }
     }
     
-    translate([125-3,100-13, -foot]){
+    translate([xbox-3,ybox-13, -foot]){
       difference(){
         cube([4,13,foot]);
         translate([0,-2.5,-1])
@@ -75,9 +85,9 @@ difference(){
       }
     }
     intersection(){
-      translate([125-2,100-2, -1.0])
+      translate([xbox-2,ybox-2, -1.0])
       cylinder(r=11,h=1,$fn=44);
-      translate([125-15,100-15, -2.0])
+      translate([xbox-15,ybox-15, -2.0])
       cube([15,15,3]);
     }
   }
@@ -87,7 +97,7 @@ difference(){
   base2(tol=0.1);
   base3(tol=0.1);
 
-  translate([125-5,100-4 -1.0])
+  translate([xbox-5,ybox-4 -1.0])
   cylinder(r=0.7,h=10,center=true);
 }
 
@@ -107,34 +117,34 @@ extra=0.5;
 foot=10;
 thick=0.9;
 
-  translate([125,100,0])
+  translate([xbox,ybox,0])
   rotate([-90,0,0])
   intersection(){
     linear_extrude(height=thick+tol)
-    scale([10,10])
+    scale([10*baseScale,10*baseScale])
     rotate(10)
     offset(tol)
-    penrose_tiling(n=4, w=0.3);   // Recommended n <= 6
+    penrose_tiling(n=4, w=baseWide);   // Recommended n <= 6
 
-    translate([-100,-100,-1])
-    cube([100,100,2]);
+    translate([-ybox,-ybox,-1])
+    cube([ybox,ybox,2]);
   }
 
-  translate([125-64,100,0])
-  cube([64,0.9,3]);  
+  translate([xbox-64*baseScale,ybox,0])
+  cube([64*baseScale,0.9,3*baseScale]);  
 
-  translate([125-3,100,0])
-  cube([3,0.9,67]);  
+  translate([xbox-3,ybox,0])
+  cube([3*baseScale,0.9,67*baseScale]);  
 
   // tab under box
   difference(){
     union(){
-      translate([125-66,100-4+0.9, -1.1])
-      cube([52.8,4,1.2]);
-      translate([63,100-4+0.9, -1.1])
+      translate([xbox-66*baseScale,ybox-4+0.9, -1.1])
+      cube([33*baseScale,4,1.2]);                        // baseScale didn't work here
+      translate([xbox-56*baseScale,ybox-4+0.9, -1.1])
       cylinder(r=4,h=1.2,$fn=88);
     }
-    translate([63,100-4+0.9, -1.1])
+      translate([xbox-56*baseScale,ybox-4+0.9, -1.1])
     cylinder(r=0.7,h=8,center=true,$fn=88);
   }
 }
@@ -147,34 +157,34 @@ foot=10;
 thick=0.9;
 
 
-  translate([125,100,0])
+  translate([xbox,ybox,0])
   rotate([0,90,0])
   intersection(){
     linear_extrude(height=thick+tol)
-    scale([10,10])
+    scale([10*baseScale,10*baseScale])
     rotate(10)
     offset(tol)
-    penrose_tiling(n=4, w=0.3);   // Recommended n <= 6
+    penrose_tiling(n=4, w=baseWide);   // Recommended n <= 6
 
-    translate([-100,-100,-1])
-    cube([100,100,2]);
+    translate([-ybox,-ybox,-1])
+    cube([ybox,ybox,2]);
   }
 
-  translate([125,100-66,0])
-  cube([0.9,66,3]);  
+  translate([xbox,ybox-66*baseScale,0])
+  cube([0.9,66*baseScale,3*baseScale]);  
 
-  translate([125,100-3,0])
-  cube([0.9,3,67.7]);  
+  translate([xbox,ybox-3*baseScale,0])
+  cube([0.9,3*baseScale,67.7*baseScale]);  
 
   // tab under box
   difference(){
     union(){
-      translate([125-4+0.9,100-54-13.2, -1.1])
-      cube([4,54,1.2]);
-      translate([125-4+0.9,100-54-9.2, -1.1])
+      translate([xbox-4+0.9,ybox-34*baseScale-13.2, -1.1])    // baseScale not working
+      cube([4,34*baseScale,1.2]);
+      translate([xbox-4+0.9,ybox-34*baseScale-9.2, -1.1])
       cylinder(r=4,h=1.2,$fn=88);
     }
-    translate([125-4+0.9,100-54-9.2, -1.1])
+    translate([xbox-4+0.9,ybox-34*baseScale-9.2, -1.1])
     cylinder(r=0.7,h=8,center=true,$fn=88);
   }
 }
@@ -182,24 +192,19 @@ thick=0.9;
 //-----------------------------------------------------------------------------------
 module boxTop(a=0,tol=0){
 
-translate([-250/2-tol,-200/2-tol,84-tol])
+translate([-xbox-tol,-ybox-tol,zbase-tol])
 translate([0,-2,0])
 rotate([a,0,0])
 translate([0,2,0])
-cube([250+2*tol,200+2*tol,26+2*tol]);
-
-
+cube([2*xbox+2*tol,2*ybox+2*tol,ztop+2*tol]);
 
 }
 
 //-----------------------------------------------------------------------------------
 module boxBase(tol=0){
 
-translate([0,0,84/2])
-cube([250+2*tol,200+2*tol,84+2*tol],center=true);
-
-
-
+translate([0,0,zbase/2])
+cube([2*xbox+2*tol,2*ybox+2*tol,zbase+2*tol],center=true);
 
 }
 
@@ -213,37 +218,27 @@ if(0){
   boxBase();
 }
 
-if(0){
-  intersection(){
-    translate([250/2-30,200/2-20,100])
-    cube([40,40,40]);
-
-    top1();
-  }
-}
-
-if(0){
-  top1();
-//  base1();
-//  base2();
-//  base3();
-}
-
-
 if(1){
+  top1();
+  base1();
+  base2();
+  base3();
+}
+
+
+if(0){
   mirror([1,0,0])
   top1();
-//  mirror([1,0,0])
-//  base1();
+  mirror([1,0,0])
+  base1();
 
-//  mirror([1,0,0])
-//  base2();
-//  mirror([1,0,0])
-//  base3();
+  mirror([1,0,0])
+  base2();
+  mirror([1,0,0])
+  base3();
 }
 
 if(0){
-  difference(){
   rotate([0,0,180]){
     top1();
     base1();
@@ -258,12 +253,6 @@ if(0){
     mirror([1,0,0])
     base3();
   }
-  // trim for hinge clearance
-  translate([-160,-200/2-20,64])
-  rotate([45,0,0])
-  cube([300,0.707*40,0.707*40]);
-}
-
 }
 
 //================================================================================
