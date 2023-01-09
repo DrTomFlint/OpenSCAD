@@ -18,7 +18,7 @@ rwasher = 15;
 space = 11;
 
 rlever = 30.2/2;
-rinner = 24.8/2;
+rinner = 25.0/2;
 
 zlever = 9;
 
@@ -36,7 +36,7 @@ module pivota(){
     }
     
     
-    //metric_thread (diameter=10, pitch=2, length=hi-1, internal=true);
+    metric_thread (diameter=10, pitch=2, length=hi-1, internal=true);
     translate([0,0,hi+thick])
     cube([2,7,10],center=true);
   }
@@ -62,7 +62,7 @@ $fn=89;
 }
 
 //---------------------------------------------------------
-module pivotc(extra=8){
+module pivotc(extra=9){
 
 
 $fn=89;
@@ -77,8 +77,10 @@ $fn=89;
     
     translate([0,0,extra])
     cylinder(r=2,h=2*hi,center=true,$fn=22);
+    translate([0,0,0])
+    cylinder(r1=4,r2=2,h=0.75*extra,$fn=22);
     translate([0,0,-thick])
-    cube([2,4,10],center=true);
+    cube([2,8,2*thick],center=true);
   }
 
 }
@@ -100,7 +102,7 @@ module levera(){
     difference(){
       union(){
         cylinder(r=rlever+thick,h=zlever,$fn=F);
-        cylinder(r1=rlever+thick+10,r2=rlever+10,h=thick,$fn=F);
+        cylinder(r1=rlever+thick+8,r2=rlever+8,h=thick,$fn=F);
         translate([0,0,thick])
         cylinder(r1=rlever+thick+2,r2=rlever+thick,h=2,$fn=F);
       }
@@ -109,6 +111,9 @@ module levera(){
       translate([0,0,0.5*zlever])
       rotate([90,0,0])
       cylinder(r=2,h=50,center=true,$fn=45);
+
+        translate([0,0,0])
+        cylinder(r1=rlever+1,r2=rlever,h=1,$fn=F);
     }
       
 }
@@ -132,13 +137,13 @@ module leverb(){
     difference(){
       hull(){
         translate([0,0,-thick])
-        cylinder(r=rinner+2*thick,h=thick,$fn=F);
-        translate([0,30,-thick])
+        cylinder(r=rinner+4*thick,h=thick,$fn=F);
+        translate([0,20,-thick])
         cylinder(r=rinner/2,h=thick,$fn=F);
       }
       translate([0,0,-thick])
       cylinder(r=rinner-3*thick,h=20,center=true,$fn=F);
-      translate([0,30,-thick])
+      translate([0,20,-thick])
       cylinder(r=rinner/4,h=20,center=true,$fn=F);
     }
 }
@@ -146,10 +151,11 @@ module leverb(){
 
 //=========================================================
 
-if(1){
+if(0){
   difference(){
     union(){
-      //pivota();
+      translate([0,0,9.2])
+      pivota();
       color("red")
 //      pivotb();
       pivotc();
@@ -163,11 +169,12 @@ if(1){
 
 //pivota();
 //pivotb();
+//pivotc();
 //washer();
 
 //translate([60,0,0])
 //levera();
 
-//leverb();
+leverb();
 
 //=========================================================

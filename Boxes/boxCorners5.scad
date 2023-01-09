@@ -20,240 +20,20 @@ use <../Fractals/Lsystem.scad>
 r1=4;   // radius of knob
 $fn=8;
 
-
-// medium box
-//if(1){
-  xbox=100.5;  
-  ybox=75.5;  
-  ztop=26;
-  zbase=54;
-  zfoot=10;
-  baseScale=0.65;
-  baseWide=0.3;
-  railThick=2.1;
-  railWide=6;
-  panelThick=0.9;
-  panelCut=-55;
-  gap=0.1;
-
-//}
-
 // small box
-if(0){
-  xbox=75;  
-  ybox=50;  
-  ztop=25;
-  zbase=30;
-  baseScale=0.4;
-  baseWide=0.2;
-}
+xbox=76;  
+ybox=50.5;  
+ztop=25;
+zbase=29;
+zfoot=10;
+baseScale=0.35;
+baseWide=0.3;
+railThick=2.1;
+railWide=6;
+panelThick=0.9;
+panelCut=-50;
+gap=0.1;
 
-
-//--------------------------------------------------------------------------------------
-module postBall(){
-
-  difference(){
-    translate([-xbox,-ybox, zbase+ztop-railWide+railThick])
-    linear_extrude(height=railWide+railThick)
-    offset(r=2,$fn=99)
-    square([railWide,railWide],center=true);
-
-    translate([-xbox-railWide+1/2,-ybox-railWide+1/2, zbase+ztop-railWide+railThick])
-    rounder(r=1.5*railWide,h=railWide+railThick,f=99);
-    
-    railFront(tol=0.15);
-    railSide(tol=0.15);
-    postTop();
-    translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide])
-    cube([2*railWide,2*railWide,railWide+railThick]);
-  }
-  
-}
-
-//--------------------------------------------------------------------------------------
-module postTop(){
-
-
-  difference(){
-    union(){
-      translate([-xbox-railThick,-ybox-railThick, zbase])
-      cube([railWide,railThick,ztop-railWide+railThick-gap]);
-      translate([-xbox-railThick,-ybox-railThick, zbase])
-      cube([railThick,railWide,ztop-railWide+railThick-gap]);
-      translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick-gap])
-      cube([railThick*2,railThick*2,railWide]);
-    }
-    // bevel cut
-    translate([-xbox-1.5*railThick,-ybox-railThick-railWide, zbase-railWide+railThick-gap])
-    rotate([0,0,45])
-    cube([railWide,railWide,ztop+railWide]);
-  }
-}
-
-//--------------------------------------------------------------------------------------
-module postTop2(){
-
-
-  difference(){
-    union(){
-      translate([-xbox-railThick,-ybox-railThick, zbase])
-      cube([railWide,railThick,ztop-railWide+railThick-gap]);
-      translate([-xbox-railThick,-ybox-railThick, zbase])
-      cube([railThick,railWide,ztop-railWide+railThick-gap]);
-    }
-    // bevel cut
-    translate([-xbox-1.5*railThick,-ybox-railThick-railWide, zbase-railWide+railThick-gap])
-    rotate([0,0,45])
-    cube([railWide,railWide,ztop+railWide]);
-  }
-}
-
-//--------------------------------------------------------------------------------------
-module railFront(tol=0){
-  
-    difference(){
-      union(){
-        // main L rail
-        translate([-xbox,-ybox-railThick, zbase+ztop-railWide+railThick])
-        cube([2*xbox,railThick,railWide]);
-        translate([-xbox,-ybox-railThick, zbase+ztop])
-        cube([2*xbox,railWide,railThick]);
-      }
-      // bevel cut
-      translate([-xbox+railThick,-ybox-railThick-railWide, zbase+ztop+2*railThick])
-      rotate([-45,0,0])
-      cube([2*xbox-2*railThick,railWide,railWide]);
-
-      // 45 cut for corners
-      translate([-xbox-0.707*2*railWide,-ybox+0.707*2*railWide, zbase+ztop-railWide+2*railThick])
-      rotate([0,0,45])
-      cube([4*railWide,4*railWide,4*railWide],center=true);
-      translate([xbox+0.707*2*railWide,-ybox+0.707*2*railWide, zbase+ztop-railWide+2*railThick])
-      rotate([0,0,45])
-      cube([4*railWide,4*railWide,4*railWide],center=true);
-      
-      // corner trim for post
-      translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick-gap])
-      cube([railThick*2,railThick*2,railWide+gap+1]);
-      translate([xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick-gap])
-      cube([railThick*2,railThick*2,railWide+gap+1]);
-
-    }
-    // retainer tabs
-    translate([-xbox-tol/2+railThick,-ybox-2*railThick-tol/2, zbase+ztop-railWide+railThick-tol/2])
-    cube([railThick+tol,2*railThick+tol,railWide+tol]);
-    translate([ xbox-2*railThick-tol/2,-ybox-2*railThick-tol/2, zbase+ztop-railWide+railThick-tol/2])
-    cube([railThick+tol,2*railThick+tol,railWide+tol]);
-
-}
-//--------------------------------------------------------------------------------------
-module railFront2(tol=0){
-  
-    difference(){
-      union(){
-        // main L rail
-        translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick])
-        cube([2*xbox+2*railThick,railThick,railWide]);
-        translate([-xbox-railThick,-ybox-railThick, zbase+ztop])
-        cube([2*xbox+2*railThick,railWide,railThick]);
-      }
-      // bevel cut
-      translate([-xbox-railThick,-ybox-railThick-railWide, zbase+ztop+2*railThick])
-      rotate([-45,0,0])
-      cube([2*xbox+2*railThick,railWide,railWide]);
-  }
-
-}
-
-//--------------------------------------------------------------------------------------
-module railSide(tol=0){
-  
-    difference(){
-      union(){
-        // main L rail
-        translate([-xbox-railThick,-ybox, zbase+ztop-railWide+railThick])
-        cube([railThick,2*ybox,railWide]);
-        translate([-xbox-railThick,-ybox, zbase+ztop])
-        cube([railWide,2*ybox,railThick]);
-      }
-      // bevel cut
-      translate([-xbox-railThick-railWide,-ybox+railThick, zbase+ztop+2*railThick])
-      rotate([0,45,0])
-      cube([railWide,2*ybox-2*railThick,railWide]);
-      
-      // 45 cut for corners
-      translate([-xbox+0.707*2*railWide,-ybox-0.707*2*railWide, zbase+ztop-railWide+2*railThick])
-      rotate([0,0,45])
-      cube([4*railWide,4*railWide,4*railWide],center=true);
-      translate([-xbox+0.707*2*railWide,ybox+0.707*2*railWide, zbase+ztop-railWide+2*railThick])
-      rotate([0,0,45])
-      cube([4*railWide,4*railWide,4*railWide],center=true);
-      
-      // corner trim for post
-      translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick-gap])
-      cube([railThick*2,railThick*2,railWide+gap+1]);
-      translate([-xbox-railThick,ybox-railThick, zbase+ztop-railWide+railThick-gap])
-      cube([railThick*2,railThick*2,railWide+gap+1]);
-      
-    }
-    // retainer tabs
-    translate([-xbox-2*railThick-tol/2,-ybox-tol/2+railThick, zbase+ztop-railWide+railThick-tol/2])
-    cube([2*railThick+tol,railThick+tol,railWide+tol]);
-    translate([-xbox-2*railThick-tol/2,ybox-2*railThick-tol/2, zbase+ztop-railWide+railThick-tol/2])
-    cube([2*railThick+tol,railThick+tol,railWide+tol]);
-
-}
-//--------------------------------------------------------------------------------------
-module railSide2(tol=0){
-  
-    difference(){
-      union(){
-        // main L rail
-        translate([-xbox-railThick,-ybox-railThick, zbase+ztop-railWide+railThick])
-        cube([railThick,2*ybox+2*railThick,railWide]);
-        translate([-xbox-railThick,-ybox-railThick, zbase+ztop])
-        cube([railWide,2*ybox+2*railThick,railThick]);
-      }
-      // bevel cut
-      translate([-xbox-railThick-railWide,-ybox-railThick, zbase+ztop+2*railThick])
-      rotate([0,45,0])
-      #cube([railWide,2*ybox+2*railThick,railWide]);
-            
-      // bevel cut
-      translate([-xbox-railThick,-ybox-railThick-railWide, zbase+ztop+2*railThick])
-      rotate([-45,0,0])
-      cube([2*xbox+2*railThick,railWide,railWide]);
-    }
-
-}
-
-//-----------------------------------------------------------------------------------
-module top1(){
-
-extra=2.0;
-
-    railFront();
-    railSide();
-    postTop();
-    postBall();
-    
-    rotate([0,0,180]){
-      railFront();
-      railSide();
-      postTop();
-      postBall();
-    }
-    
-    mirror([1,0,0]){
-      postTop();
-      postBall();
-    }
-
-    mirror([0,1,0]){
-      postTop();
-      postBall();
-    }
-}
 
 //-----------------------------------------------------------------------------------
 module top2(){
@@ -518,12 +298,12 @@ module panel(){
   // tab for nailing
   difference(){
     intersection(){
-      translate([-xbox-panelCut-10-2*railWide,-ybox, -railThick])
+      translate([-xbox+14,-ybox, -railThick])
       cube([2*railWide,2*railWide,railThick]);
-      translate([-xbox-panelCut-10-railWide,-ybox+railThick, -railThick])
+      translate([-xbox+14+railWide,-ybox+railThick, -railThick])
       cylinder(r=railWide,h=railThick,$fn=77);
     }
-    translate([-xbox-panelCut-10-railWide,-ybox+railWide/2, -railThick])
+    translate([-xbox+14+railWide,-ybox+railWide/2, -railThick])
     cylinder(r=0.5,h=3*railThick,$fn=77);
   }
   
@@ -544,9 +324,9 @@ translate([0,ybox+5,zbase+15/2])
 cube([30,10,15],center=true);
 
 // back hinges
-translate([60,-ybox-5,zbase+15/2])
+translate([40,-ybox-5,zbase+15/2])
 cube([30,5,15],center=true);
-translate([-60,-ybox-5,zbase+15/2])
+translate([-40,-ybox-5,zbase+15/2])
 cube([30,5,15],center=true);
 
 }
@@ -562,9 +342,9 @@ translate([0,ybox+5,zbase-24/2])
 cube([30,10,24],center=true);
 
 // back hinges
-translate([60,-ybox-5,zbase-15/2])
+translate([40,-ybox-5,zbase-15/2])
 cube([30,5,15],center=true);
-translate([-60,-ybox-5,zbase-15/2])
+translate([-40,-ybox-5,zbase-15/2])
 cube([30,5,15],center=true);
 
 }
@@ -577,12 +357,12 @@ cube([30,5,15],center=true);
 //postTop();
 //postBall();
 
-//mirror([1,0,0])
 //color("cyan")
 //translate([xbox,ybox,0])
 //postBase();
-//translate([xbox,ybox,0])
-//panel();
+mirror([1,0,0])
+translate([xbox,ybox,0])
+panel();
 
 if(0){
   color("cyan")
@@ -592,41 +372,10 @@ if(0){
   boxBase();
 }
 
-if(1){
+if(0){
 //  top1();
   top2();
-  //base1();
-}
-
-
-
-if(0){
-  mirror([1,0,0])
-  top1();
-  mirror([1,0,0])
-  base1();
-
-  mirror([1,0,0])
-  base2();
-  mirror([1,0,0])
-  base3();
-}
-
-if(0){
-  rotate([0,0,180]){
-    top1();
-    base1();
-    base2();
-    base3();
-    mirror([1,0,0])
-    top1();
-    mirror([1,0,0])
-    base1();
-    mirror([1,0,0])
-    base2();
-    mirror([1,0,0])
-    base3();
-  }
+//  base1();
 }
 
 //================================================================================

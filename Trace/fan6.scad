@@ -683,7 +683,7 @@ $fn=89;
 }
 //====================================================================
 
-if(0){
+if(1){
   difference(){
     union(){
       pivota();
@@ -736,7 +736,7 @@ if(0){
 //color("cyan")
 //unfan1edge(0,2);
 //unfan1edge(3,5);
-unfan1edge(6,8);
+//unfan1edge(6,8);
 
 //blade1();
 //translate([0,0,10])
