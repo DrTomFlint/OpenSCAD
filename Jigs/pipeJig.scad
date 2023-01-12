@@ -19,16 +19,18 @@ $fn=222;
 
 R1=4;
 R2=2;
+R3=3;
 x0=7.2;
 y0=3;
 hi=25;
-wide=20;
+wide=25;
 
 rotate_extrude(){
 
     hull(){
+        
         translate([x0+R2,R2])
-        circle(r=R2);
+        square([2*R2,2*R2],center=true);
 
         translate([wide,R1])
         circle(r=R1);
@@ -36,6 +38,8 @@ rotate_extrude(){
         translate([x0+R2,hi])
         circle(r=R2);
     }
+    translate([7.5,R3])
+    circle(r=R3);
   }
 }
 

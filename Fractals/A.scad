@@ -28,6 +28,13 @@ z0=-26;         // top of lid before bevel
 bottom=6.0;     // for size 4
 //bottom=6.4;     // for size 3
 
+trayz=3;
+zfoot=8;
+zrise=2;
+
+use <../Parts/rounder.scad>
+use <../Fractals/Lsystem.scad>
+
 //-----------------------------------------------------------------
 module s7(){
 
@@ -664,7 +671,410 @@ if(0){
 
 }
 
+//---------------------------------------------------------------------
+module rack1(){
+
+    difference(){
+        linear_extrude(height=6,scale=[0.97,0.93])
+        square([135,85],center=true);
+        //cube([135,85,6]);
+        
+        translate([-135/2,-85/2,0]){
+            for(xi=[0:4]){
+                    translate([15+26.2*xi,16.25+0,5.9])
+                    s7cut(tol=0.4);
+            }
+            for(xi=[0:4]){
+                    translate([15+26.2*xi,16.25+26.2,5.9])
+                    s7cut(tol=0.4);
+            }
+            for(xi=[0:4]){
+                    translate([15+26.2*xi,16.25+2*26.2,5.9])
+                    s7cut(tol=0.4);
+            }
+        }
+    }
+    
+}
+
+//---------------------------------------------------------------------
+module rack3(){
+
+    difference(){
+//        linear_extrude(height=6,scale=[0.96,0.915])
+//        square([225,175],center=true);
+        linear_extrude(height=6,scale=[0.96,0.96])
+        square([218,164],center=true);
+        
+        translate([-218/2,-164/2,0]){
+            for(xi=[0:7]){
+                for(yi=[0:5]){
+                    translate([18+26.0*xi,17+26.0*yi,5.9])
+                    s7cut(tol=0.4);
+                }
+            }
+        }
+    }
+    
+}
+
+//---------------------------------------------------------------------
+module rack3b(){
+
+
+        linear_extrude(height=6,scale=[0.96,0.96])
+        square([218,164],center=true);
+        
+        translate([-218/2,-164/2,0]){
+            for(xi=[0,7]){
+                for(yi=[0,5]){
+                    translate([18+26.0*xi,17+26.0*yi,5.9])
+                    s7cut(tol=0.4);
+                }
+            }
+        }
+    
+}
+
+//-------------------------------------------------------------------
+module bigBox(){
+    
+    translate([0,0,85/2-6])
+    difference(){
+        cube([250,200,85],center=true);
+        translate([0,0,6])
+        cube([236,185,85],center=true);
+    }
+}
+
+//-------------------------------------------------------------------
+module bigLid(){
+
+x1=226;
+y1=172;
+zpad=3;
+    
+    translate([0,0,85+26/2-5.8])
+    difference(){
+        cube([250,200,26],center=true);
+        translate([0,0,-6])
+        cube([236,185,26],center=true);
+    }
+    // bottom pad for dimensions
+    if(1){
+        translate([0,0,85+26/2-5.8])
+        translate([0,0,-zpad/2+7])
+        cube([x1-20,y1-20,zpad],center=true);
+    }
+    
+}
+
+//-------------------------------------------------------------------
+module bigTray(){
+
+x1=226;
+y1=172;
+z1=20;
+zpad=1.5;
+    
+    translate([0,0,z1/2])
+    difference(){
+        cube([x1,y1,z1],center=true);
+        translate([0,0,trayz])
+        cube([x1-2*trayz,y1-2*trayz,z1-trayz],center=true);
+    }
+    // bottom pad for dimensions
+    if(1){
+        color("red")
+        translate([0,0,zpad/2-zpad])
+        cube([x1-20,y1-20,zpad],center=true);
+    }
+    
+}
+
+//-------------------------------------------------------------------
+module bigTrayFoot(){
+
+x1=226;
+y1=172;
+z1=20;
+
+x2=20;
+y2=20;
+zfoot=8;
+zrise=2;
+zpad=1.5;
+
+z2=z1+zfoot;
+tol=0.2;
+    
+translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
+    difference(){
+        union(){
+            translate([0,0,zrise/2])
+            cube([x2,y2,z2+zrise],center=true);
+            translate([-0.15*trayz,-0.15*trayz,zrise/2+trayz])
+            cube([x2-2*trayz,y2-2*trayz,z2+zrise],center=true);
+        }
+        translate([-trayz+tol,-trayz+tol,0])
+        cube([x2,y2,z2+2*tol],center=true);
+        translate([-2*trayz-tol,-2*trayz-tol,trayz])
+        cube([x2,y2,z2+2*tol+2*trayz],center=true);
+        
+        translate([x2/2,y2/2,-20])
+        rotate([0,0,180])
+        bevel(x=0.7*trayz,y=0.7*trayz,h=60);
+
+        translate([-x2/2,y2/2,-20])
+        rotate([0,0,-90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+        translate([-x2/2,y2/2-2*trayz-tol,-20])
+        rotate([0,0,0])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+
+        translate([x2/2,-y2/2,-20])
+        rotate([0,0,90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+        translate([x2/2-2*trayz-tol,-y2/2,-20])
+        rotate([0,0,0])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+
+        translate([x2/2-0.2,0,5])
+        rotate([0,0,90])
+        rotate([90,0,0])
+        linear_extrude(height=2)
+        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+        
+        translate([-1.5,y2/2-0.2,5])
+        rotate([0,0,180])
+        rotate([90,0,0])
+        linear_extrude(height=2)
+        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+        
+    }
+    // add a foot for the tray corner
+    difference(){
+        translate([trayz,trayz,-2.5*trayz])
+        cube([x2/2,y2/2,trayz],center=true);
+        translate([-x2/4+trayz,-y2/4+trayz,-5*trayz])
+        rotate([0,0,0])
+        rounder(r=x2/3,h=60,f=88);
+    }
+    translate([x2/2-trayz+tol,y2/2-trayz+tol,-zfoot-6])
+    rotate([0,0,180])
+    rounder(r=4,h=30,f=88);
+}
+
+    // bottom pad for dimensions
+    if(0){
+        color("red")
+        translate([0,0,zpad/2-zpad])
+        cube([x1-20,y1-20,zpad],center=true);
+    }
+
+}
+
+//-------------------------------------------------------------------
+// @TODO add some taper on the interlocking parts, round off that 
+// square outer corner.  Make the bottom side tab larger and add a 
+// hole.  Shorter walls and taller feet would be nice.  10 mm feet 
+// was a bit low on the bar.
+module bigTrayFoot2(){
+
+x1=226;
+y1=172;
+z1=22;
+
+x2=20;
+y2=20;
+zfoot=8;
+zrise=2;
+zpad=1.5;
+lip=2;
+
+z2=z1+zfoot;
+tol=0.2;
+    
+translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
+    difference(){
+        union(){
+            translate([0,0,zrise/2+0.5*lip])
+            cube([x2,y2,z2+zrise-lip],center=true);
+            translate([-0.5*trayz,-0.5*trayz,0])
+            cube([x2-trayz,y2-trayz,z2],center=true);
+            translate([0,0,-2.5*trayz])
+            cube([x2,y2,trayz],center=true);
+        }
+        // cut above lip
+        translate([-trayz,-trayz,zrise+6])
+        cube([x2,y2,z2],center=true);
+
+        // extra clearance on top for lip
+        translate([-trayz,-trayz,z1/2+4])
+        linear_extrude(height=3,scale=1.1)
+        square([x2,y2],center=true);
+        
+        translate([-2*trayz-tol,-2*trayz-tol,trayz])
+        cube([x2,y2,z2+2*tol+2*trayz],center=true);
+
+        // slot in top surface for the lip
+        translate([-2*trayz-tol,-2*trayz-tol,z1-5])
+        cube([x2,y2,10],center=true);
+
+        // rounder on lip
+        translate([x2/2-1*trayz,y2/2-1*trayz,-zfoot-7])
+        rotate([0,0,180])
+        rounder(r=5,h=lip,f=88);
+
+        // bevel on lip
+        translate([x2/2-trayz,y2/2,-zfoot-7])
+        rotate([90,0,0])
+        rotate([0,0,90])
+        bevel(x=lip,y=0.5*lip,h=x2);
+        translate([x2/2,y2/2-trayz,-zfoot-7])
+        rotate([0,-90,0])
+        rotate([0,0,-90])
+        bevel(x=0.5*lip,y=lip,h=x2);
+
+
+        // rounder on base support
+        translate([-x2/2,-y2/2,-5*trayz])
+        rounder(r=x2,h=60,f=200);
+    
+        // main corner bevel
+        translate([x2/2,y2/2,-20])
+        rotate([0,0,180])
+        bevel(x=0.7*trayz,y=0.7*trayz,h=60);
+
+        // end bevels
+        translate([-x2/2,y2/2,-20])
+        rotate([0,0,-90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+
+        translate([x2/2,-y2/2,-20])
+        rotate([0,0,90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+        
+        // Lettering
+        translate([x2/2-0.2,0,5])
+        rotate([0,0,90])
+        rotate([90,0,0])
+        linear_extrude(height=2)
+        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+        
+        translate([-1.5,y2/2-0.2,5])
+        rotate([0,0,180])
+        rotate([90,0,0])
+        linear_extrude(height=2)
+        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+        
+    }
+    // add a foot for the tray corner
+    difference(){
+        translate([0,0,-2.5*trayz])
+        cube([x2,y2,trayz],center=true);
+        translate([-x2/2,-y2/2,-5*trayz])
+        rounder(r=x2,h=60,f=200);
+        translate([0,0,-6])
+        cylinder(r=1,h=10,center=true,$fn=55);
+
+        // end bevels
+        translate([-x2/2,y2/2,-20])
+        rotate([0,0,-90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+
+        translate([x2/2,-y2/2,-20])
+        rotate([0,0,90])
+        bevel(x=trayz/2,y=trayz/2,h=60);
+        
+        // main corner bevel
+        translate([x2/2,y2/2,-20])
+        rotate([0,0,180])
+        bevel(x=0.7*trayz,y=0.7*trayz,h=60);
+    }
+
+    // fillet upper section
+    translate([x2/2-trayz+tol,y2/2-trayz+tol,-zfoot+2])
+    rotate([0,0,180])
+    rounder(r=4,h=21,f=88);
+    //fillet lower section
+    translate([x2/2-2*trayz,y2/2-2*trayz,-zfoot-7])
+    rotate([0,0,180])
+    rounder(r=4,h=6,f=88);
+}
+
+    // bottom pad for dimensions
+    if(0){
+        color("red")
+        translate([0,0,zpad/2-zpad])
+        cube([x1-20,y1-20,zpad],center=true);
+    }
+
+}
+
+
 //=====================================================================
+
+//rack1();
+//rack3();
+
+//translate([0,60,0])
+//bigTrayFoot();
+//bigTrayFoot2();
+
+if(1){
+    difference(){
+        union(){
+            translate([0,0,zfoot]){
+                translate([0,0,1.5*trayz+0.2])
+                color("gray")
+                rack3b();
+                bigTray();
+                //bigTrayFoot();                
+                bigTrayFoot2();                
+                //rotate([0,0,180])
+                //bigTrayFoot();
+                //mirror([1,0,0]){
+                //    bigTrayFoot();                
+                //    rotate([0,0,180])
+                //    bigTrayFoot();
+                //}
+
+            }
+            if(1){
+                translate([0,0,zfoot+30.1]){
+                    translate([0,0,1.5*trayz])
+                    color("gray")
+                    rack3b();
+                    bigTray();
+                    bigTrayFoot2();
+                }
+                translate([0,0,zfoot+2*30.1]){
+                    translate([0,0,1.5*trayz])
+                    color("gray")
+                    rack3b();
+                    bigTray();
+                    bigTrayFoot2();
+                }
+            }
+            if(1){
+                color("silver",alpha=0.3)
+                bigBox();
+                color("silver",alpha=0.3)
+                bigLid();
+            }
+        }
+        if(1){
+            // side cut
+            translate([-150,0,0])
+            cube([300,300,300],center=true);
+            // front cut
+            translate([0,-150,0])
+            cube([300,300,300],center=true);
+        }
+    }
+}
+
 
 if(0){
     difference(){
@@ -704,7 +1114,7 @@ if(0){
     //trayB(lip=1);
 }
 
-Letters();
+//Letters();
 
 if(0){
 // slice to print in multi colors
