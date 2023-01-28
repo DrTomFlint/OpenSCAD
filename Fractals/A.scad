@@ -721,7 +721,7 @@ module rack3(){
 //---------------------------------------------------------------------
 module rack3b(){
 
-
+    translate([0,0,-1.5]){
         linear_extrude(height=6,scale=[0.96,0.96])
         square([218,164],center=true);
         
@@ -733,7 +733,7 @@ module rack3b(){
                 }
             }
         }
-    
+    }
 }
 
 //-------------------------------------------------------------------
@@ -752,7 +752,7 @@ module bigLid(){
 
 x1=226;
 y1=172;
-zpad=3;
+zpad=4;
     
     translate([0,0,85+26/2-5.8])
     difference(){
@@ -764,7 +764,7 @@ zpad=3;
     if(1){
         translate([0,0,85+26/2-5.8])
         translate([0,0,-zpad/2+7])
-        cube([x1-20,y1-20,zpad],center=true);
+        cube([x1,y1,zpad],center=true);
     }
     
 }
@@ -775,23 +775,177 @@ module bigTray(){
 x1=226;
 y1=172;
 z1=20;
-zpad=1.5;
+zpad=3;
     
     translate([0,0,z1/2])
     difference(){
         cube([x1,y1,z1],center=true);
         translate([0,0,trayz])
-        cube([x1-2*trayz,y1-2*trayz,z1-trayz],center=true);
+        cube([x1-2*trayz,y1-2*trayz,z1],center=true);
     }
     // bottom pad for dimensions
     if(1){
         color("red")
         translate([0,0,zpad/2-zpad])
-        cube([x1-20,y1-20,zpad],center=true);
+        cube([x1-25,y1-25,zpad],center=true);
     }
     
 }
 
+//-------------------------------
+
+wall=22;
+
+//-------------------------------------------------------------------
+module bigTray2(){
+
+x1=226;
+y1=172;
+z1=20;
+zpad=3;
+    
+    // base
+    color("cyan")
+    translate([0,0,trayz/2])
+    cube([x1-6,y1-6,trayz],center=true);
+    
+    // front back
+    translate([0,y1/2-trayz/2,trayz+wall/2])
+    //cube([x1-6,trayz,wall],center=true);
+    bigFront2();
+
+    translate([0,-y1/2+trayz/2,trayz+wall/2])
+    //cube([x1-6,trayz,wall],center=true);
+    rotate([0,0,180])
+    bigFront2();
+    
+    // sides
+    translate([x1/2-trayz/2,0,trayz+wall/2])
+    //cube([trayz,y1-6,wall],center=true);
+    bigSide2();
+    
+    translate([-x1/2+trayz/2,0,trayz+wall/2])
+    //cube([trayz,y1-6,wall],center=true);
+    rotate([0,0,180])
+    bigSide2();
+
+    // bottom pad for dimensions
+    if(1){
+        color("red")
+        translate([0,0,zpad/2-zpad])
+        cube([x1-25,y1-25,zpad],center=true);
+    }
+    
+}
+//-------------------------------------------------------------------
+module bigFront2(){
+
+x1=226;
+y1=172;
+z1=20;
+zpad=1.5;
+
+    difference(){
+        translate([0,0,-3])
+        cube([x1,trayz,wall],center=true);
+        
+        translate([x1/2,1.5,-wall/2-3])
+        rotate([0,0,180])
+        bevel(x=3,y=3,h=wall);
+        translate([-x1/2,1.5,-wall/2-3])
+        rotate([0,0,-90])
+        bevel(x=3,y=3,h=wall);
+        
+        translate([0,0,1])
+        hull(){
+            translate([x1/2-30,1.5,wall/2])
+            rotate([90,0,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+            translate([-x1/2+30,1.5,wall/2])
+            rotate([90,0,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+        }
+
+        color("red")
+        translate([0,0.9,-6.0])
+        rotate([0,0,180])
+        rotate([90,0,0])
+        linear_extrude(height=0.9)
+        text("Flint's  Finest  Fairy  Crystals", font = "Open Sans:style=Bold", size=6.5,halign="center",valign="center",spacing=1.2);
+    }
+
+
+}
+
+//-------------------------------------------------------------------
+module bigSide2(){
+
+x1=226;
+y1=172;
+z1=20;
+zpad=1.5;
+
+    difference(){
+       translate([0,0,-3])
+        cube([trayz,y1-6,wall],center=true);
+
+        translate([0,0,1]){
+        hull(){
+            translate([1.5,y1/2-30,wall/2])
+            rotate([0,90,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+            translate([1.5,y1/2-50,wall/2])
+            rotate([0,90,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+        }
+        hull(){
+            translate([1.5,-y1/2+30,wall/2])
+            rotate([0,90,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+            translate([1.5,-y1/2+50,wall/2])
+            rotate([0,90,0])
+            cylinder(r=8,h=10,center=true,$fn=99);
+        }
+        }
+        translate([0,0,-3])
+        hull(){
+            translate([1.5,10,wall/2-5])
+            rotate([0,90,0])
+            cylinder(r=2,h=10,center=true,$fn=99);
+            translate([1.5,-10,wall/2-5])
+            rotate([0,90,0])
+            cylinder(r=2,h=10,center=true,$fn=99);
+        }
+        translate([-4,y1/2-30+7.5,wall/2])
+        rotate([0,90,0])
+        rotate([0,0,0])
+        rounder(r=2.5,h=10,f=99);
+
+        translate([-4,y1/2-65+7.5,wall/2])
+        rotate([0,90,0])
+        rotate([0,0,-90])
+        rounder(r=2.5,h=10,f=99);
+
+        translate([-4,-y1/2+30-7.5,wall/2])
+        rotate([0,90,0])
+        rotate([0,0,-90])
+        rounder(r=2.5,h=10,f=99);
+
+        translate([-4,-y1/2+65-7.5,wall/2])
+        rotate([0,90,0])
+        rotate([0,0,0])
+        rounder(r=2.5,h=10,f=99);
+
+        color("red")
+        translate([0.9,0,-6.0])
+        rotate([0,0,90])
+        rotate([90,0,0])
+        linear_extrude(height=0.9)
+        text("Fourty  Eight", font = "Open Sans:style=Bold", size=6.5,halign="center",valign="center",spacing=1.2);
+    }
+
+    
+}
 //-------------------------------------------------------------------
 module bigTrayFoot(){
 
@@ -865,20 +1019,9 @@ translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
     rounder(r=4,h=30,f=88);
 }
 
-    // bottom pad for dimensions
-    if(0){
-        color("red")
-        translate([0,0,zpad/2-zpad])
-        cube([x1-20,y1-20,zpad],center=true);
-    }
-
 }
 
 //-------------------------------------------------------------------
-// @TODO add some taper on the interlocking parts, round off that 
-// square outer corner.  Make the bottom side tab larger and add a 
-// hole.  Shorter walls and taller feet would be nice.  10 mm feet 
-// was a bit low on the bar.
 module bigTrayFoot2(){
 
 x1=226;
@@ -956,22 +1099,23 @@ translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
         bevel(x=trayz/2,y=trayz/2,h=60);
         
         // Lettering
-        translate([x2/2-0.2,0,5])
-        rotate([0,0,90])
-        rotate([90,0,0])
-        linear_extrude(height=2)
-        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
-        
-        translate([-1.5,y2/2-0.2,5])
-        rotate([0,0,180])
-        rotate([90,0,0])
-        linear_extrude(height=2)
-        text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
-        
+        if(0){
+            translate([x2/2-0.2,0,5])
+            rotate([0,0,90])
+            rotate([90,0,0])
+            linear_extrude(height=2)
+            text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+            
+            translate([-1.5,y2/2-0.2,5])
+            rotate([0,0,180])
+            rotate([90,0,0])
+            linear_extrude(height=2)
+            text("F", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+        }
     }
     // add a foot for the tray corner
     difference(){
-        translate([0,0,-2.5*trayz])
+        translate([0,0,-8.5])
         cube([x2,y2,trayz],center=true);
         translate([-x2/2,-y2/2,-5*trayz])
         rounder(r=x2,h=60,f=200);
@@ -1022,14 +1166,21 @@ translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
 //bigTrayFoot();
 //bigTrayFoot2();
 
-if(1){
+//bigTray2();
+//bigTray();
+//bigFront2();
+bigSide2();
+
+
+if(0){
     difference(){
         union(){
             translate([0,0,zfoot]){
                 translate([0,0,1.5*trayz+0.2])
                 color("gray")
                 rack3b();
-                bigTray();
+                translate([0,0,0])
+                bigTray2();
                 //bigTrayFoot();                
                 bigTrayFoot2();                
                 //rotate([0,0,180])
@@ -1046,14 +1197,14 @@ if(1){
                     translate([0,0,1.5*trayz])
                     color("gray")
                     rack3b();
-                    bigTray();
+                    bigTray2();
                     bigTrayFoot2();
                 }
                 translate([0,0,zfoot+2*30.1]){
                     translate([0,0,1.5*trayz])
                     color("gray")
                     rack3b();
-                    bigTray();
+                    bigTray2();
                     bigTrayFoot2();
                 }
             }
@@ -1093,19 +1244,6 @@ if(0){
     }
 }
 
-//color("cyan")
-//insert1();
-
-//tray7();
-
-//tray8();
-//rotate([180,0,0])
-//tray8();
-//labels(z0=z0);
-
-//trayPins8();
-
-//trayPin();
 
 if(0){
     trayB(lip=0);
