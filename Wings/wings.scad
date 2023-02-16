@@ -138,13 +138,17 @@ module leverb(){
       hull(){
         translate([0,0,-thick])
         cylinder(r=rinner+4*thick,h=thick,$fn=F);
-        translate([0,20,-thick])
+        translate([0,50,-thick])
         cylinder(r=rinner/2,h=thick,$fn=F);
       }
       translate([0,0,-thick])
       cylinder(r=rinner-3*thick,h=20,center=true,$fn=F);
-      translate([0,20,-thick])
-      cylinder(r=rinner/4,h=20,center=true,$fn=F);
+      translate([0,50,-thick])
+      cylinder(r=2.5,h=20,center=true,$fn=F);
+      translate([0,37,-thick])
+      cylinder(r=4,h=20,center=true,$fn=F);
+      translate([0,22,-thick])
+      cylinder(r=6,h=20,center=true,$fn=F);
     }
 }
 
