@@ -89,6 +89,9 @@ module wibBack(){
 
 //===================================================================================
 
+// @TODO add a gold edge to the coin
+// switchup colors so W is blue, Mtn is yellow, snow is clear, back is black or smoke
+
 //wibMtn();
 //wibW();
 //wibWhite();
