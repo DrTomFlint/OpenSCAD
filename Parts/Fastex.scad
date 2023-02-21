@@ -75,6 +75,60 @@ module ladder(){
 
 
 //---------------------------------------------------------------------------------
+module tongue(){
+
+  // flex section
+    difference(){
+      union(){
+        translate([-long/2+thick,wide/2-thick,thick])
+        rotate([0,90,0])
+        scale([1,0.8,1])
+        cylinder(r=thick,h=long-2*thick,center=true,$fn=f1);
+      }
+      
+      translate([-long/2,wide/2-2.5*thick,thick])
+      cube([long+1,2*thick,2*thick],center=true);
+
+      translate([-long,wide/2+thick,0])
+      rotate([0,0,-90])
+      scale([1,1.5,1])
+      rounder(r=6,h=2*thick,f=77);
+    }
+    
+    // fillet inside tonge
+    translate([-thick/2,wide/2-1.5*thick,0.2*thick])
+    rotate([0,0,180])
+    rounder(r=3,h=1.6*thick,f=77);
+
+    difference(){
+      hull(){
+        translate([-0.75*long,wide/2,thick])
+        rotate([0,90,0])
+        scale([1,0.8,1])
+        cylinder(r=thick,h=long/2,center=true,$fn=f1);
+
+        translate([-0.75*long,wide/2-thick,thick])
+        rotate([0,90,0])
+        scale([1,0.8,1])
+        cylinder(r=thick,h=long/2,center=true,$fn=f1);
+      }
+      
+      translate([-0.4*long,wide/2-thick,thick])
+      rotate([0,0,-20])
+      cube([4*thick,4*thick,4*thick],center=true);
+
+      translate([-long,wide/2-2*thick,0])
+      rotate([0,0,0])
+      rounder(r=2.5,h=2*thick,f=77);
+
+      translate([-long,wide/2+thick,0])
+      rotate([0,0,-90])
+      scale([1,1.5,1])
+      rounder(r=6,h=2*thick,f=77);
+    }
+}
+
+//---------------------------------------------------------------------------------
 module male(){
 
   difference(){
@@ -87,134 +141,49 @@ module male(){
     rounder(r=3,h=2*thick,f=77);
   }
   
-
-  // flex section
-    difference(){
-      union(){
-        translate([-long/2,wide/2-thick,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long,center=true,$fn=f1);
-      }
-      
-      translate([-long/2,wide/2-2*thick,thick])
-      cube([long+1,2*thick,2*thick],center=true);
-
-      translate([-long,wide/2+thick,0])
-      rotate([0,0,-90])
-      rounder(r=5,h=2*thick,f=77);
-    }
-    
-    // fillet inside tonge
-    translate([-thick/2,wide/2-thick,0])
-    rotate([0,0,180])
-    rounder(r=3,h=2*thick,f=77);
-
-    difference(){
-      hull(){
-        translate([-0.75*long,wide/2,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long/2,center=true,$fn=f1);
-
-        translate([-0.75*long,wide/2-thick,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long/2,center=true,$fn=f1);
-      }
-      
-      translate([-0.4*long,wide/2-thick,thick])
-      rotate([0,0,-20])
-      cube([4*thick,4*thick,4*thick],center=true);
-
-      translate([-long,wide/2-2*thick,0])
-      rotate([0,0,0])
-      rounder(r=2.5,h=2*thick,f=77);
-
-      translate([-long,wide/2+thick,0])
-      rotate([0,0,-90])
-      rounder(r=5,h=2*thick,f=77);
-    }
-    
-  // mirror of outer tongue part
-  mirror([0,1,0]){
-  // tongue
-    difference(){
-      union(){
-        translate([-long/2,wide/2-thick,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long,center=true,$fn=f1);
-      }
-      
-      translate([-long/2,wide/2-2*thick,thick])
-      cube([long+1,2*thick,2*thick],center=true);
-
-      translate([-long,wide/2+thick,0])
-      rotate([0,0,-90])
-      rounder(r=5,h=2*thick,f=77);
-    }
-    
-    // fillet inside tonge
-    translate([-thick/2,wide/2-thick,0])
-    rotate([0,0,180])
-    rounder(r=3,h=2*thick,f=77);
-
-    difference(){
-      hull(){
-        translate([-0.75*long,wide/2,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long/2,center=true,$fn=f1);
-
-        translate([-0.75*long,wide/2-thick,thick])
-        rotate([0,90,0])
-        scale([1,0.8,1])
-        cylinder(r=thick,h=long/2,center=true,$fn=f1);
-      }
-      
-      translate([-0.4*long,wide/2-thick,thick])
-      rotate([0,0,-20])
-      cube([4*thick,4*thick,4*thick],center=true);
-
-      translate([-long,wide/2-2*thick,0])
-      rotate([0,0,0])
-      rounder(r=2.5,h=2*thick,f=77);
-
-      translate([-long,wide/2+thick,0])
-      rotate([0,0,-90])
-      rounder(r=5,h=2*thick,f=77);
-    }
-  }
-  
-  // center tongue
-    difference(){
-      union(){
+  difference(){
+    union(){
+      tongue();
+      mirror([0,1,0])
+      tongue();
+      // center tongue
+      difference(){
         translate([-long/2,0,thick])
         cube([long,2*thick,2*thick],center=true);
-        hull(){
-          translate([-long,1.5*thick,thick])
-          cylinder(r=thick/2,h=2*thick,center=true,$fn=f1);
-          translate([-long,-1.5*thick,thick])
-          cylinder(r=thick/2,h=2*thick,center=true,$fn=f1);
-        }
+        
+        translate([-long/2-thick,0,thick+0.67*thick])
+        cube([long,1*thick,0.67*thick],center=true);
+        translate([-long/2-thick,0,thick-0.67*thick])
+        cube([long,1*thick,0.67*thick],center=true);
       }
-      
-      translate([-long/2-thick,0,thick+0.67*thick])
-      cube([long,1*thick,0.67*thick],center=true);
-      translate([-long/2-thick,0,thick-0.67*thick])
-      cube([long,1*thick,0.67*thick],center=true);
     }
-    
+    translate([-long,wide/2+thick,0])
+    scale([1.5,1,1])
+    rotate([90,0,0])
+    rotate([0,0,0])
+    rounder(r=thick,h=wide+2*thick,f=77);
+    translate([-long,wide/2+thick,2*thick])
+    scale([1.5,1,1])
+    rotate([90,0,0])
+    rotate([0,0,-90])
+    rounder(r=thick,h=wide+2*thick,f=77);
+  }
 }
 
 //---------------------------------------------------------------------------------
 module female(tol=0.15){
 
-  translate([-long-2*thick,0,0])
-  mirror([1,0,0])
-  ladder();
+  difference(){
+    translate([-long-2*thick,0,0])
+    mirror([1,0,0])
+    ladder();
 
+    // center cut to help remove support
+    translate([-1.1*long,0,1*thick-tol/2])
+    //rotate([0,0,45])
+    cube([3*thick,wide-3*thick,2*thick+tol],center=true);
+  }
+  
   translate([-long-1.5*thick,wide/2+thick,0])
   rotate([90,0,0])
   rotate([0,0,180])
@@ -249,7 +218,19 @@ module female(tol=0.15){
         scale([1,0.8,1])
         cylinder(r=thick+tol,h=long+thick+1,center=true,$fn=f1);
       }
-      
+      // taper entryway
+      hull(){
+        translate([-thick,wide/2-thick,thick])
+        rotate([0,90,0])
+        scale([1,0.8,1])
+        cylinder(r1=thick+tol,r2=1.5*thick+tol,h=1.5*thick,center=true,$fn=f1);
+  
+        translate([-thick,-wide/2+thick,thick])
+        rotate([0,90,0])
+        scale([1,0.8,1])
+        cylinder(r1=thick+tol,r2=1.5*thick+tol,h=1.5*thick,center=true,$fn=f1);
+      }
+
       // side cut
       translate([-0.68*long,wide/2+3,thick])
       rotate([0,0,-20])
@@ -273,7 +254,7 @@ module female(tol=0.15){
         rotate([0,0,20])
         cube([4*thick,5*thick,5*thick],center=true);
       }
-      
+            
     }
     
     // center ridge inside
@@ -281,6 +262,12 @@ module female(tol=0.15){
     cube([long,1*thick-2*tol,thick],center=true);
     translate([-long/2-thick,0,-tol])
     cube([long,1*thick-2*tol,thick],center=true);
+    
+    // top text
+    translate([-0.58*long,0,3*thick])
+    linear_extrude(height=0.3)
+    text("LOVE", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.2);
+
     
 }
 
@@ -290,9 +277,9 @@ module female(tol=0.15){
 //ladder();
 
 //color("cyan")
-male();
+//male();
 
 //color("silver",alpha=0.4)
-//female();
+female();
 
 //=================================================================================
