@@ -14,10 +14,10 @@ use <./WibbyMask.scad>
 
 use <../Parts/rounder.scad>
 
-sx = 20;       // size of square
-sy = 30;
-mag = 30;		// magnification of traces
-thick = 1.8;    // thickness
+sx = 40;       // size of square
+sy = 60;
+mag = 60;		// magnification of traces
+thick = 1.2;    // thickness
 rx=1.5;           // rounding of corners
 
 wide=5;   // frame width
@@ -79,7 +79,7 @@ module wibBack(){
 
   difference(){
     translate([-0.5,0,thick/2])
-    cylinder(r=12,h=thick,center=true,$fn=99);
+    cylinder(r=22,h=thick,center=true,$fn=99);
   
     translate([0,0,-1])
     scale([mag,mag,2*thick])
@@ -87,18 +87,26 @@ module wibBack(){
   }
 }
 
-//===================================================================================
+//-----------------------------------------------------------------------------------
+module wibRim(){
 
-// @TODO add a gold edge to the coin
-// switchup colors so W is blue, Mtn is yellow, snow is clear, back is black or smoke
+  translate([-0.5,0,thick/2])
+  difference(){
+    cylinder(r=23,h=thick,center=true,$fn=99);
+    cylinder(r=22,h=thick,center=true,$fn=99);
+  }
+}
+
+//===================================================================================
 
 //wibMtn();
 //wibW();
 //wibWhite();
 //wibUp();
-wibLow();
+//wibLow();
 
 //wibBack();
+wibRim();
 
 //WibbyMask();
 //===================================================================================
