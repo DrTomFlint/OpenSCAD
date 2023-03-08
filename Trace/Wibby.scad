@@ -14,15 +14,12 @@ use <./WibbyMask.scad>
 
 use <../Parts/rounder.scad>
 
-sx = 40;       // size of square
+sx = 40;        // size of square
 sy = 60;
-mag = 60;		// magnification of traces
+mag = 60;		    // magnification of traces
 thick = 1.2;    // thickness
-rx=1.5;           // rounding of corners
-
-wide=5;   // frame width
-tol=0.3;  // space between frame and part
-ry=2;     // founder on frame
+thin = 0.9;     // thickness of the sanding frame
+rx=1.5;         // rounding of corners
 
 //-----------------------------------------------------------------------------------
 module wibMtn(){
@@ -93,8 +90,54 @@ module wibRim(){
   translate([-0.5,0,thick/2])
   difference(){
     cylinder(r=23,h=thick,center=true,$fn=99);
-    cylinder(r=22,h=thick,center=true,$fn=99);
+    cylinder(r=22,h=2*thick,center=true,$fn=99);
   }
+}
+
+//-----------------------------------------------------------------------------------
+module wibFrame(){
+
+  translate([-0.5,0,thin/2])
+  difference(){
+    cylinder(r=25,h=thin,center=true,$fn=99);
+    cylinder(r=23+0.15,h=2*thin,center=true,$fn=99);
+  }
+  
+  difference(){
+    hull(){
+      translate([24,0,thin/2])
+      cube([2,10,thin],center=true);
+      translate([22+30,0,thin/2])
+      cube([2,6,thin],center=true);
+    }
+    hull(){
+      translate([22+4,0,thin/2])
+      cube([2,5,2*thin],center=true);
+      translate([22+26,0,thin/2])
+      cube([2,2,2*thin],center=true);
+    }
+  }    
+  translate([22+30,0,3])
+  cube([2,6,6],center=true);
+
+
+  difference(){
+    hull(){
+      translate([0,24,thin/2])
+      cube([10,2,thin],center=true);
+      translate([0,22+30,thin/2])
+      cube([6,2,thin],center=true);
+    }
+    hull(){
+      translate([0,22+4,thin/2])
+      cube([5,2,2*thin],center=true);
+      translate([0,22+26,thin/2])
+      cube([2,2,2*thin],center=true);
+    }
+  }
+  translate([0,22+30,3])
+  cube([6,2,6],center=true);
+
 }
 
 //===================================================================================
@@ -106,7 +149,9 @@ module wibRim(){
 //wibLow();
 
 //wibBack();
-wibRim();
+//wibRim();
+
+wibFrame();
 
 //WibbyMask();
 //===================================================================================

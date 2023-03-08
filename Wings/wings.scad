@@ -25,6 +25,8 @@ zlever = 9;
 hi = space+2*thick;
 F=200;
 
+tall=26;
+
 //---------------------------------------------------------
 module pivota(){
 
@@ -61,40 +63,6 @@ $fn=89;
 
 }
 
-//---------------------------------------------------------
-module pivotc(extra=9){
-
-
-$fn=89;
-  difference(){
-    union(){
-      translate([0,0,extra])
-      metric_thread (diameter=9.25, pitch=2, length=hi-2, internal=false, leadin=1);
-      cylinder(r=rbasehole-0.3,h=extra,$fn=F);
-      translate([0,0,-thick])
-      cylinder(r1=rflange+1,r2=rflange,h=thick,$fn=F);
-    }
-    
-    translate([0,0,extra])
-    cylinder(r=2,h=2*hi,center=true,$fn=22);
-    translate([0,0,0])
-    cylinder(r1=4,r2=2,h=0.75*extra,$fn=22);
-    translate([0,0,-thick])
-    cube([2,8,2*thick],center=true);
-  }
-
-}
-
-//--------------------------------------------------------------
-module washer(){
-
-    difference(){
-      cylinder(r1=rwasher,r2=rwasher+2*thick,h=2*thick,$fn=F);
-      cylinder(r1=rflange+1,r2=rflange,h=thick,$fn=F);
-      cylinder(r=rbasehole,h=hi,$fn=F);
-    }
-      
-}
 //--------------------------------------------------------------
 module levera(){
 
@@ -152,33 +120,141 @@ module leverb(){
     }
 }
 
+//--------------------------------------------------------------
+module washer(){
+
+    difference(){
+      cylinder(r1=rwasher,r2=rwasher+2*thick,h=2*thick,$fn=F);
+      cylinder(r1=rflange+1,r2=rflange,h=thick,$fn=F);
+      cylinder(r=rbasehole,h=hi,$fn=F);
+    }
+      
+}
+
+//---------------------------------------------------------
+module pivotc(extra=9){
+
+
+$fn=89;
+  difference(){
+    union(){
+      translate([0,0,extra])
+      metric_thread (diameter=9.25, pitch=2, length=hi-2, internal=false, leadin=1);
+      cylinder(r=rbasehole-0.3,h=extra,$fn=F);
+      translate([0,0,-thick])
+      cylinder(r1=rflange+1,r2=rflange,h=thick,$fn=F);
+    }
+    
+    translate([0,0,extra])
+    cylinder(r=2,h=2*hi,center=true,$fn=22);
+    translate([0,0,0])
+    cylinder(r1=4,r2=2,h=0.75*extra,$fn=22);
+    translate([0,0,-thick])
+    cube([2,8,2*thick],center=true);
+  }
+
+}
+
+//--------------------------------------------------------------
+module washer2(){
+
+    difference(){
+      cylinder(r1=rwasher,r2=rwasher+2*thick,h=3*thick,$fn=F);
+      translate([0,0,-0.1])
+      cylinder(r1=rflange+2*thick,r2=rflange,h=2*thick+0.1,$fn=F);
+      cylinder(r=rbasehole,h=hi,$fn=F);
+    }
+      
+}
+
+
+//------------------------------------------------------------
+module pivotd(){
+
+  difference(){
+    union(){
+      cylinder(r=rbasehole-0.15,h=tall,$fn=F);
+      translate([0,0,-2*thick])
+      cylinder(r1=rflange+2*thick,r2=rflange,h=2*thick,$fn=F);
+  
+      
+      translate([thick,0,tall])
+      cylinder(r1=rbasehole,r2=rbasehole-thick,h=2*thick,$fn=F);
+      translate([-thick,0,tall])
+      cylinder(r1=rbasehole,r2=rbasehole-thick,h=2*thick,$fn=F);
+    }
+    
+    // cut for compression
+    translate([0,0,tall])
+    cube([2*thick,20,tall],center=true);
+    
+    // round out compression cut for stress relief
+    translate([0,0,0.5*tall])
+    rotate([90,0,0])
+    cylinder(r=thick,h=20,center=true,$fn=F);
+
+    // side cut to make printable
+    translate([0,10,0.5*tall])
+    cube([20,10,2*tall],center=true);
+    
+    // divot to help install tabs
+    translate([3.5,0,tall+1])
+    cylinder(r=0.6,h=2*thick,$fn=F);
+
+    // divot to help install tabs
+    translate([-3.5,0,tall+1])
+    cylinder(r=0.6,h=2*thick,$fn=F);
+
+  }
+}
+
+//---------------------------------------------------------
+module wedged(){
+
+    translate([0,0,tall/2+5])
+    //cube([2*thick-0.15,2*rbasehole-0.3,0.5*tall],center=true);
+    linear_extrude(height=0.5*tall,scale=[1.3,1])
+    square([2*thick-0.15-0.5,2*rbasehole-0.3-0.5],center=true);
+
+    translate([0,0,tall+4])
+    cube([2*thick-0.15,2*rbasehole+2*thick,2*thick],center=true);
+}
 
 //=========================================================
 
 if(0){
   difference(){
     union(){
-      translate([0,0,9.2])
-      pivota();
+      translate([0,0,2*thick])
+//      pivota();
       color("red")
 //      pivotb();
-      pivotc();
-      //color("cyan")
-      //washer();
+      pivotd();
+      color("cyan")
+      wedged();
+      washer2();
+      translate([0,0,30.5])
+      rotate([180,0,0])
+      washer2();
+      
     }
-    translate([20,0,8])
-    cube([40,40,40],center=true);
+    translate([0,20,8])
+    cube([40,40,80],center=true);
   }
 }
 
 //pivota();
 //pivotb();
+//translate([40,0,0])
 //pivotc();
-//washer();
+
+//pivotd();
+washer2();
+//wedged();
 
 //translate([60,0,0])
 //levera();
 
-leverb();
+//leverb();
 
 //=========================================================
