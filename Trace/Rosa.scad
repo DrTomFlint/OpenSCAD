@@ -16,6 +16,9 @@ wide=5;   // frame width
 tol=0.3;  // space between frame and part
 ry=2;     // founder on frame
 
+thick2 = 0.9;    // thickness for round version
+rz=14.8;    // radius of round version
+
 //-----------------------------------------------------------------------------------
 module rosaBlack(){
   
@@ -38,6 +41,40 @@ module rosaBlack(){
     translate([sx/2,-sx/2,-1])
     rotate([0,0,90])
     rounder(r=rx,h=thick+2,f=77);
+  }
+}
+
+//-----------------------------------------------------------------------------------
+module rosaBlack2(){
+  
+    intersection(){
+      scale([sx+1,sx+1,thick2])
+      Rosalees();
+      cylinder(r=rz,h=thick2,$fn=122);
+    }
+
+  difference(){
+    hull(){
+      cylinder(r=rz,h=thick2,$fn=122);
+      translate([0,rz+3,0])
+      cylinder(r=1,h=thick2,$fn=122);
+    }
+    cylinder(r=rz-0.5,h=3*thick2,center=true,$fn=122);
+  }
+}
+
+//-----------------------------------------------------------------------------------
+module rosaWhite2(){
+  
+  intersection(){
+    difference(){
+      translate([0,0,thick2/2])
+      cube([sx-1,sx-1,thick2],center=true);
+      translate([0,0,-1])
+      scale([sx+1,sx+1,thick2+2])
+      Rosalees();
+    }
+    cylinder(r=rz,h=thick2,$fn=122);
   }
 }
 
@@ -114,12 +151,69 @@ module rosaFrame(){
 
 }
 
+//-------------------------------------------------------------------------------------
+module rosaBlack3(){
+ 
+  difference(){
+    union(){
+      rosaBlack2();
+      translate([0,0,0.01])
+      rotate([0,180,0])
+      rosaBlack2();
+    }
+    // cut for ear ring wire
+    translate([0,rz+2,0])
+    cylinder(r=0.9,h=20,center=true,$fn=33);
+  }
+}
 
+//-------------------------------------------------------------------------------------
+module rosaClear2(){
+ 
+  translate([0,0,thick2])
+  difference(){
+     hull(){
+      cylinder(r=rz,h=0.3,$fn=122);
+      translate([0,rz+3,0])
+      cylinder(r=1,h=0.3,$fn=122);
+    }
+
+    // cut for ear ring wire
+    translate([0,rz+2,0])
+    cylinder(r=0.9,h=20,center=true,$fn=33);
+  }
+}
+
+//-------------------------------------------------------------------------------------
+module rosaClear3(){
+ 
+  rosaClear2();
+  rotate([0,180,0])
+  rosaClear2();
+}
+
+//-------------------------------------------------------------------------------------
+module rosaWhite3(){
+  
+  rosaWhite2();
+  rotate([0,180,0])
+  rosaWhite2();
+}
 //===================================================================================
-rosaBlack();
+//color("cyan")
+rosaClear3();
+
+//rosaBlack3();
+//rosaWhite3();
+
+//rosaBlack2();
+//rosaWhite2();
+
+
+//rosaBlack();
 //rosaWhite();
 
-rosaFrame();
+//rosaFrame();
 
 //===================================================================================
 
