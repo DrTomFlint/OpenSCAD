@@ -13,7 +13,8 @@ use <../Parts/rounder.scad>
 
 rcut = 30;       // cut radius to remove registration marks
 
-rout = 24.5;      // outer size of disk
+//rout = 24.5;      // outer size of disk
+rout = 22;      // outer size of disk
 
 mag = 60;		// magnification of traces
 thick = 1.2;    // thickness
@@ -76,6 +77,22 @@ module cWhite(){
 }
 
 //-----------------------------------------------------------------------------------
+module cTeeth(){
+  
+  difference(){
+    translate([-20/2,-10,0])
+    cube([20,10,thick]);
+    
+    translate([0,0,-thick]){
+      scale([mag,mag,4*thick])
+      CatFace();
+      scale([mag,mag,4*thick])
+      CatMask();
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------------
 module cRim(){
   
   difference(){
@@ -88,9 +105,10 @@ module cRim(){
 
 //cRing();
 //cFace();
-cMask();
+//cMask();
 //cWhite();
 //cRim();
+cTeeth();
 
 //===================================================================================
 

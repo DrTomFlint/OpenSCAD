@@ -23,7 +23,9 @@ x1=90;        // length of main shaft
 r2=50;        // radius of the flat end
 x2=3;         // thickness of the flat
 
-x3=8;         // thickness of the tower
+x3=30;         // thickness of the tower
+
+xgear=10;     // thickness of the spur gear and rack
 
 F2=66;
 
@@ -71,8 +73,11 @@ module shaft(){
       // thread for clutch action
       translate([x1/2-6,0,0])
       rotate([0,90,0])
-      metric_thread (diameter=30, pitch=2, length=16, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=1, leadfac=1.0, test=false);
-      //cylinder(r=15,h=16,$fn=F2);
+      if(1){
+        cylinder(r=15,h=16,$fn=F2);
+      }else{
+        metric_thread (diameter=30, pitch=2, length=16, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=1, leadfac=1.0, test=false);
+      }
     }
     
     // cut for bearings
@@ -81,11 +86,6 @@ module shaft(){
     translate([-x1/2+7/2,0,0])
     bearing(tol=0.15);
 
-    // cut for bearing clearance
-//    translate([x1/2+10,0,0])
-//    rotate([0,90,0])
-//    cylinder(r=11+1,h=20,center=true,$fn=F2);  
-    
     // cut for axle
     rotate([0,90,0])
     cylinder(r=7/2+0.5,h=x1+30,$fn=F2,center=true);  
@@ -110,9 +110,12 @@ module nut(){
   rotate([0,90,0])
   difference(){
     cylinder(r=26,h=11,$fn=12,center=true);
-    //cylinder(r=15,h=16,$fn=F2,center=true);
-    translate([0,0,-6])
-    metric_thread (diameter=30, pitch=2, length=12, internal=true, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=3, leadfac=1.0, test=false);
+    if(1){
+      cylinder(r=15,h=16,$fn=F2,center=true);
+    }else{
+      translate([0,0,-6])
+      metric_thread (diameter=30, pitch=2, length=12, internal=true, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=3, leadfac=1.0, test=false);
+    }
     
     // locking cuts
     for(i=[0:8]){
@@ -127,7 +130,7 @@ module nut(){
 module spur(){
       translate([x1/2-10,0,0])
       rotate([0,90,0])
-      spur_gear (modul=2, tooth_number=32, width=10, bore=35, pressure_angle=20, helix_angle=0, optimized=false);
+      spur_gear (modul=2, tooth_number=32, width=xgear, bore=35, pressure_angle=20, helix_angle=0, optimized=false);
 }
 
 //----------------------------------------------------------------------
@@ -137,8 +140,12 @@ module post(){
   color("gray")
   translate([x1/2-10,-32,3])
   rotate([0,90,0])
-  rack(modul=2, length=148, height=10, width=10, pressure_angle=20, helix_angle=0);
+  rack(modul=2, length=148, height=10, width=xgear, pressure_angle=20, helix_angle=0);
 
+  // stop block on bottom
+  translate([x1/2-5,-44,-66])
+  rotate([12,0,0])
+  cube([10,10,10],center=true);
 }
 
 //----------------------------------------------------------------------
@@ -163,47 +170,50 @@ module bearing(tol=0){
 //----------------------------------------------------------------------
 module tower(){
 
+x4=x1/2+x3/2-xgear;
+
   difference(){
     hull(){
-      translate([x1/2+x3/2,0,0])
+      translate([x4,0,0])
       rotate([0,90,0])
-      cylinder(r=16,h=x3,center=true,$fn=F2);
+      cylinder(r=10,h=x3,center=true,$fn=F2);
         
-      translate([x1/2+x3/2,-30,16])
+      translate([x4,-50,16])
       rotate([0,90,0])
       cylinder(r=4,h=x3,center=true,$fn=F2);
 
-      translate([x1/2+x3/2,-30,-16])
+      translate([x4,-50,-16])
       rotate([0,90,0])
       cylinder(r=4,h=x3,center=true,$fn=F2);
     }
+
     // cut for axle
     rotate([0,90,0])
-    cylinder(r=7/2,h=x1+20,$fn=F2,center=true);  
+    cylinder(r=7/2+0.2,h=x1+60,$fn=F2,center=true);  
+
+    // cut for rack and spur
+    translate([x4-15+0.4,-12-0.4,0])
+    cube([20,60,60],center=true);
+
+    // cut for nut
+    translate([x4,-4,0])
+    cube([10,60,60],center=true);
   }
   
-  // idler pins
-  translate([x1/2-x3/2,-30,16])
-  rotate([0,90,0])
-  cylinder(r=4,h=x3,center=true,$fn=F2);
-
-  translate([x1/2-x3/2,-30,-16])
-  rotate([0,90,0])
-  cylinder(r=4,h=x3,center=true,$fn=F2);
 }
 
 //======================================================================
 
 //spool();
 shaft();
-//axle();
-//spur();
+axle();
+spur();
 nut();
-//post();
+post();
 
-//tower();
+tower();
 
-if(0){
+if(1){
   color("cyan")
   translate([x1/2-7/2+10,0,0])
   bearing(tol=0.15);  
