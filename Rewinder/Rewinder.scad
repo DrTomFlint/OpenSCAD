@@ -97,7 +97,7 @@ module shaft(){
     for(i=[0:7]){
       rotate([0,0,i*360/8])
       translate([14.5,0,0])
-      cylinder(r=2,h=4,$fn=22);
+      cylinder(r=2,h=4.1,$fn=22);
     }
 
   }
@@ -130,7 +130,8 @@ module nut(){
 module spur(){
       translate([x1/2-10,0,0])
       rotate([0,90,0])
-      spur_gear (modul=2, tooth_number=32, width=xgear, bore=35, pressure_angle=20, helix_angle=0, optimized=false);
+//      spur_gear (modul=2, tooth_number=32, width=xgear, bore=35, pressure_angle=20, helix_angle=0, optimized=false);
+      spur_gear (modul=2, tooth_number=24, width=xgear, bore=35, pressure_angle=20, helix_angle=0, optimized=false);
 }
 
 //----------------------------------------------------------------------
@@ -138,7 +139,7 @@ module post(){
 
   //rack(modul=1, length=60, height=5, width=20, pressure_angle=20, helix_angle=0);
   color("gray")
-  translate([x1/2-10,-32,3])
+  translate([x1/2-10,-32+8,3])
   rotate([0,90,0])
   rack(modul=2, length=148, height=10, width=xgear, pressure_angle=20, helix_angle=0);
 
@@ -188,8 +189,13 @@ x4=x1/2+x3/2-xgear;
     }
 
     // cut for axle
-    rotate([0,90,0])
-    cylinder(r=7/2+0.2,h=x1+60,$fn=F2,center=true);  
+    hull(){
+      translate([0,0,15])
+      rotate([0,90,0])
+      cylinder(r=7/2,h=x1+60,$fn=F2,center=true);  
+      rotate([0,90,0])
+      cylinder(r=7/2+0.2,h=x1+60,$fn=F2,center=true);  
+    }
 
     // cut for rack and spur
     translate([x4-15+0.4,-12-0.4,0])
@@ -206,14 +212,15 @@ x4=x1/2+x3/2-xgear;
 
 //spool();
 shaft();
-axle();
+//axle();
+color(alpha=0.5)
 spur();
-nut();
+//nut();
 post();
 
-tower();
+//tower();
 
-if(1){
+if(0){
   color("cyan")
   translate([x1/2-7/2+10,0,0])
   bearing(tol=0.15);  

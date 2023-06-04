@@ -12,13 +12,13 @@ use <../Parts/presstime.scad>
 // handle angle
 //handleAngle=-45;
 // sled position
-//sledZ=300;
+sledZ=162;
 
 // handle angle
 //handleAngle=-45+undulate($t)*90;
 handleAngle=0;
 // sled position
-sledZ=300-undulate($t)*27.0;
+//sledZ=300-undulate($t)*27.0;
 
 // vertical post
 postHi=480;
@@ -31,6 +31,7 @@ railZ=102;
 
 makitaHi = 3;
 
+//sledHi=50;
 sledHi=50;
 
 // for animation
@@ -52,7 +53,23 @@ module stand1(){
     rotate([0,0,180])
     rotate([90,0,0])      
     tbrace();
-  
+
+    // shelf
+if(1){  
+    translate([15,15,60])
+    rotate([-90,0,0])      
+    tbrace();
+
+    translate([15,-15,60])
+    rotate([0,0,0])
+    rotate([-90,0,0])      
+    tbrace();
+
+    translate([60,35,60+15])
+    rotate([90,0,0])
+    tslot1(type=1,len=70);
+}
+
     // front foot
     translate([-15-60,0,-15])
     rotate([0,90,0])
@@ -373,7 +390,6 @@ if(mirror==1){
 }
 //------------------------------------------------------
 module handle(){
-// ***********************************************************************************************************************************************  
 
 difference(){
   union(){
@@ -1014,6 +1030,329 @@ if(1){
 
 }
 
+//------------------------------------------------------------------------
+module drill(){
+  
+  // bit 
+  cylinder(r=0.5,h=10.5,$fn=55);
+  translate([0,0,10.5])
+  cylinder(r1=0.5,r2=1.5,h=3,$fn=55);
+  translate([0,0,10.5+3])
+  cylinder(r=1.5,h=3,$fn=55);
+  translate([0,0,10.5+3+3])
+  cylinder(r=7.7/2,h=5,$fn=55);
+  translate([0,0,10.5+3+3+5])
+  cylinder(r1=7.7/2,r2=14/2,h=8.5,$fn=55);
+  translate([0,0,10.5+3+3+5+8.5])
+  cylinder(r=14/2,h=10,$fn=55);
+  translate([0,0,10.5+3+3+5+8.5+10])
+  cylinder(r=9/2,h=8.5,$fn=55);
+  
+  // taper
+  translate([0,0,10.5+3+3+5+8.5+10+8.5])
+  hull(){
+    cylinder(r=9/2,h=0.1,$fn=55);
+    translate([0,4.5,5.5])
+    cylinder(r=21.5/2,h=0.1,$fn=55);
+    translate([0,-4.5,5.5])
+    cylinder(r=21.5/2,h=0.1,$fn=55);
+  }
+  
+  // main barrel
+  translate([0,0,10.5+3+3+5+8.5+10+8.5+5.5])
+  hull(){
+    translate([0,4.5,0])
+    cylinder(r=21.5/2,h=63,$fn=55);
+    translate([0,-4.5,0])
+    cylinder(r=21.5/2,h=63,$fn=55);
+  }
+
+  // lock
+  hull(){
+    translate([0,0,60])
+    rotate([0,-90,0])
+    cylinder(r=4.7/2,h=15,$fn=55);
+    translate([0,0,63])
+    rotate([0,-90,0])
+    cylinder(r=4.7/2,h=15,$fn=55);
+  }
+
+  // side barrel
+  translate([0,0,95])
+  rotate([-60,0,0])
+  hull(){
+    translate([0,7.5,0])
+    cylinder(r=21.5/2,h=25,$fn=55);
+    translate([0,-7.5,0])
+    cylinder(r=21.5/2,h=25,$fn=55);
+  }
+  translate([0,0,95])
+  rotate([-60,0,0])
+  hull(){
+    translate([0,7.5,0])
+    cylinder(r=19/2,h=153,$fn=55);
+    translate([0,-7.5,0])
+    cylinder(r=19/2,h=153,$fn=55);
+  }
+
+}
+
+
+//------------------------------------------------------------------------
+module drillCollar(){
+
+screwOff=38.5-makitaHi;
+
+tabHi=25;   // height of tabs on the sled
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=3;   // height of tabs on the shoe
+
+
+  // upper collar for drill
+  translate([railX+32,0,-20])
+  difference(){
+    hull(){
+      translate([0,4.5,0])
+      cylinder(r=21.5/2+2,h=25,$fn=55);
+      translate([0,-4.5,0])
+      cylinder(r=21.5/2+2,h=25,$fn=55);
+    }
+    hull(){
+      translate([0,4.5,-1])
+      cylinder(r=21.5/2+0.15,h=27,$fn=55);
+      translate([0,-4.5,-1])
+      cylinder(r=21.5/2+0.15,h=27,$fn=55);
+    }
+    // cut for the button
+    hull(){
+      translate([0,0,10])
+      rotate([0,-90,0])
+      cylinder(r=5/2,h=15,$fn=55);
+      translate([0,0,30])
+      rotate([0,-90,0])
+      cylinder(r=5/2,h=15,$fn=55);
+    }
+    // cut for tightening collar
+    translate([railX-20,0,10])
+    cube([10,4,40],center=true);
+
+    // interlock cuts
+    translate([0,6,11])
+    rotate([0,-90,0])
+    cylinder(r=1.5,h=15,$fn=55);
+    translate([0,-6,11])
+    rotate([0,-90,0])
+    cylinder(r=1.5,h=15,$fn=55);
+
+  }
+  
+  // lower collar section
+  translate([railX+32,0,-23])
+  difference(){
+    hull(){
+      translate([0,4.5,0])
+      cylinder(r=21.5/2+2,h=3,$fn=55);
+      translate([0,-4.5,0])
+      cylinder(r=21.5/2+2,h=3,$fn=55);
+    }
+    translate([0,0,-2.5])
+    hull(){
+      cylinder(r=9/2,h=0.1,$fn=55);
+      translate([0,4.5,5.5])
+      cylinder(r=21.5/2,h=0.1,$fn=55);
+      translate([0,-4.5,5.5])
+      cylinder(r=21.5/2,h=0.1,$fn=55);
+    }
+    // cut for tightening collar
+    translate([railX-20,0,10])
+    cube([10,4,40],center=true);
+
+  }
+
+  // tabs for tightening collar
+  difference(){
+    intersection(){
+      union(){
+        translate([railX+48,3.5,-9])
+        cube([9,3,28],center=true);
+        translate([railX+48,-3.5,-9])
+        cube([9,3,28],center=true);
+      }
+      translate([railX+44,0,-9])
+      scale([1,1,1.75])
+      rotate([90,0,0])
+      cylinder(r=8,h=20,$fn=77,center=true);
+    }
+    translate([railX+49,0,-9])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=20,$fn=77,center=true);
+  }
+}
+
+
+//------------------------------------------------------------------------
+module drillSled(){
+
+screwOff=38.5-makitaHi;
+
+tabHi=25;   // height of tabs on the sled
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=3;   // height of tabs on the shoe
+
+
+difference(){
+  union(){
+
+    // bolt on tabs
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+      rotate([0,90,0])
+      cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+    
+  } // end of the union
+
+  // more material reduction
+  translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+  translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+  translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+
+  // cuts for the bolt mounts
+  translate([railX+15,-railY-20,29/2])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  translate([railX+15,railY+20,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  translate([railX+15,railY+20,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  
+} 
+
+  // attachment points
+  difference(){
+    union(){
+      difference(){
+        hull(){
+          translate([railX+16.5,5,-9])
+          cube([8,5,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+          rotate([0,90,0])
+          cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5,12,-14])
+          cube([8,1,16],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+        }
+      }
+      
+      difference(){
+        hull(){
+          translate([railX+16.5,5,-9])
+          cube([8,5,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+          rotate([0,90,0])
+          cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5,12,6])
+          cube([8,1,16],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+3,$fn=88,center=true);
+        }
+      }
+      
+      difference(){
+        hull(){
+          translate([railX+16.5,-5,-9])
+          cube([8,5,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+          rotate([0,90,0])
+          cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5,-12,-3])
+          cube([8,1,16],center=true);
+          translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+3,$fn=88,center=true);
+        }
+      }
+      // reinforce joint of hulls
+      translate([railX+16.5-2.5,0,-9])
+      cube([3,5,28],center=true);
+      translate([railX+16.5,0,-19])
+      cube([8,5,8],center=true);
+      
+    }  // end of union
+    
+    // cut for upper collar for drill
+    translate([railX+32,0,-20])
+    hull(){
+      translate([0,4.5,-0.15])
+      cylinder(r=21.5/2+2.1,h=25.3,$fn=55);
+      translate([0,-4.5,-0.15])
+      cylinder(r=21.5/2+2.1,h=25.3,$fn=55);
+    }
+
+    // cut for lower collar section
+    translate([railX+32,0,-23])
+    hull(){
+      translate([0,4.5,0])
+      cylinder(r=21.5/2+2.1,h=3,$fn=55);
+      translate([0,-4.5,0])
+      cylinder(r=21.5/2+2.1,h=3,$fn=55);
+    }
+  }
+
+    // interlock pins
+    translate([railX+21,6,-9])
+    rotate([0,-90,0])
+    cylinder(r1=1.3,r2=1.5,h=2,$fn=55);
+    translate([railX+21,-6,-9])
+    rotate([0,-90,0])
+    cylinder(r1=1.3,r2=1.5,h=2,$fn=55);
+
+}
+
 //----------------------------------------------------------------------------
 module axle(){
 difference(){  
@@ -1109,6 +1448,29 @@ if(0){
   makita();
 }
 
+//**************************************************************************
+// tool holder for tiny drill
+if(0){
+  translate([railX+32,0,sledZ-74])
+  drill();
+}
+if(0){
+  translate([0,0,sledZ])
+  drillSled();
+}
+if(1){
+  translate([0,0,sledZ])
+  drillCollar();
+}
+if(0){
+  difference(){
+    translate([0,0,sledZ])
+    drillCollar();
+    translate([110,0,sledZ])
+    cube([100,100,100],center=true);
+  }
+}
+
 //beltClip();
 
 // stand
@@ -1164,7 +1526,7 @@ translate([0,0,-postHi-36]){
     handle();
   }    
   // handlePin
-  if(1){
+  if(0){
     translate([0,0,postHi])
     handlePin();
   }    
@@ -1223,6 +1585,7 @@ if(0){
 // sled shoe
 if(0){
   translate([0,0,sledZ])
+  rotate([0,0,0])
   sledShoe();
 }
 

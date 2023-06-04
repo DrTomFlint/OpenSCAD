@@ -172,13 +172,13 @@ rotate([0,0,180]){
 
 Walls1();
 
-/*
-translate([0,0,40])
-Walls2();
-*/
+
+//translate([0,0,40])
+//Walls2();
 
 
-/*
+
+
     
 // chassis type 7a
 translate([-27,8,0]) rotate([0,0,0])
@@ -216,7 +216,7 @@ translate([54-15,1.6,0]) color("blue"){
 }
 }
 
-*/
+
 
 
 
