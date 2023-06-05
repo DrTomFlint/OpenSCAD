@@ -157,7 +157,23 @@ cylinder(r=1.5,h=2.2,$fn=16);
 } // end of module
 
 
+
+//-------------------------------------------------------------------------
+// dense strip leds
+module strip2(){
+
+x0=6.92;    // spacing of leds along tape
+y0=12;      // width of tape
+z0=0.5;     // thickness of tape
+
+    // tape
+    cube([x0,y0,z0]);
+    
+}
+
 //==================================
+
+strip2();
 
 Rx3();
 translate([0,16.7,0])
