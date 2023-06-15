@@ -75,7 +75,7 @@ module wibLow(){
 module wibBack(){
 
   difference(){
-    translate([-0.5,0,thick/2])
+    translate([-1.5,0,thick/2])
     cylinder(r=22,h=thick,center=true,$fn=99);
   
     translate([0,0,-1])
@@ -87,7 +87,7 @@ module wibBack(){
 //-----------------------------------------------------------------------------------
 module wibRim(){
 
-  translate([-0.5,0,thick/2])
+  translate([-1.5,0,thick/2])
   difference(){
     cylinder(r=23,h=thick,center=true,$fn=99);
     cylinder(r=22,h=2*thick,center=true,$fn=99);
@@ -149,9 +149,9 @@ module wibFrame(){
 //wibLow();
 
 //wibBack();
-//wibRim();
+wibRim();
 
-wibFrame();
+//wibFrame();
 
 //WibbyMask();
 //===================================================================================
