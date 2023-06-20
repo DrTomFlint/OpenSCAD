@@ -6,140 +6,7 @@
 // Dr Tom Flint, 28 May 2023
 //=================================================================================
 
-use <LedStripLights5a.scad>
-use <LedStripLights5b.scad>
 use <../Parts/rounder.scad>
-
-
-//----------------------------------------------------------------------------------
-module seven(){
-  
-  difference(){
-    union(){
-      linear_extrude(height=2.4)
-      offset(r=1,$fn=22)
-      square([5,5],center=true);
-      
-      intersection(){
-        translate([-3.8,0,0.4-0.5])
-        cube([1,8,5],center=true);
-
-        tol=0.2;
-        rotate([0,-90,0])
-        translate([-1.65/2+1.25,0,+1.5+0.2])
-        linear_extrude(height=8,scale=1.8) 
-        square(size=[1.65+2+tol*2,5+tol*2],center=true);
-      }
-    }
-    
-    translate([0,1,-0.2])
-    cylinder(r1=3.7/2,r2=3.8/2,h=3,$fn=22);
-    translate([0,1,1.5])
-    cylinder(r1=3.7/2,r2=4.2/2,h=1,$fn=22);
-
-  }
-}
-
-//----------------------------------------------------------------------------------
-module four(){
-  
-  difference(){
-    union(){
-      linear_extrude(height=2.4)
-      offset(r=1,$fn=22)
-      square([5,5],center=true);
-      
-      intersection(){
-        translate([-3.8,0,0.4-0.5])
-        cube([1,8,5],center=true);
-
-        tol=0.2;
-        rotate([0,-90,0])
-        translate([-1.65/2+1.25,0,+1.5+0.2])
-        linear_extrude(height=8,scale=1.8) 
-        square(size=[1.65+2+tol*2,5+tol*2],center=true);
-      }
-    }
-        
-    translate([-0.5,1,0])
-    linear_extrude(height=2.6,scale=1.2) 
-    offset(r=1,$fn=22)
-    square(size=[0.8,0.8],center=true);
-
-  }
-}
-
-
-//---------------------------------------------------------------------------------
-module ledbox(){
-Rx3();
-difference(){
-  translate([4,0,-3])
-  cube([4,10,10],center=true);
-
-  translate([2.5,0,0])
-  rotate([0,90,0])
-  linear_extrude(height=2.6)
-  offset(r=1.2,$fn=22)
-  square([5,5],center=true);
-    
-  translate([5,0,0])
-  cube([9,6,6],center=true);
-  
-  
-}
-}
-//---------------------------------------------------------------------------------
-module ledboxB(){
-Rx3();
-difference(){
-  translate([4,0.5,-3])
-  cube([6,11,10],center=true);
-
-  translate([2.5-1,0.5,0])
-  rotate([0,90,0])
-  linear_extrude(height=4.6)
-  offset(r=1.2,$fn=22)
-  square([5,6],center=true);
-    
-  translate([5,0,0])
-  cube([9,6,6],center=true);
-  
-  translate([7,0.5,0])
-  cube([3,6,6],center=true);
-  
-  
-}
-}
-//----------------------------------------------------------------------------------
-module fourB(){
-  
-  difference(){
-    union(){
-      translate([0,0.5,0])
-      linear_extrude(height=3.4)
-      offset(r=1,$fn=22)
-      square([5,6],center=true);
-      
-      intersection(){
-        translate([-3.8,0,0.4+0.25])
-        cube([1,8,5.5],center=true);
-
-        tol=0.2;
-        rotate([0,-90,0])
-        translate([-1.65/2+1.25,0,+1.5+0.2])
-        linear_extrude(height=8,scale=1.8) 
-        square(size=[1.65+3+tol*2,5+tol*2],center=true);
-      }
-    }
-        
-    translate([-0.5,1.5,0])
-    linear_extrude(height=3.6,scale=1.2) 
-    offset(r=1,$fn=22)
-    square(size=[0.8,0.8],center=true);
-
-  }
-}
 
 //-------------------------------------------------------------------------
 // dense strip leds
@@ -218,7 +85,23 @@ tol=0.15;
 }
 
 //-------------------------------------------------------------------------
-// dense strip leds
+// 4 fibers in shrink wrap
+module bundle2(tol=0){
+
+x0=6.92;    // spacing of leds along tape
+y0=12;      // width of tape
+z0=0.5;     // thickness of tape
+    
+    // fibers
+    translate([1.2,0,1.5])
+    linear_extrude(height=50,scale=1) 
+    offset(r=1+tol,$fn=22)
+    square(size=[0.8,0.8],center=true);
+
+}
+
+//-------------------------------------------------------------------------
+// L brackets to secure the base
 module ledback2(){
 
 x0=6.92;    // spacing of leds along tape
@@ -256,6 +139,62 @@ tol=0.15;
   rounder(r=3,h=x0,f=44);
 }
 
+//-------------------------------------------------------------------------
+// secure the fibers
+module block2(){
+
+x0=6.92;    // spacing of leds along tape
+y0=12;      // width of tape
+z0=0.5;     // thickness of tape
+tol=0.15;
+  
+  // main block
+  difference(){    
+    translate([-x0/2,-5,13])
+    cube([16.5*x0,14,16]);
+    
+    // fibers
+    for(i=[0:15]){
+      translate([i*6.92,0,0])
+      bundle2(tol=0.3);
+    }
+  }  
+
+  translate([3*x0,7,-4])
+  cube([2*x0,2,20]);
+  translate([3*x0,4,-4])
+  cube([2*x0,4,4]);
+
+  translate([10*x0,7,-4])
+  cube([2*x0,2,20]);
+  translate([10*x0,4,-4])
+  cube([2*x0,4,4]);
+
+}
+
+//-------------------------------------------------------------------------
+// secure the fibers
+module blocka(){
+
+x0=6.92;    // spacing of leds along tape
+  difference(){
+    block2();
+    translate([-x0,0,0])
+    cube([20*x0,20,40]);
+  }
+}
+
+//-------------------------------------------------------------------------
+// secure the fibers
+module blockb(){
+
+x0=6.92;    // spacing of leds along tape
+  intersection(){
+    block2();
+    translate([-x0,-1,-20])
+    cube([20*x0,20,60]);
+  }
+}
 
 //=================================================================================
 
@@ -277,68 +216,43 @@ difference(){
 }
 }
 
+// first ledbox has a cutout for solder and wires
 if(0){
   difference(){
     ledbox2();
     translate([-3,0,1.25])
     cube([2,12,3],center=true);
   }
+  // 15 additional boxes
   for(i=[1:15]){
     translate([i*6.92,0,0])
     ledbox2();
   }
 }
 
-  for(i=[0:0]){
-    translate([4*i*6.92,0,0])
+// block to secure the fibers
+if(0){
+  block2();
+}
+
+// bundles of optic fiber
+if(0){
+  for(i=[0:15]){
+    translate([i*6.92,0,0])
+    bundle2();
+  }
+}
+
+// clips to secure the block
+if(0){
+  for(i=[0:2]){
+    translate([i*50,0,0])
     ledback2();
   }
-
-if(0){
-  translate([2.5,0,0])
-  rotate([0,90,0])
-  seven();
 }
 
-translate([0,0,-15]){
-if(0){
-  translate([2.5,0,0])
-  rotate([0,90,0])
-  four();
-}
-
-if(0){
-  ledbox();
-  translate([0,16.7,0])
-  ledbox();
-}  
-}
-
-if(0){
-  translate([2.5,0,0])
-  rotate([0,90,0])
-  fourB();
-}
-
-if(0){
-  ledboxB();
-  translate([0,16.7,0])
-  ledboxB();
-}  
-
-if(0){
-  for(i=[0:8]){
-    rotate([0,0,i*22.5])
-    translate([42,0,0])
-    ledbox();
-  }
-  for(i=[0:7]){
-    rotate([0,0,i*22.5+22.5/2])
-    translate([44.2,0,-0.5])
-    cube([2,2,15],center=true);
-  }
-}  
-
+//blocka();
+blockb();
 
 
 //=================================================================================
