@@ -208,15 +208,44 @@ x4=x1/2+x3/2-xgear;
   
 }
 
+//----------------------------------------------------------------------
+// original spool holder with spring and collar removed
+module old(){
+  rotate([0,-90,0])
+  difference(){
+    union(){
+      cylinder(r=100.5/2,h=3.1,$fn=55);
+      translate([0,0,3.1])
+      cylinder(r=30/2,h=90.5,$fn=55);
+    }
+  
+    // cut for the axle
+    translate([0,0,-0.1])
+    cylinder(r=8/2,h=120,$fn=55);
+
+    // cuts for the bearings
+    translate([0,0,3.1+90.5-3])
+    rotate([0,90,0])
+    bearing(tol=0.15);  
+    translate([0,0,3.1])
+    rotate([0,90,0])
+    bearing(tol=0.15);  
+  }
+  
+
+}
+
 //======================================================================
 
+old();
+
 //spool();
-shaft();
+//shaft();
 //axle();
-color(alpha=0.5)
+//color(alpha=0.5)
 spur();
 //nut();
-post();
+//post();
 
 //tower();
 

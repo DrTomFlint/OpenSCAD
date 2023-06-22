@@ -28,8 +28,33 @@ module logo1(){
 
 }
 
+//----------------------------------------------------------------------
+module logo2(){
+
+x0=130;
+y0=40;
+
+  difference(){
+    translate([0,0,0])
+    linear_extrude(height=2.4,scale=1)
+    offset(r=5)
+    square([x0,y0],center=true);
+
+    translate([0,0,1.2])
+    linear_extrude(height=1.3,scale=1)
+    offset(r=2)
+    square([x0,y0],center=true);
+  }
+  
+  translate([0,-1,1.2])
+  linear_extrude(height=1.2,scale=1)
+  text("11941", font = "Open Sans:style=Bold", size=22,halign="center",valign="center",spacing=1.3);
+
+}
+
 //======================================================================
 
-logo1();
+//logo1();
+logo2();
 
 //======================================================================
