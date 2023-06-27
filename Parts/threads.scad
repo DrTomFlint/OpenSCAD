@@ -65,7 +65,11 @@
 
 // ----------------------------------------------------------------------------
 //function segments (diameter) = min (50, max (ceil (diameter*6), 25));
-function segments (diameter) = min (50*4, max (ceil (diameter*6*4), 25*4));
+
+
+//function segments (diameter) = min (50*4, max (ceil (diameter*6*4), 25*4));
+// TF TEST
+function segments (diameter) = min (50, max (ceil (diameter*6), 25));
 
 
 // ----------------------------------------------------------------------------

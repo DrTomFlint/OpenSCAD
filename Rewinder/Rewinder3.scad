@@ -1,9 +1,9 @@
 //======================================================================
-// Rewinder.scad
+// Rewinder3.scad
 //
 // New version of the filament spool rewinder.
 //
-// DrTomFlint 31 March 2023
+// DrTomFlint 26 June 2023
 //
 //======================================================================
 
@@ -286,7 +286,7 @@ module old(){
 
 //======================================================================
 
-//old();
+old();
 
 //color("gray")
 //spool();
@@ -301,9 +301,9 @@ nut();
 
 //tower();
 
-if(0){
+if(1){
   color("cyan")
-  translate([x1/2-7/2+10,0,0])
+  translate([-3.5,0,0])
   bearing(tol=0.15);  
   color("cyan")
   translate([-x1/2+7/2,0,0])
