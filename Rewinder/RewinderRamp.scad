@@ -13,7 +13,7 @@ use <../Parts/threads.scad>
 use <../Gears/gears.scad>
 
 // draft setting removes threads
-draft=1;
+draft=0;
 
 // spool
 //wide=62;		// width of a spool
@@ -56,6 +56,11 @@ bz1=150;
 bx2=123.5;
 by2=340;
 bz2=260;
+
+// 5 boxes together on x-axis is 617 mm
+// use a single wall between compartments lowers that by 4*3=12 mm,
+// to get 605 mm total x-axis.  y remains single 340, z at 260 to 
+// include the top and make a full enclosure.
   
 F1=201;
 F2=66;
@@ -81,41 +86,6 @@ difference(){
 
 }
 
-
-//----------------------------------------------------------------------
-// 4:21 to render if threads run entire length of shaft
-module shaft(pos=0){
-
-  translate([0,pos*cos(slope),-pos*sin(slope)])
-
-  difference(){
-
-    // threaded end
-    translate([-x1/2,0,0])
-    rotate([0,90,0])
-    if(draft==1){
-      cylinder(r=r1,h=x1,$fn=F2);
-    }else{
-      metric_thread (diameter=2*r1, pitch=3, length=x1, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=3, leadfac=1.0, test=false);
-    }
-
-    // cuts to insert gear ends
-    translate([-x1/2-0.1,0,0])
-    rotate([0,90,0])
-    cylinder(r=r2,h=10.2,$fn=6);
-
-    translate([x1/2+0.1,0,0])
-    rotate([0,-90,0])
-    cylinder(r=r2,h=10.2,$fn=6);
-    
-    // center cuts to allow an M3 bolt to strengthen attachment of spurs
-    rotate([0,-90,0])
-    cylinder(r=1.7,h=x1+20,$fn=22,center=true);
-    
-  }
-    
-    
-}
 
 //----------------------------------------------------------------------
 // 2:32 to render make one set of threads be backwards so pulling on the
@@ -166,6 +136,8 @@ module shaft2(pos=0){
 }
 
 //----------------------------------------------------------------------
+// straight = red right side
+// mirror = green left side
 module nut(pos=0){
 
   translate([0,pos*cos(slope),-pos*sin(slope)])
@@ -187,7 +159,7 @@ module nut(pos=0){
     if(draft==1){
       cylinder(r=r1+0.4, h=x1);
     }else{
-      metric_thread (diameter=2*r1+0.4, pitch=3, length=x1, internal=true, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=3, leadfac=1.0, test=false);
+      metric_thread (diameter=2*r1+0.4, pitch=3, length=x1, internal=true, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
     }
     
 // cuts for wings
@@ -300,85 +272,10 @@ intersection(){
 
 }
 
-//----------------------------------------------------------------------
-module beam2(){
-
-intersection(){
-  union(){
-    // rack
-    translate([x1/2+xroller,0,-13])
-    rotate([90-slope,0,0])
-    rotate([0,90,0])
-    rack(modul=2, length=xrack, height=12, width=xgear-0.3, pressure_angle=20, helix_angle=0);
-
-    difference(){
-      union(){
-        // roller section  
-        translate([x1/2+xroller/2+0.1,0,-19])
-        rotate([-slope,0,0])
-        translate([0,-3.2-10,0])  
-        cube([xroller,xrack+40,12.8],center=true);
-        // thicken ends
-        translate([x1/2+xroller/2,0,-21.15])
-        rotate([-slope,0,0])
-        translate([3,-14,1])  
-        cube([xroller+xgear-0.6,xrack+40,8],center=true);
-      }
-      // cuts to mount with M3
-      translate([x1/2+xroller/2,0,-21.15])
-      rotate([-slope,0,0])
-      translate([3,xrack/2+2,1])  
-      rotate([0,90,0])
-      cylinder(r=1.7,h=20,center=true,$fn=22);
-
-      translate([x1/2+xroller/2,0,-21.15])
-      rotate([-slope,0,0])
-      translate([3,-xrack/2-30,1])  
-      rotate([0,90,0])
-      cylinder(r=1.7,h=20,center=true,$fn=22);
-
-      translate([x1/2+xroller/2,0,-21.15])
-      rotate([-slope,0,0])
-      translate([3,0,1])  
-      rotate([0,90,0])
-      #cylinder(r=1.7,h=20,center=true,$fn=22);
-    }
-
-    // lower roller stop  
-    translate([x1/2+xroller/2+0.1,0,-19])
-    rotate([-slope,0,0])
-    translate([0,xrack/2-0.75,15])  
-    difference(){
-      cube([xroller,15,20],center=true);
-
-      translate([0,-8,3])
-      rotate([0,90,0])
-      cylinder(r=rroller,h=xroller+1,center=true,$fn=F2);
-    }
-    
-    // upper roller stop  
-    translate([x1/2+xroller/2+0.1,0,-19])
-    rotate([-slope,0,0])
-    translate([0,-xrack/2-25.75,15])  
-    difference(){
-      cube([xroller,15,20],center=true);
-
-      translate([0,8,3])
-      rotate([0,90,0])
-      cylinder(r=rroller,h=xroller+1,center=true,$fn=F2);
-    }
-  }
-  
-  // trimming rack and roller with intersection
-  translate([x1/2+xroller/2+0.1,0,-19])
-  rotate([-slope,0,0])
-  translate([0,0,15])  
-  cube([xroller+20,xrack+80,40],center=true);
-}
-
-}
 
 //----------------------------------------------------------------------
+// straight = green left side
+// mirror = red right side
 module beam3(){
 
 difference(){
@@ -439,24 +336,33 @@ difference(){
 
   }   // end of union
 
-  // cuts to mount with M3
+  // cuts to mount with M3, bolt and head clearance
   translate([x1/2+xroller/2,0,-21.15])
   rotate([-slope,0,0])
   translate([3,xrack/2+2,1])  
-  rotate([0,90,0])
-  cylinder(r=1.7,h=20,center=true,$fn=22);
-
+  rotate([0,90,0]){
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    translate([0,0,-2.76])  
+    cylinder(r=3,h=3.5,center=true,$fn=22);
+  }
+  
   translate([x1/2+xroller/2,0,-21.15])
   rotate([-slope,0,0])
   translate([3,-xrack/2-30,1])  
-  rotate([0,90,0])
-  cylinder(r=1.7,h=20,center=true,$fn=22);
+  rotate([0,90,0]){
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    translate([0,0,-2.76])  
+    cylinder(r=3,h=3.5,center=true,$fn=22);
+  }
 
   translate([x1/2+xroller/2,0,-21.15])
   rotate([-slope,0,0])
   translate([3,0,1])  
-  rotate([0,90,0])
-  cylinder(r=1.7,h=20,center=true,$fn=22);
+  rotate([0,90,0]){
+    cylinder(r=1.7,h=20,center=true,$fn=22);
+    translate([0,0,-2.76])  
+    cylinder(r=3,h=3.5,center=true,$fn=22);
+  }
 
   // trim off extra tooth
   translate([x1/2+xroller/2,0,-21.15])
@@ -538,7 +444,7 @@ module top2(thick=3){
 pos1=57;
 
 // cutaway view of the box
-if(1){
+if(0){
   difference(){
     union(){
       box2();
@@ -555,9 +461,8 @@ if(1){
 //top2();
 
 //color("gray",alpha=0.3)
-spool(pos=pos1);
+//spool(pos=pos1);
 
-//shaft(pos=pos1);
 //shaft2(pos=pos1);
 
 //nut(pos=pos1);
@@ -567,12 +472,12 @@ spool(pos=pos1);
 //mirror([1,0,0]) nut2();
 
 //color("cyan")
-spur(pos=pos1);
-mirror([1,0,0]) spur(pos=pos1);
+//spur(pos=pos1);
+//mirror([1,0,0]) spur(pos=pos1);
 
 //color("gray",alpha=0.3)
 beam3();
-mirror([1,0,0]) beam3();
+//mirror([1,0,0]) beam3();
 
 
 //======================================================================
