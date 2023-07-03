@@ -38,13 +38,13 @@ r6=20;        // radius of nut body
 r7=30;        // radius of wings
 
 // spur gears
-xroller=3;
-rroller=11.5;
-rlip=13.75;
+xroller=6;
+rroller=5.75;
+rlip=8;
 xgear=6;
 
 // rack beam
-xrack = 120;
+xrack = 100;
 
 // box outer dimensions
 bx3=123.5;
@@ -105,16 +105,17 @@ module shaft2(pos=0){
       translate([0,0,0])
       rotate([0,90,0])
       cylinder(r=r1,h=x1/3,$fn=F2,center=true);
+
     }
     
     // cuts to insert gear ends
     translate([-x1/2-0.1,0,0])
     rotate([0,90,0])
-    cylinder(r=r2,h=10.2,$fn=6);
+    cylinder(r=rroller+0.15,h=12.25,$fn=99);
 
     translate([x1/2+0.1,0,0])
     rotate([0,-90,0])
-    cylinder(r=r2,h=10.2,$fn=6);
+    cylinder(r=rroller+0.15,h=12.25,$fn=99);
     
     // center cuts to allow an M3 bolt to strengthen attachment of spurs
     rotate([0,-90,0])
@@ -203,11 +204,10 @@ module spur(pos=0){
   difference(){
     union(){
       // insert into shaft
-      translate([x1/2-xgear-2,0,0])
+      translate([x1/2-xgear-xroller/2-3,0,0])
       rotate([0,90,0])
-      cylinder(r=r2-0.15,h=9,$fn=6);
+      cylinder(r=rroller,h=12,$fn=99);
       
-
       // roller section
       translate([x1/2,0,0])
       rotate([0,90,0])
@@ -218,18 +218,25 @@ module spur(pos=0){
       rotate([0,90,0])
       
       // rotate gear to mesh with rack here
-      rotate([0,0,17])
-      spur_gear (modul=2, tooth_number=12, width=xgear, bore=2, pressure_angle=20, helix_angle=0, optimized=false);
+      rotate([0,0,360/24])
+      spur_gear (modul=1, tooth_number=12, width=xgear, bore=2, pressure_angle=20, helix_angle=0, optimized=false);
 
       // overhanging lip section
       translate([x1/2+xroller+xgear,0,0])
       rotate([0,90,0])
-      cylinder(r=rlip,h=1,$fn=F2);
+      cylinder(r2=9,r1=7,h=0.5,$fn=F2);
+      translate([x1/2+xroller+xgear+0.5,0,0])
+      rotate([0,90,0])
+      cylinder(r=9,h=1.5,$fn=F2);
     }
     
     // cut a center hole
     rotate([0,90,0])
     cylinder(r=1.7,h=x1+40,$fn=F2,center=true);
+    translate([x1/2+xroller+xgear+0.5,0,0])  
+    rotate([0,90,0])
+    cylinder(r=3,h=3.5,center=true,$fn=22);
+    
   }
 
 }
@@ -239,97 +246,71 @@ module spur(pos=0){
 // mirror = red right side
 module beam3(){
 
+translate([0,0,-0.1])
 difference(){
   union(){
     // rack
-    translate([x1/2+xroller,0,-13])
+    translate([x1/2+xroller,0,-6.25])
     rotate([90,0,0])
     rotate([0,90,0])
-    rack(modul=2, length=xrack, height=12, width=xgear, pressure_angle=20, helix_angle=0);
+    rack(modul=1, length=xrack+10, height=11.5, width=xgear, pressure_angle=20, helix_angle=0);
 
     // roller section  
-    translate([x1/2+xroller/2,0,-19])
-    rotate([-slope,0,0])
-    translate([0,-3.2-10,0])  
-    cube([xroller,xrack+40,12.8],center=true);
-
-    // thicken ends
-    translate([x1/2+xroller/2,0,-21.15])
-    rotate([-slope,0,0])
-    translate([4,-14+0.05,0])  
-    cube([xroller+xgear+2,xrack+40+0.1,10],center=true);
+    translate([x1/2+xroller/2+0.5,0,-rroller-6])
+    cube([xroller-1,xrack+10,12],center=true);
 
     // lower roller stop  
-    translate([x1/2+xroller/2,0,-19])
-    rotate([-slope,0,0])
-    translate([0,xrack/2-0.7,15])  
     difference(){
-      cube([xroller,15,20],center=true);
+      translate([x1/2+xroller/2+0.5,xrack/2,-5])
+      cube([xroller-1,10,20],center=true);
 
-      translate([0,-8,3])
+      translate([x1/2+xroller/2+0.5,xrack/2+3,-5.75])
+      translate([0,-8,rroller])
       rotate([0,90,0])
       cylinder(r=rroller,h=xroller+1,center=true,$fn=F2);
     }
     
     // upper roller stop  
-    translate([x1/2+xroller/2,0,-19])
-    rotate([-slope,0,0])
-    translate([0,-xrack/2-25.75,15])  
     difference(){
-      cube([xroller,15,20],center=true);
+      translate([x1/2+xroller/2+0.5,-xrack/2,-5])
+      cube([xroller-1,10,20],center=true);
 
-      translate([0,8,3])
+      translate([x1/2+xroller/2+0.5,-xrack/2-3,-5.75])
+      translate([0,8,rroller])
       rotate([0,90,0])
       cylinder(r=rroller,h=xroller+1,center=true,$fn=F2);
     }
     
-    // lower L bracket
-    translate([x1/2+xroller/2+xgear/2,0,-19])
-    rotate([-slope,0,0])
-    translate([1,xrack/2-0.7+9,9])  
-    cube([xroller+xgear+2,5,32],center=true);
-
-    // upper L bracket
-    translate([x1/2+xroller/2+xgear/2,0,-19])
-    rotate([-slope,0,0])
-    translate([1,-xrack/2+0.7-36,9])  
-    cube([xroller+xgear+2,5,32],center=true);
+    // offset for lip clearance
+    translate([x1/2+xroller/2+10,0,-rroller-8])
+    cube([xroller-1,xrack+10,8],center=true);
 
   }   // end of union
 
   // cuts to mount with M3, bolt and head clearance
-  translate([x1/2+xroller/2,0,-21.15])
-  rotate([-slope,0,0])
-  translate([3,xrack/2+2,1])  
+  translate([x1/2+xroller/2,0,-13])
+  translate([3,xrack/2,1])  
   rotate([0,90,0]){
     cylinder(r=1.7,h=20,center=true,$fn=22);
-    translate([0,0,-2.76])  
+    translate([0,0,-3.5])  
     cylinder(r=3,h=3.5,center=true,$fn=22);
   }
   
-  translate([x1/2+xroller/2,0,-21.15])
-  rotate([-slope,0,0])
-  translate([3,-xrack/2-30,1])  
+  translate([x1/2+xroller/2,0,-13])
+  translate([3,-xrack/2,1])  
   rotate([0,90,0]){
     cylinder(r=1.7,h=20,center=true,$fn=22);
-    translate([0,0,-2.76])  
+    translate([0,0,-3.5])  
     cylinder(r=3,h=3.5,center=true,$fn=22);
   }
 
-  translate([x1/2+xroller/2,0,-21.15])
-  rotate([-slope,0,0])
+  translate([x1/2+xroller/2,0,-13])
   translate([3,0,1])  
   rotate([0,90,0]){
     cylinder(r=1.7,h=20,center=true,$fn=22);
-    translate([0,0,-2.76])  
+    translate([0,0,-3.5])  
     cylinder(r=3,h=3.5,center=true,$fn=22);
   }
-
-  // trim off extra tooth
-  translate([x1/2+xroller/2,0,-21.15])
-  rotate([-slope,0,0])
-  translate([5,xrack/2-1,10])  
-  cube([xgear+1,10,10],center=true);
 
 }
 
@@ -353,11 +334,12 @@ module box3(thick=3){
 //======================================================================
 
 // change pos1 to move the spool, spur, and shaft
-pos1=-xrack/2-17;   // top
+//pos1=-xrack/2-17;   // top
 //pos1=xrack/2-9;   // bottom
+pos1=0;
 
 // cutaway view of the box
-if(1){
+if(0){
   difference(){
     union(){
       box3();
@@ -386,11 +368,11 @@ if(1){
 
 //color("cyan")
 spur(pos=pos1);
-mirror([1,0,0]) spur(pos=pos1);
+//mirror([1,0,0]) spur(pos=pos1);
 
 //color("gray",alpha=0.3)
 beam3();
-mirror([1,0,0]) beam3();
+//mirror([1,0,0]) beam3();
 
 
 //======================================================================
