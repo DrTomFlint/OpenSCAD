@@ -334,9 +334,9 @@ module box3(thick=3){
 //======================================================================
 
 // change pos1 to move the spool, spur, and shaft
-//pos1=-xrack/2-17;   // top
-//pos1=xrack/2-9;   // bottom
-pos1=0;
+//pos1=-xrack/2+6;   // top
+pos1=xrack/2-6;   // bottom
+//pos1=0;
 
 // cutaway view of the box
 if(0){
@@ -358,21 +358,21 @@ if(0){
 //color("gray",alpha=0.3)
 //spool(pos=pos1);
 
-//shaft2(pos=pos1);
+shaft2(pos=pos1);
 
-//nut(pos=pos1);
-//mirror([1,0,0]) nut(pos=pos1);
+nut(pos=pos1);
+mirror([1,0,0]) nut(pos=pos1);
 
 //nut2(pos=pos1);
 //mirror([1,0,0]) nut2();
 
 //color("cyan")
 spur(pos=pos1);
-//mirror([1,0,0]) spur(pos=pos1);
+mirror([1,0,0]) spur(pos=pos1);
 
 //color("gray",alpha=0.3)
 beam3();
-//mirror([1,0,0]) beam3();
+mirror([1,0,0]) beam3();
 
 
 //======================================================================
