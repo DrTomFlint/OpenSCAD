@@ -20,14 +20,14 @@
 // Customizer parameters:
 
 // Spring thickness
-Thick = 1.8;
+Thick = 1.4;
 // Turn on the spring
-SpringOn = 1;
+SpringOn = 0;
 // Turn on the housing
-HousingOn = 0;
+HousingOn = 1;
 
 //-------------------------------------------------------------------
-module line(point1, point2, width = 1, cap_round = true) {
+module line(point1, point2, width = 1, cap_round = false) {
     angle = 90 - atan((point2[1] - point1[1]) / (point2[0] - point1[0]));
     offset_x = 0.5 * width * cos(angle);
     offset_y = 0.5 * width * sin(angle);
@@ -80,7 +80,7 @@ polyline(points, Thick);
 }
 
 //------------------------------------------------------------------
-module house(){
+module house(mirror=0){
   
   // clutch housing
   difference(){
@@ -111,16 +111,33 @@ module house(){
     // cut for spring attach
     color("pink")
     rotate([0,0,180/7])
-    translate([43,-1,1.2+3.3+1])
+    translate([41,-1,1.2+3.3+1])
     cube([4.2,3.2,6.6+2],center=true);
     
   }
   
+  // block for spring attach
+  color("green")
+  rotate([0,0,180/7])
+  translate([39,-1,1.2+3.3-0.5])
+  cube([2,5,6.6],center=true);
   
+  if(mirror==1){
+    color("cyan")
+    rotate([0,0,180/7])
+    translate([40,-4,1.2+3.3-0.5])
+    cube([4,2,6.6],center=true);
+  }else{
+    color("blue")
+    rotate([0,0,180/7])
+    translate([40,2,1.2+3.3-0.5])
+    cube([4,2,6.6],center=true);
+  }
+
 }
 
 //------------------------------------------------------------------
-module spring(){
+module spring(mirror=0){
   
   color("green")
   difference(){
@@ -140,15 +157,21 @@ module spring(){
   color("red")
   difference(){
     translate([0,0,1.2])
-    spiral1();
+    if(mirror==1){
+      rotate([0,0,-3])
+      mirror([0,1,0])
+      spiral1();
+    }else{
+      spiral1();
+    }
     translate([0,0,1.0])
     cylinder(r=5.5,h=20,$fn=22);
   }  
   
   // attachment post
   color("pink")
-  translate([43,-1,1.2+3.3])
-  cube([4,3,6.6],center=true);
+  translate([42.5,-1,1.2+3.3])
+  cube([3,3,6.6],center=true);
 }
 
 //==================================================================
@@ -156,10 +179,10 @@ module spring(){
 // un-mirrored parts for left side of the Dusa only
 if(SpringOn){
   rotate([0,0,180/7])
-  spring();
+  spring(mirror=1);
 }
 if(HousingOn){
-  house();
+  house(mirror=0);
 }
 
 // mirrored parts for the MMU and right side of Dusa

@@ -126,6 +126,82 @@ module shaft2(pos=0){
 }
 
 //----------------------------------------------------------------------
+// 2:32 to render make one set of threads be backwards so pulling on the
+// spool will tighten both ends.  Color code the spurs and nuts.
+// Hollow out shaft3 to make a clutch with felt liner.  
+module shaft3(pos=0){
+
+  translate([0,pos,0])
+
+  difference(){
+    union(){
+      // threaded end
+      translate([-x1/2,0,0])
+      rotate([0,90,0])
+      if(draft==1){
+        cylinder(r=r1,h=x1,$fn=F2);
+      }else{
+        metric_thread (diameter=2*r1, pitch=3, length=x1/3, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+      }
+      mirror([1,0,0])
+      translate([-x1/2,0,0])
+      rotate([0,90,0])
+      if(draft==1){
+        cylinder(r=r1,h=x1,$fn=F2);
+      }else{
+        metric_thread (diameter=2*r1, pitch=3, length=x1/3, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0,angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+      }
+      translate([0,0,0])
+      rotate([0,90,0])
+      cylinder(r=r1,h=x1/3,$fn=F2,center=true);
+
+    }
+    
+    // cuts for clutch insert
+    translate([0,0,0])
+    rotate([0,90,0])
+    cylinder(r=r1-5,h=x1,$fn=F1,center=true);
+    
+  }
+        
+}
+
+//-------------------------------------------------------------------------
+module clutch3(pos=0,gap=1.5){
+
+  translate([0,pos,0])
+
+  difference(){
+    union(){
+      translate([0,0,0])
+      rotate([0,90,0])
+      cylinder(r=r1-5-gap,h=x1,$fn=F2,center=true);
+
+    }
+    
+    // cuts to insert gear ends
+    translate([-x1/2-0.1,0,0])
+    rotate([0,90,0])
+    rotate([0,0,30])
+    cylinder(r=rroller+0.15,h=12.25,$fn=6);
+
+    translate([x1/2+0.1,0,0])
+    rotate([0,-90,0])
+    rotate([0,0,30])
+    cylinder(r=rroller+0.15,h=12.25,$fn=6);
+    
+    // center cuts to allow an M3 bolt to strengthen attachment of spurs
+    rotate([0,-90,0])
+    cylinder(r=1.7,h=x1+20,$fn=22,center=true);
+    
+    // make a flat side for printing and felt seam
+    translate([0,0,-100-8])
+    cube([200,200,200],center=true);
+  }
+        
+}
+
+//----------------------------------------------------------------------
 // straight = red right side
 // mirror = green left side
 module nut(pos=0){
@@ -207,6 +283,51 @@ module spur(pos=0){
       translate([x1/2-xgear-xroller/2-3,0,0])
       rotate([0,90,0])
       cylinder(r=rroller,h=12,$fn=99);
+      
+      // roller section
+      translate([x1/2,0,0])
+      rotate([0,90,0])
+      cylinder(r=rroller,h=xroller,$fn=F1);
+
+      // gear
+      translate([x1/2+xroller,0,0])
+      rotate([0,90,0])
+      
+      // rotate gear to mesh with rack here
+      rotate([0,0,360/24])
+      spur_gear (modul=1, tooth_number=12, width=xgear, bore=2, pressure_angle=20, helix_angle=0, optimized=false);
+
+      // overhanging lip section
+      translate([x1/2+xroller+xgear,0,0])
+      rotate([0,90,0])
+      cylinder(r2=9,r1=7,h=0.5,$fn=F2);
+      translate([x1/2+xroller+xgear+0.5,0,0])
+      rotate([0,90,0])
+      cylinder(r=9,h=1.5,$fn=F2);
+    }
+    
+    // cut a center hole
+    rotate([0,90,0])
+    cylinder(r=1.7,h=x1+40,$fn=F2,center=true);
+    translate([x1/2+xroller+xgear+0.5,0,0])  
+    rotate([0,90,0])
+    cylinder(r=3,h=3.5,center=true,$fn=22);
+    
+  }
+
+}
+
+//----------------------------------------------------------------------
+module spur3(pos=0){
+
+  translate([0,pos,0])
+  
+  difference(){
+    union(){
+      // insert into shaft
+      translate([x1/2-xgear-xroller/2-3,0,0])
+      rotate([0,90,0])
+      cylinder(r=rroller,h=12,$fn=6);
       
       // roller section
       translate([x1/2,0,0])
@@ -358,21 +479,38 @@ if(0){
 //color("gray",alpha=0.3)
 //spool(pos=pos1);
 
-shaft2(pos=pos1);
+//shaft2(pos=pos1);
 
-nut(pos=pos1);
-mirror([1,0,0]) nut(pos=pos1);
+// cutaway view of shaft and spur
+if(0){
+  difference(){
+    union(){
+      //shaft3();
+      //spur3();
+      clutch3();
+    }
+    translate([0,0,100])
+    cube([200,200,200],center=true);
+  }
+}
+
+//shaft3();
+//spur3();
+//clutch3();
+
+//nut(pos=pos1);
+//mirror([1,0,0]) nut(pos=pos1);
 
 //nut2(pos=pos1);
 //mirror([1,0,0]) nut2();
 
 //color("cyan")
-spur(pos=pos1);
-mirror([1,0,0]) spur(pos=pos1);
+//spur(pos=pos1);
+//mirror([1,0,0]) spur(pos=pos1);
 
 //color("gray",alpha=0.3)
 beam3();
-mirror([1,0,0]) beam3();
+//mirror([1,0,0]) beam3();
 
 
 //======================================================================
