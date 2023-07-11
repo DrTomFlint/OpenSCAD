@@ -8,11 +8,13 @@
 use <../Parts/tslot.scad>
 use <../Parts/motors.scad>
 use <../Parts/presstime.scad>
+use <./timing7.scad>
 
 // handle angle
 //handleAngle=-45;
 // sled position
-sledZ=162;
+//sledZ=162;
+sledZ=170;
 
 // handle angle
 //handleAngle=-45+undulate($t)*90;
@@ -1434,6 +1436,393 @@ fit=0.15;
   }
 
 }
+
+//----------------------------------------------------------------------
+module dremmel(){
+  
+    // collet
+    cylinder(r=10.5/2,h=16.5,$fn=22);
+    // threads
+    translate([0,0,16.5])
+    cylinder(r=7.7/2,h=4,$fn=22);
+    // black knob
+    translate([0,0,16.5+4])
+    cylinder(r1=17/2,r2=26.6/2,h=4.5,$fn=22);
+    translate([0,0,16.5+4+4.5])
+    cylinder(r1=26.6/2,r2=22.4/2,h=4.0,$fn=22);
+    // narrow neck section
+    translate([0,0,16.5+4+4.5+4])
+    cylinder(r1=22.4/2,r2=22.6/2,h=7.0,$fn=22);
+    // taper and vents
+    translate([0,0,16.5+4+4.5+4+7])
+    cylinder(r1=22.6/2,r2=44.9/2,h=36,$fn=22);
+    // barrel
+    translate([0,0,16.5+4+4.5+4+7+36])
+//    cylinder(r=47.3/2,h=31.5,$fn=22);
+    cylinder(r=47.3/2,h=130,$fn=22);
+    // top and bottom fins
+    intersection(){
+      union(){
+        translate([0,0,16.5+4+4.5+4+7+36+31.5])
+        cylinder(r1=47.3/2,r2=51.8/2,h=10.5,$fn=22);
+        translate([0,0,16.5+4+4.5+4+7+36+31.5+10.5])
+        cylinder(r=51.8/2,h=78,$fn=22);
+      }
+      translate([0,0,130])
+      cube([32,50,160],center=true);
+    }
+    // approximate handle
+      translate([0,0,180])
+      rotate([-50,0,0])
+      hull(){
+        cube([31,50,6],center=true);
+        translate([0,0,75])
+        cube([31,40,6],center=true);
+      }
+    
+      
+
+}
+
+//------------------------------------------------------------------------
+module dremmelSled(){
+
+screwOff=38.5-makitaHi;
+
+tabHi=25;   // height of tabs on the sled
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=3;   // height of tabs on the shoe
+
+
+difference(){
+  union(){
+
+    // bolt on tabs
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,-railY-20,29/2])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+
+      translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+      rotate([0,90,0])
+      cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+
+    color("green")
+    hull(){
+      translate([railX+tabHi/2+tabHi2/2,railY+20,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10,h=tabHi2,$fn=88,center=true);
+      
+      translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+      rotate([0,90,0])
+      cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+    }
+    
+  } // end of the union
+
+  // more material reduction
+  translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+  translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+  translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=8,h=tabHi2+2,$fn=88,center=true);
+
+  // cuts for the bolt mounts
+  translate([railX+15,-railY-20,29/2])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  translate([railX+15,railY+20,29/2+sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  translate([railX+15,railY+20,29/2-sledHi])
+  rotate([0,90,0])
+  cylinder(r=2.2,h=tabHi+2,$fn=88,center=true);
+  
+} 
+
+  // attachment points
+  difference(){
+    union(){
+      difference(){
+        hull(){
+          translate([railX+16.5+4,0,-9])
+          cube([16,18,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+          rotate([0,90,0])
+          cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5+4,12,-14])
+          cube([16,1,16],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2-sledHi])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+8,$fn=88,center=true);
+        }
+      }
+      
+      difference(){
+        hull(){
+          translate([railX+16.5+4,0,-9])
+          cube([16,18,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+          rotate([0,90,0])
+          cylinder(r=10+4,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5+4,11,14])
+          rotate([50,0,0])
+          cube([16,1,16],center=true);
+          translate([railX+tabHi/2+tabHi2/2,railY,29/2+sledHi])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+8,$fn=88,center=true);
+        }
+      }
+      
+      difference(){
+        hull(){
+          translate([railX+16.5+4,0,-9])
+          cube([16,18,28],center=true);
+          translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+          rotate([0,90,0])
+          cylinder(r=10+6,h=tabHi2,$fn=88,center=true);
+        }
+        hull(){
+          translate([railX+16.5+4,-10,-4])
+          cube([16,1,22],center=true);
+          translate([railX+tabHi/2+tabHi2/2,-railY,29/2])
+          rotate([0,90,0])
+          cylinder(r=8,h=tabHi2+18,$fn=88,center=true);
+        }
+      }
+      // reinforce joint of hulls
+      translate([railX+16.5-2.5,0,-9])
+      cube([3,5,28],center=true);
+      translate([railX+16.5,0,-19])
+      cube([8,5,8],center=true);
+      
+    }  // end of union
+    
+    // cut for main collar
+    translate([railX+53,0,-6+5])
+    cylinder(r=47.3/2+3,h=28+10,$fn=88,center=true);
+
+    // slot for collar
+    translate([railX+20,0,16])
+    rotate([0,90,0])
+    linear_extrude(height=9.2,scale=[1,0.7]){
+      square([60+0.4,8+0.4],center=true);
+    }
+  }
+
+}
+
+//------------------------------------------------------------------------
+module dremmelCollar(){
+
+screwOff=38.5-makitaHi;
+
+tabHi=25;   // height of tabs on the sled
+//tabHi2=6;   // height of tabs on the shoe
+tabHi2=3;   // height of tabs on the shoe
+
+
+  // collar for dremmel
+  translate([railX+53,0,-6])
+  difference(){
+    cylinder(r=47.3/2+2,h=28,$fn=88,center=true);
+    cylinder(r=47.3/2,h=32.5,$fn=88,center=true);
+    
+    // cut for tightening collar
+    translate([railX-4,0,0])
+    cube([10,4,40],center=true);
+  }
+  
+  // dovetail
+  translate([railX+20,0,-6])
+  rotate([0,90,0])
+  linear_extrude(height=9,scale=[1,0.7]){
+    square([28,8],center=true);
+  }
+
+  // tabs for tightening collar
+  difference(){
+    intersection(){
+      union(){
+        translate([railX+82,3.5,-6])
+        cube([12,3,28],center=true);
+        translate([railX+82,-3.5,-6])
+        cube([12,3,28],center=true);
+      }
+      translate([railX+79,0,-6])
+      scale([1,1,1.75])
+      rotate([90,0,0])
+      cylinder(r=8,h=20,$fn=77,center=true);
+    }
+    translate([railX+82,0,-6])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=20,$fn=77,center=true);
+  }
+}
+
+//----------------------------------------------------------------------
+// slow to render, 
+module Block(draft=0){
+  
+if(draft==0){  
+  // grip onto the timing belt
+  intersection(){
+    translate([-85,0,-5.5])
+    timing7();
+    translate([0,0,0])
+    cube([10,30,6],center=true);
+  }
+  // base
+  translate([1,0,-4])
+  cube([12,30,2],center=true);
+  
+  difference(){
+    translate([1,0,0])
+    cube([12,30,8],center=true);
+    translate([-85,0,0])
+    cylinder(r=87.75,h=20,center=true,$fn=99);
+  }
+}else{
+  // base
+  translate([1,0,-0.5])
+  cube([12,30,9],center=true);
+}
+
+}
+
+//----------------------------------------------------------------------
+// slow to render, 
+module Block2(draft=0){
+  
+if(draft==0){  
+  // grip onto the timing belt
+  intersection(){
+    translate([-85,0,-5.5])
+    timing7();
+    translate([0,0,0])
+    cube([10,30,6],center=true);
+  }
+  // base
+  translate([1,0,-4])
+  cube([12,30,2],center=true);
+  // flange
+  difference(){
+    translate([1,-13,0])
+    cube([24,4,16],center=true);
+    translate([1,-13,7])
+    cube([6,5,20],center=true);
+  }
+  
+  difference(){
+    translate([1,0,0])
+    cube([12,30,8],center=true);
+    translate([-85,0,0])
+    cylinder(r=87.75,h=20,center=true,$fn=99);
+  }
+}else{
+  // base
+  translate([1,0,-0.5])
+  cube([12,30,9],center=true);
+}
+
+}
+//----------------------------------------------------------------------
+module counterWeight(){
+  
+  // upper block
+  translate([-34,-2,postHi])  
+  rotate([0,0,180])
+  rotate([90,0,0])
+  Block(draft=0);
+      
+  // washers
+  translate([-34,20,postHi-130])
+  difference(){
+    cylinder(r=25.5/2,h=125,$fn=99);
+    translate([0,0,-1])
+    cylinder(r=7.4/2,h=127,$fn=99);
+  }
+  translate([-34,-20,postHi-130])
+  difference(){
+    cylinder(r=25.5/2,h=125,$fn=99);
+    translate([0,0,-1])
+    cylinder(r=7.4/2,h=127,$fn=99);
+  }
+
+  // lower block
+  translate([-34,-2,postHi-125])  
+  rotate([0,0,180])
+  rotate([90,0,0])
+  Block2(draft=0);
+  
+
+}
+//----------------------------------------------------------------------
+module counterPost(){
+  // posts
+  cylinder(r=7.2/2,h=140,$fn=6);
+}
+
+//----------------------------------------------------------------------
+module counterLatch(thick=2.4){
+
+
+  difference(){    
+    hull(){
+      translate([-34,20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+      translate([-34,-20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+
+      translate([-28,20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+      translate([-28,-20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+    }
+    translate([-34,-20,postHi+1])
+    cylinder(r=7.6/2,h=thick+2,$fn=6);
+
+    translate([-34,20,postHi+1])
+    cylinder(r=7.6/2,h=thick+2,$fn=6);
+
+    translate([-34,-2,postHi])
+    rotate([0,0,180])
+    rotate([90,0,0])
+    translate([1,0,-0.5])
+    cube([12.4,30.4,9.4],center=true);
+
+    translate([-44,-2,postHi+3])
+    cube([10,4,thick+6],center=true);
+  }
+
+    translate([-15,15,postHi+2+thick/2])
+    cube([6,8-0.5,thick],center=true);
+    translate([-15,-15,postHi+2+thick/2])
+    cube([6,8-0.5,thick],center=true);
+}
+
+
 //=========================================================================================================
 
 //translate([0,0,postHi])
@@ -1449,16 +1838,51 @@ if(0){
 }
 
 //**************************************************************************
+
+if(0){
+  translate([railX+53,0,sledZ-95])
+  dremmel();
+}
+if(0){
+  translate([0,0,sledZ])
+  dremmelSled();
+}
+if(0){
+  translate([0,0,sledZ])
+  dremmelCollar();
+}
+
+
+//~ color("cyan")
+//~ translate([0,0,100-sledZ])
+//~ counterWeight();
+//~ color("red")
+//~ translate([0,0,100-sledZ])
+//~ counterLatch(thick=2.4);
+//~ color("blue")
+//~ translate([0,0,100-sledZ-140])
+counterLatch(thick=6);
+
+//~ translate([0,0,100-sledZ])
+//~ translate([-34,20,postHi-135])
+//~ counterPost();
+//~ translate([0,0,100-sledZ])
+//~ translate([-34,-20,postHi-135])
+//~ counterPost();
+
+//~ Block2();
+
 // tool holder for tiny drill
 if(0){
   translate([railX+32,0,sledZ-74])
   drill();
 }
+
 if(0){
   translate([0,0,sledZ])
   drillSled();
 }
-if(1){
+if(0){
   translate([0,0,sledZ])
   drillCollar();
 }
