@@ -179,7 +179,7 @@ module post(){
 
   difference(){
     translate([-xbase/2+rwing+xarm,0,0]){
-      metric_thread (diameter=9, pitch=1, length=zbase+zwing+rwing+2, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0, angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+      metric_thread (diameter=9, pitch=1, length=zbase+zwing+rwing+2, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0, angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
       translate([0,0,zbase+zwing+rwing+2])
       cylinder(r1=9/2,r2=9/2+3,h=2,$fn=F2);
       translate([0,0,zbase+zwing+rwing+4])
@@ -193,7 +193,7 @@ module post(){
       }
     }
     translate([-xbase/2+rwing+xarm,0,-5])
-    cylinder(r=1,h=50,$fn=22);
+    cylinder(r=1.5,h=50,$fn=22);
   }
   
 }                      
@@ -317,8 +317,8 @@ module handle(){
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
 
     // center aisle
-    translate([0,0,zbase+zwing/2+rwing+zlink/2])
-    cube([40,ybase+0.5,zwing+rwing+zlink+10],center=true);
+    translate([0,0,zbase+zwing/2+rwing+zlink/2-3])
+    cube([40,ybase+0.5,zwing+rwing+zlink+11],center=true);
   }
 
 }
@@ -350,7 +350,7 @@ module clamp1(angle=0){
 
 //rotate([0,-delta0,0])
 //translate([-ax0,0,-az0])
-clamp1(angle=angle);
+//clamp1(angle=angle);
 
 //translate([dx0,0,dz0])
 //rotate([90,0,0])
@@ -370,6 +370,6 @@ if(0){
 //link();
 //handle();
 //arm();
-//post();
+post();
 
 //======================================================
