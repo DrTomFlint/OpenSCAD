@@ -7,31 +7,35 @@
 //====================================================
 
 use <../Parts/tslot.scad>
+use <../Parts/rounder.scad>
+use <../Parts/threads.scad>
+
 
 zbase=6;
-xbase=24;
-ybase=24;
+xbase=28;
+ybase=26;
 yaisle=9;
 zwing=16;
 
-rwing=6;
+rwing=8;
 rlink=(xbase-2*rwing)/2;
 
 rbolt1=1.7;
 rbolt2=1.7;
 
-xarm=40;
+xarm=45;
+rarm=6;
 rtip=3;
 
 zlink=30;
 
 zhandle=20;
-yhandle=xbase+10;
+yhandle=ybase+14;
 offhandle=3;
 
-F2=30;
+F2=200;
 
-angle=20;
+angle=0;
 angle1=angle;
 angle2=0;
 
@@ -100,6 +104,16 @@ module base(bolt=0){
     translate([-xbase/2+rwing,0,zbase+zwing])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=ybase+1,center=true,$fn=F2);
+    translate([-xbase/2+rwing,ybase/2-1.5,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
+    translate([-xbase/2+rwing,ybase/2-1.5,zbase+zwing])
+    cube([9,3.2,3],center=true);
+
+    
+    translate([-xbase/2+rwing,-ybase/2+1.5,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     
     // center aisle
     translate([0,0,20+zbase])
@@ -125,6 +139,69 @@ module base(bolt=0){
 module arm(){
 
   difference(){
+    union(){
+      // main arm
+      hull(){
+        translate([-xbase/2+rwing,0,zbase+zwing])
+        rotate([90,0,0])
+        cylinder(r=rwing,h=yaisle-0.4,center=true,$fn=F2);
+
+        translate([-xbase/2+rwing+xarm,0,zbase+zwing])
+        cube([2,yaisle-0.4,2*rwing],center=true);
+      }
+      
+      // threaded tip
+      translate([-xbase/2+rwing+xarm,0,zbase+zwing])
+      rotate([0,0,0])
+      cylinder(r=8,h=rwing*2,center=true,$fn=F2);
+    }
+    
+    // cut for threaded post
+    translate([-xbase/2+rwing+xarm,0,0])
+    metric_thread (diameter=9.4, pitch=1, length=zbase+zwing+rwing+2, internal=true, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0, angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+    
+    // bolt holes to base
+    translate([-xbase/2+rwing,0,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
+    
+    // bolt holes for link
+    translate([xbase/2-rlink,0,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
+  }
+
+
+}
+
+//-----------------------------------------------------
+module post(){
+
+  difference(){
+    translate([-xbase/2+rwing+xarm,0,0]){
+      metric_thread (diameter=9, pitch=1, length=zbase+zwing+rwing+2, internal=false, n_starts=1, thread_size=-1, groove=false, square=false, rectangle=0, angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+      translate([0,0,zbase+zwing+rwing+2])
+      cylinder(r1=9/2,r2=9/2+3,h=2,$fn=F2);
+      translate([0,0,zbase+zwing+rwing+4])
+      difference(){
+        cylinder(r=11,h=3,$fn=F2);
+        for(i=[0:11]){
+          rotate([0,0,i*360/12])
+          translate([12,0,0])
+          cylinder(r=2,h=9,center=true,$fn=22);
+        }
+      }
+    }
+    translate([-xbase/2+rwing+xarm,0,-5])
+    cylinder(r=1,h=50,$fn=22);
+  }
+  
+}                      
+
+//-----------------------------------------------------
+module armOld(){
+
+  difference(){
     hull(){
       translate([-xbase/2+rwing,0,zbase+zwing])
       rotate([90,0,0])
@@ -132,7 +209,7 @@ module arm(){
 
       translate([-xbase/2+rwing+xarm,0,zbase+zwing])
       rotate([90,0,0])
-      cylinder(r=rwing,h=yaisle-0.4,center=true,$fn=F2);
+      cylinder(r=rarm,h=yaisle-0.4,center=true,$fn=F2);
     }
     
     // bolt holes to base
@@ -149,7 +226,7 @@ module arm(){
     hull(){
       translate([-xbase/2+rwing+xarm,0,zbase+zwing])
       rotate([90,0,0])
-      cylinder(r=rwing,h=yaisle-0.4,center=true,$fn=F2);
+      cylinder(r=rarm,h=yaisle-0.4,center=true,$fn=F2);
 
       translate([-xbase/2+rwing+xarm+zwing/2,0,rtip])
       rotate([90,0,0])
@@ -172,11 +249,21 @@ module link(){
       cylinder(r=rlink-0.2,h=ybase,center=true,$fn=F2);
     }
     
-    // bolt holes for link
+    // bolt holes to arm
     translate([xbase/2-rlink,0,zbase+zwing])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=ybase+2,center=true,$fn=F2);
+    translate([xbase/2-rlink,ybase/2-1.5,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
+    translate([xbase/2-rlink,ybase/2-1.5,zbase+zwing])
+    cube([9,3.2,3],center=true);
 
+    translate([xbase/2-rlink,-ybase/2+1.5,zbase+zwing])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
+
+    // bolt holes to handle
     translate([xbase/2-rlink,0,zbase+zwing+zlink])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=ybase+2,center=true,$fn=F2);
@@ -206,11 +293,28 @@ module handle(){
     translate([xbase/2-rlink,0,zbase+zwing+zlink])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=yhandle+1,center=true,$fn=F2);
+    translate([xbase/2-rlink,yhandle/2-1.5,zbase+zwing+zlink])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
+    translate([xbase/2-rlink,yhandle/2-1.5,zbase+zwing+zlink])
+    cube([9,3.2,3],center=true);
+    translate([xbase/2-rlink,-yhandle/2+1.5,zbase+zwing+zlink])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
 
     // bolt holes for base
     translate([xbase/2-rlink,0,zbase+rbolt1+3])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=yhandle+1,center=true,$fn=F2);
+    // countersink
+    translate([xbase/2-rlink,yhandle/2-1.5,zbase+rbolt1+3])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
+    translate([xbase/2-rlink,yhandle/2-1.5,zbase+rbolt1+3])
+    cube([9,3.2,3],center=true);
+    translate([xbase/2-rlink,-yhandle/2+1.5,zbase+rbolt1+3])
+    rotate([90,0,0])
+    cylinder(r=7/2,h=3.2,center=true,$fn=F2);
 
     // center aisle
     translate([0,0,zbase+zwing/2+rwing+zlink/2])
@@ -227,18 +331,19 @@ module clamp1(angle=0){
   
     link();
   
-    // handle rotates by angle1
-    translate([ax0,0,az0])
-    rotate([0,-angle1,0])
-    translate([-ax0,0,-az0])
-    handle();
+    //~ // handle rotates by angle1
+    //~ translate([ax0,0,az0])
+    //~ rotate([0,-angle1,0])
+    //~ translate([-ax0,0,-az0])
+    //~ handle();
 
     // arm rotates by angle2
     translate([-xbase/2+rwing,0,zbase+zwing])
     rotate([0,-angle2,0])
-    translate([-(-xbase/2+rwing),0,-(zbase+zwing)])
-    arm();
-  
+    translate([-(-xbase/2+rwing),0,-(zbase+zwing)]){
+      arm();
+      post();
+    }
 }
 
 //======================================================
@@ -247,9 +352,9 @@ module clamp1(angle=0){
 //translate([-ax0,0,-az0])
 clamp1(angle=angle);
 
-translate([dx0,0,dz0])
-rotate([90,0,0])
-#cylinder(r=rbolt2,h=yhandle+1,center=true,$fn=F2);
+//translate([dx0,0,dz0])
+//rotate([90,0,0])
+//#cylinder(r=rbolt2,h=yhandle+1,center=true,$fn=F2);
 
 
 if(0){
@@ -258,5 +363,13 @@ if(0){
     rotate([0,90,0])
     tslot1(type=2,len=150);
 }
+
+
+// for printing
+//base();
+//link();
+//handle();
+//arm();
+//post();
 
 //======================================================
