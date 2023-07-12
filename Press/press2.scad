@@ -67,9 +67,13 @@ if(1){
     rotate([-90,0,0])      
     tbrace();
 
-    translate([60,35,60+15])
-    rotate([90,0,0])
-    tslot1(type=1,len=70);
+    //~ translate([60,35,60+15])
+    //~ rotate([90,0,0])
+    //~ tslot1(type=1,len=70);
+    translate([60,-75,60+15])
+    rotate([0,0,90])
+    rotate([0,90,0])
+    tslot1(type=2,len=150);
 }
 
     // front foot
@@ -1861,7 +1865,7 @@ if(0){
 //~ counterLatch(thick=2.4);
 //~ color("blue")
 //~ translate([0,0,100-sledZ-140])
-counterLatch(thick=6);
+//~ counterLatch(thick=6);
 
 //~ translate([0,0,100-sledZ])
 //~ translate([-34,20,postHi-135])
@@ -1898,7 +1902,7 @@ if(0){
 //beltClip();
 
 // stand
-if(0){
+if(1){
   color("gray")
   stand1();
 }
@@ -1929,12 +1933,12 @@ rotate([0,handleAngle,0])
 translate([0,0,-postHi-36]){
 
   // top pulley
-  if(0){
+  if(1){
     translate([0,0,postHi])
     pulley();
   }
   // lever arm
-  if(0){
+  if(1){
     color("gray")
     translate([0,0,postHi])
     leverArm();
@@ -1958,7 +1962,7 @@ translate([0,0,-postHi-36]){
 }
 
 // pulley block
-if(0){
+if(1){
   translate([0,0,postHi])
   pulleyBlock();
   translate([0,0,postHi])
@@ -1968,7 +1972,7 @@ if(0){
 
 
 // rail blocks
-if(0){
+if(1){
   translate([0,0,railZ])
   color("cyan")
   railBlock();
