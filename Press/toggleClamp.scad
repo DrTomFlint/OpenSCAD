@@ -134,7 +134,7 @@ module base(bolt=0){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([-xbase/2+rwing,ybase/2-1.5,zbase+zwing])
-    cube([3,3.2,10],center=true);
+    cube([10.5,3.2,3],center=true);
 
     
     translate([-xbase/2+rwing,-ybase/2+1.5,zbase+zwing])
@@ -156,17 +156,17 @@ module base(bolt=0){
   }
   
   // text
-  translate([xbase/2+4,-0.55*ybase,(zbase+zwing+rwing)/2])
-  rotate([0,90,0])
-  rotate([0,0,90])
+  translate([0,-ybase/2,zbase-2])
+  rotate([90,0,0])
+  rotate([0,0,0])
   linear_extrude(height=0.2,scale=1)
-  text("v3", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
-  translate([xbase/2+4,0.55*ybase,(zbase+zwing+rwing)/2])
-  rotate([0,90,0])
-  rotate([0,0,90])
-  linear_extrude(height=0.2,scale=1)
-  text("2023", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+  text("2023v3", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
 
+  translate([0,ybase/2,zbase-2])
+  rotate([-90,0,0])
+  rotate([0,0,180])
+  linear_extrude(height=0.2,scale=1)
+  text("FLINT", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
 }
 
 //-----------------------------------------------------
@@ -262,7 +262,7 @@ module link(){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([xbase/2-rlink,ybase/2-1.5,zbase+zwing])
-    cube([3,3.2,10],center=true);
+    cube([10,3.2,3],center=true);
 
     translate([xbase/2-rlink,-ybase/2+1.5,zbase+zwing])
     rotate([90,0,0])
@@ -360,7 +360,7 @@ module clamp1(){
 
 //rotate([0,-delta0,0])
 //translate([-ax0,0,-az0])
-clamp1();
+//clamp1();
 
 //translate([dx0,0,dz0])
 //rotate([90,0,0])
@@ -376,7 +376,7 @@ if(0){
 
 
 // for printing
-//base();
+base();
 //link();
 //handle();
 //arm();
