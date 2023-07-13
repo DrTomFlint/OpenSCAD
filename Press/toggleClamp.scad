@@ -11,11 +11,11 @@ use <../Parts/rounder.scad>
 use <../Parts/threads.scad>
 
 
-draft=1;
+draft=0;
 
 zbase=6;
 xbase=28;
-ybase=22;
+ybase=24;
 yaisle=9;
 zwing=16;
 
@@ -23,8 +23,8 @@ rwing=5;
 //rlink=(xbase-2*rwing)/2;
 rlink=5;
 
-rbolt1=1.7;
-rbolt2=1.7;
+rbolt1=1.55;
+rbolt2=1.55;
 
 xarm=45;
 rarm=6;
@@ -33,7 +33,8 @@ rtip=3;
 zlink=30;
 
 zhandle=20;
-yhandle=ybase+14;
+//yhandle=ybase+14;
+yhandle=44;
 offhandle=5;
 
 F2=200;
@@ -46,13 +47,13 @@ F2=200;
 //~ angle1=30;
 //~ angle2=8;
 
-// more
-angle1=45;
-angle2=18;
+//~ // more
+//~ angle1=45;
+//~ angle2=18;
 
-//~ // closed
-//~ angle1=0;
-//~ angle2=0;
+// closed
+angle1=0;
+angle2=0;
 
 ax0=xbase/2-rlink;
 az0=zbase+rbolt1+offhandle;
@@ -64,8 +65,8 @@ bx1=bx0-ax0;
 bz1=bz0-az0;
 
 na0=zbase+zwing+zlink - az0;
-dx0=-na0*sin(angle)+ax0;
-dz0=na0*cos(angle)+az0;
+dx0=-na0*sin(angle1)+ax0;
+dz0=na0*cos(angle1)+az0;
 
 
 // length of ground link A-B
@@ -103,8 +104,11 @@ module base(bolt=0){
       translate([-xbase/2+rwing,0,zbase+zwing])
       rotate([90,0,0])
       cylinder(r=rwing,h=ybase,center=true,$fn=F2);
-      translate([xbase/2+1,0,zbase+zwing/2+2])
-      cube([2,ybase,zwing+4],center=true);
+      translate([-0.1*xbase,0,zbase+zwing/2+rwing])
+      cube([0.4*xbase,ybase,zwing],center=true);
+      // front stop
+      translate([xbase/2+2,0,(zbase+zwing+rwing)/2])
+      cube([4,yhandle,zbase+zwing+rwing],center=true);
     }
     
     // cut for link
@@ -112,9 +116,9 @@ module base(bolt=0){
       translate([xbase/2-rlink,0,zbase+zwing])
       rotate([90,0,0])
       cylinder(r=rlink,h=ybase+1,center=true,$fn=F2);
-      translate([xbase/2-2*rlink,0,zbase+zwing+rlink])
+      translate([-xbase/4,0,zbase+zwing+rlink+3])
       rotate([90,0,0])
-      cylinder(r=rlink,h=ybase+1,center=true,$fn=F2);
+      cylinder(r=2,h=ybase+1,center=true,$fn=F2);
     }
 
     // bolt holes for handle
@@ -130,7 +134,7 @@ module base(bolt=0){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([-xbase/2+rwing,ybase/2-1.5,zbase+zwing])
-    cube([9,3.2,3],center=true);
+    cube([3,3.2,10],center=true);
 
     
     translate([-xbase/2+rwing,-ybase/2+1.5,zbase+zwing])
@@ -151,6 +155,18 @@ module base(bolt=0){
     cylinder(r=6.88/2,h=4.0,$fn=F2);
   }
   
+  // text
+  translate([xbase/2+4,-0.55*ybase,(zbase+zwing+rwing)/2])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  linear_extrude(height=0.2,scale=1)
+  text("v3", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  translate([xbase/2+4,0.55*ybase,(zbase+zwing+rwing)/2])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  linear_extrude(height=0.2,scale=1)
+  text("2023", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
 }
 
 //-----------------------------------------------------
@@ -187,6 +203,13 @@ module arm(){
     translate([xbase/2-rlink,0,zbase+zwing])
     rotate([90,0,0])
     cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
+
+    //~ // hole to adjust M4 base bolt
+    //~ translate([0.4,0,10])
+    //~ cylinder(r=2,h=20,$fn=F2);
+    //~ translate([-0.4,0,10])
+    //~ cylinder(r=2,h=20,$fn=F2);
+    
   }
 
 
@@ -217,42 +240,6 @@ module post(){
 }                      
 
 //-----------------------------------------------------
-module armOld(){
-
-  difference(){
-    hull(){
-      translate([-xbase/2+rwing,0,zbase+zwing])
-      rotate([90,0,0])
-      cylinder(r=rwing,h=yaisle-0.4,center=true,$fn=F2);
-
-      translate([-xbase/2+rwing+xarm,0,zbase+zwing])
-      rotate([90,0,0])
-      cylinder(r=rarm,h=yaisle-0.4,center=true,$fn=F2);
-    }
-    
-    // bolt holes to base
-    translate([-xbase/2+rwing,0,zbase+zwing])
-    rotate([90,0,0])
-    cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
-    
-    // bolt holes for link
-    translate([xbase/2-rlink,0,zbase+zwing])
-    rotate([90,0,0])
-    cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
-  }
-
-    hull(){
-      translate([-xbase/2+rwing+xarm,0,zbase+zwing])
-      rotate([90,0,0])
-      cylinder(r=rarm,h=yaisle-0.4,center=true,$fn=F2);
-
-      translate([-xbase/2+rwing+xarm+zwing/2,0,rtip])
-      rotate([90,0,0])
-      cylinder(r=rtip,h=yaisle-0.4,center=true,$fn=F2);
-    }
-}
-
-//-----------------------------------------------------
 module link(){
 
   difference(){
@@ -275,7 +262,7 @@ module link(){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([xbase/2-rlink,ybase/2-1.5,zbase+zwing])
-    cube([9,3.2,3],center=true);
+    cube([3,3.2,10],center=true);
 
     translate([xbase/2-rlink,-ybase/2+1.5,zbase+zwing])
     rotate([90,0,0])
@@ -287,7 +274,7 @@ module link(){
     cylinder(r=rbolt2,h=ybase+2,center=true,$fn=F2);
 
     // center aisle
-    translate([0,0,zbase+zwing/2+rwing+zlink/2])
+    translate([0,0,zbase+zwing/2+rwing+zlink/2-14])
     cube([40,yaisle,zwing+rwing+zlink],center=true);
   }
 
@@ -315,7 +302,7 @@ module handle(){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([xbase/2-rlink,yhandle/2-1.5,zbase+zwing+zlink])
-    cube([9,3.2,3],center=true);
+    cube([3,3.2,10],center=true);
     translate([xbase/2-rlink,-yhandle/2+1.5,zbase+zwing+zlink])
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
@@ -334,13 +321,13 @@ module handle(){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
     translate([xbase/2-rlink,yhandle/2-1.5,zbase+rbolt1+offhandle])
-    cube([9,3.2,3],center=true);
+    cube([3,3.2,10],center=true);
     translate([xbase/2-rlink,-yhandle/2+1.5,zbase+rbolt1+offhandle])
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
 
     // center aisle
-    translate([0,0,zbase+zwing/2+rwing+zlink/2-3])
+    translate([0,0,zbase+zwing/2+rwing+zlink/2])
     cube([40,ybase+0.5,zwing+rwing+zlink+11],center=true);
   }
 
@@ -350,9 +337,9 @@ module handle(){
 module clamp1(){
 
     // base does not move
-    base(bolt=1);
+    base(bolt=0);
   
-    //~ link();
+    link();
   
     // handle rotates by angle1
     translate([ax0,0,az0])
@@ -365,7 +352,7 @@ module clamp1(){
     rotate([0,-angle2,0])
     translate([-(-xbase/2+rwing),0,-(zbase+zwing)]){
       arm();
-      //post();
+      post();
     }
 }
 
