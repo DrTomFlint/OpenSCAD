@@ -107,13 +107,50 @@ module L1blackB(){
 
 }
 
+//------------------------------------------------------------
+// a jig to hold the part while drilling
+// location of hanger hole:  translate([0,0.6+R0+0.5,0])
+// 15.70 mm from hanger hole to the T-slot
+module L1jig(){
+  
+  difference(){
+      translate([0,24,5/2])
+      cube([34,45,5],center=true);
+      
+    hull(){
+      translate([0,0.6+R0-1,-1])
+      cylinder(r=3,h=7, $fn=222);
+
+      translate([0,0.6,-1])
+      cylinder(r=R0,h=7, $fn=222);
+    }
+    
+    // hole for M4 into T-Slot
+    hull(){
+      translate([0,0.6+R0+0.5+15.0,-1])
+      cylinder(r=2.1,h=7, $fn=22);
+      translate([0,0.6+R0+0.5+20.0,-1])
+      cylinder(r=2.1,h=7, $fn=22);
+    }
+
+    translate([0,25,5-0.6])
+    linear_extrude(height=0.7,scale=1)
+    text("L1", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.2);
+  }
+  
+
+  
+}
+    
 //===============================================================
 
 //L1white();
 //L1blue();
 //L1red();
 //L1black();    // with hanger hole
-L1blackB();   // no hanger hole
+//L1blackB();   // no hanger hole
+
+L1jig();
 
 //===============================================================
 
