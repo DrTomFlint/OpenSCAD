@@ -639,9 +639,9 @@ if(0){
 //pivotb();
 
 //fan1edge();
-fanwhite();
-fanblack();
-fanorange();
+//fanwhite();
+//fanblack();
+//fanorange();
 //fanpurple();
 
 //unfanwhite(0,2);
@@ -664,7 +664,7 @@ fanorange();
 //unfan1edge(3,5);
 //unfan1edge(6);
 
-//blade1();
+blade1();
 //translate([0,0,thick+0.5])
 //color("blue")
 //blade1();

@@ -693,7 +693,7 @@ if(0){
 }
 
 //pivota();
-pivotb();
+//pivotb();
 
 //fanred();
 //fanwhite();
@@ -725,7 +725,7 @@ pivotb();
 //color("red")
 //blade2bedge();
 //rotate([0,0,-90])
-//fan1();
+fan1();
 //translate([0,0,40])
 //fan1Folded();
 //unfan1();

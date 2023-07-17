@@ -1,67 +1,61 @@
 //====================================================================
-// fan6.scad
+// fan8.scad  "Cats under the stars" smaller version
 // 
-// folding fans
-// fan 6 makes blades and base independent.
-// adds bumps to make open and closed positions have detent.
+// Fan redux after a long break
+// Dr Tom Flint, 17 July 2023
 //
 //====================================================================
 
 
 use <../Parts/threads.scad>
-use <./fan6white.scad>
-use <./fan6black.scad>
-use <./fan6orange.scad>
-use <./fan6purple.scad>
-use <./fan6notblack.scad>
+use <./fan7red.scad>
+use <./fan7yellow.scad>
+use <./fan7blue.scad>
+use <./fan7black.scad>
 
 
 layer = 0.3;          // thickness of 1 layer
 thick = 6*layer;    // thickness of the hub
-thin = thick/2;     // thinness of the blade
 
-tall = 140;     // distance between hub and center of tip circle
+tall = 90;     // distance between hub and center of tip circle
 stub = 15;      // distance hub to base circle
 mid = 50;       // out to end of the hub, start of the blades
 
-//cut12=41;     // cut between blades 1 and 2
-cut12=56;     // cut between blades 1 and 2
+cut12=41;     // cut between blades 1 and 2
 
-edge = 0.8;     // width of clear edge on blades
+edge = 0.4;     // width of clear edge on blades
 rbase = 11;      // radius of the base circle
 rbasehole = 7;
-rmid1=16;
+//rmid1=16;
 
 x2=14.5-2*edge;   // width of blade2 base, subtract edge
 pega=0.25;      // offset of the 2 pegs
 
 rfinger=3;
 
-rtip = 17;      // radius of the tip circle
+rtip = 9;      // radius of the tip circle
 tipscale = 1.45;
 
-Nblade=9;          // number of blades
-full = 160;
+Nblade=7;          // number of blades
+full = 110;
 folded = 5;
 
 delta=full/Nblade;   // angle between blades when open
 deltaFold=folded/Nblade;   // angle between blades when open
 
-doff = (180-full)-1;
-//doff = 0.866*(180-full);
-//doff = full/Nblade/2;
+doff = 42.8;      // angle offset to center blades on y axis
 
-spread = 40;    // distance between blades when unfan
+spread = 35;    // distance between blades when unfan
 yfix = 65;
 
-smagx = 310;    // image magnification, scales on x and y
-smagy = 310;    // image magnification, scales on x and y
-soff = 70;    // image offset in X
+smagx = 200;    // image magnification, scales on x and y
+smagy = 200;    // image magnification, scales on x and y
+soff = 56;    // image offset in X
 
 ribbonx = 1.2;
-ribbony = 10;
+ribbony = 5.5;
 ribbond = 5;
-ribbont = 48;    // height along blade to place ribbon 
+ribbont = 90;    // height along blade to place ribbon 
 
 detent = 1.6;   // size of the detent in blade1
 dplus = 0.5;    // tolerance around the detent cut vs boss
@@ -140,45 +134,6 @@ $fn = 89;
       cylinder(r=detent+dplus,h=7,$fn=6,center=true);
     }      
 
-    // ribbon cuts
-    translate([0,ribbont,0])     
-    hull(){
-      translate([0,ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-      translate([0,-ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-    }
-    rotate([0,0,delta/4])
-    translate([0,ribbont,0])     
-    hull(){
-      translate([0,ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-      translate([0,-ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-    }
-    rotate([0,0,-delta/4])
-    translate([0,ribbont,0])     
-    hull(){
-      translate([0,ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-      translate([0,-ribbony/2,0])     
-      cylinder(r=ribbonx/2,h=10,center=true);
-    }
-    
-    // ribbon topside clearance
-    for(i=[-15:6]){
-      rotate([0,0,1.0*i])
-      translate([0,ribbont,5*layer])     
-      cube([2,ribbony+4,2*layer],center=true);
-    }
-
-    // ribbon bottom side clearance
-    for(i=[-6:15]){
-      rotate([0,0,1.0*i])
-      translate([0,ribbont,layer])     
-      cube([2,ribbony+4,2*layer],center=true);
-    }
-
     // material reduction 
     hull(){
       translate([0,0.45*mid,0])
@@ -229,7 +184,7 @@ $fn = 89;
     // cut off bottom section that should be black
     cylinder(r=cut12,h=3*thick,center=true);
 
-/*        
+        
     // ribbon cuts
     translate([0,ribbont,0])     
     hull(){
@@ -256,19 +211,21 @@ $fn = 89;
     }
     
     // ribbon topside clearance
-    for(i=[-15:6]){
+//    for(i=[-15:6]){
+    for(i=[-6:15]){
       rotate([0,0,1.0*i])
       translate([0,ribbont,0.75*thick+0.125*thick])     
-      cube([2,ribbony+4,0.25*thick],center=true);
+      cube([3,ribbony+4,0.25*thick],center=true);
     }
 
     // ribbon bottom side clearance
-    for(i=[-6:15]){
+//    for(i=[-6:15]){
+    for(i=[-15:6]){
       rotate([0,0,1.0*i])
       translate([0,ribbont,0.125*thick])     
-      cube([2,ribbony+4,0.25*thick],center=true);
+      cube([3,ribbony+4,0.25*thick],center=true);
     }
-*/
+
   }
   
 
@@ -298,14 +255,16 @@ $fn = 89;
 
     
     // ribbon topside clearance
-    for(i=[-15:6]){
+//    for(i=[-15:6]){
+    for(i=[-6:15]){
       rotate([0,0,1.0*i])
       translate([0,ribbont,0.75*thick+0.125*thick])     
       cube([2,ribbony+4,0.25*thick],center=true);
     }
 
     // ribbon bottom side clearance
-    for(i=[-6:15]){
+//    for(i=[-6:15]){
+    for(i=[-15:6]){
       rotate([0,0,1.0*i])
       translate([0,ribbont,0.125*thick])     
       cube([2,ribbony+4,0.25*thick],center=true);
@@ -423,7 +382,7 @@ module unfan1(first=0,last=Nblade-1){
 }
 
 //------------------------------------------------------------------
-module fanwhite(first=0,last=Nblade-1){
+module fanred(first=0,last=Nblade-1){
     
   intersection(){
       for(i=[first:last]){
@@ -436,13 +395,13 @@ module fanwhite(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan6white();
+    fan7red();
   }
     
 }
 
 //------------------------------------------------------------------
-module fanorange(first=0,last=Nblade-1){
+module fanyellow(first=0,last=Nblade-1){
     
   intersection(){
       for(i=[first:last]){
@@ -455,13 +414,13 @@ module fanorange(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan6orange();
+    fan7yellow();
   }
     
 }
 
 //------------------------------------------------------------------
-module fanpurple(first=0,last=Nblade-1){
+module fanblue(first=0,last=Nblade-1){
     
   intersection(){
       for(i=[first:last]){
@@ -474,7 +433,7 @@ module fanpurple(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan6purple();
+    fan7blue();
   }
     
 }
@@ -496,7 +455,7 @@ module fanblack(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan6black();
+    fan7black();
   }
     
 }
@@ -514,7 +473,7 @@ module fanblack2(first=0,last=Nblade-1){
 }
 
 //------------------------------------------------------------------
-module unfanwhite(first=0,last=Nblade-1){
+module unfanred(first=0,last=Nblade-1){
 
   for(i=[first:last]){
     // unform the fan
@@ -532,13 +491,13 @@ module unfanwhite(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40])
-      fan6white();
+      fan7red();
     }
   }
 }
 
 //------------------------------------------------------------------
-module unfanpurple(first=0,last=Nblade-1){
+module unfanyellow(first=0,last=Nblade-1){
 
   for(i=[first:last]){
     // unform the fan
@@ -557,17 +516,14 @@ module unfanpurple(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40]){      
-      fan6purple();
-      //  fan6black();
-      //  fan6white();
-      //  fan6orange();
+      fan7yellow();
       }
     }
   }
 }
 
 //------------------------------------------------------------------
-module unfanorange(first=0,last=Nblade-1){
+module unfanblue(first=0,last=Nblade-1){
 
   for(i=[first:last]){
     // unform the fan
@@ -585,7 +541,7 @@ module unfanorange(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40])
-      fan6orange();
+      fan7blue();
     }
   }
 }
@@ -601,8 +557,8 @@ module unfanblack(first=0,last=Nblade-1){
     translate([0,-yfix,0])
     rotate([0,0,-i*delta-doff])
     
-    intersection(){
-    //difference(){
+    //intersection(){
+    difference(){
       translate([0,0,i*thick])
       rotate([0,0,i*delta+doff])
       color([i/Nblade,i/Nblade,i/Nblade])
@@ -611,10 +567,9 @@ module unfanblack(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40]){
-        fan6black();
-        //fan6white();
-        //fan6purple();
-        //fan6orange();
+        fan7red();
+        fan7yellow();
+        fan7blue();
       }
     }
   }
@@ -708,50 +663,43 @@ if(0){
 //    fan6notblack();
 
 //fan1edge();
-//fanwhite();
+//fanred();
+//fanyellow();
+//fanblue();
 //fanblack();
-//fanorange();
-//fanpurple();
+//fanblack2();
    
-//unfanwhite(0,2);
-//unfanwhite(3,5);
-//unfanwhite(6,8);
+//unfanblack(0,3);
+//unfanblack(4,6);
 
-//unfanblack(0,2);
-//unfanblack(3,5);
-//unfanblack(6,8);
+//unfanblack2(0,3);
+//unfanblack2(4,6);
 
-//unfanblack2(0,2);
-//unfanblack2(3,5);
-//unfanblack2(6,8);
+//unfanred(0,3);
+//unfanred(4,6);
 
-//unfanorange(0,2);
-//unfanorange(3,5);
-//unfanorange(6,8);
+//unfanyellow(0,3);
+//unfanyellow(4,6);
 
-//unfanpurple(0,2);
-//unfanpurple(3,5);
-//unfanpurple(6,8);
+//unfanblue(0,3);
+//unfanblue(4,6);
 
 //color("cyan")
-//unfan1edge(0,2);
-//unfan1edge(3,5);
-//unfan1edge(6,8);
+//unfan1edge(0,3);
+unfan1edge(4,6);
+
+
 
 //blade1();
-//translate([0,0,10])
-//color("blue")
 //translate([0,0,5])
 //blade1edge();
-//color("cyan")
 //translate([0,0,10])
 //blade2();
 //translate([0,0,10])
-//color("red")
-//blade2edge();
+
 //rotate([0,0,-90])
 //translate([0,0,-10])
-fan1();
+//fan1();
 //translate([0,0,40])
 //fan1Folded();
 //unfan1();

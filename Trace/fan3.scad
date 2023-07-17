@@ -455,8 +455,8 @@ if(0){
 //unfanBlack(3,5);
 //unfanBlack(6,8);
 
-//blade1();
-fan1();
+blade1();
+//fan1();
 //fan1Folded();
 //unfan1();
 
