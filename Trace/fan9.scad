@@ -1,5 +1,5 @@
 //====================================================================
-// fan8.scad  "Cats under the stars" smaller version
+// fan9.scad  "Cats under the stars" smaller version, ditch detents
 // 
 // Fan redux after a long break
 // Dr Tom Flint, 17 July 2023
@@ -8,24 +8,24 @@
 
 
 use <../Parts/threads.scad>
-use <./fan7red.scad>
-use <./fan7yellow.scad>
-use <./fan7blue.scad>
-use <./fan7black.scad>
+use <./fan9red.scad>
+use <./fan9yellow.scad>
+use <./fan9blue.scad>
+use <./fan9black.scad>
 
 
 layer = 0.3;          // thickness of 1 layer
-thick = 6*layer;    // thickness of the hub
+thick = 5*layer;    // thickness of the hub
 
 tall = 90;     // distance between hub and center of tip circle
-stub = 15;      // distance hub to base circle
+stub = 10;      // distance hub to base circle
 mid = 50;       // out to end of the hub, start of the blades
 
-cut12=41;     // cut between blades 1 and 2
+cut12=11;     // cut between blades 1 and 2
 
 edge = 0.4;     // width of clear edge on blades
-rbase = 11;      // radius of the base circle
-rbasehole = 7;
+rbase = 8;      // radius of the base circle
+rbasehole = 4;
 //rmid1=16;
 
 x2=14.5-2*edge;   // width of blade2 base, subtract edge
@@ -45,20 +45,20 @@ deltaFold=folded/Nblade;   // angle between blades when open
 
 doff = 42.8;      // angle offset to center blades on y axis
 
-spread = 35;    // distance between blades when unfan
-yfix = 65;
+spread = 24;    // distance between blades when unfan
+yfix = 42;
 
-smagx = 200;    // image magnification, scales on x and y
-smagy = 200;    // image magnification, scales on x and y
-soff = 56;    // image offset in X
+smagx = 220;    // image magnification, scales on x and y
+smagy = 220;    // image magnification, scales on x and y
+soff = 52;    // image offset in X
 
 ribbonx = 1.2;
 ribbony = 5.5;
 ribbond = 5;
 ribbont = 90;    // height along blade to place ribbon 
 
-detent = 1.6;   // size of the detent in blade1
-dplus = 0.5;    // tolerance around the detent cut vs boss
+//~ detent = 1.6;   // size of the detent in blade1
+//~ dplus = 0.5;    // tolerance around the detent cut vs boss
 
 
 //------------------------------------------------------------------
@@ -70,39 +70,28 @@ $fn = 89;
        // main blade
     intersection(){
     // cut off bottom section that should be black
-    cylinder(r=cut12,h=3*thick,center=true);
+    translate([0,-cut12,0])
+    cylinder(r=2*cut12,h=3*thick,center=true);
 
     union(){
       
       // at the pivot
       hull(){
         cylinder(r=rbase,h=thick);
-        translate([0,0.5*mid,0])
-        cylinder(r=1.2,h=thick);
+        translate([0,0.25*mid,0])
+        cylinder(r=3,h=thick);
       }
             
       // tail section
       hull(){
         translate([0,0,0])
-        cylinder(r=rbasehole-2,h=thick);
+        cylinder(r=rbasehole-1,h=thick);
 
         translate([0,-stub,0])
         cylinder(r=3,h=thick);
       }
             
-      // detents to hold it open or closed
-      // bumps on top side
-      translate([0,0,thick-0.5]){
-        rotate([0,0,delta/2])
-        translate([0,0.75*mid,0])
-        rotate([-90,30,0])
-        cylinder(r=detent-dplus,h=5,$fn=6,center=true);
-        rotate([0,0,-delta/2])
-        translate([0,0.75*mid,0])
-        rotate([-90,30,0])
-        cylinder(r=detent-dplus,h=5,$fn=6,center=true);
-      }      
-        
+       // main blade    
       hull(){
         translate([0,tall,0])
         scale([tipscale,1,1])
@@ -119,42 +108,21 @@ $fn = 89;
     // pivot hole
     cylinder(r=rbasehole,h=3*thick,center=true);
     
+    // cut clear edge off
     blade1edge();
-
-    // detents to hold it open or closed
-    // cut on bottom side
-    translate([0,0,-0.6]){
-      rotate([0,0,delta/2])
-      translate([0,0.75*mid,0])
-      rotate([-90,30,0])
-      cylinder(r=detent+dplus,h=7,$fn=6,center=true);
-      rotate([0,0,-delta/2])
-      translate([0,0.75*mid,0])
-      rotate([-90,30,0])
-      cylinder(r=detent+dplus,h=7,$fn=6,center=true);
-    }      
-
-    // material reduction 
-    hull(){
-      translate([0,0.45*mid,0])
-      cylinder(r=0.75,h=thick*3,center=true);
-    
-      translate([0,0.6*mid,0])
-      cylinder(r=2.0,h=thick*3,center=true);
-    }
       
     // holes in tail stub
     translate([0,-stub,0])
     cylinder(r=1.5,h=thick*3,center=true);
       
     // side cut to make smooth waist
-    rotate([0,0,2.4*delta])
-    translate([0,18.5,0])
-    cylinder(r=7,h=thick*3,center=true);
+    rotate([0,0,2.3*delta])
+    translate([0,14,0])
+    cylinder(r=5,h=thick*3,center=true);
 
-    rotate([0,0,-2.4*delta])
-    translate([0,18.5,0])
-    cylinder(r=7,h=thick*3,center=true);
+    rotate([0,0,-2.3*delta])
+    translate([0,14,0])
+    cylinder(r=5,h=thick*3,center=true);
     
   }
 
@@ -211,19 +179,17 @@ $fn = 89;
     }
     
     // ribbon topside clearance
-//    for(i=[-15:6]){
-    for(i=[-6:15]){
-      rotate([0,0,1.0*i])
-      translate([0,ribbont,0.75*thick+0.125*thick])     
-      cube([3,ribbony+4,0.25*thick],center=true);
-    }
+    //~ for(i=[-6:15]){
+      //~ rotate([0,0,1.0*i])
+      //~ translate([0,ribbont,0.75*thick+0.125*thick])     
+      //~ cube([3,ribbony+4,0.25*thick],center=true);
+    //~ }
 
     // ribbon bottom side clearance
-//    for(i=[-6:15]){
-    for(i=[-15:6]){
+    for(i=[-15:15]){
       rotate([0,0,1.0*i])
-      translate([0,ribbont,0.125*thick])     
-      cube([3,ribbony+4,0.25*thick],center=true);
+      translate([0,ribbont,layer])     
+      cube([3,ribbony+4,2*layer],center=true);
     }
 
   }
@@ -255,19 +221,17 @@ $fn = 89;
 
     
     // ribbon topside clearance
-//    for(i=[-15:6]){
-    for(i=[-6:15]){
-      rotate([0,0,1.0*i])
-      translate([0,ribbont,0.75*thick+0.125*thick])     
-      cube([2,ribbony+4,0.25*thick],center=true);
-    }
+    //~ for(i=[-6:15]){
+      //~ rotate([0,0,1.0*i])
+      //~ translate([0,ribbont,0.75*thick+0.125*thick])     
+      //~ cube([2,ribbony+4,0.25*thick],center=true);
+    //~ }
 
     // ribbon bottom side clearance
-//    for(i=[-6:15]){
-    for(i=[-15:6]){
+    for(i=[-15:15]){
       rotate([0,0,1.0*i])
-      translate([0,ribbont,0.125*thick])     
-      cube([2,ribbony+4,0.25*thick],center=true);
+      translate([0,ribbont,layer])     
+      cube([3,ribbony+4,2*layer],center=true);
     }
 
     // central cut
@@ -281,7 +245,7 @@ $fn = 89;
     }        
       
     // cut off tail section
-    translate([0,-15,0])     
+    translate([0,-20,0])     
     cube([40,60,3*thick],center=true);
     
     
@@ -395,7 +359,7 @@ module fanred(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan7red();
+    fan9red();
   }
     
 }
@@ -414,7 +378,7 @@ module fanyellow(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan7yellow();
+    fan9yellow();
   }
     
 }
@@ -433,7 +397,7 @@ module fanblue(first=0,last=Nblade-1){
     translate([-soff,0,-1])
     rotate([0,0,90])
     scale([smagx,smagy,40])
-    fan7blue();
+    fan9blue();
   }
     
 }
@@ -454,8 +418,9 @@ module fanblack(first=0,last=Nblade-1){
 
     translate([-soff,0,-1])
     rotate([0,0,90])
-    scale([smagx,smagy,40])
-    fan7black();
+    scale([smagx,smagy,40]){
+      fan9black();
+    }
   }
     
 }
@@ -491,7 +456,7 @@ module unfanred(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40])
-      fan7red();
+      fan9red();
     }
   }
 }
@@ -516,7 +481,7 @@ module unfanyellow(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40]){      
-      fan7yellow();
+      fan9yellow();
       }
     }
   }
@@ -541,7 +506,7 @@ module unfanblue(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40])
-      fan7blue();
+      fan9blue();
     }
   }
 }
@@ -557,8 +522,8 @@ module unfanblack(first=0,last=Nblade-1){
     translate([0,-yfix,0])
     rotate([0,0,-i*delta-doff])
     
-    //intersection(){
-    difference(){
+    intersection(){
+    //difference(){
       translate([0,0,i*thick])
       rotate([0,0,i*delta+doff])
       color([i/Nblade,i/Nblade,i/Nblade])
@@ -567,9 +532,7 @@ module unfanblack(first=0,last=Nblade-1){
       translate([-soff,0,-1])
       rotate([0,0,90])
       scale([smagx,smagy,40]){
-        fan7red();
-        fan7yellow();
-        fan7blue();
+        fan9black();
       }
     }
   }
@@ -599,19 +562,18 @@ module pivota(){
 $fn=89;
   difference(){
     translate([0,0,0.5])
-    cylinder(r=rbasehole-0.3,h=12.5);
+    cylinder(r=rbasehole-0.3,h=10.0);
 
-    cylinder(r=1.5,h=60,center=true);
-    metric_thread (diameter=10, pitch=1, length=12, internal=true);
+    cylinder(r=0.7,h=60,center=true);
+    metric_thread (diameter=5, pitch=1, length=9.5, internal=true);
   }
 
   difference(){
-    translate([0,0,13.0])
+    translate([0,0,10.5])
     cylinder(r1=rbasehole+2,r2=rbasehole+1,h=thick);
     
-    translate([0,0,19.0])
-    rotate([90,0,0])
-    cylinder(r=7,h=2,center=true);
+    translate([0,0,14.0])
+    cube([3,1.4,10],center=true);
   }
 }
 
@@ -621,20 +583,20 @@ module pivotb(){
 $fn=89;
 
   difference(){
-    metric_thread (diameter=10-0.4, pitch=1, length=5*thick, internal=false, leadin=1);
-    cylinder(r=1.5,h=20,center=true);
+    metric_thread (diameter=5-0.4, pitch=1, length=5*thick, internal=false, leadin=1);
+    cylinder(r=0.7,h=20,center=true);
   }
   difference(){
     translate([0,0,-thick])
     cylinder(r1=rbasehole+1,r2=rbasehole+2,h=thick);
-    //~ translate([0,0,-thick])
-    //~ cylinder(r1=3,r2=2,h=thick+0.1);
-    translate([0,0,-7])
-    rotate([90,0,0])
-    cylinder(r=7,h=2,center=true);
+    translate([0,0,-3])
+    cube([3,1.4,10],center=true);
+    //~ rotate([90,0,0])
+    //~ cylinder(r=2,h=1.4,center=true);
   }
 
 }
+
 //====================================================================
 
 if(0){
@@ -652,7 +614,7 @@ if(0){
 
 //fan5notblack();
 
-//pivota();
+pivota();
 pivotb();
 
 
@@ -668,37 +630,30 @@ pivotb();
 //fanblack();
 //fanblack2();
    
-//unfanblack(0,3);
-//unfanblack(4,6);
+//unfanblack(0,6);
 
-//unfanblack2(0,3);
-//unfanblack2(4,6);
+//unfanblack2(0,6);
 
-//unfanred(0,3);
-//unfanred(4,6);
+//unfanred(0,6);
 
-//unfanyellow(0,3);
-//unfanyellow(4,6);
+//unfanyellow(0,6);
 
-//unfanblue(0,3);
-//unfanblue(4,6);
+//unfanblue(0,6);
 
-//color("cyan")
-//unfan1edge(0,3);
-//unfan1edge(4,6);
+//unfan1edge(0,6);
 
 
-
-//blade1();
-//translate([0,0,5])
-//blade1edge();
-//translate([0,0,10])
-//blade2();
-//translate([0,0,10])
+if(0){
+  blade1();
+  translate([0,0,5])
+  blade1edge();
+  translate([0,0,10])
+  blade2();
+}
 
 //rotate([0,0,-90])
 //translate([0,0,-10])
-//fan1();
+fan1();
 //translate([0,0,40])
 //fan1Folded();
 //unfan1();
