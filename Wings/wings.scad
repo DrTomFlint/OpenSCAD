@@ -220,6 +220,57 @@ module wedged(){
     cube([2*thick-0.15,2*rbasehole+2*thick,2*thick],center=true);
 }
 
+
+//---------------------------------------------------------
+module anchor(){
+  
+hi=24;
+  
+  difference(){
+    union(){
+      cylinder(r1=10,r2=11,h=1,$fn=44);
+      translate([0,0,1])
+      cylinder(r1=6,r2=4,h=2,$fn=44);
+      translate([0,0,3])
+      cylinder(r=4,h=hi,$fn=44);
+      translate([0,0,hi+3])
+      sphere(r=4,$fn=33);
+    }
+    translate([0,0,hi-1])
+    rotate([0,90,0])
+    scale([1.5,1,1])
+    cylinder(r=2,h=10,center=true,$fn=22);
+
+    translate([0,0,-1])
+    cylinder(r=1,h=hi+10,$fn=22);
+  }
+}
+
+//---------------------------------------------------------
+module anchor2(){
+  
+hi=24;
+  
+  difference(){
+    union(){
+      cylinder(r1=10,r2=11,h=1,$fn=6);
+      translate([0,0,1])
+      cylinder(r1=6,r2=4,h=2,$fn=6);
+      translate([0,0,3])
+      cylinder(r=4,h=hi,$fn=6);
+      translate([0,0,hi+3])
+      sphere(r=4,$fn=6);
+    }
+    translate([0,0,hi-1])
+    rotate([90,0,0])
+    scale([1,3,1])
+    cylinder(r=1,h=10,center=true,$fn=22);
+
+    translate([-20,4*0.866,-1])
+    cube([40,40,40]);
+  }
+}
+
 //=========================================================
 
 if(0){
@@ -249,12 +300,14 @@ if(0){
 //pivotc();
 
 //pivotd();
-washer2();
+//washer2();
 //wedged();
 
 //translate([60,0,0])
 //levera();
 
 //leverb();
+
+anchor2();
 
 //=========================================================

@@ -756,17 +756,17 @@ module pivota(){
 $fn=89;
   difference(){
     translate([0,0,0.5])
-    cylinder(r=rbasehole-0.3,h=10.0);
+    cylinder(r=rbasehole-0.3,h=12.0);
 
     cylinder(r=0.7,h=60,center=true);
-    metric_thread (diameter=5, pitch=1, length=9.5, internal=true);
+    metric_thread (diameter=5, pitch=1, length=11.5, internal=true);
 
     translate([0,0,0])
     cylinder(r1=3,r2=2,h=2);
   }
 
   difference(){
-    translate([0,0,10.5])
+    translate([0,0,12.5])
     cylinder(r1=rbasehole+2,r2=rbasehole+1,h=thick);
     
     translate([0,0,14.0])
@@ -871,7 +871,7 @@ $fn=89;
 //====================================================================
 
 
-if(0){
+if(1){
   difference(){
     union(){
       pivota();
@@ -923,7 +923,7 @@ if(0){
   translate([0,0,thick])
   unfan1lid(0,6);
 }
-if(1){
+if(0){
   // move lid to the bottom
   translate([0,0,-layer])
   unfan1lid(0,6);
