@@ -40,12 +40,12 @@ L0=0.2;
 N=7;    
 
 BaseOn = 0;   
-BlackOn = 0;  
+BlackOn = 1;  
 WhiteOn = 0;  
 RedOn = 0;
 BlueOn = 0;
 EyesOn = 0;
-TopOn = 1;    
+TopOn = 0;    
 
 //---------------------------------------------------------------------
 // Derived settings
