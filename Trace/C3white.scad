@@ -31,7 +31,7 @@ module C3white_1()
  }
 }
 
-module C3white()
+module C3whiteOld()
 {
  /* all layers combined, scaled to within a 1mm cube */
  scale([1, 1, 1/1])
@@ -41,5 +41,28 @@ module C3white()
   }
   translate([0,0,-2]) cube([2,2,4],center=true);
  }
+
 }
+module C3white()
+{
+intersection(){
+  C3white_1();
+  translate([0,0.003,0])  
+  cylinder(r=0.44,h=1,$fn=99);
+}
+
+difference(){
+  hull(){
+    cylinder(r=0.43,h=1,$fn=44);
+    translate([0,0.45,0])
+    cylinder(r=0.02,h=1,$fn=44);
+  }
+  translate([0,0.45,-0.5])
+  cylinder(r=0.009,h=2,$fn=44);
+  translate([0,0,-0.5])
+  cylinder(r=0.43,h=2,$fn=44);
+}
+
+}
+
 C3white();

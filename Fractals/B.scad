@@ -3,9 +3,9 @@
 // A2 order 3 size 2.5 bottom 6.0
 
 // order of sierpinski fractal
-order = 3; //[0,1,2,3,4,5,6,7]
+order = 4; //[0,1,2,3,4,5,6,7]
 // size of smallest pyramid
-size = 5; //[2:50]
+size = 2.5; //[2:50]
 
 /* [Hidden] */
 eps = 0.25;         // translate for pyramids
@@ -28,41 +28,30 @@ z0=-26;         // top of lid before bevel
 //bottom=6.0;     // for size 4
 //bottom=6.4;     // for size 3
 
-bottom=6.4;     // size 5 order 3
+bottom=5.8;     // size 5 order 3
 
 //-----------------------------------------------------------------
 module s7(){
 
-    scale([1,1,0.97])
-    difference(){
-        union(){
-        difference() {
-            ss(order-1);
-            // remove bottom spikes
-            translate([-120,-120,-3])cube([240,240,3]);
-        }
-        mirror([0,0,1])
-        difference() {
-            ss(order-1);
-            translate([-120,-120,bottom])
-            cube([240,240,80]);
-        }
-        }
-        
-    //    translate([-120,-120,thick*z-80])cube([240,240,80]);
-    //    translate([-120,-120,thick*z+thick])cube([240,240,80]);
+  half()
 
-        if(0){
-            // cut out top section
-            size2=7.2*size;
-            translate([0,0,17.2]){
-                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-                mirror([0,0,1])
-                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-            }
-        }
-    }
+  difference() {
+    mirror([0,0,1])
+    half();
+    translate([-120,-120,-80-bottom])
+    cube([240,240,80]);
+  }
 
+}
+//-----------------------------------------------------
+module half(){
+  scale([1,1,0.97])
+  difference() {
+      ss(order-1);
+      // remove bottom spikes
+      translate([-120,-120,-3])cube([240,240,3]);
+  }
+  
 }
 
 //----------------------------------------------------
@@ -587,7 +576,18 @@ if(0){
  }
 }
 
-s7();
+//s7();
+
+//half()
+
+if(1){
+  difference() {
+    mirror([0,0,1])
+    half();
+    translate([-120,-120,-80-bottom])
+    cube([240,240,80]);
+  }
+}
 
 //color("cyan")
 //translate([0,0,0])
