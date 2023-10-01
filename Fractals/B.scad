@@ -22,7 +22,8 @@ layer = 0.3;
 thick = 17.5;
 z=3;
 
-tdeep = 1.5;    // text depth
+//tdeep = 1.5;    // text depth
+tdeep = 0;    // text depth
 z0=-26;         // top of lid before bevel
 //bottom=7.0;     // for size 5
 //bottom=6.0;     // for size 4
@@ -33,11 +34,17 @@ bottom=5.8;     // size 5 order 3
 //-----------------------------------------------------------------
 module s7(){
 
-  half()
+  scale([1,1,0.97])
+  difference() {
+      ss(order-1);
+      // remove bottom spikes
+      translate([-120,-120,-3])cube([240,240,3]);
+  }
 
   difference() {
+    translate([0,0,0.01])
     mirror([0,0,1])
-    half();
+    ss(order-1);
     translate([-120,-120,-80-bottom])
     cube([240,240,80]);
   }
@@ -58,9 +65,9 @@ module half(){
 // single solid, same size
 module s7cut(tol=0.2){
     
-//    size2=size*14+tol;  // for order 4
+    size2=size*14+tol;  // for order 4
 //    size2=size*7.1;  // for order 3, size 2.5
-    size2=size*7.6;  // for order 3, size 5
+//    size2=size*7.6;  // for order 3, size 5
     
         
     translate([0,0,-0.01])
@@ -109,230 +116,12 @@ module ss(ord){
  } // end module ss
 
 //--------------------------------------------------------------
-module lip9(tol=0.25){
-
-rout=30;    
-hi0=3;
-
-// overlap section
-intersection(){
-    cylinder(r=rout+1.5,h=hi0,$fn=5);
-
-difference(){
-    union(){
-        difference(){    
-            cylinder(r=rout+1.5,h=hi0,$fn=5);
-            translate([0,0,-1])
-            cylinder(r=rout+tol,h=hi0+2,$fn=5);
-        }    
-        
-        for(i=[0:4]){
-            // outside round cut
-            rotate([0,0,72*i])
-            translate([rout-1.5,0,0])
-            scale([1,1.5,1])
-            cylinder(r=4.8-tol,h=hi0,$fn=99);
-        }
-    }    
-    for(i=[0:4]){
-        // outside round cut
-        rotate([0,0,72*i])
-        translate([rout-1.5,0,-1])
-        scale([1,1.5,1])
-        cylinder(r=4.8-1.2,h=hi0+2,$fn=99);
-    }
-
-    for(i=[0:4]){
-        // cut for windows
-        rotate([0,0,72*i+72/2])
-        translate([0,0,-0.5])
-        rotate([0,90,0])
-        translate([0,0,10])
-        //cylinder(r=18,h=30,$fn=99);
-        linear_extrude(height=30)
-        offset(r=3,$fn=88)
-        square([7.5,7.5],center=true);
-    }
-}
-}
-
-// attachment section
-translate([0,0,-3])
-intersection(){
-    cylinder(r=rout+1.5,h=hi0,$fn=5);
-
-difference(){
-    union(){
-        difference(){    
-            cylinder(r=rout+1.5,h=hi0,$fn=5);
-            translate([0,0,-1])
-            cylinder(r=rout-tol,h=hi0+2,$fn=5);
-        }    
-        
-        for(i=[0:4]){
-            // outside round cut
-            rotate([0,0,72*i])
-            translate([rout-1.5,0,0])
-            scale([1,1.5,1]){
-                cylinder(r=4.8+tol,h=hi0,$fn=99);
-                translate([0,0,0])
-                cylinder(r1=4.8,r2=4.8-2,h=2,$fn=99);
-            }
-        }
-    }    
-    for(i=[0:4]){
-        // outside round cut
-        rotate([0,0,72*i])
-        translate([rout-1.5,0,-1])
-        scale([1,1.5,1])
-        cylinder(r=4.8-1.2,h=hi0+2,$fn=99);
-    }
-    for(i=[0:4]){
-        // cut for windows
-        rotate([0,0,72*i+72/2])
-        translate([0,0,-0.5])
-        rotate([0,90,0])
-        translate([0,0,10])
-        //cylinder(r=18,h=30,$fn=99);
-        linear_extrude(height=30)
-        offset(r=3,$fn=88)
-        square([7.5,7.5],center=true);
-    }
-    for(i=[0:4]){
-        // cut for bevel
-        rotate([0,0,72*i])
-        translate([-27,0,0])
-        rotate([0,45,0])
-        cube([4,60,4],center=true);
-    }
-    for(i=[0:4]){
-        // outside round cut
-        rotate([0,0,72*i])
-        translate([rout-1.5,0,-0.01])
-        scale([1,1.5,1]){
-//            cylinder(r=4.8+tol,h=hi0,$fn=99);
-            translate([0,0,0])
-            cylinder(r1=4.8,r2=4.8-2,h=2,$fn=99);
-        }
-    }
-}
-}
-
-
-}
-
-//----------------------------------------------------------------
-// tray to hold 5 pyramids in s7small shape
-module tray9(tol=0.3,z0=-12,lip=1,tdeep=1.2){
-    
-hi0=-z0;
-rout=30;
-
-if(lip>0){
-    lip9();
-}
-    
-difference(){    
-    translate([0,0,z0])
-    union(){
-        cylinder(r=rout,h=hi0,$fn=5);
-        translate([0,0,-2])
-        cylinder(r1=rout-2,r2=rout,h=2,$fn=5);
-    }
-    
-    for(i=[0:4]){
-        // cut for crystals
-        rotate([0,0,72*i])
-        rotate([0,90,0])
-        translate([0,0,-17.25])
-        s7cut(tol=tol);
-
-        // outside round cut
-        rotate([0,0,72*i])
-        translate([rout-1.5,0,-34])
-        scale([1,1.5,1])
-        cylinder(r=4.8,h=40,$fn=99);
-    }
-    
-
-    for(i=[0:4]){
-        // cut for windows
-        rotate([0,0,72*i+72/2])
-        translate([0,0,-0.5])
-        rotate([0,90,0])
-        translate([0,0,10])
-        //cylinder(r=18,h=30,$fn=99);
-        linear_extrude(height=30)
-        offset(r=3,$fn=88)
-        square([7.5,7.5],center=true);
-
-        // material reduction
-        rotate([0,0,72*i+72/2])
-        translate([rout-10,0,-6.8])
-        cube([4,14,10],center=true);
-    }
-
-    // cut center bore
-    translate([0,0,-0.1])
-    cylinder(r=rout-12,h=60,center=true,$fn=5);
-    translate([0,0,z0-2.01])
-    cylinder(r1=rout-10,r2=rout-12,h=2,$fn=5);
-
-Roff=-19.4;
-
-if(tdeep>0){
-    color("red")
-    rotate([0,0,72*0])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("EARTH", font = "Open Sans:style=Bold", size=3,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*1])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("AIR", font = "Open Sans:style=Bold", size=3,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*2])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("FIRE", font = "Open Sans:style=Bold", size=3,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*3])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("WATER", font = "Open Sans:style=Bold", size=3,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*4])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
-    text("SPIRIT", font = "Open Sans:style=Bold", size=3,halign="center",valign="center",spacing=1.2);
-}
-
-
-}
-
-
-}
-//--------------------------------------------------------------
-module lipB(wide=1.7){
+module lipB(wide=1.6){
 // 1.5 wide for outer cut
 
 //rout=31.6; // for scale 2.5 order 3   
-rout=56.1;    // for scale 5 order 3
+//rout=56.1;    // for scale 5 order 3
+rout=53;          // for size 2.5 order 4
 hi0=5;
 
 translate([0,0,-2.5])
@@ -367,7 +156,8 @@ module lipC(wide=1.4){
 // 1.5 wide for outer cut
 
 // rout=31.5-wide;      // for scale 2.5 order 3
-rout=56-wide;         // for scale 5 order 3
+//rout=56-wide;         // for scale 5 order 3
+rout=53-wide;          // for size 2.5 order 4
 hi0=5;
 
 
@@ -381,7 +171,7 @@ difference(){
         difference(){    
             cylinder(r=rout,h=hi0,$fn=5);
             translate([0,0,-1])
-            cylinder(r=rout-wide-1,h=hi0+2,$fn=5);
+            cylinder(r=rout-wide-1.1,h=hi0+2,$fn=5);
         }    
         
         for(i=[0:4]){
@@ -408,18 +198,20 @@ difference(){
 
 //----------------------------------------------------------------
 // tray to hold 5 pyramids in s7small shape
-module trayB(tol=0.3,z0=-29,lip=1,tdeep=1.5){
+//module trayB(tol=0.4,z0=-29,lip=1,tdeep=1.5){
+module trayB(tol=0.2,z0=-26,lip=1,tdeep=1.5){
     
 hi0=-z0+2.49;
 //  rout=31.5;      // for size 2.5 order 3
-rout=56;          // for size 5 order 3
+//rout=56;          // for size 5 order 3
+rout=53;          // for size 2.5 order 4
     
 difference(){    
-    translate([0,0,z0])
+    translate([0,0,z0+2])
     union(){
-        cylinder(r=rout,h=hi0,$fn=5);
-        translate([0,0,-2])
-        cylinder(r1=rout-2,r2=rout,h=2,$fn=5);
+        cylinder(r=rout,h=hi0-2,$fn=5);
+        translate([0,0,-4])
+        cylinder(r1=rout-4,r2=rout,h=4,$fn=5);
     }
     
 
@@ -434,8 +226,10 @@ difference(){
         // cut for crystals
         rotate([0,0,72*i])
         rotate([0,90,0])
-    //    translate([0,0,-17.25])       // for size 2.5 order 3
-        translate([0,0,-37])         // for size 5 order 3
+    //    translate([0,0,-17.25])       // for size 2.5 order 3 = A size
+//        translate([0,0,-37])         // for size 5 order 3
+//        translate([0,0,-34.8])         // for size 2.5 order 4 = B size, tol=0.4
+        translate([0,0,-34.4])         // for size 2.5 order 4 = B size, tol=0.2
         s7cut(tol=tol);
 
         // outside round cut
@@ -452,9 +246,9 @@ difference(){
         translate([0,0,0])
         rotate([0,90,0])
         translate([0,0,40])
-        linear_extrude(height=8,scale=1.5)
+        linear_extrude(height=8,scale=1.2)
         offset(r=3,$fn=88)
-        square([23,23],center=true);
+        square([26,26],center=true);
 
     }
 
@@ -462,10 +256,10 @@ difference(){
     translate([0,0,-0.1])
     cylinder(r=rout-20,h=60,center=true,$fn=5);
     translate([0,0,z0-2.01])
-    cylinder(r1=rout-18,r2=rout-20,h=2,$fn=5);
+    cylinder(r1=rout-16,r2=rout-20,h=4,$fn=5);
 
-Roff=-37.0;
-Rsize=6;
+Roff=-35.0;
+Rsize=5;
 
 if(tdeep>0){
     color("red")
@@ -473,7 +267,7 @@ if(tdeep>0){
     translate([Roff,0,z0-2+tdeep])
     rotate([180,0,0])
     rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
+    linear_extrude(height=tdeep,scale=1)
     text("EARTH", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
@@ -481,7 +275,7 @@ if(tdeep>0){
     translate([Roff,0,z0-2+tdeep])
     rotate([180,0,0])
     rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
+    linear_extrude(height=tdeep,scale=1)
     text("AIR", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
@@ -489,7 +283,7 @@ if(tdeep>0){
     translate([Roff,0,z0-2+tdeep])
     rotate([180,0,0])
     rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
+    linear_extrude(height=tdeep,scale=1)
     text("FIRE", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
@@ -497,7 +291,7 @@ if(tdeep>0){
     translate([Roff,0,z0-2+tdeep])
     rotate([180,0,0])
     rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
+    linear_extrude(height=tdeep,scale=1)
     text("WATER", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 
     color("red")
@@ -505,13 +299,62 @@ if(tdeep>0){
     translate([Roff,0,z0-2+tdeep])
     rotate([180,0,0])
     rotate([0,0,90])
-    linear_extrude(height=2,scale=1)
+    linear_extrude(height=tdeep,scale=1)
     text("SPIRIT", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 }
 
 
 }
 
+
+}
+
+//----------------------------------------------------------------------
+module words(tdeep=1.5){
+  
+
+Roff=-35.0;
+Rsize=5;
+
+    color("red")
+    rotate([0,0,72*0])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("EARTH", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*1])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("AIR", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*2])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("FIRE", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*3])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("WATER", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*4])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("SPIRIT", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
 
 }
 
@@ -522,10 +365,10 @@ if(0){
     difference(){
         union(){
             color("cyan")
-            trayB(lip=0);
+            trayB(lip=0,tdeep=0);
             translate([0,0,0.1])
             rotate([180,0,0])
-            trayB(lip=1);
+            trayB(lip=1,tdeep=0);
         }
         translate([100,0,0])
         cube([200,200,200],center=true);
@@ -535,62 +378,64 @@ if(0){
     }
 }
 
-//color("cyan")
-//insert1();
 
-//tray7();
+//trayB(lip=1,tdeep=1.2);
 
-//tray8();
-//rotate([180,0,0])
-//tray8();
-//labels(z0=z0);
-
-//trayPins8();
-
-//trayPin();
 
 if(0){
-    //trayB(lip=1);
-    //translate([0,0,0.1])
-    //rotate([180,0,0])
-    trayB(lip=0);
+    trayB(lip=1,tdeep=0);
+    translate([0,0,0.1])
+    rotate([180,0,0])
+    trayB(lip=0,tdeep=0);
 }
 
+// Slice into layers so that text can be filled in
+// 28 mm -z total, lip=1 for lower
+if(1){
+  intersection(){
+  //difference(){
+    trayB(lip=1,tdeep=1.2);
 
+    union(){
+      translate([0,0,-24])
+      cube([200,200,2],center=true);
+      translate([0,0,-20])
+      cube([200,200,2],center=true);
+      translate([0,0,-1.49])
+      cube([200,200,2],center=true);
+      translate([0,0,2])
+      cube([200,200,2],center=true);
+    }
+  }
+}
+//translate([0,0,-1])  
+//words(tdeep=1.2);
 
-//trayB(lip=0);
+//trayB(lip=0,tdeep=1.5);
 //color("cyan")
 //lipB();
 
 //lip9();
 
 if(0){
-    for(i=[0:4]){
+    for(i=[0:0]){
     rotate([0,0,72*i])
     rotate([0,90,0])
 //    translate([0,0,-17.25])       // for size 2.5 order 3
-    translate([0,0,-37])         // for size 5 order 3
+//    translate([0,0,-37])         // for size 5 order 3
+    translate([0,0,-34.8])         // for size 2.5 order 4 = B size
     color([1,0.3+0.1*i,0.3+0.1*i],alpha=0.6)
-    //s7cut(tol=0);
-    s7();
+    s7cut(tol=0);
+    //s7();
  }
 }
 
 //s7();
 
-//half()
-
-if(1){
-  difference() {
-    mirror([0,0,1])
-    half();
-    translate([-120,-120,-80-bottom])
-    cube([240,240,80]);
-  }
-}
 
 //color("cyan")
 //translate([0,0,0])
+//scale(0.99)
 //s7cut(tol=0);
 
 //=====================================================================
