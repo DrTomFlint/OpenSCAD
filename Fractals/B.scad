@@ -18,9 +18,9 @@ epsl = 0.5;         // translate for cube cuts
 epsy = 0.12;        // translate for cube cuts
 
 // try to make multiple objects for multi color print
-layer = 0.3;
-thick = 17.5;
-z=3;
+//~ layer = 0.3;
+//~ thick = 17.5;
+//~ z=3;
 
 //tdeep = 1.5;    // text depth
 tdeep = 0;    // text depth
@@ -116,15 +116,15 @@ module ss(ord){
  } // end module ss
 
 //--------------------------------------------------------------
-module lipB(wide=1.6){
+module lipB(wide=1.3){
 // 1.5 wide for outer cut
 
 //rout=31.6; // for scale 2.5 order 3   
 //rout=56.1;    // for scale 5 order 3
-rout=53;          // for size 2.5 order 4
-hi0=5;
+rout=52;          // for size 2.5 order 4
+hi0=10;
 
-translate([0,0,-2.5])
+translate([0,0,-hi0/2])
 // overlap section
 intersection(){
     cylinder(r=rout,h=hi0,$fn=5);
@@ -152,16 +152,17 @@ difference(){
 }
 
 //--------------------------------------------------------------
-module lipC(wide=1.4){
+module lipC(wide=1.2){
 // 1.5 wide for outer cut
 
 // rout=31.5-wide;      // for scale 2.5 order 3
 //rout=56-wide;         // for scale 5 order 3
-rout=53-wide;          // for size 2.5 order 4
-hi0=5;
+rout=52-wide;          // for size 2.5 order 4
+
+hi0=10;
 
 
-translate([0,0,-2.5])
+translate([0,0,-hi0/2])
 // overlap section
 intersection(){
     cylinder(r=rout,h=hi0,$fn=5);
@@ -201,10 +202,11 @@ difference(){
 //module trayB(tol=0.4,z0=-29,lip=1,tdeep=1.5){
 module trayB(tol=0.2,z0=-26,lip=1,tdeep=1.5){
     
-hi0=-z0+2.49;
+//hi0=-z0+2.49;
+hi0=-z0+4.49+0.1;
 //  rout=31.5;      // for size 2.5 order 3
 //rout=56;          // for size 5 order 3
-rout=53;          // for size 2.5 order 4
+rout=52;          // for size 2.5 order 4
     
 difference(){    
     translate([0,0,z0+2])
@@ -237,6 +239,11 @@ difference(){
         translate([rout-1.5,0,-34])
         scale([1,1.5,1])
         cylinder(r=4.8,h=40,$fn=99);
+        // outside round bevel
+        rotate([0,0,72*i])
+        translate([rout-1.5,0,-28.01])
+        scale([1,1.5,1])
+        cylinder(r1=4.8+4,r2=4.8,h=4,$fn=99);
     }
     
 
@@ -245,10 +252,10 @@ difference(){
         rotate([0,0,72*i+72/2])
         translate([0,0,0])
         rotate([0,90,0])
-        translate([0,0,40])
-        linear_extrude(height=8,scale=1.2)
+        translate([0,0,39])
+        linear_extrude(height=8,scale=1.3)
         offset(r=3,$fn=88)
-        square([26,26],center=true);
+        square([25,25],center=true);
 
     }
 
@@ -258,51 +265,7 @@ difference(){
     translate([0,0,z0-2.01])
     cylinder(r1=rout-16,r2=rout-20,h=4,$fn=5);
 
-Roff=-35.0;
-Rsize=5;
-
-if(tdeep>0){
-    color("red")
-    rotate([0,0,72*0])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=tdeep,scale=1)
-    text("EARTH", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*1])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=tdeep,scale=1)
-    text("AIR", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*2])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=tdeep,scale=1)
-    text("FIRE", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*3])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=tdeep,scale=1)
-    text("WATER", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
-
-    color("red")
-    rotate([0,0,72*4])
-    translate([Roff,0,z0-2+tdeep])
-    rotate([180,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=tdeep,scale=1)
-    text("SPIRIT", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
-}
-
+    words(tdeep=tdeep);
 
 }
 
@@ -310,11 +273,60 @@ if(tdeep>0){
 }
 
 //----------------------------------------------------------------------
-module words(tdeep=1.5){
+module words2(tdeep=1.2){
   
 
-Roff=-35.0;
-Rsize=5;
+Roff=-34.0;
+Rsize=6;
+
+    color("red")
+    rotate([0,0,72*0])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("Flint's", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*1])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("Finest", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*2])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("Fairy", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    color("red")
+    rotate([0,0,72*3])
+    translate([Roff,0,z0-2+tdeep])
+    rotate([180,0,0])
+    rotate([0,0,90])
+    linear_extrude(height=tdeep,scale=1)
+    text("Crystals", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+    //~ color("red")
+    //~ rotate([0,0,72*4])
+    //~ translate([Roff,0,z0-2+tdeep])
+    //~ rotate([180,0,0])
+    //~ rotate([0,0,90])
+    //~ linear_extrude(height=tdeep,scale=1)
+    //~ text("Five", font = "Open Sans:style=Bold", size=Rsize,halign="center",valign="center",spacing=1.2);
+
+}
+
+//----------------------------------------------------------------------
+module words(tdeep=1.2){
+  
+
+Roff=-34.0;
+Rsize=6;
 
     color("red")
     rotate([0,0,72*0])
@@ -366,7 +378,7 @@ if(0){
         union(){
             color("cyan")
             trayB(lip=0,tdeep=0);
-            translate([0,0,0.1])
+            translate([0,0,0])
             rotate([180,0,0])
             trayB(lip=1,tdeep=0);
         }
@@ -379,11 +391,11 @@ if(0){
 }
 
 
-//trayB(lip=1,tdeep=1.2);
+//trayB(lip=1,tdeep=0);
 
 
 if(0){
-    trayB(lip=1,tdeep=0);
+    trayB(lip=1,tdeep=1.2);
     translate([0,0,0.1])
     rotate([180,0,0])
     trayB(lip=0,tdeep=0);
@@ -397,14 +409,13 @@ if(1){
     trayB(lip=1,tdeep=1.2);
 
     union(){
-      translate([0,0,-24])
-      cube([200,200,2],center=true);
-      translate([0,0,-20])
-      cube([200,200,2],center=true);
-      translate([0,0,-1.49])
-      cube([200,200,2],center=true);
-      translate([0,0,2])
-      cube([200,200,2],center=true);
+      translate([0,0,-24-2.5+5.8+0.4])
+      cube([200,200,3],center=true);
+
+      translate([0,0,-3.49])
+      cube([200,200,3],center=true);
+      translate([0,0,-3.49+6.6])
+      cube([200,200,3],center=true);
     }
   }
 }

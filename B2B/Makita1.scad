@@ -89,11 +89,11 @@ module makita1(tab=1,side=0,label="1",flip=0)
       translate([-1.5,0,z0/2])
       cube([87,78,z0],center=true);
       // foot
-      translate([-87/2-1.5-6,0,z0/2])
-      cube([12,78,z0],center=true);
-      translate([-87/2-1.5-12+1.5,0,z0/2-5])
+      translate([-87/2-1.5-6-1.5,0,z0/2])
+      cube([12+3,78,z0],center=true);
+      translate([-87/2-1.5-12+1.5-3,0,z0/2-5])
       cube([3,60,z0+10],center=true);
-      translate([-87/2-1.5-12+3,30,z0/2-11])
+      translate([-87/2-1.5-12+3-3,30,z0/2-11])
       rotate([90,0,0])
       rotate([0,0,-90])
       rounder(r=3,h=60,f=44);
@@ -110,7 +110,7 @@ module makita1(tab=1,side=0,label="1",flip=0)
         translate([12,0,25-4.5])
         cube([5,78,3],center=true);
       }
-    }
+    } // end of union
 
     // numbers
     if(label!="0"){
@@ -129,6 +129,25 @@ module makita1(tab=1,side=0,label="1",flip=0)
           text(label, font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.0);
         }
     }
+
+    // AeroAmp Logo
+    translate([9,0,15.3])
+    rotate([0,0,90])
+    rotate([180,0,0])
+    linear_extrude(height=0.6,scale=1)
+    text("AeroAmp", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+ 
+    // Version number
+    translate([33,0,31-0.3])
+    rotate([0,0,-90])
+    //rotate([180,0,0])
+    linear_extrude(height=0.6,scale=1)
+    text("Ver 2.3", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.0);
+    translate([24,0,31-0.3])
+    rotate([0,0,-90])
+    //rotate([180,0,0])
+    linear_extrude(height=0.6,scale=1)
+    text("Oct 2023", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.0);
     
     // foot holes
     translate([-55,22,-6])
@@ -152,15 +171,17 @@ module makita1(tab=1,side=0,label="1",flip=0)
     
     // upper cut  
     translate([13,0,9/2+6])
-    cube([76,63.7,9],center=true);
+    cube([80,63.7,9],center=true);
     
     // lower cut
-    translate([3,0,6/2+0])
+    translate([3+15,0,6/2+0])
+    cube([90,54.2,6.1],center=true);
+    translate([3,0,6/2-3])
     cube([90,54.2,6.1],center=true);
     
     // back air vent cut
     translate([-50,0,6/2-10])
-    cube([20,27,6.1+20],center=true);    
+    cube([26,27,6.1+20],center=true);    
 
     // wiring pass-through
     hull(){
@@ -171,13 +192,13 @@ module makita1(tab=1,side=0,label="1",flip=0)
     }
     
     // front cuts
-    translate([37,0,9.25])
+    translate([37,0,9.25-0.6])
     rotate([90,0,0])
     cylinder(r=7,h=90,center=true,$fn=F1);
-    translate([44,0,8.75])
+    translate([44,0,8.75-0.6])
     cube([15,90,15],center=true);    
-    translate([36.2,0,0])
-    rotate([0,24,0])
+    translate([36.2,0,-0.6])
+    rotate([0,25,0])
     cube([20,90,20],center=true);  
       
     // trim rails
@@ -271,42 +292,48 @@ module makita1(tab=1,side=0,label="1",flip=0)
         cylinder(r=2,h=2.2,$fn=F2);
       }
       // blades back block
-      translate([-21,0,15/2+6])
-      cube([12,43.5,15],center=true);    
+      translate([-21+3.5,0,15/2+6])
+      cube([12+7,43.5,15],center=true);    
     }
     // cut for blades
     blades(tol=0.2);
   }
     
-  // tab = 0 always
+  // tabs reinforce blades
   difference(){
     union(){
       hull(){
-        translate([8,39/2-2,10+20])
-        cube([18,3,1],center=true);
-        translate([8-4,39/2-2,10+11.5])
-        cube([26,3,1],center=true);
+        translate([8-11,39/2-2,10+20])
+        cube([18+22,3,1],center=true);
+        translate([8-4-11,39/2-2,10+11.5])
+        cube([26+22,3,1],center=true);
       }
       hull(){
-        translate([8,-39/2+2,10+20])
-        cube([18,3,1],center=true);
-        translate([6-4,-39/2+2,10+11.5])
-        cube([26,3,1],center=true);
+        translate([8-11,-39/2+2,10+20])
+        cube([18+22,3,1],center=true);
+        translate([8-4-11,-39/2+2,10+11.5])
+        cube([26+22,3,1],center=true);
       }
       hull(){
-        translate([-15.5,-39/2+7-2,10+20])
+        translate([-5,39/2-7-2,10+20])
+        cube([6,3,1],center=true);
+        translate([-5-4,39/2-7-2,10+11.5])
         cube([14,3,1],center=true);
-        translate([-15.5-4,-39/2+7-2,10+11.5])
-        cube([22,3,1],center=true);
       }
     }
-
-  translate([-15.5,-39/2+7,10+16])
-  rotate([90,0,0])
-  cylinder(r=1.7,h=12,center=true, $fn=22);
-  translate([5,0,10+16])
+  // bolt holes in tabs
+  translate([3,0,10+16])
   rotate([90,0,0])
   cylinder(r=1.7,h=60,center=true, $fn=22);   
+  translate([3-20,0,10+16])
+  rotate([90,0,0])
+  cylinder(r=1.7,h=60,center=true, $fn=22);   
+  translate([-6,39/2-7,10+16])
+  rotate([90,0,0])
+  cylinder(r=1.7,h=12,center=true, $fn=22);
+  translate([-6,39/2,10+16-1])
+  rotate([90,0,0])
+  cylinder(r=4,h=12,center=true, $fn=6);
   
   // RECUT front air vent cut
     translate([22,0,17])
@@ -320,15 +347,15 @@ module makita1(tab=1,side=0,label="1",flip=0)
 
   // back foot
   difference(){
-    translate([-87/2-1.5-12+1.5,0,z0/2+9-1])
+    translate([-87/2-1.5-12+1.5-3,0,z0/2+9-1])
     cube([3,78,z0],center=true);
-    translate([-87/2-1.5-12+1.5,0,z0+10])
+    translate([-87/2-1.5-12+1.5-3,0,z0+10])
     scale([1,2.25,1])
     rotate([0,90,0])
     cylinder(r=13,h=12,center=true,$fn=F1);
   }
   
-  translate([-87/2-1.5-12+3,78/2,z0/2+1])
+  translate([-87/2-1.5-12+3-3,78/2,z0/2+1])
   rotate([90,0,0])
   rounder(r=6,h=78,f=44);
   
@@ -345,7 +372,7 @@ difference(){
     translate([-4.5,-39/2,24/2+6-0.1])
     cube([35+tol,1.2+tol,24],center=true);    
     // sense blade
-    translate([-2-9,-39/2+7,24/2+6-0.1])
+    translate([-2-9,39/2-7,24/2+6-0.1])
     cube([22+tol,1+tol,24],center=true);    
   }
 
@@ -479,7 +506,7 @@ module support()  {
 }
   
 //=====================================================================
-if(0){
+if(1){
   difference(){
     makita1();
     translate([0,-50,0])
@@ -495,7 +522,7 @@ if(0){
 //dz=27.0+0.1;
 dz=31.1;
 
-show1=1;
+show1=0;
 show2=0;
 show6=0;
 wires=0;
