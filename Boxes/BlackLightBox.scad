@@ -36,8 +36,8 @@ y3 = 87;
 z3 = 24;
 r3 = 2;       // rounding on outside of frame
 
-x3b = 137-1;
-y3b = 87-1;
+x3b = 137-1-0.5;
+y3b = 87-1-0.5;
 z3b = 24;
 
 in3 = 1.5;      // inset of tape from edge
@@ -115,66 +115,86 @@ if(0){
 
 }
   
+//-----------------------------------------------------------------------------------
+module ring(){
+
+  intersection(){
+    frame();
+    translate([0,0,5.5])
+    cube([200,200,11],center=true);
+  }
+}
+
+//-----------------------------------------------------------------------------------
+module base(){
+
+  difference(){  
+    frame();
+    translate([0,0,-6.0+2])
+    cube([200,200,40],center=true);
+  }
+}
+
 //----------------------------------------------------------------------------------
-module frame(){
+module framec(){
 
 difference(){
   
   linear_extrude(height=z3)
   offset(r=r3,$fn=55)
-  square([x3-2*r3,y3-2*r3],center=true);
+  square([x3b-2*r3,y3b-2*r3],center=true);
 
   // main central bore for crystal tops
   translate([0,0,-12])
   linear_extrude(height=z3+2)
   offset(r=r3,$fn=55)
-  square([x3-2*r3-in3b,y3-2*r3-in3b],center=true);
+  square([x3b-2*r3-in3b,y3b-2*r3-in3b],center=true);
 
   // bevel central bore
   translate([0,0,-1])
   linear_extrude(height=2,scale=[0.985,0.97])
   offset(r=r3,$fn=55)
-  square([x3-2*r3-in3b+2,y3-2*r3-in3b+2.5],center=true);
+  square([x3b-2*r3-in3b+2,y3b-2*r3-in3b+2.5],center=true);
 
   // cuts for tape
   for(i=[0:7]){
-    translate([i*x0-7/2*x0,-y3/2+in3,z0/2+lip3]){
-    tape(tol=0.2,extra=1);
+    translate([i*x0-7/2*x0,-y3b/2+in3,z0/2+lip3]){
+    tapeb(tol=0.2,extra=1);
     back();
   }
   }
   for(i=[0:7]){
-    translate([i*x0-7/2*x0,y3/2-in3,z0/2+lip3])
+    translate([i*x0-7/2*x0,y3b/2-in3,z0/2+lip3])
     rotate([0,0,180]){
-    tape(tol=0.2,extra=1);
+  //  tapeb(tol=0.2,extra=1);
     back();
   }
   }
   for(i=[0:4]){
-    translate([x3/2-in3,i*x0-4/2*x0,z0/2+lip3])
+    translate([x3b/2-in3,i*x0-4/2*x0,z0/2+lip3])
     rotate([0,0,90]){
-    tape(tol=0.2,extra=1);
+  //  tapeb(tol=0.2,extra=1);
     back();
   }
   }
   for(i=[0:4]){
-    translate([-x3/2+in3,i*x0-4/2*x0,z0/2+lip3])
+    translate([-x3b/2+in3,i*x0-4/2*x0,z0/2+lip3])
     rotate([0,0,-90]){
-    tape(tol=0.2,extra=1);
+  //  tapeb(tol=0.2,extra=1);
     back();
   }
   }
-  // rounders on tape corners
-  translate([-x3/2+in3+0.7,y3/2-in3-0.7,z0/2+lip3-4-0.25])
+  //~ // rounders on tape corners
+  translate([-x3b/2+in3+0.7,y3b/2-in3-0.7,z0/2+lip3-4-0.25])
   rotate([0,0,-90])
   rounder(r=2,h=8.5,f=33);
-  translate([-(-x3/2+in3+0.7),y3/2-in3-0.7,z0/2+lip3-4-0.25])
+  translate([-(-x3b/2+in3+0.7),y3b/2-in3-0.7,z0/2+lip3-4-0.25])
   rotate([0,0,180])
   rounder(r=2,h=8.5,f=33);
-  translate([-(-x3/2+in3+0.7),-(y3/2-in3-0.7),z0/2+lip3-4-0.25])
+  translate([-(-x3b/2+in3+0.7),-(y3b/2-in3-0.7),z0/2+lip3-4-0.25])
   rotate([0,0,90])
   rounder(r=2,h=8.5,f=33);
-  translate([-x3/2+in3+0.7,-(y3/2-in3-0.7),z0/2+lip3-4-0.25])
+  translate([-x3b/2+in3+0.7,-(y3b/2-in3-0.7),z0/2+lip3-4-0.25])
   rotate([0,0,0])
   rounder(r=2,h=8.5,f=33);
     
@@ -199,20 +219,21 @@ difference(){
   rotate([0,0,-40])
   cube([3,70,12],center=true);
   
-  translate([x3/2-0.8,y3/2-4,12])
-  cube([3,4,12],center=true);
+  // hole between ring and base
+  translate([x3b/2-0.75,0,12])
+  cube([3,26,12],center=true);
   
   // switch
-  translate([-x3/2+10,0,14+2])
+  translate([-x3b/2+10,0,14+2])
   rotate([0,0,90])
   rotate([180,0,0])
   switch4(pos=1,holes=0,tol=0.25);
-  translate([-x3/2+10,0,16])
+  translate([-x3b/2+10,0,16])
   rotate([0,0,90])
   cube([11.2+0.2,5.3+0.2,20],center=true);
   
   // switch wires
-  translate([-x3/2+10,20,20])
+  translate([-x3b/2+10,20,20])
   cube([3,30,8],center=true);
   translate([-10,35,20])
   cube([100,3,8],center=true);
@@ -221,26 +242,6 @@ difference(){
   
 }
 
-}
-
-//-----------------------------------------------------------------------------------
-module ring(){
-
-  intersection(){
-    frame();
-    translate([0,0,5.5])
-    cube([200,200,11],center=true);
-  }
-}
-
-//-----------------------------------------------------------------------------------
-module base(){
-
-  difference(){  
-    frame();
-    translate([0,0,-6.0+2])
-    cube([200,200,40],center=true);
-  }
 }
 
 //----------------------------------------------------------------------------------
@@ -371,6 +372,26 @@ module baseb(){
   }
 }
 
+//-----------------------------------------------------------------------------------
+module ringc(){
+
+  intersection(){
+    framec();
+    translate([0,0,5.5])
+    cube([200,200,11],center=true);
+  }
+}
+
+//-----------------------------------------------------------------------------------
+module basec(){
+
+  difference(){  
+    framec();
+    translate([0,0,-6.0+2])
+    cube([200,200,40],center=true);
+  }
+}
+
 //===================================================================================  
 
 //ring();
@@ -389,7 +410,10 @@ if(0){
 
 
 //ringb();
-baseb();
+//baseb();
+
+ringc();
+//basec();
 
 if(0){
   // switch

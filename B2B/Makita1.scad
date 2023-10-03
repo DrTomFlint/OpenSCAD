@@ -107,7 +107,7 @@ module makita1(tab=1,side=0,label="1",flip=0)
       hull(){
         translate([87/2-13.5,0,z0+5])
         cube([24,78,12],center=true);
-        translate([12,0,z0+5-4.5])
+        translate([12,0,z0-2])
         cube([5,78,3],center=true);
       }
     } // end of union
@@ -150,10 +150,10 @@ module makita1(tab=1,side=0,label="1",flip=0)
     text("Oct 2023", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
     
     // foot holes
-    translate([-55,22,-6])
+    translate([-58,22,-6])
     rotate([0,90,0])
     cylinder(r=1.7,h=10,center=true,$fn=F1);
-    translate([-55,-22,-6])
+    translate([-58,-22,-6])
     rotate([0,90,0])
     cylinder(r=1.7,h=10,center=true,$fn=F1);
     
@@ -245,7 +245,7 @@ module makita1(tab=1,side=0,label="1",flip=0)
       rotate([0,0,90])
       rounder(r=5,h=120,f=F1);
     }
-    
+      
     // front rounders
     if(side==1){
       translate([42,78/2,4])
@@ -349,18 +349,18 @@ module makita1(tab=1,side=0,label="1",flip=0)
 
   // back foot
   difference(){
-    translate([-87/2-1.5-12+1.5-3,0,z0/2+9-1])
-    cube([3,78,z0],center=true);
-    translate([-87/2-1.5-12+1.5-3,0,z0+10])
+    union(){
+      translate([-87/2-1.5-12+1.5-3,0,z0/2+9-1])
+      cube([3,78,z0],center=true);
+      translate([-87/2-1.5-12+3-3,78/2,z0/2+3])
+      rotate([90,0,0])
+      rounder(r=6,h=78,f=44);
+    }
+    translate([-87/2-1.5-12+1.5-3,0,z0+12])
     scale([1,2.25,1])
     rotate([0,90,0])
     cylinder(r=13,h=12,center=true,$fn=F1);
   }
-  
-  translate([-87/2-1.5-12+3-3,78/2,z0/2+1])
-  rotate([90,0,0])
-  rounder(r=6,h=78,f=44);
-  
   
 }
 //----------------------------------------------------------------------
@@ -553,9 +553,11 @@ if(showcut){
 if(show1==1){
   translate([0,0,-dz])
   makita1(side=2,label="1",flip=0);
+  if(0){
     translate([0,0,-dz])
     rotate([0,0,0])
     blades(wires=wires);
+  }
 }
 
 if(show2==1){
