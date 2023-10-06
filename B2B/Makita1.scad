@@ -607,7 +607,7 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
       rotate([0,0,90])
       rounder(r=27,h=2.6,f=99);
 
-      translate([40,-39.2-2.6,-23+2])
+      translate([40,-39.2-2.6,-23+3.8])
       scale([1,1,1.5])
       rotate([180,0,0])
       rotate([0,0,90])
@@ -645,7 +645,7 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     }
 
     // tapered air duct from fan
-    hull(){
+    hull($fn=99){
       translate([20-1/2*cos(45)+4,-(41+tol+0.5+y1-1/2*cos(45))+4,0])
       rotate([0,0,45])
       rotate([90,0,0])
@@ -658,7 +658,7 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     }
     
     // tapered air duct from fan
-    hull(){
+    hull($fn=99){
       translate([20-1/2*cos(45)+4,-(41+tol+0.5+y1-1/2*cos(45))+4,0])
       rotate([0,0,45])
       rotate([90,0,0])
@@ -671,15 +671,15 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     }
     
     // make sure there is clearance to mount fan
-    translate([40.8,-(32+y1/2+tol)-y1,0])
+    translate([40.8,-(32+y1/2+tol)-y1+0.4,0])
     cube([2.6,y1*2,42],center=true);
     
     translate([20+6*cos(45)+5.5,-(41+tol+0.5+y1+6*cos(45))+5.5,0])
     rotate([0,0,45])
-    cube([41,12.5,41],center=true);
+    cube([41,12.5,42],center=true);
     translate([20+6*cos(45)+5.5+10,-(41+tol+0.5+y1+6*cos(45))+5.5-10,0])
     rotate([0,0,90])
-    cube([41,8,41],center=true);
+    cube([41,8,42],center=true);
     
 
     translate([1.2+42,-(39+y1/2+tol+7),0]){
@@ -732,30 +732,31 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
 }      
 
 
-  // Fan
-  if(0){
-    color("cyan")
-    translate([20+6*cos(45)+4,-(41+tol+0.5+y1+6*cos(45))+4,0])
-    rotate([0,0,45])
-    difference(){
-      cube([40,12.5,40],center=true);
-      rotate([90,0,0])
-      cylinder(r=38/2,h=20,center=true);
+}
 
-      translate([32/2,0,32/2])
-      rotate([90,0,0])
-      cylinder(r=2.1,h=80,center=true,$fn=22);
-      translate([-32/2,0,32/2])
-      rotate([90,0,0])
-      cylinder(r=2.1,h=80,center=true,$fn=22);
-      translate([-32/2,0,-32/2])
-      rotate([90,0,0])
-      cylinder(r=2.1,h=80,center=true,$fn=22);
-      translate([32/2,0,-32/2])
-      rotate([90,0,0])
-      cylinder(r=2.1,h=80,center=true,$fn=22);
+//------------------------------------------------------------------------------------------------
+module fan(tol=0.2,dz=0,y1=20){
 
-    }
+  translate([20+6*cos(45)+4,-(41+tol+0.5+y1+6*cos(45))+4,0])
+  rotate([0,0,45])
+  difference(){
+    cube([40,12.5,40],center=true);
+    rotate([90,0,0])
+    cylinder(r=38/2,h=20,center=true);
+
+    translate([32/2,0,32/2])
+    rotate([90,0,0])
+    cylinder(r=2.1,h=80,center=true,$fn=22);
+    translate([-32/2,0,32/2])
+    rotate([90,0,0])
+    cylinder(r=2.1,h=80,center=true,$fn=22);
+    translate([-32/2,0,-32/2])
+    rotate([90,0,0])
+    cylinder(r=2.1,h=80,center=true,$fn=22);
+    translate([32/2,0,-32/2])
+    rotate([90,0,0])
+    cylinder(r=2.1,h=80,center=true,$fn=22);
+
   }
 }
 
@@ -847,45 +848,84 @@ module fanJoint(tol=0.2){
     }
   
 }
-  
-//--------------------------------------------------------------------
-module fanSupport(tol=0.2,dz=0,y1=40-12-1)  {
-  
-  union(){
-    // tapered air duct from fan
-    hull(){
-      translate([22,-(39+y1/2+tol)-y1/2+0.4,0])
-      rotate([90,0,0])
-      cylinder(r=38/2,h=1,center=true);
-    
-      translate([22.5,-37.1-2,21-dz/2])
-      scale([1.5,1,1])
-      rotate([90,0,0])
-      cylinder(r=5.5,h=1,center=true,$fn=6);
-    }
-    
-    // tapered air duct from fan
-    hull(){
-      translate([22,-(39+y1/2+tol)-y1/2+0.4,0])
-      rotate([90,0,0])
-      cylinder(r=38/2,h=1,center=true);
-    
-      translate([22.5,-37.1-2,21-dz])
-      scale([1.5,1,1])
-      rotate([90,0,0])
-      cylinder(r=5.5,h=1,center=true,$fn=6);
-    }
 
-    translate([22,-(39+y1/2+tol),0]){
+//---------------------------------------------------------------------
+module fanJoint2(tol=0){
+    // top bolt holes
+    difference(){
+      union(){
+        // tabs
+        translate([38.2,-33,22])
+        cube([8-0.4,17-0.4,4],center=true);
+     
+        // air vent shroud
+        translate([22.5,-37.1-0.5,21])
+        scale([1.5,1,1])
+        rotate([90,0,0])
+        cylinder(r=6.5-0.2,h=3,center=true,$fn=6);
+        
+        translate([0,0,8])
+        hull(){          
+          translate([3,-78/2-6+4.5-2.4,z0+9])
+          cube([2,8-0.4,4],center=true);
+          translate([-10,-78/2-4.0,z0+9-2])
+          cylinder(r=4-0.4,h=4,$fn=F1);
+        }
+      }
 
-      translate([32/2+2,y1/2-10,32/2+2])
-      rotate([90,0,0])
-      cylinder(r=10,h=20.1,center=true,$fn=22);
-      translate([32/2+2,y1/2-10,-32/2-2])
-      rotate([90,0,0])
-      cylinder(r=10,h=20.1,center=true,$fn=22);
+      // bolt holes
+      translate([38,-31-0.3,18])
+      rotate([0,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([38,-31+0.3,18])
+      rotate([0,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([-10,-78/2-4,z0+9-2])
+      cylinder(r=1.8,h=40,center=true,$fn=F1);
+
     }
-    
+  
+}
+//---------------------------------------------------------------------
+module fanPlug(tol=0.4,dz=0,y1=20)  {
+  
+  difference(){
+    union(){
+      // boss
+      translate([21,-(41+tol+1.5),0])
+      cube([42,8-0.4,26],center=true);
+
+      translate([0,0,-dz])
+      fanJoint2();
+      
+      mirror([0,0,1])
+      translate([0,0,-dz])
+      fanJoint2();
+    }
+    translate([-10,-46.7,13])
+    rotate([0,90,0])
+    rotate([0,0,0])
+    rounder(r=3,h=100,f=44);
+    translate([-10,-46.7,-13])
+    rotate([0,90,0])
+    rotate([0,0,90])
+    rounder(r=3,h=100,f=44);
+   
+    translate([42,-46.7,-30])
+    rotate([0,0,0])
+    rotate([0,0,90])
+    rounder(r=3,h=100,f=44);
+
+    translate([42,0,13])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    rounder(r=3,h=100,f=44);
+
+    translate([42,0,-13])
+    rotate([90,0,0])
+    rotate([0,0,90])
+    rounder(r=3,h=100,f=44);
+
   }
 }
 
@@ -903,16 +943,23 @@ show6=0;
 showblades=0;
 showbase=0;
 wires=0;
-showfan=1;
+showfan=0;
+showplug=1;
 showsupport=0;
 
-//  fanSupport(dz=dz);
-//  fanSupport(dz=0);
+//color("cyan")
+//fan();
 
+// labels for fan shroud
 //labels();
 
 if(showfan==1){
+  color("gray")
   fanBlock(dz=dz);
+}
+if(showplug==1){
+  color("gray")
+  fanPlug(dz=dz);
 }
   
 if(showbase){
