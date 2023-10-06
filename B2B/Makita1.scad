@@ -110,7 +110,33 @@ module makita1(tab=1,side=0,label="1",flip=0)
         translate([12,0,z0-2])
         cube([5,78,3],center=true);
       }
-    } // end of union
+      // tab to attach switches and fan
+      if(side==1){
+        difference(){
+          hull(){          
+            translate([-16,78/2-2.5,z0+9])
+            cube([20,5,4],center=true);
+            translate([-10,78/2+4,z0+9-2])
+            cylinder(r=4,h=4,$fn=F1);
+          }
+          translate([-10,78/2+4,z0+9-2-1])
+          cylinder(r=1.7,h=6,$fn=F1);
+        }
+      }
+      if(side==2){
+        difference(){
+          hull(){          
+            translate([-16,-78/2+2.5,z0+9])
+            cube([20,5,4],center=true);
+            translate([-10,-78/2-4,z0+9-2])
+            cylinder(r=4,h=4,$fn=F1);
+          }
+          translate([-10,-78/2-4,z0+9-2-1])
+          cylinder(r=1.7,h=6,$fn=F1);
+        }
+      }
+      
+    } // end of union ----------
 
     // numbers
     if(label!="0"){
@@ -142,7 +168,7 @@ module makita1(tab=1,side=0,label="1",flip=0)
     rotate([0,0,-90])
     //rotate([180,0,0])
     linear_extrude(height=0.6,scale=1)
-    text("Ver 2.4", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    text("Ver 2.5", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
     translate([24,0,28-0.3])
     rotate([0,0,-90])
     //rotate([180,0,0])
@@ -305,22 +331,29 @@ module makita1(tab=1,side=0,label="1",flip=0)
     union(){
       hull(){
         translate([8-11,39/2-2,z0+10])
-        cube([18+22,3,1],center=true);
+        cube([18+22,3,2],center=true);
         translate([8-5-11,39/2-2,z0-0.5])
         cube([26+22,3,1],center=true);
       }
       hull(){
         translate([8-11,-39/2+2,z0+10])
-        cube([18+22,3,1],center=true);
+        cube([18+22,3,2],center=true);
         translate([8-5-11,-39/2+2,z0-0.5])
         cube([26+22,3,1],center=true);
       }
       hull(){
         translate([-5,39/2-7-2,z0+10])
-        cube([6,3,1],center=true);
+        cube([6,3,2],center=true);
         translate([-5-5,39/2-7-2,z0-0.5])
         cube([14,3,1],center=true);
       }
+      // lip over tabs
+      translate([8-11+1,39/2-2+1,z0+10])
+      cube([18+22,5,2],center=true);
+      translate([8-11+1,-39/2+1,z0+10])
+      cube([18+22,5,2],center=true);
+      translate([-5,39/2-7-2+1,z0+10])
+      cube([6,5,2],center=true);
     }
   // bolt holes in tabs
   translate([3,0,z0+6])
@@ -393,15 +426,15 @@ difference(){
 }
 
 if(wires==1){
-  translate([-18,39/2+2+2.5/2,10+16])
+  translate([-18,39/2+2+2.5/2,10+12])
   rotate([0,90,0])
   cylinder(r=2.5,h=60,center=true, $fn=22);
-  translate([-18,-39/2-2-2.5/2,10+16])
+  translate([-18,-39/2-2-2.5/2,10+12])
   rotate([0,90,0])
   cylinder(r=2.5,h=60,center=true, $fn=22);
-  translate([-28,-39/2+2+2.5/2+7,10+16])
+  translate([-28,39/2+3.5/2-7,10+12])
   rotate([0,90,0])
-  cylinder(r=2.5,h=40,center=true, $fn=22);
+  cylinder(r=1.5,h=40,center=true, $fn=22);
 }
 
     
@@ -510,28 +543,390 @@ module support()  {
     cube([10,20,12],center=true);    
   
 }
+
+//---------------------------------------------------------------------------------
+module threeWay(){
+ 
+  translate([0,-21.5/2,0])
+  cube([21.9,21.5,33.7]); 
+
+  translate([0,21.5/2-1,0])
+  cube([2,2,33.7]); 
+  translate([0,-21.5/2-1,0])
+  cube([2,2,33.7]); 
+
+  translate([0,0,33.7/2])
+  rotate([0,-90,0])
+  cylinder(r=12/2,h=9.8,$fn=99);
   
+  // toggle
+  translate([-10,0,33.7/2])
+  rotate([0,-90,0])
+  cylinder(r1=4.8/2,r2=6/2,h=15.5,$fn=99);
+  
+}
+
+
+//---------------------------------------------------------------------
+module fanBlock(tol=0.2,dz=0,y1=20)  {
+  
+  difference(){
+    union(){
+      // boss
+      hull(){
+        translate([21,-(39+tol+0.5),0])
+        cube([40,1,40],center=true);
+        translate([21,-(39+tol+0.5+y1),0])
+        rotate([0,0,45])
+        cube([40/cos(45),1,40],center=true);
+      }
+
+      // switch plate
+      translate([1.2+40-0.4,-(39+y1/2+tol+7),0])
+      cube([2.4,42,144],center=true);
+      translate([1.2+40-0.4-4,-39.2-1.3,0])
+      cube([6,2.6,144],center=true);
+          
+      // back brackets
+      translate([40-6,-39.2,20])
+      scale([1,1,1.5])
+      rotate([90,0,0])
+      rotate([0,0,90])
+      rounder(r=32,h=2.6,f=99);
+
+      translate([40-6,-39.2,-20])
+      scale([1,1,1.5])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=32,h=2.6,f=99);
+
+      // side brackets
+      translate([40,-39.2-2.6,23])
+      scale([1,1,1.5])
+      rotate([180,0,0])
+      rotate([0,0,90])
+      rounder(r=27,h=2.6,f=99);
+
+      translate([40,-39.2-2.6,-23+2])
+      scale([1,1,1.5])
+      rotate([180,0,0])
+      rotate([0,0,90])
+      rounder(r=27,h=2.6,f=99);
+
+      translate([0,0,-dz])
+      fanJoint();
+      
+      mirror([0,0,1])
+      translate([0,0,-dz])
+      fanJoint();
+    }
+
+    // trim beyond fan
+    translate([-5+5,-(40/cos(45)+y1)-y1+5,0])
+    rotate([0,0,45])
+    cube([42,y1*2,42],center=true);
+
+    // cuts for fan attach
+    rotate([0,0,45])
+    translate([-30+6,-80+6,0]){      
+      translate([-32/2,0,32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+      translate([-32/2,0,-32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+
+      translate([-32/2-2,y1/2+26,32/2+2])
+      rotate([90,0,0])
+      cylinder(r=8,h=20.1,center=true,$fn=22);
+      translate([-32/2-2,y1/2+26,-32/2-2])
+      rotate([90,0,0])
+      cylinder(r=8,h=20.1,center=true,$fn=22);
+    }
+
+    // tapered air duct from fan
+    hull(){
+      translate([20-1/2*cos(45)+4,-(41+tol+0.5+y1-1/2*cos(45))+4,0])
+      rotate([0,0,45])
+      rotate([90,0,0])
+      cylinder(r=38/2);
+          
+      translate([22.5,-37.1-2-0.5,21-dz/2])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=5.5,h=1,center=true,$fn=6);
+    }
+    
+    // tapered air duct from fan
+    hull(){
+      translate([20-1/2*cos(45)+4,-(41+tol+0.5+y1-1/2*cos(45))+4,0])
+      rotate([0,0,45])
+      rotate([90,0,0])
+      cylinder(r=38/2);
+          
+      translate([22.5,-37.1-2-0.5,21-dz])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=5.5,h=1,center=true,$fn=6);
+    }
+    
+    // make sure there is clearance to mount fan
+    translate([40.8,-(32+y1/2+tol)-y1,0])
+    cube([2.6,y1*2,42],center=true);
+    
+    translate([20+6*cos(45)+5.5,-(41+tol+0.5+y1+6*cos(45))+5.5,0])
+    rotate([0,0,45])
+    cube([41,12.5,41],center=true);
+    translate([20+6*cos(45)+5.5+10,-(41+tol+0.5+y1+6*cos(45))+5.5-10,0])
+    rotate([0,0,90])
+    cube([41,8,41],center=true);
+    
+
+    translate([1.2+42,-(39+y1/2+tol+7),0]){
+      translate([-5,42/2,144/2])
+      rotate([0,90,0])
+      rotate([0,0,-90])
+      rounder(r=3,h=100,f=44);
+      translate([-5,-42/2,144/2])
+      rotate([0,90,0])
+      rotate([0,0,0])
+      rounder(r=3,h=100,f=44);
+      translate([-5,-42/2,-144/2])
+      rotate([0,90,0])
+      rotate([0,0,90])
+      rounder(r=3,h=100,f=44);
+      translate([-5,42/2,-144/2])
+      rotate([0,90,0])
+      rotate([0,0,180])
+      rounder(r=3,h=100,f=44);
+
+      translate([-5,-42/2,21])
+      rotate([0,90,0])
+      rotate([0,0,90])
+      rounder(r=3,h=100,f=44);
+      translate([-5,-42/2,-21])
+      rotate([0,90,0])
+      rotate([0,0,0])
+      rounder(r=3,h=100,f=44);
+    }
+      
+    // cuts for switches
+    translate([40,-42,35])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,35+24])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,-35])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,-35-24])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    
+    labels();
+}      
+
+
+  // Fan
+  if(0){
+    color("cyan")
+    translate([20+6*cos(45)+4,-(41+tol+0.5+y1+6*cos(45))+4,0])
+    rotate([0,0,45])
+    difference(){
+      cube([40,12.5,40],center=true);
+      rotate([90,0,0])
+      cylinder(r=38/2,h=20,center=true);
+
+      translate([32/2,0,32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+      translate([-32/2,0,32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+      translate([-32/2,0,-32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+      translate([32/2,0,-32/2])
+      rotate([90,0,0])
+      cylinder(r=2.1,h=80,center=true,$fn=22);
+
+    }
+  }
+}
+
+//------------------------------------------------------------------------------------------------
+module labels(tol=0.2,dz=0,y1=20){
+  
+    translate([1.2+40,-(39+y1/2+tol+9),-4]){
+      translate([0,-12,-32])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("18", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,12,-32])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("36", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,-12,-32-24])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("Lo", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,12,-32-24])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("54", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+    }
+      translate([1.2+40,-(39+y1/2+tol+9),2*32+24+4]){
+      translate([0,-12,-32])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("18", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,12,-32])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("36", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,-12,-32-24])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("Lo", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,12,-32-24])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("54", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+    }
+  
+}
+//---------------------------------------------------------------------
+module fanJoint(tol=0.2){
+    // top bolt holes
+    difference(){
+      union(){
+        // tabs
+        translate([38.2,-33,22])
+        cube([8-0.4,17-0.4,4],center=true);
+     
+        // air vent shroud
+        translate([22.5,-37.1-0.5-tol,21])
+        scale([1.5,1,1])
+        rotate([90,0,0])
+        cylinder(r=6.5-tol,h=5,center=true,$fn=6);
+        
+        translate([0,0,8+tol])
+        hull(){          
+          translate([3,-78/2-6-tol,z0+9])
+          cube([2,12,4],center=true);
+          translate([-10,-78/2-4-tol,z0+9-2])
+          cylinder(r=4,h=4,$fn=F1);
+        }
+      }
+
+      // bolt holes
+      translate([38,-31,18])
+      rotate([0,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([-10,-78/2-4-tol,z0+9-2])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+
+      // air vent hole
+      translate([22.5,-37.1,21])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=5.5,h=6,center=true,$fn=6);
+    }
+  
+}
+  
+//--------------------------------------------------------------------
+module fanSupport(tol=0.2,dz=0,y1=40-12-1)  {
+  
+  union(){
+    // tapered air duct from fan
+    hull(){
+      translate([22,-(39+y1/2+tol)-y1/2+0.4,0])
+      rotate([90,0,0])
+      cylinder(r=38/2,h=1,center=true);
+    
+      translate([22.5,-37.1-2,21-dz/2])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=5.5,h=1,center=true,$fn=6);
+    }
+    
+    // tapered air duct from fan
+    hull(){
+      translate([22,-(39+y1/2+tol)-y1/2+0.4,0])
+      rotate([90,0,0])
+      cylinder(r=38/2,h=1,center=true);
+    
+      translate([22.5,-37.1-2,21-dz])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=5.5,h=1,center=true,$fn=6);
+    }
+
+    translate([22,-(39+y1/2+tol),0]){
+
+      translate([32/2+2,y1/2-10,32/2+2])
+      rotate([90,0,0])
+      cylinder(r=10,h=20.1,center=true,$fn=22);
+      translate([32/2+2,y1/2-10,-32/2-2])
+      rotate([90,0,0])
+      cylinder(r=10,h=20.1,center=true,$fn=22);
+    }
+    
+  }
+}
+
 //=====================================================================
-
-//translate([0,0,-dz])
-//support();
-
 
 //dz=32.5;
 //dz=27.0+0.1;
-dz=31.1;
+//dz=31.1;
+dz=28.0;
 
 showcut=0;
-show1=1;
+show1=0;
 show2=0;
 show6=0;
+showblades=0;
+showbase=0;
 wires=0;
+showfan=1;
+showsupport=0;
+
+//  fanSupport(dz=dz);
+//  fanSupport(dz=0);
+
+//labels();
+
+if(showfan==1){
+  fanBlock(dz=dz);
+}
   
-if(0){
+if(showbase){
   base();
 }
 //baseCut(tol=0.2);
 
+if(showsupport==1){
+//  translate([0,0,-dz])
+  support();
+}
+
+// For Printing:
+//  translate([0,0,-dz])
 //  makita1(side=2,label="1",flip=0);
 //  makita1(side=1,label="4",flip=1);
 //  makita1(side=0,label="2",flip=0);
@@ -539,7 +934,7 @@ if(0){
 //  makita1(side=1,label="3",flip=0);
 //  makita1(side=2,label="6",flip=1);
 
-if(showcut){
+if(showcut==1){
   difference(){
     union(){
       blades(wires=wires);
@@ -553,7 +948,7 @@ if(showcut){
 if(show1==1){
   translate([0,0,-dz])
   makita1(side=2,label="1",flip=0);
-  if(0){
+  if(showblades==1){
     translate([0,0,-dz])
     rotate([0,0,0])
     blades(wires=wires);
