@@ -12,7 +12,7 @@
 use <../Parts/rounder.scad>
 use <../Parts/hexcut.scad>
 
-F1=44;
+F1=200;
 F2=6;
 thick=2.1;
 z0=17;
@@ -735,6 +735,28 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
 }
 
 //------------------------------------------------------------------------------------------------
+module switches(){
+  
+    // cuts for switches
+    translate([40,-42,35])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,35+24])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,-35])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+    translate([40,-42,-35-24])
+    rotate([90,0,0])
+    rotate([0,0,180])
+    threeWay();
+}
+
+//------------------------------------------------------------------------------------------------
 module fan(tol=0.2,dz=0,y1=20){
 
   translate([20+6*cos(45)+4,-(41+tol+0.5+y1+6*cos(45))+4,0])
@@ -866,13 +888,19 @@ module fanJoint2(tol=0){
         
         translate([0,0,8])
         hull(){          
-          translate([3,-78/2-6+4.5-2.4,z0+9])
-          cube([2,8-0.4,4],center=true);
+          translate([10,-78/2-6+4.5-2.4+2.5,z0+9])
+          cube([2,3-0.4,4],center=true);
           translate([-10,-78/2-4.0,z0+9-2])
           cylinder(r=4-0.4,h=4,$fn=F1);
         }
       }
 
+      // cutout air vent shroud
+      translate([22.5,-37.1-0.5,21])
+      scale([1.5,1,1])
+      rotate([90,0,0])
+      cylinder(r=6.5-0.2-1.2,h=3,center=true,$fn=6);
+        
       // bolt holes
       translate([38,-31-0.3,18])
       rotate([0,0,0])
@@ -892,8 +920,8 @@ module fanPlug(tol=0.4,dz=0,y1=20)  {
   difference(){
     union(){
       // boss
-      translate([21,-(41+tol+1.5),0])
-      cube([42,8-0.4,26],center=true);
+      translate([26,-(41+tol+1.5)+2.5,0])
+      cube([32,3-0.4,26],center=true);
 
       translate([0,0,-dz])
       fanJoint2();
@@ -902,39 +930,81 @@ module fanPlug(tol=0.4,dz=0,y1=20)  {
       translate([0,0,-dz])
       fanJoint2();
     }
-    translate([-10,-46.7,13])
+    translate([-10,-46.7+5,13])
     rotate([0,90,0])
     rotate([0,0,0])
-    rounder(r=3,h=100,f=44);
-    translate([-10,-46.7,-13])
+    rounder(r=2,h=100,f=44);
+    translate([-10,-46.7+5,-13])
     rotate([0,90,0])
     rotate([0,0,90])
-    rounder(r=3,h=100,f=44);
+    rounder(r=2,h=100,f=44);
    
-    translate([42,-46.7,-30])
+    translate([42,-46.7+5,-30])
     rotate([0,0,0])
     rotate([0,0,90])
-    rounder(r=3,h=100,f=44);
+    rounder(r=2,h=100,f=44);
 
     translate([42,0,13])
     rotate([90,0,0])
     rotate([0,0,180])
-    rounder(r=3,h=100,f=44);
+    rounder(r=2,h=100,f=44);
 
     translate([42,0,-13])
     rotate([90,0,0])
     rotate([0,0,90])
-    rounder(r=3,h=100,f=44);
+    rounder(r=2,h=100,f=44);
 
   }
 }
 
+//-----------------------------------------------------------------------
+module gripa(){
+  
+  translate([0,0,-dz+2.8])
+      // top bolt holes
+  difference(){
+    union(){
+    translate([44-5,34,18+1])
+    cube([10-0.4,20-0.4,4],center=true);
+    translate([44-5,-34+78.1,18+1])
+    cube([10-0.4,20-0.4,4],center=true);    
+  }
+    translate([38,31,18])
+    cylinder(r=1.7,h=40,center=true,$fn=F1);
+
+    translate([38,-31+78.1,18])
+    rotate([0,0,0])
+    cylinder(r=1.7,h=40,center=true,$fn=F1);
+  }
+}
+//-----------------------------------------------------------------------
+module grip(){
+  
+  gripa();
+  translate([0,0,-dz+2.8+40-2-0.4])
+  gripa();
+  
+  difference(){
+    translate([38+6,31+8+0.1,0])
+    rotate([90,0,0])
+    cylinder(r=10.2-2,h=30-0.3,center=true,$fn=F1);
+    translate([38+6,31+8,0])
+    rotate([90,0,0])
+    cylinder(r=10.2-6,h=30+1,center=true,$fn=F1);
+    translate([38-4.5,31+8,0])
+    rotate([90,0,0])
+    cube([20,30,40],center=true);
+  }
+  
+}
 //=====================================================================
 
 //dz=32.5;
 //dz=27.0+0.1;
 //dz=31.1;
 dz=28.0;
+
+grip();
 
 showcut=0;
 show1=0;
@@ -944,11 +1014,10 @@ showblades=0;
 showbase=0;
 wires=0;
 showfan=0;
-showplug=1;
+showplug=0;
 showsupport=0;
 
-//color("cyan")
-//fan();
+//switches();
 
 // labels for fan shroud
 //labels();
@@ -956,9 +1025,15 @@ showsupport=0;
 if(showfan==1){
   color("gray")
   fanBlock(dz=dz);
+  //color("cyan")
+  fan();
+//switches();
 }
+
 if(showplug==1){
   color("gray")
+  translate([0,2*78.1,0])
+  rotate([180,0,0])
   fanPlug(dz=dz);
 }
   
