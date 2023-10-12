@@ -27,7 +27,7 @@ difference(){
 		cylinder(r1=r0+7,r2=r0+8,h=zlip,$fn=201);
 		
 		// add theads
-		metric_thread (diameter=r0*2, pitch=1, length=10, leadin=1);
+		metric_thread (diameter=r0*2, pitch=1, length=10, leadin=1, internal=false);
 	}
 	
 	// cuts for the wires
@@ -75,7 +75,7 @@ difference(){
 		cylinder(r1=r0+7,r2=r0+8,h=zlip,$fn=201);
 		
 		// add theads
-		metric_thread (diameter=r0*2, pitch=1, length=10, leadin=1);
+		metric_thread (diameter=r0*2, pitch=1, length=10, leadin=1, internal=false);
 	}
 	
 	// cuts for the wires 12 Ga, 4.4 mm diam
@@ -118,7 +118,8 @@ difference(){
 //		translate([0,0,2+7])
 //		cylinder(r1=r0+7,r2=r0+6,h=1,$fn=201);		
 	}
-	metric_thread (diameter=r0*2.025, pitch=1, length=10, leadin=1, internal=true);
+//	metric_thread (diameter=r0*2.025, pitch=1, length=10, leadin=1, internal=true);
+		metric_thread (diameter=r0*2+0.3, pitch=1, length=10, leadin=3, internal=true);
 	
 	for(i=[0:5]){
 		rotate([0,0,60*i])
@@ -298,7 +299,7 @@ difference(){
 
 //plug3x12();
 //plug3x12b();
-//top3x12();
+top3x12();
 //plugUSBa();
 
 //translate([0,0,20])
@@ -307,7 +308,7 @@ difference(){
 //plugUSBb(part=3);
 //plugUSBc();
 
-plugTube();
+//plugTube();
 
 //=================================================================================
 

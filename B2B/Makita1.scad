@@ -39,12 +39,12 @@ module baseCut(tol=0,side=2){
       translate([-87/2-1.5-12+1.5,0,z0/2+10])
       cube([3+tol,78+tol,z0+tol],center=true);
       // foot holes
-      translate([-55,22,-6])
+      translate([-58,22,-6])
       rotate([0,90,0])
-      cylinder(r=1.7+0.2,h=10,center=true,$fn=F1);
-      translate([-55,-22,-6])
+      cylinder(r=1.7+0.2,h=16,center=true,$fn=F1);
+      translate([-58,-22,-6])
       rotate([0,90,0])
-      cylinder(r=1.7+0.2,h=10,center=true,$fn=F1);
+      cylinder(r=1.7+0.2,h=16,center=true,$fn=F1);
     
     }
 
@@ -443,69 +443,36 @@ if(wires==1){
 module base(tol=0.8){
   difference(){
 
-    translate([-59.1+2,78,0])
-    cube([4,80*3,86],center=true);    
+    translate([-61.1+1.5,78,0])
+    cube([2.4,80*3,76.5],center=true);    
 
   
-    translate([0,0,-dz])
+    translate([-2,0,-dz])
     baseCut(side=2,tol=tol);
 
-    translate([0,0,dz])
+    translate([-2,0,dz])
     rotate([180,0,0])
     baseCut(side=1,tol=tol);
 
-    translate([0,78.1,0]){
+    translate([-2,78.1,0]){
       translate([0,0,-dz])
       baseCut(side=0,tol=tol);
       translate([0,0,dz])
       rotate([180,0,0])
       baseCut(side=0,tol=tol);
     }
-    translate([0,2*78.1,0]){
+    translate([-2,2*78.1,0]){
       translate([0,0,-dz])
       baseCut(side=1,tol=tol);
       translate([0,0,dz])
       rotate([180,0,0])
       baseCut(side=2,tol=tol);
     }
+    // clear center aisle
+    translate([-61.1+3.75,78,0])
+    cube([4,80*3-5,10],center=true);
     
-    translate([-56,0,-34])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("1", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-
-    translate([-56,0+78,-34])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("2", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-    
-    translate([-56,2*78,-34])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("3", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-    
-    translate([-56,0,-34+68])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("4", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-
-    translate([-56,0+78,-34+68])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("5", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-    
-    translate([-56,2*78,-34+68])
-    rotate([0,0,90])
-    rotate([90,0,0])
-    linear_extrude(height=3,scale=1)
-    text("6", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.0);
-    
-    translate([-60,-30,0])
+    translate([-62,-30,0])
     rotate([0,90,0])
     hexcut1(R=8.25,x0=0,y0=0,h0=10,N0=14);
 
@@ -575,44 +542,37 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
       // boss
       hull(){
         translate([21,-(39+tol+0.5),0])
-        cube([40,1,40],center=true);
+        cube([40,1,42],center=true);
         translate([21,-(39+tol+0.5+y1),0])
         rotate([0,0,45])
-        cube([40/cos(45),1,40],center=true);
+        cube([40/cos(45),1,42],center=true);
       }
 
       // switch plate
-      translate([1.2+40-0.4,-(39+y1/2+tol+7),0])
-      cube([2.4,42,144],center=true);
-      translate([1.2+40-0.4-4,-39.2-1.3,0])
-      cube([6,2.6,144],center=true);
+      translate([1.2+40-0.4,-(39+y1/2+tol+7),0+7])
+      cube([2.4,42,144+14],center=true);
+      translate([1.2+40-0.4-4,-39.2-1.3,0+7])
+      cube([6,2.6,144+14],center=true);
           
       // back brackets
-      translate([40-6,-39.2,20])
-      scale([1,1,1.5])
+      translate([40-6,-39.2,23])
+      scale([1,1,1.9])
       rotate([90,0,0])
       rotate([0,0,90])
       rounder(r=32,h=2.6,f=99);
 
-      translate([40-6,-39.2,-20])
+      translate([40-6,-39.2,-23])
       scale([1,1,1.5])
       rotate([90,0,0])
       rotate([0,0,180])
       rounder(r=32,h=2.6,f=99);
 
-      // side brackets
-      translate([40,-39.2-2.6,23])
-      scale([1,1,1.5])
-      rotate([180,0,0])
-      rotate([0,0,90])
-      rounder(r=27,h=2.6,f=99);
-
-      translate([40,-39.2-2.6,-23+3.8])
-      scale([1,1,1.5])
-      rotate([180,0,0])
-      rotate([0,0,90])
-      rounder(r=27,h=2.6,f=99);
-
+      // side panels
+      translate([21,-55.2,22])
+      cube([40,32,2.6],center=true);
+      translate([21,-55.2,-22])
+      cube([40,32,2.6],center=true);
+      
       translate([0,0,-dz])
       fanJoint();
       
@@ -622,9 +582,9 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     }
 
     // trim beyond fan
-    translate([-5+5,-(40/cos(45)+y1)-y1+5,0])
-    rotate([0,0,45])
-    cube([42,y1*2,42],center=true);
+    translate([-5+5,-(40/cos(45)+y1)-y1+5.5,0])
+    //rotate([0,0,0])
+    cube([42,y1*2,54],center=true);
 
     // cuts for fan attach
     rotate([0,0,45])
@@ -654,7 +614,7 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
       translate([22.5,-37.1-2-0.5,21-dz/2])
       scale([1.5,1,1])
       rotate([90,0,0])
-      cylinder(r=5.5,h=1,center=true,$fn=6);
+      cylinder(r=5.0,h=1,center=true,$fn=6);
     }
     
     // tapered air duct from fan
@@ -667,7 +627,7 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
       translate([22.5,-37.1-2-0.5,21-dz])
       scale([1.5,1,1])
       rotate([90,0,0])
-      cylinder(r=5.5,h=1,center=true,$fn=6);
+      cylinder(r=5.0,h=1,center=true,$fn=6);
     }
     
     // make sure there is clearance to mount fan
@@ -677,17 +637,17 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     translate([20+6*cos(45)+5.5,-(41+tol+0.5+y1+6*cos(45))+5.5,0])
     rotate([0,0,45])
     cube([41,12.5,42],center=true);
-    translate([20+6*cos(45)+5.5+10,-(41+tol+0.5+y1+6*cos(45))+5.5-10,0])
+    translate([20+6*cos(45)+5.5+6,-(41+tol+0.5+y1+6*cos(45))+5.5-15,0])
     rotate([0,0,90])
-    cube([41,8,42],center=true);
+    cube([41,18,42],center=true);
     
 
     translate([1.2+42,-(39+y1/2+tol+7),0]){
-      translate([-5,42/2,144/2])
+      translate([-5,42/2,144/2+14])
       rotate([0,90,0])
       rotate([0,0,-90])
       rounder(r=3,h=100,f=44);
-      translate([-5,-42/2,144/2])
+      translate([-5,-42/2,144/2+14])
       rotate([0,90,0])
       rotate([0,0,0])
       rounder(r=3,h=100,f=44);
@@ -727,6 +687,10 @@ module fanBlock(tol=0.2,dz=0,y1=20)  {
     rotate([90,0,0])
     rotate([0,0,180])
     threeWay();
+
+    translate([40,-42-17,35+24+19.5])
+    rotate([0,90,0])
+    cylinder(r=6.3/2,h=10,center=true,$fn=F1);
     
     labels();
 }      
@@ -808,6 +772,18 @@ module labels(tol=0.2,dz=0,y1=20){
       text("54", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
     }
       translate([1.2+40,-(39+y1/2+tol+9),2*32+24+4]){
+
+      translate([0,-12,-14])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("1", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+      translate([0,12,-14])     
+      rotate([0,90,0])
+      rotate([0,0,90])
+      linear_extrude(height=0.9,scale=1)
+      text("6", font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+
       translate([0,-12,-32])     
       rotate([0,90,0])
       rotate([0,0,90])
@@ -997,6 +973,64 @@ module grip(){
   }
   
 }
+
+//-----------------------------------------------------------------------
+module terminal(tol=0){
+  
+//x1=10;
+//y1=-5;
+x1=15;
+y1=-8;
+  
+  // terminal block holder
+  difference(){
+    union(){
+      intersection(){
+        translate([-26+x1,-50+y1+1,0])
+        cube([20,2,56],center=true);
+        hull(){
+          translate([-10,-78/2-4-tol,10])
+          cylinder(r=4,h=80,center=true,$fn=F1);
+          translate([-26-10+x1,-50+y1,10-1.7-40])
+          cube([20,0.01,80]);
+        }
+      }
+
+      hull(){
+        translate([-10,-78/2-4-tol,10])
+        cylinder(r=4,h=3.4,center=true,$fn=F1);
+        translate([-26-10+x1,-50+y1,10-1.7])
+        cube([20,0.01,3.4]);
+      }
+      hull(){
+        translate([-10,-78/2-4-tol,-10])
+        cylinder(r=4,h=3.4,center=true,$fn=F1);
+        translate([-26-10+x1,-50+y1,-10-1.7])
+        cube([20,0.01,3.4]);
+      }
+    }
+    // cut for bolt
+    translate([-10,-78/2-4-tol,0])
+    cylinder(r=1.7,h=40,center=true,$fn=F1);
+
+    // mounts for terminal block
+    translate([x1,y1,0]){
+      translate([-22,-78/2-4-tol,24])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([-22-8,-78/2-4-tol,24])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([-22,-78/2-4-tol,-24])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+      translate([-22-8,-78/2-4-tol,-24])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=40,center=true,$fn=F1);
+    }
+  }
+}
+
 //=====================================================================
 
 //dz=32.5;
@@ -1004,14 +1038,15 @@ module grip(){
 //dz=31.1;
 dz=28.0;
 
-grip();
+//grip();
+//terminal();
 
 showcut=0;
 show1=0;
 show2=0;
 show6=0;
 showblades=0;
-showbase=0;
+showbase=1;
 wires=0;
 showfan=0;
 showplug=0;
@@ -1023,11 +1058,11 @@ showsupport=0;
 //labels();
 
 if(showfan==1){
-  color("gray")
+//  color("gray")
   fanBlock(dz=dz);
   //color("cyan")
   fan();
-//switches();
+  switches();
 }
 
 if(showplug==1){
@@ -1040,6 +1075,7 @@ if(showplug==1){
 if(showbase){
   base();
 }
+//color("cyan")
 //baseCut(tol=0.2);
 
 if(showsupport==1){
