@@ -198,17 +198,17 @@ module minheater(){
 module tub2(){
 z1=80;
 //z1=6;
-thick=3;
+thick=2;
 
   difference(){
     // outside shell add thick
     union(){      
       // Delfino board
       hull(){
-        translate([-4-thick,-4-thick,-4-thick])
-        cube([1+1*thick,30+2*thick,z1+1*thick]);
-        translate([180,11,-4-thick])
-        cylinder(r=15+thick,h=z1+1*thick,$fn=99);
+        translate([-4-thick,-thick,-4-thick])
+        cube([1+1*thick,24+2*thick,z1+1*thick]);
+        translate([180,12,-4-thick])
+        cylinder(r=12+thick,h=z1+1*thick,$fn=99);
       }
       // GaN board
       hull(){
@@ -221,36 +221,35 @@ thick=3;
       }
       
       // bump for bulk cap
-      translate([29,-4+29+13,-4+z1*2/3])
-      scale([0.8,1,1])
-      cylinder(r=16+thick,h=z1/3,$fn=99);
-      translate([29,-4+29+13,-4+z1*2/3])
-      scale([0.8,1,1.5])
-      sphere(r=16+thick,$fn=99);
-      translate([29,-4+29+10,-4-thick])
-      rotate([-5,0,0])
-      cylinder(r1=1,r2=8,h=z1/3+2*thick,$fn=99);
+      hull(){
+        translate([18-thick,-4+29+8-thick,-4+z1-40])
+        cube([20+2*thick,16+2*thick,40]);
+        translate([18-thick,-4+29+8-thick,-4+z1-70])
+        cube([20+2*thick,1,1]);
+      }
       
       // overflow
       hull(){
-        translate([-22,-4-thick,-4+z1-20-2*thick])
-        cube([12+2*thick,30+2*thick,20+2*thick]);
-        translate([-4-thick,-4-thick,-4+z1-20-2*thick-20])
-        cube([1,30+2*thick,1]);
+        translate([-20,-thick,-4+z1-24-2*thick])
+        cube([10+2*thick,24+2*thick,24+2*thick]);
+        translate([-4-thick,-thick,-4+z1-20-2*thick-18])
+        cube([1,24+2*thick,1]);
       }
     }
+    
+    // CUTS
     // inner sheel sized for the inverter
     union(){      
       // Delfino board
       hull(){
-        translate([-4,-4,-4])
-        cube([1,30,z1+1]);
-        translate([180,11,-4])
-        cylinder(r=15,h=z1+1,$fn=99);
+        translate([-4,0,-4])
+        cube([1,24,z1+1]);
+        translate([180,12,-4])
+        cylinder(r=12,h=z1+1,$fn=99);
       }
       // Gan board
       hull(){
-        translate([5,-4+26,-4])
+        translate([5,-4+26-1,-4])
         cube([105,1,z1+1]);
         translate([15,-4+29+6,-4])
         cylinder(r=2,h=z1+1,$fn=44);
@@ -258,35 +257,43 @@ thick=3;
         cylinder(r=2,h=z1+1,$fn=44);
       }
       // bump for cap
-      translate([29,-4+29+13,-4+z1*2/3])
-      scale([0.8,1,1])
-      cylinder(r=16,h=z1/3+6,$fn=44);
-      translate([29,-4+29+13,-4+z1*2/3])
-      scale([0.8,1,1.5])
-      sphere(r=16,$fn=44);
+      hull(){
+        translate([18,-4+29+8,-4+z1-40+0.5])
+        cube([20,16,41]);
+        translate([18,-4+29+8-thick,-4+z1-70+1.5*thick+0.5])
+        cube([20,1,1]);
+      }
 
       // overflow
-      translate([-13.5,-thick,-4+z1-24])
+      translate([-12,-thick,-4+z1-24])
       rotate([90,0,0])
       cylinder(r=9.7/2,h=10,center=true,$fn=99);
-      translate([-13.5,4,-4+z1-23])
+      translate([-12,4,-4+z1-23])
       rotate([90+10,0,0])
-      cylinder(r=7/2,h=40,center=true,$fn=99);
+      cylinder(r=7/2,h=39,center=true,$fn=99);
       
-      translate([-22+1*thick,-4,-4+z1-18])
-      cube([12,30,20]);
+      translate([-20+1*thick,0,-4+z1-18])
+      cube([12,24,20]);
       
-      translate([-22+3*thick,-4,-4+z1-14])
-      cube([12,30,16]);
+      translate([-20+3*thick,0,-4+z1-14])
+      cube([12,24,16]);
       
-      translate([-13.5,26,-4+z1-17])
+      translate([-12,24,-4+z1-17])
       rotate([90,0,0])
-      cylinder(r=6,h=30,$fn=99);
+      cylinder(r=6,h=24,$fn=99);
 
       // inlet
       translate([175,-thick,-4+3])
       rotate([90,0,0])
       cylinder(r=9.7/2,h=16,center=true,$fn=99);
+      
+      // cuts for mounting struts
+      translate([163,-5,72])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=16,center=true,$fn=99);
+      translate([2,-5,72])
+      rotate([90,0,0])
+      cylinder(r=1.7,h=16,center=true,$fn=99);
       
     }    
   }
@@ -299,15 +306,21 @@ thick=3;
       rotate([90,0,0])
       cylinder(r=9.7/2,h=16,center=true,$fn=99);
     }
+    
+    // AeroAmp Logo
+    translate([144,24+thick,60])
+    rotate([0,0,180])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text("AeroAmp", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+ 
+    translate([144,24+thick,50])
+    rotate([0,0,180])
+    rotate([90,0,0])
+    linear_extrude(height=0.3,scale=1)
+    text("Oct 2023", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    
   
-  // footing for the inverter boards
-  
-  difference(){
-    translate([-4,6.5,-4])
-    cube([138,6,3]);
-    translate([-1,8.5,-4])
-    cube([132,2,4]);
-  }
 }
 
 //--------------------------------------------------------------------
@@ -315,56 +328,64 @@ thick=3;
 module strut(tol=0.2){
 
 thick=3;
-wide=8;
+wide=10;
  
  // base
- translate([-2,-4-2*thick,-7-thick]) 
- cube([wide,36+2*thick,thick]); 
+ translate([-3,-2*thick,-7-thick]) 
+ cube([wide,28+2*thick,thick]); 
+ 
  // front tab
- translate([-2,-4-1*thick+36+tol,-7]) 
+ translate([-3,-8-1*thick+36+tol,-7]) 
  cube([wide,thick-tol,thick]); 
+ 
  // riser
- translate([-2,-4-2*thick,-7]) 
- cube([wide,thick-tol,86]); 
+  difference(){
+    translate([-3,-2*thick,-7]) 
+    cube([wide,thick-tol,86]); 
+    translate([2,-5,72])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=16,center=true,$fn=99);
+  }
+  
  // riser tab
- translate([-2,-4-1*thick-tol,-7+86-thick+tol]) 
+ translate([-3,-1*thick-tol,-7+86-thick+tol]) 
  cube([wide,thick-tol,thick-tol]); 
 
  // front foot
  hull(){
-   translate([-2,-4-1*thick+36-thick,-7-thick]) 
+   translate([-3,-8-1*thick+36-thick,-7-thick]) 
    cube([wide,2*thick,thick]); 
-   translate([-2-wide,-4-1*thick+36+tol+10,-7-38]) 
-   cube([2*wide,2*thick,0.1]); 
+   translate([-3-2,-8-1*thick+36+tol+10,-7-38]) 
+   cube([wide+2,2*thick,0.1]); 
   }
   
  // back foot
  hull(){
-   translate([-2,-4-2*thick,-7-thick]) 
+   translate([-3,-2*thick,-7-thick]) 
    cube([wide,2*thick,thick]); 
-   translate([-2-wide,-10,-7-38]) 
-   cube([2*wide,2*thick,0.1]); 
+   translate([-3-2,-6,-7-38]) 
+   cube([wide+2,2*thick,0.1]); 
   }
   
   // bottom brace between feet
   hull(){
-    translate([-2-wide,-4-1*thick+36+tol+10,-7-38]) 
-    cube([2*wide,2*thick,thick]); 
-    translate([-2-wide,-10,-7-38]) 
-    cube([2*wide,2*thick,thick]); 
+    translate([-3-2,-9-1*thick+36+tol+10,-7-38]) 
+    cube([wide+2,2*thick,thick]); 
+    translate([-3-2,-6,-7-38]) 
+    cube([wide+2,2*thick,thick]); 
   }
   
   // brace to back of outer box
   hull(){
-    translate([-2,-4-1*thick-tol,-7+86-thick+tol]) 
+    translate([-3,-4-1*thick-tol,-7+86-thick+tol]) 
     cube([wide,thick-tol,thick-tol]); 
-    translate([-2,-86,-7+86-thick+tol]) 
+    translate([-3,-86,-7+86-thick+tol]) 
     cube([wide,thick-tol,thick-tol]); 
   }
   hull(){
-    translate([-2,-4-2*thick-tol,-7+86-thick+tol-30]) 
+    translate([-3,-2*thick-tol,-7+86-thick+tol-30]) 
     cube([wide,thick-tol,thick-tol]); 
-    translate([-2,-86,-7+86-thick+tol]) 
+    translate([-3,-86,-7+86-thick+tol]) 
     cube([wide,thick-tol,thick-tol]); 
   }
 
@@ -375,19 +396,19 @@ wide=8;
 
 
 if(0){
-  color("silver",alpha=0.4)
+  //color("silver",alpha=0.4)
   tub2();
-  strut();
+  //strut();
     
-  //~ translate([130,0,-4]) 
-  //~ rotate([90,0,180]){
-  //~ launch();
-  //~ gan();
-  //~ }
+  translate([130,0,-4]) 
+  rotate([90,0,180]){
+  launch();
+  gan();
+  }
 }
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=400;
 ycut=660;
@@ -430,7 +451,7 @@ intersection(){
     }
     
     // inverter
-    if(0){
+    if(1){
       translate([330/2+72,255/2+40,3+45])
       rotate([0,0,180])
       translate([130,0,-4]) 
@@ -476,28 +497,10 @@ if(0){
   
 }
 
-//prop1();
-//translate([40,0,0])
+tub2();
+//strut();
 //mirror([1,0,0])
-//prop1();
-
-//spider1();
-//carrier1();
-//mirror([0,1,0])
-//carrier3();
-
-//top1();
-//tub1();
-
-//    cube([129.8,58.5,1.7]);
- 
-//difference(){
-//tubtab1(tol=0.2);
-//tubtab1(tol=0);
-//}
-
-// AL angles in the corners of metal box
-//L1(len=60);
+//strut();      
 
 
 //=================================================================================
