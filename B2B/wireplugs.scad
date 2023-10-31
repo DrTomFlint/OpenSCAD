@@ -10,6 +10,7 @@ use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
 use <../Parts/threads.scad>
 
+F1=33;
 
 //----------------------------------------------------------------------------------
 module plug3x12(){
@@ -279,7 +280,75 @@ difference(){
 
 }
 
+//-----------------------------------------------------------------------------
+module plugBattery(){
+  
+  rwire=4.3/2+0.1;
+  rhole=6.3/2-0.1;
+  z1=1.2;
+  z2=3.6/2;
+  wide=2;
+  taper=0.2;
+  
+  difference(){
+    union(){
+      translate([0,0.1,0])
+      cylinder(r1=rhole,r2=rhole-taper,h=z2,$fn=F1);
+      translate([17.2,0,0])
+      cylinder(r1=rhole,r2=rhole-taper,h=z2,$fn=F1);
+      translate([-20,0,0])
+      cylinder(r1=rhole,r2=rhole-taper,h=z2,$fn=F1);
+
+      translate([0,0.1,z2])
+      cylinder(r1=rhole,r2=rhole+taper,h=z2/2,$fn=F1);
+      translate([17.2,0,z2])
+      cylinder(r1=rhole,r2=rhole+taper,h=z2/2,$fn=F1);
+      translate([-20,0,z2])
+      cylinder(r1=rhole,r2=rhole+taper,h=z2/2,$fn=F1);
+
+      translate([0,0.1,1.5*z2])
+      cylinder(r2=rhole,r1=rhole+taper,h=z2/2,$fn=F1);
+      translate([17.2,0,1.5*z2])
+      cylinder(r2=rhole,r1=rhole+taper,h=z2/2,$fn=F1);
+      translate([-20,0,1.5*z2])
+      cylinder(r2=rhole,r1=rhole+taper,h=z2/2,$fn=F1);
+
+      hull(){
+        translate([17.2,0,-z1])
+        cylinder(r=rhole+wide,h=z1,$fn=F1);
+        translate([-20,0,-z1])
+        cylinder(r=rhole+wide,h=z1,$fn=F1);
+      }
+    }
+    // wire cuts
+    translate([0,0.1,0])
+    translate([0,0,-2])
+    cylinder(r1=rwire+0.1,r2=rwire,h=2*z2+10,$fn=F1);
+    translate([17.2,0,-2])
+    cylinder(r1=rwire+0.1,r2=rwire,h=2*z2+10,$fn=F1);
+    translate([-20,0,-2])
+    cylinder(r1=rwire+0.1,r2=rwire,h=2*z2+10,$fn=F1);
+    
+    // slice a flat side
+    translate([-30,rhole-0.2,-4])
+    cube([60,4,2*z2+10]);
+    translate([-30,-rhole-4.5,-4])
+    cube([60,4,2*z2+10]);
+
+    // strain relief
+    translate([0,0,z2+1])
+    cube([0.4,12,2*z2+0.1],center=true);
+    translate([17.2,0,z2+1])
+    cube([0.4,12,2*z2+0.1],center=true);
+    translate([-20,0,z2+1])
+    cube([0.4,12,2*z2+0.1],center=true);
+  }    
+}
+  
+
 //=================================================================================
+
+plugBattery();
 
 if(0){
 difference(){
@@ -299,7 +368,7 @@ difference(){
 
 //plug3x12();
 //plug3x12b();
-top3x12();
+//top3x12();
 //plugUSBa();
 
 //translate([0,0,20])

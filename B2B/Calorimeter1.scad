@@ -658,7 +658,7 @@ module calheater(){
 //=================================================================================
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
 xcut=260;
 ycut=660;
@@ -765,9 +765,9 @@ if(0){
 }
 
 //prop1();
-translate([40,0,0])
-mirror([1,0,0])
-prop1();
+//translate([40,0,0])
+//mirror([1,0,0])
+//prop1();
 
 //spider1();
 //carrier1();

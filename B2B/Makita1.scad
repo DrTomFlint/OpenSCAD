@@ -1031,6 +1031,23 @@ y1=-8;
   }
 }
 
+//---------------------------------------------------------------------
+module handle(){
+  
+  
+  difference(){
+    union(){
+      cylinder(r1=8,r2=5,h=17,$fn=F1);
+      cylinder(r1=10,r2=7.5,h=3,$fn=F1);
+    }
+    translate([0,0,-1])
+    cylinder(r=2.2,h=19,$fn=F1);
+    translate([0,0,17-2])
+    cylinder(r=4,h=2.1,$fn=F1);
+  }
+  
+}
+
 //=====================================================================
 
 //dz=32.5;
@@ -1041,12 +1058,14 @@ dz=28.0;
 //grip();
 //terminal();
 
+handle();
+
 showcut=0;
 show1=0;
 show2=0;
 show6=0;
 showblades=0;
-showbase=1;
+showbase=0;
 wires=0;
 showfan=0;
 showplug=0;
