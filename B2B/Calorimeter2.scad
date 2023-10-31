@@ -195,16 +195,6 @@ module minheater(){
 }  
 
 //--------------------------------------------------------------------
-module calheater(){
- 
-// translate([0,0,3.2/2]) 
-// cube([126.6, 59.8, 3.2],center=true); 
- translate([0,0,0]) 
- cube([126.6, 59.8, 3.2]); 
- 
-}  
-
-//--------------------------------------------------------------------
 module tub2(){
 z1=80;
 //z1=6;
@@ -218,7 +208,7 @@ thick=3;
         translate([-4-thick,-4-thick,-4-thick])
         cube([1+1*thick,30+2*thick,z1+1*thick]);
         translate([180,11,-4-thick])
-        cylinder(r=12+thick,h=z1+1*thick,$fn=99);
+        cylinder(r=15+thick,h=z1+1*thick,$fn=99);
       }
       // GaN board
       hull(){
@@ -256,7 +246,7 @@ thick=3;
         translate([-4,-4,-4])
         cube([1,30,z1+1]);
         translate([180,11,-4])
-        cylinder(r=12,h=z1+1,$fn=99);
+        cylinder(r=15,h=z1+1,$fn=99);
       }
       // Gan board
       hull(){
@@ -320,6 +310,66 @@ thick=3;
   }
 }
 
+//--------------------------------------------------------------------
+// support tub2
+module strut(tol=0.2){
+
+thick=3;
+wide=8;
+ 
+ // base
+ translate([-2,-4-2*thick,-7-thick]) 
+ cube([wide,36+2*thick,thick]); 
+ // front tab
+ translate([-2,-4-1*thick+36+tol,-7]) 
+ cube([wide,thick-tol,thick]); 
+ // riser
+ translate([-2,-4-2*thick,-7]) 
+ cube([wide,thick-tol,86]); 
+ // riser tab
+ translate([-2,-4-1*thick-tol,-7+86-thick+tol]) 
+ cube([wide,thick-tol,thick-tol]); 
+
+ // front foot
+ hull(){
+   translate([-2,-4-1*thick+36-thick,-7-thick]) 
+   cube([wide,2*thick,thick]); 
+   translate([-2-wide,-4-1*thick+36+tol+10,-7-38]) 
+   cube([2*wide,2*thick,0.1]); 
+  }
+  
+ // back foot
+ hull(){
+   translate([-2,-4-2*thick,-7-thick]) 
+   cube([wide,2*thick,thick]); 
+   translate([-2-wide,-10,-7-38]) 
+   cube([2*wide,2*thick,0.1]); 
+  }
+  
+  // bottom brace between feet
+  hull(){
+    translate([-2-wide,-4-1*thick+36+tol+10,-7-38]) 
+    cube([2*wide,2*thick,thick]); 
+    translate([-2-wide,-10,-7-38]) 
+    cube([2*wide,2*thick,thick]); 
+  }
+  
+  // brace to back of outer box
+  hull(){
+    translate([-2,-4-1*thick-tol,-7+86-thick+tol]) 
+    cube([wide,thick-tol,thick-tol]); 
+    translate([-2,-86,-7+86-thick+tol]) 
+    cube([wide,thick-tol,thick-tol]); 
+  }
+  hull(){
+    translate([-2,-4-2*thick-tol,-7+86-thick+tol-30]) 
+    cube([wide,thick-tol,thick-tol]); 
+    translate([-2,-86,-7+86-thick+tol]) 
+    cube([wide,thick-tol,thick-tol]); 
+  }
+
+}  
+
 //=================================================================================
 
 
@@ -327,16 +377,13 @@ thick=3;
 if(0){
   color("silver",alpha=0.4)
   tub2();
-  translate([130,0,-4]) 
-  rotate([90,0,180]){
-  launch();
-  gan();
-  
-  //~ translate([0,0,-3.5]) 
-  //~ calheater();     
-  //~ translate([0,0,-3.5]) 
-  //~ minheater();     
-  }
+  strut();
+    
+  //~ translate([130,0,-4]) 
+  //~ rotate([90,0,180]){
+  //~ launch();
+  //~ gan();
+  //~ }
 }
 
 // disable cutaway views if printing or working single parts
@@ -362,6 +409,18 @@ intersection(){
       base2();
     }
 
+    // struts
+    if(1){
+      translate([330/2+72,255/2+40,3+45])
+      rotate([0,0,180])
+      strut();
+
+      translate([330/2+72-165,255/2+40,3+45])
+      rotate([0,0,180])
+      mirror([1,0,0])
+      strut();      
+    }
+    
     // tub
     if(1){
       color("silver")
@@ -371,7 +430,7 @@ intersection(){
     }
     
     // inverter
-    if(1){
+    if(0){
       translate([330/2+72,255/2+40,3+45])
       rotate([0,0,180])
       translate([130,0,-4]) 
