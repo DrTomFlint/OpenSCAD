@@ -504,8 +504,8 @@ thick=2;
       }
       
       // inlet
-      translate([x1-14,-thick-4,-6])
-      cube([14,6,14]);
+      translate([x1-14,-thick-7,-6])
+      cube([14,9,12]);
     }
     
     // CUTS
@@ -545,9 +545,12 @@ thick=2;
       cylinder(r=6,h=y1-thick,$fn=99);
 
       // inlet
-      translate([x1-7,-thick,-4+5])
+      translate([x1-7,-thick-4,-4+3.2])
       rotate([90,0,0])
-      cylinder(r=9.7/2,h=16,center=true,$fn=99);
+      cylinder(r=9.7/2,h=8,center=true,$fn=99);
+      translate([x1-7,-thick-3,-4+3.2])
+      rotate([90,0,0])
+      cylinder(r=6.66/2,h=10.1,center=true,$fn=99);
       
       // cuts for mounting struts
       translate([x1-20,-5,72])
@@ -558,6 +561,20 @@ thick=2;
       cylinder(r=1.7,h=16,center=true,$fn=99);
     }
     
+    // supports for the GaN board
+    difference(){
+      translate([-2,7,-4])
+      cube([8,6,4]);
+      translate([0,9.25,-2])
+      cube([6,2,2]);
+    }
+    difference(){
+      translate([75,7,-4])
+      cube([8,6,4]);
+      translate([75,9.25,-2])
+      cube([6,2,2]);
+    }
+
     // AeroAmp Logo
     translate([x1/2-10,y1+thick,60])
     rotate([0,0,180])
@@ -592,14 +609,21 @@ if(0){
 }
 
 if(0){
-  //color("silver",alpha=0.4)
-  tub3();
-  //strut();
-    
-  translate([108,-11,0]) 
-  rotate([90,0,180])
-  gan(wires=2);
+  difference(){
+    union(){
+      //color("silver",alpha=0.4)
+      tub3();
+      //strut();
+        
+      translate([108,-11,-1.8]) 
+      rotate([90,0,180])
+      gan(wires=2);
+    }
+    translate([50,120,0])
+    cube([200,200,200],center=true);
+  }
 }
+
 // disable cutaway views if printing or working single parts
 if(1){
   
@@ -686,11 +710,9 @@ if(0){
   
 }
 
-//tub2();
+//tub3();
 //tubtest();
 //strut();
-//mirror([1,0,0])
-//strut();      
 
 
 //=================================================================================
