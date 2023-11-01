@@ -235,6 +235,9 @@ thick=2;
         translate([-4-thick,-thick,-4+z1-20-2*thick-18])
         cube([1,24+2*thick,1]);
       }
+      // inlet
+      translate([168,-thick-4,-6])
+      cube([14,6,16]);
     }
     
     // CUTS
@@ -272,18 +275,18 @@ thick=2;
       rotate([90+10,0,0])
       cylinder(r=7/2,h=39,center=true,$fn=99);
       
-      translate([-20+1*thick,0,-4+z1-18])
-      cube([12,24,20]);
+      translate([-20+1*thick,2,-4+z1-18])
+      cube([12,22,20]);
       
-      translate([-20+3*thick,0,-4+z1-14])
-      cube([12,24,16]);
+      translate([-20+3*thick,2,-4+z1-14])
+      cube([12,22,16]);
       
       translate([-12,24,-4+z1-17])
       rotate([90,0,0])
-      cylinder(r=6,h=24,$fn=99);
+      cylinder(r=6,h=22,$fn=99);
 
       // inlet
-      translate([175,-thick,-4+3])
+      translate([175,-thick,-4+5])
       rotate([90,0,0])
       cylinder(r=9.7/2,h=16,center=true,$fn=99);
       
@@ -297,15 +300,6 @@ thick=2;
       
     }    
   }
-
-    // inlet
-    difference(){
-      translate([167,-thick,-6])
-      cube([16,3*thick,14]);
-      translate([175,thick,-4+3])
-      rotate([90,0,0])
-      cylinder(r=9.7/2,h=16,center=true,$fn=99);
-    }
     
     // AeroAmp Logo
     translate([144,24+thick,60])
@@ -324,11 +318,51 @@ thick=2;
 }
 
 //--------------------------------------------------------------------
+module tubtest(){
+z1=16;
+//z1=6;
+thick=2;
+
+  difference(){
+    // outside shell add thick
+    union(){      
+      // Delfino board
+      hull(){
+        translate([-4-thick,-thick,-4-thick])
+        cube([1+1*thick,24+2*thick,z1+1*thick]);
+        translate([20,12,-4-thick])
+        cylinder(r=12+thick,h=z1+1*thick,$fn=99);
+      }
+    }
+      
+    
+    // CUTS
+    // inner sheel sized for the inverter
+    union(){      
+      // Delfino board
+      hull(){
+        translate([-4,0,-4])
+        cube([1,24,z1+1]);
+        translate([20,12,-4])
+        cylinder(r=12,h=z1+1,$fn=99);
+      }
+    }
+      translate([5,thick,-4+3])
+      rotate([90,0,0])
+      cylinder(r=9.7/2,h=16,center=true,$fn=99);
+    
+  }
+    
+  
+}
+
+//--------------------------------------------------------------------
 // support tub2
 module strut(tol=0.2){
 
 thick=3;
 wide=10;
+y1=116;
  
  // base
  translate([-3,-2*thick,-7-thick]) 
@@ -341,14 +375,14 @@ wide=10;
  // riser
   difference(){
     translate([-3,-2*thick,-7]) 
-    cube([wide,thick-tol,86]); 
+    cube([wide,thick-tol,85]); 
     translate([2,-5,72])
     rotate([90,0,0])
     cylinder(r=1.7,h=16,center=true,$fn=99);
   }
   
  // riser tab
- translate([-3,-1*thick-tol,-7+86-thick+tol]) 
+ translate([-3,-1*thick-tol,-7+85-thick+tol]) 
  cube([wide,thick-tol,thick-tol]); 
 
  // front foot
@@ -377,19 +411,31 @@ wide=10;
   
   // brace to back of outer box
   hull(){
-    translate([-3,-4-1*thick-tol,-7+86-thick+tol]) 
+    translate([-3,-4-1*thick-tol,-7+85-thick+tol]) 
     cube([wide,thick-tol,thick-tol]); 
-    translate([-3,-86,-7+86-thick+tol]) 
+    translate([-3,-y1,-7+85-thick+tol]) 
     cube([wide,thick-tol,thick-tol]); 
   }
   hull(){
-    translate([-3,-2*thick-tol,-7+86-thick+tol-30]) 
+    translate([-3,-2*thick-tol,-7+85-thick+tol-30]) 
     cube([wide,thick-tol,thick-tol]); 
-    translate([-3,-86,-7+86-thick+tol]) 
+    translate([-3,-y1,-7+85-thick+tol-10]) 
     cube([wide,thick-tol,thick-tol]); 
   }
+  
+  difference(){
+    hull(){
+      translate([-3,-y1,-7+86-thick+tol+12]) 
+      cube([wide,thick-tol,thick-tol]); 
+      translate([-3,-y1,-7+86-thick+tol-10]) 
+      cube([wide,thick-tol,thick-tol]); 
+    }
+    translate([2,-y1,86])
+    rotate([90,0,0])
+    cylinder(r=1.7,h=16,center=true,$fn=99);
+  }
+}
 
-}  
 
 //=================================================================================
 
@@ -408,10 +454,10 @@ if(0){
 }
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
 xcut=400;
-ycut=660;
+ycut=300;
 zcut=500;
 
 cutcube = 600;
@@ -432,11 +478,11 @@ intersection(){
 
     // struts
     if(1){
-      translate([330/2+72,255/2+40,3+45])
+      translate([330/2+72,255/2+10,3+45])
       rotate([0,0,180])
       strut();
 
-      translate([330/2+72-165,255/2+40,3+45])
+      translate([330/2+72-165,255/2+10,3+45])
       rotate([0,0,180])
       mirror([1,0,0])
       strut();      
@@ -445,14 +491,14 @@ intersection(){
     // tub
     if(1){
       color("silver")
-      translate([330/2+72,255/2+40,3+45])
+      translate([330/2+72,255/2+11,3+44.0])
       rotate([0,0,180])
       tub2();
     }
     
     // inverter
     if(1){
-      translate([330/2+72,255/2+40,3+45])
+      translate([330/2+72,255/2+11,3+44])
       rotate([0,0,180])
       translate([130,0,-4]) 
       rotate([90,0,180]){
@@ -497,7 +543,8 @@ if(0){
   
 }
 
-tub2();
+//tub2();
+//tubtest();
 //strut();
 //mirror([1,0,0])
 //strut();      
