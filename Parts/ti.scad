@@ -107,6 +107,14 @@ translate([28.0,0,20.5]){
   translate([2,48.5,1.6])
   cube([25.9,5.0,8.4]);
 
+  // bottom side headers, from measurement not drawings
+  color("gray")
+  translate([2,5,-8.4])
+  cube([25.9,5.0,8.4]);
+  color("gray")
+  translate([2,48.5,-8.4])
+  cube([25.9,5.0,8.4]);
+
   // power lines
   color("DeepSkyBlue")
   translate([32.3,48.5,1.6])
@@ -127,7 +135,7 @@ translate([28.0,0,20.5]){
   cube([12,12,9.5]);
   
   // wires
-  if(wires==1){
+  if(wires>0){
     color("black")
     translate([35,48.5,1.6+3])
     rotate([-90,0,0])
@@ -151,6 +159,24 @@ translate([28.0,0,20.5]){
     cylinder(r=1.0,h=20,$fn=22);
   }
   
+  if(wires>1){
+    color("silver")
+    translate([26.5,48.5-40,1.6+12])
+    rotate([-90,0,0])
+    cylinder(r=1.0,h=60,$fn=22);
+    translate([4,48.5-40,1.6+12])
+    rotate([-90,0,0])
+    cylinder(r=1.0,h=60,$fn=22);
+
+    translate([26.5,48.5-40,1.6+20])
+    rotate([-90,0,0])
+    cylinder(r=1.0,h=60,$fn=22);
+    translate([4,48.5-40,1.6+20])
+    rotate([-90,0,0])
+    cylinder(r=1.0,h=60,$fn=22);
+
+    
+  }
 }
 
 }
