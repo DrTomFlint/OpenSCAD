@@ -497,10 +497,24 @@ thick=2;
       
       // overflow
       hull(){
-        translate([-20,-thick,-4+z1-24-2*thick])
-        cube([10+2*thick,y1+2*thick,24+2*thick]);
-        translate([-4-thick,-thick,-4+z1-20-2*thick-18])
-        cube([1,y1+2*thick,1]);
+        translate([-20,-thick,-4+z1-12-2*thick])
+        cube([10+2*thick,y1+2*thick,12+2*thick]);
+        
+        intersection(){
+          translate([-12,y1+2*thick,z1-20])
+          rotate([90+10,0,0])
+          cylinder(r=6+thick/2,h=y1+5*thick,$fn=77);
+          translate([-20,-thick,-4+z1-30-2*thick])
+          cube([10+2*thick,y1+2*thick,30+2*thick]);
+        }
+        
+        intersection(){
+          translate([-4-thick,-2*thick,-4+z1-20-2*thick-14])
+          rotate([10,0,0])
+          cube([1,y1+5*thick,1]);
+          translate([-20,-thick,-4+z1-40-2*thick])
+          cube([10+2*thick,y1+2*thick,30+2*thick]);
+        }
       }
       
       // inlet
@@ -527,22 +541,27 @@ thick=2;
 
       // overflow
       translate([-12,-thick,-4+z1-24])
-      rotate([90,0,0])
+      rotate([90+10,0,0])
       cylinder(r=9.7/2,h=10,center=true,$fn=99);
+      
       translate([-12,4,-4+z1-23])
       rotate([90+10,0,0])
-      cylinder(r=7/2,h=39,center=true,$fn=99);
+      cylinder(r=7/2,h=4,center=true,$fn=99);
       
-      translate([-20+1*thick,2,-4+z1-18])
-      cube([12,y1-thick,20]);
+      translate([-20+1*thick,2+thick,-4+z1-18])
+      cube([12,y1-2*thick,20]);
       
       // pour over
-      translate([-20+3*thick,2,-4+z1-14])
-      cube([12,y1-thick,16]);
+      translate([-20+3*thick,2*thick,-4+z1-14])
+      cube([12,y1-2*thick,16]);
       
-      translate([-12,y1,-4+z1-17])
-      rotate([90,0,0])
-      cylinder(r=6,h=y1-thick,$fn=99);
+      // cut corner
+      translate([-20.1,-2*thick,-4+z1-16])
+      cube([14,6,16]);
+      
+      translate([-12,y1-1,-4+z1-14.6])
+      rotate([90+10,0,0])
+      cylinder(r=6,h=y1-2*thick-2,$fn=99);
 
       // inlet
       translate([x1-7,-thick-4,-4+3.2])
@@ -625,7 +644,7 @@ if(0){
 }
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=400;
 ycut=300;
@@ -710,7 +729,7 @@ if(0){
   
 }
 
-//tub3();
+tub3();
 //tubtest();
 //strut();
 
