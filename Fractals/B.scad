@@ -936,7 +936,7 @@ if(0){
 //s7cut(tol=0.4);
 //color("blue")
 //s7cut2(tol=0.4);
-//rack3();
+rack3();
 
 
 
@@ -950,7 +950,7 @@ if(0){
 //bigSide2();
 
 
-if(1){
+if(0){
     difference(){
         union(){
             translate([0,0,zfoot]){
@@ -979,14 +979,14 @@ if(1){
                     bigTrayFoot2();
                 }
             }
-            if(0){
+            if(1){
                 color("silver",alpha=0.3)
                 bigBox();
                 color("silver",alpha=0.3)
                 bigLid();
             }
         }
-        if(0){
+        if(1){
             // side cut
             translate([-150,0,0])
             cube([300,300,300],center=true);
