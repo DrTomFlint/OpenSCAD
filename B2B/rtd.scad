@@ -15,27 +15,16 @@ tab=10;
   
   difference(){
 
-    union(){
-      // boss
-      translate([-3,0,0])
-      scale([1,1.8,1])
-      rotate([0,90,0])
-      rotate([0,0,30])
-      cylinder(r=3.8,h=12+tab,center=true,$fn=6);
-      // top rib
-      translate([-3,0,3])
-      cube([12,1,2],center=true);
-      // wire capture
-      translate([-6,0,1.9])
-      scale([1,1.8,1])
-      rotate([0,90,0])
-      rotate([0,0,30])
-      cylinder(r=2.7,h=6,center=true,$fn=6);
-    }
-    
+    // boss
+    translate([-3,0,0])
+    scale([1,1.5,1])
+    rotate([0,90,0])
+    rotate([0,0,30])
+    cylinder(r=4.8,h=12+tab,center=true,$fn=6);
+          
     // trim off bottom half
-    translate([0,0,-2])
-    cube([40,20,4],center=true);
+    translate([0,0,-5])
+    cube([40,20,10],center=true);
 
     // trim for tabs
     translate([tab/2+1.5,0,3])
@@ -63,15 +52,21 @@ tab=10;
     translate([-3,1.2,2.7])
     rotate([0,90,0])
     cylinder(r1=0.85,r2=0.65,h=14,center=true,$fn=F1);
-    translate([-3,-1.2,2.7])
-    rotate([0,90,0])
-    cylinder(r1=0.85,r2=0.65,h=14,center=true,$fn=F1);
 
+    hull(){
+      translate([-3,-1.2,2.7])
+      rotate([0,90,0])
+      cylinder(r1=0.85,r2=0.65,h=14,center=true,$fn=F1);
+      translate([-3,-2.6,2.7])
+      rotate([0,90,0])
+      cylinder(r1=0.85,r2=0.65,h=14,center=true,$fn=F1);
+    }
+    
     // cuts for solder junction
-    translate([1.2,1.9,3])
-    cube([4.5,2.8,2.2],center=true);
-    translate([1.2,-1.9,3])
-    cube([4.5,2.8,2.2],center=true);
+    translate([1.2,1.9,3.3])
+    cube([4.5,2.8,2.8],center=true);
+    translate([1.2,-1.9,3.3])
+    cube([4.5,2.8,2.8],center=true);
   }
 
 

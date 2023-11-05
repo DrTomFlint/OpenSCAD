@@ -515,11 +515,11 @@ echo(n,k);
     
     // slice out a pie wedge
     rotate([0,0,ang2])
-    translate([0,-50,-50])    
-    cube([100,100,100]);
+    translate([0,-100,-100])    
+    cube([200,200,200]);
     rotate([0,0,-ang2])
-    translate([0,-50,-50])    
-    cube([100,100,100]);
+    translate([0,-100,-100])    
+    cube([200,200,200]);
   }
 
 }
@@ -555,6 +555,9 @@ ang1=360/sides;
 //s8(n=5,k=1);
 //sA(n=6,k=1.5);
 
+//scale([1,1,1.6])
+//sB(sides=7,peak=2.075);
+
 //scale([1,1,1.5])
 //sB(sides=6,peak=1.74);
 
@@ -563,20 +566,29 @@ ang1=360/sides;
 
 if(1){
 //  lower=5;    // for s9
-  //lower=3.4;  // for sB 5
-  lower=6.5;
+  //lower=6.5;    // sB 5, 6
+  lower=6.0;    // sB 7
+  
 
 //  s9(sides=6,peak=1);
-  scale([1,1,1.18])
-  sB(sides=5,peak=1.37);
+//  scale([1,1,1.18])
+//  sB(sides=5,peak=1.37);
+//  scale([1,1,1.5])
+//  sB(sides=6,peak=1.74);
+  scale([1,1,1.6])
+  sB(sides=7,peak=2.075);
   difference(){
     translate([0,0,0.01])
     rotate([180,0,0])
 //    s9(sides=6,peak=1);
-    scale([1,1,1.18])
-    sB(sides=5,peak=1.37);
+//    scale([1,1,1.18])
+//    sB(sides=5,peak=1.37);
+//    scale([1,1,1.5])
+//    sB(sides=6,peak=1.74);
+    scale([1,1,1.6])
+    sB(sides=7,peak=2.075);
     translate([0,0,-20-lower])
-    cube([40,40,40],center=true);
+    cube([80,80,40],center=true);
   }
 }
 
