@@ -222,15 +222,15 @@ if(0){
   }
 }
 
-if(0){
-  top1();
-//  base1();
+if(1){
+  //~ top1();
+  //~ base1();
 //  base2();
-//  base3();
+  base3();
 }
 
 
-if(1){
+if(0){
   mirror([1,0,0])
   top1();
 //  mirror([1,0,0])
@@ -242,24 +242,27 @@ if(1){
 //  base3();
 }
 
+// hinge trim doesn't work because posts are purposefully too long
+// cut them down to fit the actual box
 if(0){
   difference(){
   rotate([0,0,180]){
+    color("gray")
     top1();
-    base1();
-    base2();
-    base3();
-    mirror([1,0,0])
-    top1();
-    mirror([1,0,0])
-    base1();
-    mirror([1,0,0])
-    base2();
-    mirror([1,0,0])
-    base3();
+    //~ base1();
+    //~ base2();
+    //~ base3();
+    //~ mirror([1,0,0])
+    //~ top1();
+    //~ mirror([1,0,0])
+    //~ base1();
+    //~ mirror([1,0,0])
+    //~ base2();
+    //~ mirror([1,0,0])
+    //~ base3();
   }
   // trim for hinge clearance
-  translate([-160,-200/2-20,64])
+  translate([-160,-200/2-19,66])
   rotate([45,0,0])
   cube([300,0.707*40,0.707*40]);
 }

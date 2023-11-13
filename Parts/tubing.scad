@@ -350,9 +350,45 @@ module rtdplug(){
 }
   
 }
+//--------------------------------------------------------
+module rtdplug2(){
+
+  difference(){
+  union(){
+    // lower section is cylinder
+    cylinder(r1=3.9/2,r2=3.8/2,h=24,$fn=88);
+    // foot
+    cylinder(r=6.5/2,h=2,$fn=88);
+    // just for print stability
+    cylinder(r=4.4,h=0.3,$fn=88);
+  }
+  
+  // bore
+  translate([1.5,0,18])
+  rotate([0,-10,0])
+  cylinder(r=0.7,h=3.5,$fn=88);
+  translate([-1.5,0,18])
+  rotate([0,10,0])
+  cylinder(r=0.7,h=3.5,$fn=88);
+
+  // solder clearance
+  translate([1.5,0,-1])
+  cylinder(r=1.0,h=21,$fn=88);
+  
+  translate([-1.5,0,-1])
+  cylinder(r=1.0,h=21,$fn=88);
+
+// rtd body
+  translate([0,0,22.5])
+  cube([3,1,3.1],center=true);
+
+}
+  
+}
 //===================================
 
 //rtdplug();
+rtdplug2();
 
 //adaptA();
 
@@ -366,7 +402,7 @@ cube([20,20,40]);
 }
 }
 
-adaptB2();
+//adaptB2();
 
 // cutaway view:
 if(0){
