@@ -242,29 +242,31 @@ ang1=360/sides;
 
   for (i=[0:sides-1]){
     rotate([0,0,i*ang1])
-    translate([0.01+1,0,0])
+    translate([0.01+0,0,0])         // used +1 for purple tests?
     sC(sides=sides,peak=peak);
   }
 }
 
 //--------------------------------------------------------------------
-module sE(peak=1.73){
+module sE(sides=6,peak=1.73){
 
-x1=21.5;   // good for order 3, peak 1.73
+//x1=21.5;   // good for order 3, peak 1.73, 6 sides
 //x1=22.25+30;   // good for order 4
 
 //x1=25;   // good for order 3, peak 2.0
 //x1=25+34;   // good for order 4, peak 2.0
 
+x1=-18;   // good for order 3, peak 1.37, 5 sides
+
   difference(){
-    sD(sides=6,peak=peak);
+    sD(sides=sides,peak=peak);
     translate([x1,0,0])
     cylinder(r=0.8,h=100,center=true,$fn=22);
   }
   difference(){
     translate([0,0,0.01])
     rotate([180,0,0])
-    sD(sides=6,peak=peak);
+    sD(sides=sides,peak=peak);
     translate([x1,0,0])
     cylinder(r=0.8,h=100,center=true,$fn=22);
   }
@@ -292,7 +294,8 @@ x1=21.5;   // good for order 3, peak 1.73
 //~ rotate([180,0,0])
 //~ sD(sides=6,peak=1.73);
 
-sE();
+// This is the small good one
+//sE();
 
 
 //sA(n=6,k=1.9);
@@ -301,6 +304,14 @@ sE();
 //sD(sides=6,peak=2);
 
 //sE(peak=2);
+
+// FIVE
+
+//sA(n=5,k=1.37);
+//sB(sides=5,peak=1.37);
+//sC(sides=5,peak=1.37);
+//sD(sides=5,peak=1.37);
+sE(sides=5,peak=1.37);
 
 //=====================================================================
 
