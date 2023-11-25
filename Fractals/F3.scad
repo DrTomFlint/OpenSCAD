@@ -37,6 +37,9 @@ zrise=2;
 
 wall=22+8;
 
+bottom2=3.0;
+r7=82;
+
 
 
 use <../Parts/rounder.scad>
@@ -193,7 +196,7 @@ module pyramid(L=10){
 }
 
 //-----------------------------------------------------------------
-module sA(n=6,k=1.2,cut=1){
+module sA(n=6,k=1.2,cut=0){
 
 ang1=360/n;
 //ang2=ang1*0.75; // for n=5 and k=1
@@ -336,13 +339,14 @@ if(cut==0){
 //---------------------------------------------------------------------
 module rack6(show=0){
 
-bottom=3.0;
+//~ bottom=3.0;
+rt = 7;
 
   difference(){
-    linear_extrude(height=bottom,scale=[0.98,0.94])
+    linear_extrude(height=bottom2,scale=[0.98,0.94])
     square([218,164],center=true);
-    //~ translate([0,0,bottom/2])
-    //~ cube([218,164,bottom],center=true);
+    //~ translate([0,0,bottom2/2])
+    //~ cube([218,164,bottom2],center=true);
 
     // center rows
     for(xi=[0:3]){
@@ -351,40 +355,111 @@ bottom=3.0;
       sE(cut=1);
     }
     // upper row
-    for(xi=[0:2]){
+    for(xi=[-1:3]){
       translate([xi*53-80+53/2,46,2.99])
       rotate([0,0,30])
       sE(cut=1);
     }
     // lower row
-    for(xi=[0:2]){
+    for(xi=[-1:3]){
       translate([xi*53-80+53/2,-46,2.99])
       rotate([0,0,30])
       sE(cut=1);
     }
+  
+    // triangles, center
+    for (k=[0:3]){
+      for(i=[0:5]){
+        translate([-80+53*k,0,0])
+        rotate([0,0,60*i+19])
+        translate([0,27.2,0])
+        rotate([0,0,11])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+
+        translate([-80+53*k,0,0])
+        rotate([0,0,60*i+19+22])
+        translate([0,27.2,0])
+        rotate([0,0,49])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+      }
+    }  
+
+    // triangles, upper
+    for (k=[-1:3]){
+      for(i=[0:5]){
+        translate([-80+53*k+53/2,46,0])
+        rotate([0,0,60*i+19])
+        translate([0,27.2,0])
+        rotate([0,0,11])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+
+        translate([-80+53*k+53/2,46,0])
+        rotate([0,0,60*i+19+22])
+        translate([0,27.2,0])
+        rotate([0,0,49])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+      }
+    }  
+
+    // triangles, lower
+    for (k=[-1:3]){
+      for(i=[0:5]){
+        translate([-80+53*k+53/2,-46,0])
+        rotate([0,0,60*i+19])
+        translate([0,27.2,0])
+        rotate([0,0,11])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+
+        translate([-80+53*k+53/2,-46,0])
+        rotate([0,0,60*i+19+22])
+        translate([0,27.2,0])
+        rotate([0,0,49])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+      }
+    }  
+
+    // triangles, edge
+    for (k=[0:3]){
+      translate([-80+53*k,45+53/2,0])
+      rotate([0,0,30])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+
+      translate([-80+53*k,-45-53/2,0])
+      rotate([0,0,-30])
+        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+    }
+      
   }
-    
+
+  // restore the lip after cutting all the stars and triangles 
+  difference(){
+    linear_extrude(height=bottom2,scale=[0.98,0.94])
+    square([218,164],center=true);
+
+    linear_extrude(height=bottom2,scale=[1.02,1.01])
+    square([218-4-2*bottom2,164-2*bottom2],center=true);
+  }
 }
 
 
 //---------------------------------------------------------------------
 module rack7a(show=0){
 
-bottom=3.0;
-r7=84;
+//~ bottom=3.0;
+//~ r7=84;
 
   // outer ring
   difference(){
-    cylinder(r1=r7+2,r2=r7+2,h=bottom,$fn=100);
-    cylinder(r=r7-0.1,h=4*bottom,center=true,$fn=100);
+    cylinder(r1=r7+2,r2=r7+2,h=bottom2,$fn=100);
+    cylinder(r=r7-0.1,h=4*bottom2,center=true,$fn=100);
   }
 
   // center grillwork
   difference(){
-    //~ linear_extrude(height=bottom,scale=[0.98,0.98])
+    //~ linear_extrude(height=bottom2,scale=[0.98,0.98])
     //~ square([218,164],center=true);
     rotate([0,0,23])
-    cylinder(r1=r7,r2=r7,h=bottom,$fn=100);
+    cylinder(r1=r7,r2=r7,h=bottom2,$fn=100);
 
     // center
     translate([0,0,3.0])
@@ -404,7 +479,7 @@ r7=84;
       rotate([0,0,60*i+19])
       translate([0,28.5,-0.1])
       rotate([0,0,11])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
+      cylinder(r1=6,r2=6+bottom2,h=bottom2+1,$fn=3);
     }
     
 
@@ -428,129 +503,33 @@ r7=84;
       rotate([0,0,60*i+19])
       translate([0,28.5+49*0.58,-0.1])
       rotate([0,0,11+60])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
+      cylinder(r1=6,r2=6+bottom2,h=bottom2+1,$fn=3);
     }
     for(i=[0:5]){
       rotate([0,0,60*i+0])
       translate([0,28.5+46.5,-0.1])
       rotate([0,0,30])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
+      cylinder(r1=6,r2=6+bottom2,h=bottom2+1,$fn=3);
     }
     for(i=[0:5]){
       rotate([0,0,60*i-22.5])
       translate([0,28.5+46.5,-0.1])
       rotate([0,0,-7.5])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
+      cylinder(r1=6,r2=6+bottom2,h=bottom2+1,$fn=3);
     }
 
-    translate([0,0,-bottom/2])
-    cube([300,300,bottom],center=true);
+    translate([0,0,-bottom2/2])
+    cube([300,300,bottom2],center=true);
   }
     
 }
 
-//---------------------------------------------------------------------
-module rack7c(show=0){
-
-bottom=3.0;
-r7=80;
-
-z1 = -0.1;
-z2 = -0.1;
-z3 = 0.0;
-
-  // outer ring
-  difference(){
-    cylinder(r1=r7+6,r2=r7+4,h=bottom,$fn=100);
-    translate([0,0,-0.05])
-    cylinder(r1=r7-2,r2=r7-0.1,h=bottom+0.1,$fn=100);
-  }
-
-  // center grillwork
-  difference(){
-    //~ linear_extrude(height=bottom,scale=[0.98,0.98])
-    //~ square([218,164],center=true);
-    rotate([0,0,23])
-    cylinder(r1=r7,r2=r7,h=bottom,$fn=100);
-
-    // center
-    translate([0,0,3.0])
-    rotate([0,0,30])
-    scale([1.01,1.01,1.01])
-    sE(cut=1);
-
-    // 6 surrounding
-    for(i=[0:5]){
-      rotate([0,0,60*i-11])
-      translate([0,49,3.0])
-      rotate([0,0,-19])
-      sE(cut=1);
-    }
-    
-    // 6 triangles
-    for(i=[0:5]){
-      rotate([0,0,60*i+19])
-      translate([0,28.5,z1])
-      rotate([0,0,11])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
-    }
-    
-
-    // 6 first outer
-    for(i=[0:5]){
-      rotate([0,0,60*i-11])
-      translate([0,49+49,3.0+z3])
-      rotate([0,0,-19])
-      sE(cut=1);
-    }
-    // 6 second outer
-    for(i=[0:5]){
-      rotate([0,0,60*i-11+30])
-      translate([0,49+49*0.75,3.0+z3])
-      rotate([0,0,-19-30])
-      sE(cut=1);
-    }
-
-    // 6 outer triangles
-    for(i=[0:5]){
-      rotate([0,0,60*i+19])
-      translate([0,28.5+49*0.58,z2])
-      rotate([0,0,11+60])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
-    }
-    for(i=[0:5]){
-      rotate([0,0,60*i+0])
-      translate([0,28.5+46.5,z2])
-      rotate([0,0,30])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
-    }
-    for(i=[0:5]){
-      rotate([0,0,60*i-22.5])
-      translate([0,28.5+46.5,z2])
-      rotate([0,0,-7.5])
-      cylinder(r1=6,r2=6+bottom,h=bottom+1,$fn=3);
-    }
-
-    translate([0,0,-bottom/2])
-    cube([300,300,bottom],center=true);
-  }
-  
-  // hanger loop
-  translate([0,86,0])
-  difference(){
-    cylinder(r1=6,r2=4,h=3,$fn=99);
-    translate([0,0,-0.01])
-    cylinder(r=2,h=4,$fn=99);
-  }
-  
-    
-}
 
 //---------------------------------------------------------------------
 module rack7b(show=0){
 
-bottom=3.0;
-r7=84;
+//~ bottom2=3.0;
+//~ r7=84;
 
   color("cyan")
   rack7a();
@@ -566,31 +545,10 @@ r7=84;
 }
 
 //---------------------------------------------------------------------
-module rack7d(){
-
-bottom=3.0;
-r7=84;
-
-  color("cyan")
-  rack7c();
-  
-  translate([0,0,6.2])
-  mirror([0,0,1])
-  difference(){
-    intersection(){
-      rack7c();
-      cylinder(r1=r7-2,r2=r7,h=bottom,$fn=100);
-    }
-    translate([0,0,-20+3-1.2])
-    cube([300,300,40],center=true);
-  }
-  
-}
-//---------------------------------------------------------------------
 module rack7(show=0){
 
-bottom=3.0;
-r7=84;
+//~ bottom2=3.0;
+//~ r7=84;
 
   color("cyan")
   rack7a();
@@ -602,11 +560,11 @@ r7=84;
       rotate([0,0,11])
       difference(){
         intersection(){
-          cylinder(r2=9+bottom+2,r1=9+bottom,h=2,$fn=3);
-          cylinder(r=4+bottom,h=2,$fn=99);
+          cylinder(r2=9+bottom2+2,r1=9+bottom2,h=2,$fn=3);
+          cylinder(r=4+bottom2,h=2,$fn=99);
         }
         translate([0,0,-0.01])
-        cylinder(r2=5+bottom+1,r1=5+bottom,h=2.1,$fn=3);
+        cylinder(r2=5+bottom2+1,r1=5+bottom2,h=2.1,$fn=3);
       }
     }
 
@@ -618,11 +576,11 @@ r7=84;
       rotate([0,0,11+60])
       difference(){
         intersection(){
-          cylinder(r2=9+bottom+2,r1=9+bottom,h=2,$fn=3);
-          cylinder(r=4+bottom,h=2,$fn=99);
+          cylinder(r2=9+bottom2+2,r1=9+bottom2,h=2,$fn=3);
+          cylinder(r=4+bottom2,h=2,$fn=99);
         }
         translate([0,0,-0.01])
-        cylinder(r2=5+bottom+1,r1=5+bottom,h=2.1,$fn=3);
+        cylinder(r2=5+bottom2+1,r1=5+bottom2,h=2.1,$fn=3);
       }
     }
     
@@ -632,11 +590,11 @@ r7=84;
       rotate([0,0,30])
       difference(){
         intersection(){
-          cylinder(r2=9+bottom+2,r1=9+bottom,h=2,$fn=3);
-          cylinder(r=4+bottom,h=2,$fn=99);
+          cylinder(r2=9+bottom2+2,r1=9+bottom2,h=2,$fn=3);
+          cylinder(r=4+bottom2,h=2,$fn=99);
         }
         translate([0,0,-0.01])
-        cylinder(r2=5+bottom+1,r1=5+bottom,h=2.1,$fn=3);
+        cylinder(r2=5+bottom2+1,r1=5+bottom2,h=2.1,$fn=3);
       }
     }
 
@@ -646,11 +604,11 @@ r7=84;
       rotate([0,0,-7.5])
       difference(){
         intersection(){
-          cylinder(r2=9+bottom+2,r1=9+bottom,h=2,$fn=3);
-          cylinder(r=4+bottom,h=2,$fn=99);
+          cylinder(r2=9+bottom2+2,r1=9+bottom2,h=2,$fn=3);
+          cylinder(r=4+bottom2,h=2,$fn=99);
         }
         translate([0,0,-0.01])
-        cylinder(r2=5+bottom+1,r1=5+bottom,h=2.1,$fn=3);
+        cylinder(r2=5+bottom2+1,r1=5+bottom2,h=2.1,$fn=3);
       }
     }
   
@@ -661,6 +619,136 @@ r7=84;
       cylinder(r=2,h=4,$fn=99);
     }
   
+}
+
+//---------------------------------------------------------------------
+module rack7c(show=0){
+
+
+z1 = -0.1;
+z2 = -0.1;
+z3 = 0.0;
+
+  // outer ring
+  difference(){
+    cylinder(r1=r7+6,r2=r7+4,h=bottom2,$fn=100);
+    translate([0,0,-0.05])
+    cylinder(r1=r7-2,r2=r7-0.1,h=bottom2+0.1,$fn=100);
+  }
+
+  // center grillwork
+  difference(){
+    //~ linear_extrude(height=bottom2,scale=[0.98,0.98])
+    //~ square([218,164],center=true);
+    rotate([0,0,23])
+    cylinder(r1=r7,r2=r7,h=bottom2,$fn=100);
+
+    // center
+    translate([0,0,3.0])
+    rotate([0,0,30])
+    sE(cut=1);
+
+    // 6 surrounding
+    for(i=[0:5]){
+      rotate([0,0,60*i-11])
+      translate([0,47,3.0])
+      rotate([0,0,-19])
+      sE(cut=1);
+    }
+    
+    // 6 triangles
+    for(i=[0:5]){
+      rotate([0,0,60*i+19])
+      translate([0,27.2,z1])
+      rotate([0,0,11])
+      cylinder(r1=7,r2=7+bottom2,h=bottom2+0.1,$fn=3);
+    }
+    
+    // 6 first outer
+    for(i=[0:5]){
+      rotate([0,0,60*i-11])
+      translate([0,47+47,3.0+z3])
+      rotate([0,0,-19])
+      sE(cut=1);
+    }
+    // 6 second outer
+    for(i=[0:5]){
+      rotate([0,0,60*i-11+30])
+      translate([0,47+47*0.73,3.0+z3])
+      rotate([0,0,-19-30])
+      sE(cut=1);
+    }
+
+    // 6 outer triangles
+    for(i=[0:5]){
+      rotate([0,0,60*i+19])
+      translate([0,27.2+47*0.575,z2])
+      rotate([0,0,11+60])
+      cylinder(r1=7,r2=7+bottom2,h=bottom2+0.1,$fn=3);
+    }
+    for(i=[0]){
+      rotate([0,0,60*i+0])
+      translate([0,27.2+45,z2])
+      rotate([0,0,30])
+      cylinder(r1=7,r2=7+bottom2,h=bottom2+0.1,$fn=3);
+    }
+    //~ for(i=[0:5]){
+      //~ rotate([0,0,60*i-22.5])
+      //~ translate([0,28.5+46.5,z2])
+      //~ rotate([0,0,-7.5])
+      //~ cylinder(r1=6,r2=6+bottom2,h=bottom2+1,$fn=3);
+    //~ }
+
+    translate([0,0,-bottom2/2])
+    cube([300,300,bottom2],center=true);
+  }
+  
+  //~ // hanger loop
+  //~ translate([0,86,0])
+  //~ difference(){
+    //~ cylinder(r1=6,r2=4,h=3,$fn=99);
+    //~ translate([0,0,-0.01])
+    //~ cylinder(r=2,h=4,$fn=99);
+  //~ }
+  
+    
+}
+
+//---------------------------------------------------------------------
+module rack7d(){
+
+//~ bottom2=3.0;
+//~ r7=84;
+
+  color("cyan")
+  rack7c();
+  
+  translate([0,0,6.2])
+  mirror([0,0,1])
+  difference(){
+    intersection(){
+      rack7c();
+      cylinder(r2=r7+4,r1=r7+4-bottom2,h=bottom2,$fn=100);
+    }
+    translate([0,0,-20+3-1.2])
+    cube([300,300,40],center=true);
+  }
+  
+}
+
+//---------------------------------------------------------------------
+module rack7e(){
+//~ bottom2=3.0;
+//~ r7=84;
+
+  difference(){
+    intersection(){
+      rack7c();
+      cylinder(r1=r7-2,r2=r7,h=bottom2,$fn=100);
+    }
+    translate([0,0,-20+3-1.2])
+    cube([300,300,40],center=true);
+  }
 }
 
 
@@ -692,10 +780,30 @@ r7=84;
 //~ sD(sides=6,peak=1.73);
 
 // This is the small good one
-//sE(cut=1);
+//~ translate([0,0,3.0])
+//~ rotate([0,0,30])
+//~ sE(cut=0);
 
-//~ rack6();
-rack7d();
+rack6();
+
+//~ rack7c();
+//~ rack7d();
+//~ rack7d();
+
+// Test cuts for just the central star
+if(0){
+  difference(){
+    intersection(){
+      rack7e();
+      cylinder(r=35,h=40,center=true);
+    }
+    for(i=[0:5]){
+      rotate([0,0,i*60])
+      translate([52,0,0])
+      cylinder(r=30,h=40,center=true,$fn=6);
+    }
+  }
+}
 
 //sA(n=6,k=1.9);
 //sB(sides=6,peak=2);
