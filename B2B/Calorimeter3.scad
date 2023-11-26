@@ -359,9 +359,9 @@ thick=2;
         
         // base bevel  
         translate([0,y1/2,thick])
-        cylinder(r1=y1/2-z2-thick,r2=y1/2-thick,h=z2,$fn=F1);
+        cylinder(r1=y1/2-z2-thick+1,r2=y1/2-thick,h=z2-1,$fn=F1);
         translate([x1,y1/2,thick])
-        cylinder(r1=y1/2-z2-thick,r2=y1/2-thick,h=z2,$fn=F1);
+        cylinder(r1=y1/2-z2-thick+1,r2=y1/2-thick,h=z2-1,$fn=F1);
       }
 
       // inlet cut
@@ -442,18 +442,27 @@ thick=2;
   rotate([0,-90,0])
   rtdBlock2();
   
-  // Upper inside RTD
-  hull(){
-    difference(){
-      translate([0,y1/2,52.5])
-      cylinder(r=y1/2-thick,h=15,$fn=F1);
+  // Upper inside RTD    
+  difference(){
+    translate([0,y1/2,52.5])
+    cylinder(r=y1/2,h=15,$fn=F1);
 
-      translate([4,y1/2,60])
-      cube([40,40,25],center=true);
+    translate([4,y1/2,60])
+    cube([40,40,50],center=true);
+  }
+
+  intersection(){
+    translate([0,y1/2,30])
+    cylinder(r=y1/2,h=30,$fn=F1);
+
+    hull(){
+      translate([-17,y1/2,53])
+      cube([1,25,1],center=true);
+      translate([-25,y1/2,43])
+      cube([1,25,20],center=true);
     }
-    translate([-y1/2+1,y1/2,40])
-    cube([1,1,1],center=true);
-  }  
+  }
+  
   translate([x1/2-51,y1/2,63])
   rotate([0,0,180])
   rotate([0,-90,0])
@@ -498,9 +507,9 @@ if(0){
 // disable cutaway views if printing or working single parts
 if(1){
   
-xcut=400;
+xcut=300;
 ycut=300;
-zcut=500;
+zcut=300;
 
 cutcube = 600;
 
@@ -511,15 +520,15 @@ intersection(){
   union(){
 
     // base section
-    if(1){
+    if(0){
       base1();
     }
-    if(1){
+    if(0){
       base2();
     }
 
     // struts
-    if(1){
+    if(0){
       translate([330/2+37,255/2+10,3+45])
       rotate([0,0,180])
       strut();
@@ -539,7 +548,7 @@ intersection(){
     }
         
     // inverter
-    if(1){
+    if(0){
       translate([330/2+40,255/2+29,52-7])
       rotate([0,0,180])
       translate([104,-8,0]) 
