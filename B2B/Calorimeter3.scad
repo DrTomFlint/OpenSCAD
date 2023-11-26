@@ -224,10 +224,6 @@ yb=42+2*thick;
  cylinder(r=0.5,h=wide,$fn=44);
  
   // bumps on riser
- translate([-3,-20.2,-7+86-thick+tol]) 
- rotate([0,90,0])
- cylinder(r=0.5,h=wide,$fn=44);
-
  translate([-3,-20.2,68]) 
  rotate([0,90,0])
  cylinder(r=0.5,h=wide,$fn=44);
@@ -252,25 +248,25 @@ yb=42+2*thick;
   
  // front foot
  hull(){
-   translate([-3,20,-8-thick]) 
-   cube([wide,2*thick,thick]); 
-   translate([-3,30,-8-38]) 
-   cube([wide,2*thick,0.1]); 
+   translate([-3,22.5,-8-thick]) 
+   cube([wide,thick-0.5,thick]); 
+   translate([-3,32.5,-8-38]) 
+   cube([wide,thick-0.5,thick]); 
   }
   
  // back foot
  hull(){
    translate([-3,-20-thick,-8-thick]) 
-   cube([wide,2*thick,thick]); 
+   cube([wide,thick,thick]); 
    translate([-3,-20-thick,-8-38]) 
-   cube([wide,2*thick,0.1]); 
+   cube([wide,thick,0.1]); 
   }
   
   // bottom brace between feet
   hull(){
-   translate([-3,29,-7-38]) 
+   translate([-3,28,-8-38]) 
     cube([wide,2*thick,thick]); 
-    translate([-3,-20-thick,-7-38]) 
+    translate([-3,-20-thick,-8-38]) 
     cube([wide,2*thick,thick]); 
   }
   
@@ -505,7 +501,7 @@ if(0){
 }
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
 xcut=300;
 ycut=300;
@@ -592,7 +588,7 @@ if(0){
 
 //~ tub3();
 //~ tubtest();
-//~ strut();
+strut();
 
 
 //=================================================================================
