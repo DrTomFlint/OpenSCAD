@@ -370,51 +370,57 @@ rt = 7;
     // triangles, center
     for (k=[0:3]){
       for(i=[0:5]){
-        translate([-80+53*k,0,0])
-        rotate([0,0,60*i+19])
-        translate([0,27.2,0])
-        rotate([0,0,11])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        hull(){
+          translate([-80+53*k,0,0])
+          rotate([0,0,60*i+19])
+          translate([0,27.2,0])
+          rotate([0,0,11])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
 
-        translate([-80+53*k,0,0])
-        rotate([0,0,60*i+19+22])
-        translate([0,27.2,0])
-        rotate([0,0,49])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+          translate([-80+53*k,0,0])
+          rotate([0,0,60*i+19+22])
+          translate([0,27.2,0])
+          rotate([0,0,49])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        }
       }
     }  
 
     // triangles, upper
     for (k=[-1:3]){
       for(i=[0:5]){
-        translate([-80+53*k+53/2,46,0])
-        rotate([0,0,60*i+19])
-        translate([0,27.2,0])
-        rotate([0,0,11])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        hull(){
+          translate([-80+53*k+53/2,46,0])
+          rotate([0,0,60*i+19])
+          translate([0,27.2,0])
+          rotate([0,0,11])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
 
-        translate([-80+53*k+53/2,46,0])
-        rotate([0,0,60*i+19+22])
-        translate([0,27.2,0])
-        rotate([0,0,49])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+          translate([-80+53*k+53/2,46,0])
+          rotate([0,0,60*i+19+22])
+          translate([0,27.2,0])
+          rotate([0,0,49])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        }
       }
     }  
 
     // triangles, lower
     for (k=[-1:3]){
       for(i=[0:5]){
-        translate([-80+53*k+53/2,-46,0])
-        rotate([0,0,60*i+19])
-        translate([0,27.2,0])
-        rotate([0,0,11])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        hull(){
+          translate([-80+53*k+53/2,-46,0])
+          rotate([0,0,60*i+19])
+          translate([0,27.2,0])
+          rotate([0,0,11])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
 
-        translate([-80+53*k+53/2,-46,0])
-        rotate([0,0,60*i+19+22])
-        translate([0,27.2,0])
-        rotate([0,0,49])
-        cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+          translate([-80+53*k+53/2,-46,0])
+          rotate([0,0,60*i+19+22])
+          translate([0,27.2,0])
+          rotate([0,0,49])
+          cylinder(r1=rt,r2=rt+bottom2,h=bottom2+0.1,$fn=3);
+        }
       }
     }  
 

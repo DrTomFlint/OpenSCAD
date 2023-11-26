@@ -1,10 +1,11 @@
 //=================================================================================
-// Calorimeter2.scad
+// Calorimeter3.scad
 // Calorimeter for inverter loss estimation using immersion cooling
 //
 //
 // Dr Tom Flint, 10 March 2021
 // Change to minimal tub volume design 31 Oct 2023
+// Switch to cylinders instead of cubes 26 Nov 2023
 //
 //=================================================================================
 
@@ -18,6 +19,8 @@ use <./rtd.scad>
 LidAngle=180;
 // Lid Lift
 LidLift=40;
+
+F1=222;
 
 //--------------------------------------------------
 module L1(len=10){
@@ -289,7 +292,7 @@ thick=2;
       // inlet
       translate([175,-thick,-4+5])
       rotate([90,0,0])
-      cylinder(r=9.9/2,h=16,center=true,$fn=99);
+      cylinder(r=9.7/2,h=16,center=true,$fn=99);
       
       // cuts for mounting struts
       translate([163,-5,72])
@@ -471,10 +474,12 @@ yb=43;
 //--------------------------------------------------------------------
 module tub3(){
 
-x1=94;
-y1=38;
+// outer dimensions
+x1=70;
+y1=42;
 y2=y1/2;
 z1=80;
+z2=5;     // bevels on tub
 r1=20;
 
 //z1=6;
@@ -483,175 +488,146 @@ thick=2;
   difference(){
     // outside shell add thick
     union(){      
-      // Delfino board
-      difference(){
-        hull(){
-          translate([-4-thick,-thick,-4-thick])
-          cube([1+1*thick,y1+2*thick,z1+1*thick]);
-          translate([x1,-thick,-4-thick])
-          cube([1+1*thick,y1+2*thick,z1+1*thick]);
-        }
-        translate([x1+1.5*thick,y1+1.0*thick,-4-thick])
-        rotate([0,0,180])
-        rounder(r=r1+thick,h=z1+thick,f=99);
-      }
-      
-      // overflow
+      // Main tub
       hull(){
-        translate([-20,-thick,-4+z1-12-2*thick])
-        cube([10+2*thick,y1+2*thick,12+2*thick]);
-        
-        intersection(){
-          translate([-12,y1+2*thick,z1-20])
-          rotate([90+10,0,0])
-          cylinder(r=6+thick/2,h=y1+5*thick,$fn=77);
-          translate([-20,-thick,-4+z1-30-2*thick])
-          cube([10+2*thick,y1+2*thick,30+2*thick]);
-        }
-        
-        intersection(){
-          translate([-4-thick,-2*thick,-4+z1-20-2*thick-14])
-          rotate([10,0,0])
-          cube([1,y1+5*thick,1]);
-          translate([-20,-thick,-4+z1-40-2*thick])
-          cube([10+2*thick,y1+2*thick,30+2*thick]);
-        }
+        // boss
+        translate([0,y1/2,z2])
+        cylinder(r=y1/2,h=z1,$fn=F1);
+        translate([x1,y1/2,z2])
+        cylinder(r=y1/2,h=z1,$fn=F1);
+        // base bevel  
+        translate([0,y1/2,0])
+        cylinder(r1=y1/2-z2,r2=y1/2,h=z2,$fn=F1);
+        translate([x1,y1/2,0])
+        cylinder(r1=y1/2-z2,r2=y1/2,h=z2,$fn=F1);
+      }
+      // inlet
+      translate([90,y1/2,7])
+      cube([15,14,14],center=true);
+      // outlet
+      hull(){
+        translate([-y1/2,y1/2,75])
+        cube([15,14,14],center=true);
+        translate([-y1/2+1,y1/2,55])
+        cube([1,1,1],center=true);
       }
       
-      // inlet
-      translate([x1-14,-thick-7,-6])
-      cube([14,9,12]);
     }
     
     // CUTS
     // inner sheel sized for the inverter
     union(){      
-      // Delfino board
-      difference(){
-        hull(){
-          translate([-4,0,-4])
-          cube([1,y1,z1+1]);
-          translate([x1-thick/2,0,-4])
-          cube([thick,y1,z1]);
-        }
-        translate([x1+0.5*thick,y1,-4-thick])
-        rotate([0,0,180])
-        rounder(r=r1,h=z1+thick,f=99);
-        }
+      // main tub
+      hull(){
+        // boss
+        translate([0,y1/2,z2+thick])
+        cylinder(r=y1/2-thick,h=z1+1,$fn=F1);
+        translate([x1,y1/2,z2+thick])
+        cylinder(r=y1/2-thick,h=z1+1,$fn=F1);
+        
+        // base bevel  
+        translate([0,y1/2,thick])
+        cylinder(r1=y1/2-z2-thick,r2=y1/2-thick,h=z2,$fn=F1);
+        translate([x1,y1/2,thick])
+        cylinder(r1=y1/2-z2-thick,r2=y1/2-thick,h=z2,$fn=F1);
       }
 
-      // overflow
-      translate([-12,-thick,-4+z1-24])
-      rotate([90+10,0,0])
-      cylinder(r=9.7/2,h=10,center=true,$fn=99);
-      
-      translate([-12,4,-4+z1-23])
-      rotate([90+10,0,0])
-      cylinder(r=7/2,h=4,center=true,$fn=99);
-      
-      translate([-20+1*thick,2+thick,-4+z1-18])
-      cube([12,y1-2*thick,20]);
-      
-      // pour over
-      translate([-20+3*thick,2*thick,-4+z1-14])
-      cube([12,y1-2*thick,16]);
-      
-      // cut corner
-      translate([-20.1,-2*thick,-4+z1-16])
-      cube([14,6,16]);
-      
-      translate([-12,y1-1,-4+z1-14.6])
-      rotate([90+10,0,0])
-      cylinder(r=6,h=y1-2*thick-2,$fn=99);
-
-      // inlet
-      translate([x1-7,-thick-4,-4+3.2])
-      rotate([90,0,0])
-      cylinder(r=9.7/2,h=8,center=true,$fn=99);
-      translate([x1-7,-thick-3,-4+3.2])
-      rotate([90,0,0])
-      cylinder(r=6.66/2,h=10.1,center=true,$fn=99);
+      // inlet cut
+      translate([90,y1/2,7])
+      rotate([0,90,0])
+      cylinder(r=9.9/2,h=16,center=true,$fn=99);
+      // outlet cut
+      translate([-y1/2,y1/2,75])
+      rotate([0,90,0])
+      cylinder(r=9.9/2,h=16,center=true,$fn=99);
       
       // cuts for mounting struts
-      translate([x1-20,-5,72])
+      translate([x1-5,-5,82])
       rotate([90,0,0])
       cylinder(r=1.7,h=16,center=true,$fn=99);
-      translate([2,-5,72])
+      translate([5,-5,82])
       rotate([90,0,0])
       cylinder(r=1.7,h=16,center=true,$fn=99);
-    }
     
-    // supports for the GaN board
-    translate([2,0,0]){
-      difference(){
-        translate([-2,7,-4])
-        cube([8,6,4]);
-        translate([0,9.25,-2])
-        cube([6,2,2]);
-      }
-      difference(){
-        translate([75,7,-4])
-        cube([8,6,4]);
-        translate([75,9.25,-2])
-        cube([6,2,2]);
-      }
-    }
+    } // end of union
+  }   // end of diffs
     
-    // AeroAmp Logo
-    translate([x1/2-10,y1+thick,60])
-    rotate([0,0,180])
-    rotate([90,0,0])
-    linear_extrude(height=0.3,scale=1)
-    text("AeroAmp", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
- 
-    translate([x1/2-10,y1+thick,50])
-    rotate([0,0,180])
-    rotate([90,0,0])
-    linear_extrude(height=0.3,scale=1)
-    text("Oct 2023", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
-
-    // Front outside RTD
-    translate([x1/2-5,y1+thick+0,30])
-    rotate([0,-90,0])
-    rotate([-90,0,0])
-    rtdBlock1();
-    
-    // Back outside RTD
-    translate([x1/2-5,y1-40,30])
-    rotate([0,-90,0])
-    rotate([90,0,0])
-    rtdBlock1();
-
-    // Low inside RTD
-    translate([x1/2+48,y1-28,16])
-    rotate([0,0,0])
-    rotate([0,-90,0])
-    rtdBlock2();
-    
-    // Middle-back inside RTD
-    translate([x1/2-8,y1-40+thick,35])
-    rotate([0,0,-90])
-    rotate([0,-90,0])
-    rtdBlock2();
-    
-    // Upper inside RTD
+  // supports for the GaN board
+  translate([0,0,thick]){
     difference(){
-      translate([x1/2-51,y1-16+thick,56])
-      rotate([0,0,180])
-      rotate([0,-90,0])
-      rtdBlock2();
-
-      translate([x1/2-51,y1-16+thick,67])
-      cube([20,30,10],center=true);
+      translate([-6,10,0])
+      cube([8,6,4]);
+      translate([-3.5,11.7,2.5])
+      cube([6.5,2,2]);
     }
-    
-    // Middle-front inside RTD
-    translate([x1/2-8,y1,35])
-    rotate([0,0,90])
-    rotate([0,-90,0])
-    rtdBlock2();
-    
+    difference(){
+      translate([70,10,0])
+      cube([8,6,4]);
+      translate([70,11.7,2.5])
+      cube([6.5,2,2]);
+    }
+  }
   
+  // AeroAmp Logo
+  translate([x1/2,y1-0.01,75])
+  rotate([0,0,180])
+  rotate([90,0,0])
+  linear_extrude(height=0.3,scale=1)
+  text("AeroAmp", font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+
+  translate([x1/2,y1-0.01,65])
+  rotate([0,0,180])
+  rotate([90,0,0])
+  linear_extrude(height=0.3,scale=1)
+  text("Nov 2023", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+
+  // Front outside RTD
+  translate([x1/2,y1-0.01,43])
+  rotate([0,-90,0])
+  rotate([-90,0,0])
+  rtdBlock1();
+  
+  // Back outside RTD
+  translate([x1/2,0.01,43])
+  rotate([0,-90,0])
+  rotate([90,0,0])
+  rtdBlock1();
+
+  // Low inside RTD
+  translate([x1+1,y1/2+4,thick])
+  rotate([0,0,0])
+  rtdBlock2();
+  
+  // Middle-back inside RTD
+  translate([x1/2,y1-40,43])
+  rotate([0,0,-90])
+  rotate([0,-90,0])
+  rtdBlock2();
+
+  // Middle-front inside RTD
+  translate([x1/2,y1-thick,43])
+  rotate([0,0,90])
+  rotate([0,-90,0])
+  rtdBlock2();
+  
+  // Upper inside RTD
+  hull(){
+    difference(){
+      translate([0,y1/2,52.5])
+      cylinder(r=y1/2-thick,h=15,$fn=F1);
+
+      translate([4,y1/2,60])
+      cube([40,40,25],center=true);
+    }
+    translate([-y1/2+1,y1/2,40])
+    cube([1,1,1],center=true);
+  }  
+  translate([x1/2-51,y1/2,63])
+  rotate([0,0,180])
+  rotate([0,-90,0])
+  rtdBlock2();
+  
+    
 }
 
 
@@ -688,10 +664,10 @@ if(0){
 }
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
-xcut=400;
-ycut=701;
+xcut=300;
+ycut=300;
 zcut=500;
 
 cutcube = 600;
@@ -731,10 +707,10 @@ intersection(){
     }
         
     // inverter
-    if(1){
-      translate([330/2+40,255/2+11,3+44])
+    if(0){
+      translate([330/2+40,255/2+11,52])
       rotate([0,0,180])
-      translate([108+2,-11,0]) 
+      translate([104,-8,0]) 
       rotate([90,0,180])
       gan(wires=2);
     }
@@ -773,7 +749,7 @@ if(0){
   
 }
 
-tub3();
+//~ tub3();
 //~ tubtest();
 //~ strut();
 

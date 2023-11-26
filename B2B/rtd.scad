@@ -20,7 +20,7 @@ tab=10;
     scale([1,1.5,1])
     rotate([0,90,0])
     rotate([0,0,30])
-    cylinder(r=4.8,h=12+tab,center=true,$fn=6);
+    cylinder(r=4.8+tol,h=12+tab+tol,center=true,$fn=6);
           
     // trim off bottom half
     translate([0,0,-5])
@@ -28,9 +28,9 @@ tab=10;
 
     // trim for tabs
     translate([tab/2+1.5,0,3])
-    cube([tab/2+2,20,4],center=true);
+    cube([tab/2+2-tol,20-tol,4-tol],center=true);
     translate([-tab/2-7,0,3])
-    cube([tab/2+2,20,4],center=true);
+    cube([tab/2+2-tol,20-tol,4-tol],center=true);
     
     translate([-2,0,0]){
       // cuts for the rtd body
@@ -72,9 +72,81 @@ tab=10;
 
 }
 
+//----------------------------------------------------------------------
+module rtdBlock1(){
+
+thick=4.3;
+
+  difference(){
+    translate([-3,0,0])
+    linear_extrude(height=thick,scale=[0.3,0.65])
+    square([13,25],center=true);
+
+    translate([0,0,1])
+    cube([24,7,8],center=true);
+    
+    rtd(tol=0.2);
+  }
+
+}
+
+//----------------------------------------------------------------------
+module rtdBlock2(){
+
+thick=6;
+
+  difference(){
+    translate([-3,0,0])
+    linear_extrude(height=thick,scale=[0.2,0.7])
+    square([15,26],center=true);
+    
+    //~ translate([0,0,1.2])
+    //~ cube([24,15,6],center=true);
+    translate([-3,0,0])
+    linear_extrude(height=4.2,scale=[1,1.7])
+    square([15,8.5],center=true);
+    
+    translate([-3,0,4.2])
+    linear_extrude(height=thick,scale=[1,0.4])
+    square([15,14.5],center=true);
+  }
+
+}
+
+//----------------------------------------------------------------------
+module rtdTest(){
+  
+//~ rtd();
+translate([-2.5,0,0])
+rtdBlock1();
+
+//~ translate([0,26,4.2])
+//~ rotate([180,0,0])
+//~ rtd();
+
+translate([-1.5,26,0])
+rtdBlock2();
+
+translate([-10,-14,-0.8])
+cube([13,54,0.8]);
+
+translate([-12,-14,-5])
+cube([2.1,54,5]);
+
+}  
+
 //======================================================================
 
-rtd();
+//~ rtd();
+//~ rtdBlock1();
+
+//~ translate([0,0,4.2])
+//~ rotate([180,0,0])
+//~ rtd();
+
+//~ rtdBlock2();
+
+rtdTest();
 
 //======================================================================
 
