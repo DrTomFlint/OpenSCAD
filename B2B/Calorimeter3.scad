@@ -16,9 +16,9 @@ use <./quickie.scad>
 use <./rtd.scad>
 
 // Lid Angle
-LidAngle=180;
+LidAngle=0;
 // Lid Lift
-LidLift=40;
+LidLift=0;
 
 F1=222;
 
@@ -86,20 +86,29 @@ module base2(){
   // base plate
   color("pink")
   translate([-15.2-3,-15.2-3,-15.2])
-  cube([330+2*(15.2+3),254+2*(15.2+3),15.2]);
+  cube([336+30.4,260+30.4,15.2]);
+  
+  color("cyan")
+  translate([-2*15.2-3,-2*15.2-3,-2*15.2])
+  cube([336+30.4+30.4,260+30.4+30.4,15.2]);
   
   difference(){
     // back plate
-    color("pink")
-    translate([-3-15.2,254+3,0])
-    cube([330+2*(3+15.2),15.2,152+15.2]);
+    union(){
+      color("pink")
+      translate([-3-15.2,254+3,0])
+      cube([330+2*(3+15.2),15.2,152+15.2]);
+      color("cyan")
+      translate([-3-2*15.2,254+3+15.2,-15.2])
+      cube([336+4*15.2,15.2,152+3*15.2]);
+    }
     // holes for coolant
     translate([65,260,3+40])
     rotate([90,0,0])
-    cylinder(r=9.2,h=30,center=true,$fn=33);
+    cylinder(r=9.2,h=60,center=true,$fn=33);
     translate([245,260,3+72])
     rotate([90,0,0])
-    cylinder(r=9.2,h=30,center=true,$fn=33);
+    cylinder(r=9.2,h=60,center=true,$fn=33);
   }
 }
 
@@ -170,22 +179,34 @@ if(1){
   color("pink")
   translate([-15.2-3,-15.2-3,152])
   cube([330+2*(3+15.2),254+6+15.2,15.2]);
+  color("cyan")
+  translate([-2*15.2-3,-2*15.2-3,152+15.2])
+  cube([336+4*15.2,254+6+3*15.2,15.2]);
 }
 
   // left plate
   color("pink")
   translate([-15.2-3,-3,0])
   cube([15.2,254+6,152]);
+  color("cyan")
+  translate([-2*15.2-3,-3-15.2,-15.2])
+  cube([15.2,254+6+2*15.2,152+2*15.2]);
   
   // right plate
   color("pink")
   translate([330+3,-3,0])
   cube([15.2,254+6,152]);
+  color("cyan")
+  translate([330+3+15.2,-3-15.2,-15.2])
+  cube([15.2,254+6+2*15.2,152+2*15.2]);
   
   // front plate
   color("pink")
   translate([-15.2-3,-3-15.2,0])
   cube([330+2*(15.2+3),15.2,152]);
+  color("cyan")
+  translate([-2*15.2-3,-3-2*15.2,-15.2])
+  cube([336+4*15.2,15.2,152+2*15.2]);
 
 }
 //--------------------------------------------------------------------
@@ -501,11 +522,11 @@ if(0){
 }
 
 // disable cutaway views if printing or working single parts
-if(0){
+if(1){
   
-xcut=300;
-ycut=300;
-zcut=300;
+xcut=400;
+ycut=400;
+zcut=500;
 
 cutcube = 600;
 
@@ -536,7 +557,7 @@ intersection(){
     }
     
     // tub
-    if(1){
+    if(0){
       color("silver")
       translate([330/2+40,255/2+30-1.5,3+44.0+0.5-7])
       rotate([0,0,180])
@@ -553,7 +574,7 @@ intersection(){
     }
 
     // lid
-    if(0){
+    if(1){
       translate([0,LidLift,LidLift])
       translate([0,254,152+15.2])
       rotate([-LidAngle,0,0])
@@ -588,7 +609,7 @@ if(0){
 
 //~ tub3();
 //~ tubtest();
-strut();
+//~ strut();
 
 
 //=================================================================================
