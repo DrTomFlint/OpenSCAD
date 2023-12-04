@@ -15,10 +15,16 @@ use <../Parts/ti.scad>
 use <./quickie.scad>
 use <./rtd.scad>
 
-// Lid Angle
-LidAngle=0;
-// Lid Lift
-LidLift=0;
+// Lid Open
+LidAngle=90;
+LidLiftZ=20;
+LidLiftY=250;
+
+// Lid Closed
+//~ LidAngle=0;
+//~ LidLiftZ=0;
+//~ LidLiftY=0;
+
 
 F1=222;
 
@@ -488,47 +494,119 @@ thick=2;
     
 }
 
+//--------------------------------------------------------------------
+module shelf(){
+
+
+  translate([-35,350,130]) 
+  cube([390,140,20]);
+    
+}
+
+//--------------------------------------------------------------------
+module base3(tol=0){
+
+wide=30;
+thick=5;
+hi=30;
+      
+  difference(){
+    union(){
+      translate([0,0,0]) 
+      cube([2*thick+16+15+3,wide,hi]);
+    }
+    translate([thick,-1,thick]) 
+    cube([16.01,wide+2,hi]);
+    translate([thick+16,-1,thick+15]) 
+    cube([15.01+3,wide+2,hi]);
+
+    translate([thick,0,hi])
+    rotate([-90,0,0])
+    rotate([0,0,90])
+    rounder(r=thick-2,h=wide+2,f=55);
+    
+    translate([0,0,hi])
+    rotate([-90,0,0])
+    rotate([0,0,0])
+    rounder(r=2,h=wide+2,f=55);
+    
+    translate([thick+16+15+3,0,hi])
+    rotate([-90,0,0])
+    rotate([0,0,0])
+    rounder(r=thick-2,h=wide+2,f=55);
+
+    translate([2*thick+16+15+3,0,hi])
+    rotate([-90,0,0])
+    rotate([0,0,90])
+    rounder(r=2,h=wide+2,f=55);
+
+    translate([thick+16,0,15+thick])
+    rotate([-90,0,0])
+    rotate([0,0,0])
+    rounder(r=thick-1,h=wide+2,f=55);
+
+    translate([0,0,0])
+    rotate([-90,0,0])
+    rotate([0,0,-90])
+    rounder(r=2,h=wide+2,f=55);
+
+    translate([thick+16+11,0,5+thick])
+    rotate([-90,0,0])
+    rotate([0,0,0])
+    cylinder(r=6,h=3*wide,center=true,$fn=55);
+  }    
+
+  // fillets
+  translate([thick+16+15+3,0,15+thick])
+  rotate([-90,0,0])
+  rotate([0,0,180])
+  rounder(r=2,h=wide,f=55);
+    
+  translate([thick+16,0,thick])
+  rotate([-90,0,0])
+  rotate([0,0,180])
+  rounder(r=2,h=wide,f=55);
+
+  translate([thick,0,thick])
+  rotate([-90,0,0])
+  rotate([0,0,-90])
+  rounder(r=2,h=wide,f=55);
+  
+  // back tab
+  difference(){
+    hull(){
+      translate([2*thick+16+15+3+15,wide/2+7,0])
+      cylinder(r=wide/4,h=thick,$fn=99);
+      translate([2*thick+16+15+3+15,wide/2-7,0])
+      cylinder(r=wide/4,h=thick,$fn=99);
+      translate([2*thick+16+15+3,0,0])
+      cube([1,wide,thick]);
+    }
+    translate([2*thick+16+15+3+17,wide/2+7,0])
+    cylinder(r=1.7,h=3*thick,center=true,$fn=99);
+    translate([2*thick+16+15+3+17,wide/2-7,0])
+    cylinder(r=1.7,h=3*thick,center=true,$fn=99);
+  }
+  translate([2*thick+16+15+3,0,thick])
+  rotate([-90,0,0])
+  rotate([0,0,-90])
+  rounder(r=4,h=wide,f=55);
+
+}
 
 //=================================================================================
 
+base3();
 
-
-if(0){
-  //color("silver",alpha=0.4)
-  tub2();
-  //strut();
-    
-  translate([130,0,-4]) 
-  rotate([90,0,180]){
-  launch();
-  gan();
-  }
-}
-
-if(0){
-  difference(){
-    union(){
-      //color("silver",alpha=0.4)
-      tub3();
-      //strut();
-        
-      translate([108,-11,-1.8]) 
-      rotate([90,0,180])
-      gan(wires=2);
-    }
-    translate([50,120,0])
-    cube([200,200,200],center=true);
-  }
-}
 
 // disable cutaway views if printing or working single parts
-if(1){
+if(0){
   
-xcut=400;
-ycut=400;
-zcut=500;
+xcut=600;
+ycut=800;
+zcut=800;
 
-cutcube = 600;
+cutcube = 1000;
 
 intersection(){
   translate([-cutcube+xcut,-cutcube+ycut,-cutcube+zcut])
@@ -544,6 +622,27 @@ intersection(){
       base2();
     }
 
+    // lid
+    if(1){
+      translate([0,LidLiftY,LidLiftZ])
+      translate([0,254,152+15.2])
+      rotate([-LidAngle,0,0])
+      translate([0,-254,-152-15.2])
+      {
+        if(1){
+          lid1();
+        }
+        if(1){
+          lid2();
+        }
+      }
+    }
+
+    // shelf
+    if(1){
+      shelf();
+    }
+    
     // struts
     if(0){
       translate([330/2+37,255/2+10,3+45])
@@ -573,39 +672,12 @@ intersection(){
       gan(wires=2);
     }
 
-    // lid
-    if(1){
-      translate([0,LidLift,LidLift])
-      translate([0,254,152+15.2])
-      rotate([-LidAngle,0,0])
-      translate([0,-254,-152-15.2])
-      {
-        if(1){
-          lid1();
-        }
-        if(1){
-          lid2();
-        }
-      }
-    }
   }
 }
 }
-// for printing and individual part editing, do below this line ---
 
-if(0){
-  color("silver", alpha=0.7)
-  top1();
-  spider1();
-  mirror([1,0,0])
-  spider1();
-  translate([-129.8/2,58.5/2,-35])
-  rotate([180,0,0]){
-    launch();
-    gan();
-  }
-  
-}
+
+// for printing and individual part editing, do below this line ---
 
 //~ tub3();
 //~ tubtest();

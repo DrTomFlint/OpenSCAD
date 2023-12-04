@@ -1056,9 +1056,9 @@ module handle(){
 dz=28.0;
 
 //grip();
-//terminal();
+terminal();
 
-handle();
+//handle();
 
 showcut=0;
 show1=0;

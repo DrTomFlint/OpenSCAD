@@ -338,15 +338,157 @@ thick=-0.1;
   }  
 }
 
+//---------------------------------------------------------------------------------
+// replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
+// wire through the loop
+module lemcase4(round=1){
+
+thick=1.0;
+
+  // outer body
+  difference(){
+    translate([0,thick/2-0.5,0])
+    cube([20.0+2*thick,12+1*thick+1,21.32+2*thick],center=true);
+
+    if(round==1){
+      translate([10+thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2+thick,h=14,f=99);
+
+      translate([-10-thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2+thick,h=14,f=99);
+    }
+    
+    // bore for conductor
+    hull(){
+      translate([1+3.3,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2,h=15,center=true,$fn=45);
+      translate([1-3.3,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2,h=15,center=true,$fn=45);
+    }
+    
+    // cut for pcb signal wires
+    translate([-10,-6-thick/2-0.5,-21.32/2-thick-0.1])
+    cube([2.8,12+1,3]);
+
+    difference(){
+      // main hole
+      translate([0,-0.5,0])
+      cube([20.0,12.1+1,21.32],center=true);
+      
+      // top rounders
+      translate([10,6,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2,h=12.1+1,f=33);
+      translate([-10,6,21.32/2])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2,h=12.1+1,f=33);
+
+      // bottom right notches
+      translate([10-0.5,0,-21.32/2+1.8])
+      cube([1.0,8+3+1,0.73],center=true);
+      translate([10-0.5,0,-21.32/2+1.5+2.2])
+      cube([1.0,8+3+1,0.73],center=true);
+
+      // left side notches
+      translate([-10+3.0+3.5,0,-21.32/2])
+      cube([0.73,8+3+1,1],center=true);
+      translate([-10+5.5,0,21.32/2-0.4])
+      cube([1.0,8+3+1,1.0],center=true);
+      
+      // right side isn't as deep
+      translate([-4,3.75+1.5,-21.32/2])
+      cube([14,1,25]);
+      
+      // bore for conductor
+      hull(){
+        translate([1+3.3,0,0.6])
+        rotate([90,0,0])
+        cylinder(r=5/2+0.6,h=15,center=true,$fn=45);
+        translate([1-3.3,0,0.6])
+        rotate([90,0,0])
+        cylinder(r=5/2+0.6,h=15,center=true,$fn=45);
+      }
+    }
+  }  
+  
+  // add strain relief 4-wire ribbon cable, 6x1.2 
+  translate([-3,0,0]){
+    difference(){
+      translate([4,1.5,-(20.0+3*thick)/2])
+      cube([6,12+1*thick+1-3,4.5],center=true);
+    
+      translate([0,thick/2-0.5,0])
+      cube([20.0+2*thick,12+1*thick+1,21.32+2*thick],center=true);
+
+      translate([0,thick/2-0.5-3,-(21.32+2*thick)/2-0.5])
+      cube([20.0+2*thick,12+1*thick+1,1.2],center=true);
+      
+    }
+
+    translate([2,thick+0.5,-(21.32+2*thick)/2-2.1])
+    rotate([90,0,0])
+    cylinder(r=thick,h=12+1*thick+1-3,center=true,$fn=77);
+    translate([6,thick+0.5,-(21.32+2*thick)/2-2.1])
+    rotate([90,0,0])
+    cylinder(r=thick,h=12+1*thick+1-3,center=true,$fn=77);
+  }
+}
+
+//---------------------------------------------------------------------------------
+// replacement shell for the LEM15's which don't allow enough space to get a 12 awg 
+// wire through the loop
+module lemlid4(round=1){
+
+thick=-0.1;
+
+  // outer body
+  translate([0,-5.5,0])
+  difference(){
+    translate([0,thick/2,0])
+    cube([20.0+2*thick,0.9,21.32+2*thick],center=true);
+
+    if(round==1){
+      translate([10+thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,180])
+      rounder(r=2+thick,h=14,f=99);
+
+      translate([-10-thick,6+thick,21.32/2+thick])
+      rotate([90,0,0])
+      rotate([0,0,-90])
+      rounder(r=2+thick,h=14,f=99);
+    }
+    
+    // bore for conductor
+    hull(){
+      translate([1+3.3,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2+0.8,h=15,center=true,$fn=45);
+      translate([1-3.3,0,0.6])
+      rotate([90,0,0])
+      cylinder(r=5/2+0.8,h=15,center=true,$fn=45);
+    }
+
+  }  
+}
+
 //=================================================================================
 
 //color("red",alpha=0.7)
 //lemcase();
 
-color("red")
-//lemcase2();
-//translate([0,10,0])
-lemlid2();
+//color("red")
+//lemcase4();
+//translate([0,-1,0])
+lemlid4();
 
 //lemcase3();
 
