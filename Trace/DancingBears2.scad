@@ -20,6 +20,11 @@ use <./DancingBib2.scad>
 use <./DancingBib3.scad>
 use <./DancingBib4.scad>
 use <./DancingBib5.scad>
+use <./DancingShadow1.scad>
+use <./DancingShadow2.scad>
+use <./DancingShadow3.scad>
+use <./DancingShadow4.scad>
+use <./DancingShadow5.scad>
 
 mag=42;
 thick=1.2;
@@ -263,16 +268,68 @@ module bib(num=1){
 
 
 //----------------------------------------------------------------------
-module tab(wide=6){
+module tab(wide=10){
   
+  translate([0,4,0])
   difference(){
     translate([0,0,-4])
     linear_extrude(height=4.0,scale=[1,1.2])
     square([wide, 18.0],center=true);
+    
     translate([0,0,-4.05])
     linear_extrude(height=4.1,scale=[1,1.1])
     square([wide+2, 14.0],center=true);
   }
+}
+
+//----------------------------------------------------------------------
+module back(num=1,lip=6){
+
+translate([0,0,-lip]){
+  difference(){
+    if(num==1){
+      scale([mag,mag,lip])  
+      DancingShadow1();
+    }
+    if(num==2){
+      scale([mag,mag,lip])  
+      DancingShadow2();
+    }
+    if(num==3){
+      scale([mag,mag,lip])  
+      DancingShadow3();
+    }
+    if(num==4){
+      scale([mag,mag,lip])  
+      DancingShadow4();
+    }
+    if(num==5){
+      scale([mag,mag,lip])  
+      DancingShadow5();
+    }
+    // cut away registration marks
+    translate([mag/2,mag/2,-1])
+    cylinder(r=mag/8,h=lip+2);
+    translate([-mag/2,mag/2,-1])
+    cylinder(r=mag/8,h=lip+2);
+    translate([-mag/2,-mag/2,-1])
+    cylinder(r=mag/8,h=lip+2);
+    translate([mag/2,-mag/2,-1])
+    cylinder(r=mag/8,h=lip+2);
+    
+    // cut for bare led tape
+    translate([0,4,0])
+    cube([100,12.2,1],center=true);
+
+    // cut sewing holes
+    translate([0,4+6,3])
+    rotate([0,90,0])
+    cylinder(r=0.6,h=100,center=true,$fn=22);
+    translate([0,4-6,3])
+    rotate([0,90,0])
+    cylinder(r=0.6,h=100,center=true,$fn=22);
+  }
+}
 }
 
 //======================================================================
@@ -283,7 +340,9 @@ for(i=[1:5]){
     //~ field(num=i);
     //~ bear(num=i);
     //~ body(num=i);
-    bib(num=i);
+    //~ bib(num=i);
+    //~ tab();
+    back(num=i);
   }
 }
 
