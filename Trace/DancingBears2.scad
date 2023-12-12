@@ -321,6 +321,12 @@ translate([0,0,-lip]){
     translate([0,4,0])
     cube([100,12.2,1],center=true);
 
+    // adjascent leds stick up from tape
+    translate([16.5,4,0])
+    cube([7,7,4],center=true);
+    translate([-16.5,4,0])
+    cube([7,7,4],center=true);
+
     // cut sewing holes
     translate([0,4+6,3])
     rotate([0,90,0])
@@ -335,14 +341,14 @@ translate([0,0,-lip]){
 //======================================================================
 
 
-for(i=[1:5]){
+for(i=[2:4]){
   translate([(i-1)*45,0,0]){
     //~ field(num=i);
     //~ bear(num=i);
     //~ body(num=i);
-    //~ bib(num=i);
+    bib(num=i);
     //~ tab();
-    back(num=i);
+    //~ back(num=i);
   }
 }
 
