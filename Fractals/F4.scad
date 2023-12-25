@@ -48,7 +48,7 @@ use <../Fractals/Lsystem.scad>
 //~ hi=0.9;
 //~ rescale=0.67;
 
-
+//--------------------
 // F4f:
 //~ sides=5;
 //~ peak=1.4;
@@ -62,10 +62,72 @@ use <../Fractals/Lsystem.scad>
 //~ rescale = 0.8;
 
 // F4h:
-sides=7;
-peak=2.075;
+//~ sides=7;
+//~ peak=2.075;
+//~ hi=1.5;
+//~ rescale = 0.67;
+
+//----------------------
+// F4i:
+//~ sides=5;
+//~ peak=1.4;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 20.5;
+//~ r2 = 25.0;
+
+// F4j:
+//~ sides=6;
+//~ peak=1.73;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 25.5;
+//~ r2 = 31.0;
+
+// F4k:
+//~ sides=7;
+//~ peak=2.075;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 30.5;
+//~ r2 = 37.0;
+
+//----------------------
+// F4m:
+//~ sides=5;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 26.0;
+//~ r2 = 33.5;
+
+//~ peak1=2.4;
+//~ peak2=1.4;
+//~ dxa=8.8;
+
+// F4n:
+sides=6;
+peak1=1.73;
+peak2=1.73;
 hi=1.5;
-rescale = 0.67;
+rescale = 1.0;
+ring=1;
+r1 = 25.5;
+r2 = 31.0;
+
+// F4o:
+//~ sides=7;
+//~ peak1=1.8;
+//~ peak2=2.075;
+//~ dxa=-2.42;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 28;
+//~ r2 = 34.5;
 
 
 //----------------------------------------------------------
@@ -109,7 +171,7 @@ module sA(cut=0){
 ang1=360/sides;
 ang2=45;
 
-  scale([peak,1,1])    
+  scale([peak1,1,1])    
   difference(){
       rotate([0,0,45])
       if(cut==0){
@@ -135,17 +197,111 @@ ang2=45;
 
 }
 
+
+//-----------------------------------------------------------------
+module sA1(cut=0){
+
+ang1=360/sides;
+ang2=45;
+
+  translate([dxa,0,0])
+  scale([peak1,1,1])    
+  difference(){
+      rotate([0,0,45])
+      if(cut==0){
+        difference(){
+            ss(order-1);
+            // remove bottom spikes
+            translate([-120,-120,-3])
+            cube([240,240,3]);
+        }
+      }else{
+        rotate([0,0,45])
+        cylinder(r1=size*3.33*order*cos(45),r2=0.01,h=size*3.33*order*cos(45),$fn=4);
+      }
+    
+    // slice out a pie wedge
+    rotate([0,0,ang2])
+    translate([0,-100,-100])    
+    cube([200,200,200]);
+    rotate([0,0,-ang2])
+    translate([0,-100,-100])    
+    cube([200,200,200]);
+    // cut into core and tip
+    translate([-8.8,-100,-100])    
+    cube([200,200,200]);
+  }
+
+}
+
+//-----------------------------------------------------------------
+module sA2(cut=0){
+
+ang1=360/sides;
+ang2=45;
+
+  scale([peak2,1,1])    
+  difference(){
+      rotate([0,0,45])
+      if(cut==0){
+        difference(){
+            ss(order-1);
+            // remove bottom spikes
+            translate([-120,-120,-3])
+            cube([240,240,3]);
+        }
+      }else{
+        rotate([0,0,45])
+        cylinder(r1=size*3.33*order*cos(45),r2=0.01,h=size*3.33*order*cos(45),$fn=4);
+      }
+    
+    // slice out a pie wedge
+    rotate([0,0,ang2])
+    translate([0,-100,-100])    
+    cube([200,200,200]);
+    rotate([0,0,-ang2])
+    translate([0,-100,-100])    
+    cube([200,200,200]);
+
+
+    // cut into core and tip
+    translate([-8.8-200,-100,-100])    
+    cube([200,200,200]);
+  }
+
+}
+
+
 //-----------------------------------------------------------------
 module sC(){
 
 
+if(peak1==peak2){
+  // center hexagon and triangular points have same scale
   intersection(){
     translate([0,0,-50+hi])
     cube([200,200,100],center=true);
     
     translate([0.01,0,0])
-    sA(cut=0);
+    sA(cut=0);  
   }
+}else{
+  // center hexagon and triangular points have different scale
+  intersection(){
+    translate([0,0,-50+hi])
+    cube([200,200,100],center=true);
+    
+    translate([0.01,0,0])
+    sA1(cut=0);
+  }
+  intersection(){
+    translate([0,0,-50+hi])
+    cube([200,200,100],center=true);
+    
+    translate([0.01,0,0])
+    sA2(cut=0);
+  }
+}
 
 }
 
@@ -184,7 +340,7 @@ difference(){
 }
 
 //--------------------------------------------------------------------
-module sE(cut=0,ring=1){
+module sE(cut=0){
 
 x1=22;
 
@@ -192,14 +348,14 @@ scale([rescale,rescale,1])
 if(cut==0){
   // full detail shape
   difference(){
-    sD2(dimple=1);
+    sD2(dimple=0);
     //~ translate([x1,0,0])
     //~ cylinder(r=0.8,h=100,center=true,$fn=22);
   }
   difference(){
     translate([0,0,0.01])
     rotate([180,0,0])
-    sD2();
+    sD2(dimple=0);
     //~ translate([x1,0,0])
     //~ cylinder(r=0.8,h=100,center=true,$fn=22);
   }
@@ -227,17 +383,22 @@ if(cut==0){
 
 if(ring==1){
   // outer ring
+  translate([0,0,-0.75/2*hi])
   difference(){
-    cylinder(r=24.5,h=hi*2,center=true,$fn=99);
-    cylinder(r=23.5,h=hi*3,center=true,$fn=99);
+    cylinder(r=r1,h=hi*1.25,center=true,$fn=99);
+    cylinder(r=r1-1,h=hi*3,center=true,$fn=99);
   }
  
 }  
 
   // hanger loop
-  translate([-25.5,0,0])
+  translate([-r2,0,-0.75/2*hi])
   difference(){
-    cylinder(r=1.75,h=hi*2,center=true,$fn=99);
+    hull(){
+      cylinder(r=1.75,h=hi*1.25,center=true,$fn=99);
+      translate([4,0,0])
+      cylinder(r=0.4,h=hi*1.25,center=true,$fn=99);
+    }
     cylinder(r=1,h=hi*3,center=true,$fn=99);
   }
 
@@ -253,6 +414,11 @@ if(ring==1){
 //~ sC();
 //~ sD();
 sE();
+
+
+// rescale A parts
+//~ sA1();
+//~ sA2();
 
 //=====================================================================
 
