@@ -32,7 +32,7 @@ use <../Fractals/Lsystem.scad>
 //~ rescale = 1.0;
 //~ ring=1;
 //~ r1 = 13.0;
-//~ r2 = 17.75;
+//~ r2 = 17.0;
 
 //~ peak1=2.4;
 //~ peak2=1.4;
@@ -46,7 +46,7 @@ use <../Fractals/Lsystem.scad>
 //~ rescale = 1.0;
 //~ ring=1;
 //~ r1 = 12;
-//~ r2 = 16.0;
+//~ r2 = 15.7;
 
 // F5c:
 sides=7;
@@ -57,7 +57,7 @@ hi=1.5;
 rescale = 1.0;
 ring=1;
 r1 = 14;
-r2 = 16.5;
+r2 = 16.2;
 
 
 //----------------------------------------------------------
@@ -322,14 +322,15 @@ if(ring==1){
 }  
 
   // hanger loop
-  translate([-r2,0,-0.75/2*hi])
+  translate([-r2,0,-hi+0.9/2])
   difference(){
     hull(){
-      cylinder(r=1.75,h=hi*1.25,center=true,$fn=99);
-      translate([4,0,0])
-      cylinder(r=0.4,h=hi*1.25,center=true,$fn=99);
+      cylinder(r=1.5,h=0.9,center=true,$fn=99);
+      translate([5,0,0])
+      //scale([1,3,1])
+      cylinder(r=0.4,h=0.9,center=true,$fn=99);
     }
-    cylinder(r=1,h=hi*3,center=true,$fn=99);
+    cylinder(r=0.7,h=hi*3,center=true,$fn=99);
   }
 
 
