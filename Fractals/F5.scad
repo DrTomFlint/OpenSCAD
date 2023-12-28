@@ -33,7 +33,6 @@ use <../Fractals/Lsystem.scad>
 //~ ring=1;
 //~ r1 = 13.0;
 //~ r2 = 17.0;
-
 //~ peak1=2.4;
 //~ peak2=1.4;
 //~ dxa=4.4;
@@ -59,6 +58,10 @@ ring=1;
 r1 = 14;
 r2 = 16.2;
 
+//~ zmax = 5.6;   // def
+//~ zmax = 3.3;       // ghi
+
+zmax = 12;       // jkl
 
 //----------------------------------------------------------
 // sierpinsky recursive code 
@@ -236,6 +239,30 @@ if(peak1==peak2){
 }
 
 //-----------------------------------------------------------------
+// try non-flat top
+module sC2(){
+
+
+  intersection(){
+    translate([0,0,-50+zmax])
+    cube([200,200,100],center=true);
+
+
+    if(peak1==peak2){    
+      translate([0.01,0,0])
+      sA(cut=0);  
+    }else{
+      union(){
+        translate([0.01,0,0])
+        sA1(cut=0);
+        translate([0.01,0,0])
+        sA2(cut=0);
+      }
+    }
+  }
+}
+
+//-----------------------------------------------------------------
 module sD(){
 
 ang1=360/sides;
@@ -252,20 +279,11 @@ module sD2(dimple=0){
 
 ang1=360/sides;
 
-difference(){
-  union(){
-    for (i=[0:sides-1]){
-      rotate([0,0,i*ang1])
-      translate([0,0,0])         // used +1 for purple tests?
-      sC();
-    }
+  for (i=[0:sides-1]){
+    rotate([0,0,i*ang1])
+    translate([0,0,0])         // used +1 for purple tests?
+    sC2();
   }
-  // dimple for a sequin
-  if(dimple==1){
-    translate([0,0,hi-0.6])
-    cylinder(r=3.8/rescale,h=1,$fn=33);
-  }
-}
 
 }
 
@@ -278,16 +296,12 @@ scale([rescale,rescale,1])
 if(cut==0){
   // full detail shape
   difference(){
-    sD2(dimple=0);
-    //~ translate([x1,0,0])
-    //~ cylinder(r=0.8,h=100,center=true,$fn=22);
+    sD2();
   }
   difference(){
     translate([0,0,0.01])
     rotate([180,0,0])
-    sD2(dimple=0);
-    //~ translate([x1,0,0])
-    //~ cylinder(r=0.8,h=100,center=true,$fn=22);
+    sD();
   }
 }else{
   // simplified shape for cutting  
@@ -346,6 +360,7 @@ if(ring==1){
 //~ sD();
 sE();
 
+//~ sC2();
 
 // rescale A parts
 //~ sA1();
