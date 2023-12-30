@@ -59,9 +59,11 @@ r1 = 14;
 r2 = 16.2;
 
 //~ zmax = 5.6;   // def
-//~ zmax = 3.3;       // ghi
+zmax = 3.3;       // ghi
 
-zmax = 12;       // jkl
+//~ zmax = 12;       // jkl
+
+hanger=0;
 
 //----------------------------------------------------------
 // sierpinsky recursive code 
@@ -336,6 +338,7 @@ if(ring==1){
 }  
 
   // hanger loop
+if(hanger==1){  
   translate([-r2,0,-hi+0.9/2])
   difference(){
     hull(){
@@ -346,7 +349,7 @@ if(ring==1){
     }
     cylinder(r=0.7,h=hi*3,center=true,$fn=99);
   }
-
+}
 
 }
 

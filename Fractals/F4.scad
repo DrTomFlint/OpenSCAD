@@ -103,32 +103,35 @@ use <../Fractals/Lsystem.scad>
 //~ ring=1;
 //~ r1 = 26.0;
 //~ r2 = 33.5;
-
 //~ peak1=2.4;
 //~ peak2=1.4;
 //~ dxa=8.8;
+//~ hi2=3;
 
 // F4n:
-sides=6;
-peak1=1.73;
-peak2=1.73;
-hi=1.5;
-rescale = 1.0;
-ring=1;
-r1 = 25.5;
-r2 = 31.0;
-
-// F4o:
-//~ sides=7;
-//~ peak1=1.8;
-//~ peak2=2.075;
-//~ dxa=-2.42;
+//~ sides=6;
+//~ peak1=1.73;
+//~ peak2=1.73;
 //~ hi=1.5;
 //~ rescale = 1.0;
 //~ ring=1;
-//~ r1 = 28;
-//~ r2 = 34.5;
+//~ r1 = 25.5;
+//~ r2 = 31.0;
+//~ hi2=3;
 
+// F4o:
+sides=7;
+peak1=1.8;
+peak2=2.075;
+dxa=-2.42;
+hi=1.5;
+rescale = 1.0;
+ring=1;
+r1 = 28;
+r2 = 34.5;
+hi2=3;
+
+hanger=0;
 
 //----------------------------------------------------------
 // sierpinsky recursive code 
@@ -306,6 +309,39 @@ if(peak1==peak2){
 }
 
 //-----------------------------------------------------------------
+module sC2(){
+
+
+if(peak1==peak2){
+  // center hexagon and triangular points have same scale
+  intersection(){
+    translate([0,0,-50+hi2])
+    cube([200,200,100],center=true);
+    
+    translate([0.01,0,0])
+    sA(cut=0);  
+  }
+}else{
+  // center hexagon and triangular points have different scale
+  intersection(){
+    translate([0,0,-50+hi2])
+    cube([200,200,100],center=true);
+    
+    translate([0.01,0,0])
+    sA1(cut=0);
+  }
+  intersection(){
+    translate([0,0,-50+hi2])
+    cube([200,200,100],center=true);
+    
+    translate([0.01,0,0])
+    sA2(cut=0);
+  }
+}
+
+}
+
+//-----------------------------------------------------------------
 module sD(){
 
 ang1=360/sides;
@@ -316,27 +352,16 @@ ang1=360/sides;
     sC();
   }
 }
-
 //-----------------------------------------------------------------
-module sD2(dimple=0){
+module sD2(){
 
 ang1=360/sides;
 
-difference(){
-  union(){
-    for (i=[0:sides-1]){
-      rotate([0,0,i*ang1])
-      translate([0,0,0])         // used +1 for purple tests?
-      sC();
-    }
+  for (i=[0:sides-1]){
+    rotate([0,0,i*ang1])
+    translate([0,0,0])         // used +1 for purple tests?
+    sC2();
   }
-  // dimple for a sequin
-  if(dimple==1){
-    translate([0,0,hi-0.6])
-    cylinder(r=3.8/rescale,h=1,$fn=33);
-  }
-}
-
 }
 
 //--------------------------------------------------------------------
@@ -348,16 +373,12 @@ scale([rescale,rescale,1])
 if(cut==0){
   // full detail shape
   difference(){
-    sD2(dimple=0);
-    //~ translate([x1,0,0])
-    //~ cylinder(r=0.8,h=100,center=true,$fn=22);
+    sD2();
   }
   difference(){
     translate([0,0,0.01])
     rotate([180,0,0])
-    sD2(dimple=0);
-    //~ translate([x1,0,0])
-    //~ cylinder(r=0.8,h=100,center=true,$fn=22);
+    sD();
   }
 }else{
   // simplified shape for cutting  
@@ -391,6 +412,7 @@ if(ring==1){
  
 }  
 
+if(hanger==1){
   // hanger loop
   translate([-r2,0,-0.75/2*hi])
   difference(){
@@ -401,6 +423,7 @@ if(ring==1){
     }
     cylinder(r=1,h=hi*3,center=true,$fn=99);
   }
+}
 
 
 }
