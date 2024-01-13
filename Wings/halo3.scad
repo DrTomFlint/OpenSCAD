@@ -150,13 +150,83 @@ dr=2;
 
 }  
 
+//----------------------------------------------------------------------
+module ribbon(){
+
+r7 = 80;
+r8 = 0.5;
+x7 = 8.5;
+y7 = 0.4;
+M=29*2;
+
+$fn=22;
+
+difference(){
+  rotate_extrude($fn=300)
+  translate([r7,0]){
+    // band
+    translate([0,x7])
+    circle(r=r8,$fn=6);
+    translate([0,-x7])
+    rotate(0)
+    circle(r=r8,$fn=6);
+    square([y7,2*x7],center=true);
+    // foot
+    translate([0,-10])
+    square([y7,2*x7],center=true);
+    translate([-5,-18.1])
+    square([10,2*y7],center=true);
+  }
+  
+  //~ for (i=[0:M-1]){
+    //~ rotate([0,0,360/M*i])
+    //~ translate([r7,0,0])
+    //~ rotate([0,90,0])
+    //~ scale([2,1,1])
+    //~ cylinder(r=x7/2-1,h=10,center=true,$fn=6);
+  //~ }
+  //~ for (i=[0:M-1]){
+    //~ rotate([0,0,360/M*i])
+    //~ translate([r7,0,-2*x7])
+    //~ rotate([0,90,0])
+    //~ scale([2,1,1])
+    //~ cylinder(r=x7/2-1,h=30,center=true,$fn=6);
+  //~ }
+
+  for (i=[0:14]){
+    rotate([0,0,360/14*i])
+    translate([r7-15,0,-2*x7])
+    cylinder(r=14,h=30,center=true,$fn=33);
+  }
+  for (i=[0:14]){
+    rotate([0,0,360/14*i+180/14])
+    translate([r7-5,0,-2*x7])
+    cylinder(r=1,h=30,center=true,$fn=33);
+  }
+}
+
+}
+
+
 //======================================================================
+
+  ribbon();
+
+
+//~ difference(){
+  //~ ribbon();
+  //~ translate([100,0,0])
+  //~ cube([200,200,200],center=true);
+  //~ rotate([0,0,149])
+  //~ translate([100,0,0])
+  //~ cube([200,200,200],center=true);
+//~ }
 
 //~ tip();
 //~ halo3();
 
 //~ color("red")
-lock();
+//~ lock();
 
 if(0){
   difference(){

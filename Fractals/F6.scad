@@ -1,15 +1,19 @@
 //======================================================================
-// F4.scad
+// F6.scad
 // 
-// 5 pointed small fractal stars for earrings.
+// F6: Increase size of order 2 fractal by changing the "size" param.
+// That requires manual fixes to the ring and hanger positions.
 //
-// DrTomFlint 23 Dec 2023
+// F5:Try to shrink down F4 ornaments, they are too big for good earrings.
+// Reduce the order from 3 to 2.
+//
+// DrTomFlint 25 Dec 2023
 //======================================================================
 
 // order of sierpinski fractal
-order = 3; //[0,1,2,3,4,5,6,7]
+order = 2; //[0,1,2,3,4,5,6,7]
 // size of smallest pyramid
-size = 2.5; //[2:50]
+size = 5; //[2:50]
 
 /* [Hidden] */
 eps = 0.25;         // translate for pyramids
@@ -24,112 +28,43 @@ epsy = 0.12;        // translate for cube cuts
 use <../Parts/rounder.scad>
 use <../Fractals/Lsystem.scad>
 
-// F4a:
-//~ sides=5;
-//~ peak=1.4;
-//~ hi=0.9;
-//~ rescale = 1.0;
-
-// F4bc:
-//~ sides=5;
-//~ peak=1.4;
-//~ hi=1.5;
-//~ rescale = 1.0;
-
-// F4d:
-//~ sides=6;
-//~ peak=1.73;
-//~ hi=0.9;
-//~ rescale=0.8;
-
-// F4e:
-//~ sides=7;
-//~ peak=2.075;
-//~ hi=0.9;
-//~ rescale=0.67;
-
-//--------------------
-// F4f:
-//~ sides=5;
-//~ peak=1.4;
-//~ hi=1.5;
-//~ rescale = 1.0;
-
-// F4g:
-//~ sides=6;
-//~ peak=1.73;
-//~ hi=1.5;
-//~ rescale = 0.8;
-
-// F4h:
-//~ sides=7;
-//~ peak=2.075;
-//~ hi=1.5;
-//~ rescale = 0.67;
-
 //----------------------
-// F4i:
-//~ sides=5;
-//~ peak=1.4;
-//~ hi=1.5;
-//~ rescale = 1.0;
-//~ ring=1;
-//~ r1 = 20.5;
-//~ r2 = 25.0;
+// F6a:
+sides=5;
+hi=1.5;
+rescale = 1.0;
+ring=1;
+r1 = 26.0;
+r2 = 36.5;
+peak1=2.4;
+peak2=1.4;
+//dxa=4.4;
+dxa=9.4;
 
-// F4j:
-//~ sides=6;
-//~ peak=1.73;
-//~ hi=1.5;
-//~ rescale = 1.0;
-//~ ring=1;
-//~ r1 = 25.5;
-//~ r2 = 31.0;
-
-// F4k:
-//~ sides=7;
-//~ peak=2.075;
-//~ hi=1.5;
-//~ rescale = 1.0;
-//~ ring=1;
-//~ r1 = 30.5;
-//~ r2 = 37.0;
-
-//----------------------
-// F4m:
-//~ sides=5;
-//~ hi=1.5;
-//~ rescale = 1.0;
-//~ ring=1;
-//~ r1 = 26.0;
-//~ r2 = 33.5;
-//~ peak1=2.4;
-//~ peak2=1.4;
-//~ dxa=8.8;
-//~ hi2=3;
-
-// F4n:
+// F6b:
 //~ sides=6;
 //~ peak1=1.73;
 //~ peak2=1.73;
 //~ hi=1.5;
 //~ rescale = 1.0;
 //~ ring=1;
-//~ r1 = 25.5;
-//~ r2 = 31.0;
-//~ hi2=3;
+//~ r1 = 24;
+//~ r2 = 34;
 
-// F4o:
-sides=7;
-peak1=1.8;
-peak2=2.075;
-dxa=-2.42;
-hi=1.5;
-rescale = 1.0;
-ring=1;
-r1 = 28;
-r2 = 34.5;
-hi2=3;
+// F6c:
+//~ sides=7;
+//~ peak1=1.5;
+//~ peak2=2.075;
+//~ //dxa=-2.5;
+//~ dxa=-5.3;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=1;
+//~ r1 = 28;
+//~ r2 = 35;
+
+zmax = 3.3;       // F6def
+//~ zmax = 1.5;       // symmetric top/bottom, F6abc
 
 hanger=1;
 
@@ -231,7 +166,8 @@ ang2=45;
     translate([0,-100,-100])    
     cube([200,200,200]);
     // cut into core and tip
-    translate([-8.8,-100,-100])    
+    //~ translate([-4.4,-100,-100])    // ******was -8.8-200 changed for order 3->2
+    translate([-9.4,-100,-100])    // ****** altered for size 2.5->5
     cube([200,200,200]);
   }
 
@@ -268,7 +204,8 @@ ang2=45;
 
 
     // cut into core and tip
-    translate([-8.8-200,-100,-100])    
+//    translate([-4.4-200,-100,-100])    // ******was -8.8-200 changed for order 3->2
+    translate([-9.4-200,-100,-100])  
     cube([200,200,200]);
   }
 
@@ -309,36 +246,27 @@ if(peak1==peak2){
 }
 
 //-----------------------------------------------------------------
+// try non-flat top
 module sC2(){
 
 
-if(peak1==peak2){
-  // center hexagon and triangular points have same scale
   intersection(){
-    translate([0,0,-50+hi2])
+    translate([0,0,-50+zmax])
     cube([200,200,100],center=true);
-    
-    translate([0.01,0,0])
-    sA(cut=0);  
-  }
-}else{
-  // center hexagon and triangular points have different scale
-  intersection(){
-    translate([0,0,-50+hi2])
-    cube([200,200,100],center=true);
-    
-    translate([0.01,0,0])
-    sA1(cut=0);
-  }
-  intersection(){
-    translate([0,0,-50+hi2])
-    cube([200,200,100],center=true);
-    
-    translate([0.01,0,0])
-    sA2(cut=0);
-  }
-}
 
+
+    if(peak1==peak2){    
+      translate([0.01,0,0])
+      sA(cut=0);  
+    }else{
+      union(){
+        translate([0.01,0,0])
+        sA1(cut=0);
+        translate([0.01,0,0])
+        sA2(cut=0);
+      }
+    }
+  }
 }
 
 //-----------------------------------------------------------------
@@ -352,8 +280,9 @@ ang1=360/sides;
     sC();
   }
 }
+
 //-----------------------------------------------------------------
-module sD2(){
+module sD2(dimple=0){
 
 ang1=360/sides;
 
@@ -362,6 +291,7 @@ ang1=360/sides;
     translate([0,0,0])         // used +1 for purple tests?
     sC2();
   }
+
 }
 
 //--------------------------------------------------------------------
@@ -412,19 +342,19 @@ if(ring==1){
  
 }  
 
-if(hanger==1){
   // hanger loop
-  translate([-r2,0,-0.75/2*hi])
+if(hanger==1){  
+  translate([-r2,0,-hi+0.9/2])
   difference(){
     hull(){
-      cylinder(r=1.75,h=hi*1.25,center=true,$fn=99);
-      translate([4,0,0])
-      cylinder(r=0.4,h=hi*1.25,center=true,$fn=99);
+      cylinder(r=1.5,h=0.9,center=true,$fn=99);
+      translate([5,0,0])
+      //scale([1,3,1])
+      cylinder(r=0.4,h=0.9,center=true,$fn=99);
     }
-    cylinder(r=1,h=hi*3,center=true,$fn=99);
+    cylinder(r=0.7,h=hi*3,center=true,$fn=99);
   }
 }
-
 
 }
 
@@ -438,6 +368,7 @@ if(hanger==1){
 //~ sD();
 sE();
 
+//~ sC2();
 
 // rescale A parts
 //~ sA1();

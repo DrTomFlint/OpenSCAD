@@ -63,7 +63,7 @@ zmax = 3.3;       // ghi
 
 //~ zmax = 12;       // jkl
 
-hanger=0;
+hanger=1;
 
 //----------------------------------------------------------
 // sierpinsky recursive code 
