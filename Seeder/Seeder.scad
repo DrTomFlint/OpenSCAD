@@ -9,26 +9,108 @@
 use <../Gears/gears.scad>
 
 r0 = 20;    // radius disks
-r1 = 20.5;  // radius of tub cuts
 
-r3 = 1.5;     // radius of axle
+r3 = 2.5;     // radius of axle
 
 r4 = 4;     // radius of outlet 
 ang1 = 35;  // rotation of popout to match outlet
 
 r5 = 5;  // radius of popout
 
-x0 = 2;     // thickness of disks
+x0 = 2.5;     // thickness of disks
 x1 = 25;    // thickness at top of tub
 
 thick = 1.2;  // thickness of tub walls
 
-d0 = 0.5;     // gap between disk and tub
+d0 = 0.2;     // gap around edge of disk
+d1 = 1.5;     // gap from front of disk to tub
 
-$fn=55;
+F1 = 200;
+F2 = 33;
 
 //----------------------------------------------------------------------
 module tub(){
+
+  difference(){
+    union(){
+      // main bin
+      hull(){        
+        translate([(x0+d1+2*thick)/2,0,0])
+        rotate([0,90,0])
+        rotate_extrude($fn=F1)
+        translate([r0+d0+thick,0,0])
+        circle(r=(x0+d1+2*thick)/2,$fn=F2);
+
+        translate([(x0+d1+2*thick)/2+d1,0,0])
+        rotate([0,90,0])
+        rotate_extrude($fn=F1)
+        translate([r0+d0+thick,0,0])
+        circle(r=(x0+d1+2*thick)/2,$fn=F2);
+        
+        translate([thick+x1/2,0,r0+d1+x0])
+        cube([x1+2*thick,2*(r0+d0+thick)+(x0+d1+2*thick),3],center=true);
+      }
+
+      // exit hole 
+      translate([-thick-1.5,-r0/2,3])
+      rotate([0,30,0])
+      cylinder(r1=r4+thick-2,r2=r4+thick,h=16,$fn=F2);              
+      // downpipe
+      translate([-thick-1,-r0/2,-25.5])
+      cylinder(r=r4+thick-2,h=30,$fn=F2);              
+    }
+    
+    // main bin cut
+    hull(){
+      translate([(x0+d1+2*thick)/2,0,0])
+      rotate([0,90,0])
+      rotate_extrude($fn=F1)
+      translate([r0+d0,0,0])
+      circle(r=(x0+d1)/2,$fn=F2);
+
+      translate([(x0+d1+2*thick)/2+d1,0,0])
+      rotate([0,90,0])
+      rotate_extrude($fn=F1)
+      translate([r0+d0,0,0])
+      circle(r=(x0+d1)/2,$fn=F2);
+      
+      translate([thick+x1/2,0,r0+d0+d1+x0+0.1])
+      cube([x1,2*(r0+d0)+(x0+d1),3],center=true);
+    }
+
+    // exit hole cut
+    translate([-thick-1.5,-r0/2,3])
+    rotate([0,30,0])
+    cylinder(r1=r4-2,r2=r4,h=16.1,$fn=F2);  
+                
+    // downpipe cut
+    translate([-thick-1,-r0/2,-25.5])
+    cylinder(r=r4-1.75,h=30,$fn=F2);              
+    
+    // axle cut
+    translate([0,0,0])
+    rotate([0,90,0])
+    cylinder(r=r3+0.15,h=2*x1,center=true,$fn=F2);
+    
+  }
+
+  // built in washer so disk spins freely
+  difference(){
+    // axle cut
+    translate([thick,0,0])
+    rotate([0,90,0])
+    cylinder(r=r3+5,h=0.5,center=true,$fn=F2);
+
+    // axle cut
+    translate([0,0,0])
+    rotate([0,90,0])
+    cylinder(r=r3+4.5,h=2*x1,center=true,$fn=F2);
+  }
+  
+}
+
+//----------------------------------------------------------------------
+module tub_OLD(){
 
   difference(){
     union(){
@@ -70,7 +152,7 @@ module tub(){
     // axle cut
     translate([0,0,0])
     rotate([0,90,0])
-    cylinder(r=r3+0.15,h=2*x1,center=true);
+    cylinder(r=r3+0.05,h=2*x1,center=true);
     
   }
   
@@ -80,29 +162,36 @@ module tub(){
 module disk(N=5,rs=1){
 
   difference(){
-    // main disk
-    rotate([0,90,0]){
-      cylinder(r=r0-thick, h=x0);
-    }  
 
+    translate([(x0+d1+2*thick)/2,0,0])
+    rotate([0,90,0])
+    rotate_extrude($fn=F1)
+    
+    hull(){
+      translate([r0,0,0])
+      circle(r=(x0)/2,$fn=F2);
+      translate([0.5,0])
+      square([1,x0],center=true);
+    }
+    
     // axle cut
     translate([0,0,0])
     rotate([0,90,0])
-    cylinder(r=r3+0.15,h=2*x1,center=true);
+    cylinder(r=r3+0.1,h=2*x1,center=true,$fn=6);
   
     // scoop cuts
     for(i=[0:N-1]){
       rotate([360/N*i-15,0,0])
-      translate([x0/2,r0-rs-2.5,0])
+      translate([x0/2+2.5,r0-rs-2.5,0])
       rotate([0,-45,0])
-      cylinder(r1=2.0*rs,r2=1.0*rs,h=4*x0,center=true);
+      cylinder(r1=3.0*rs,r2=0.8*rs,h=4*x0,center=true,$fn=F2);
 
-      rotate([360/N*i-36,0,0])
-      translate([x0/2+1.8,r0-rs-0,0])
-      rotate([30,-5,0])
+      rotate([360/N*i-37,0,0])
+      translate([x0/2+3.5,r0-rs-2,0])
+      rotate([15,-6,0])
       rotate([0,-90,0])
       scale([1.5,0.8,1])
-      cylinder(r=5,h=2,center=true);
+      cylinder(r=5.5,h=2,center=true,$fn=F2);
     }
     
 
@@ -147,13 +236,9 @@ rotate([ang1,0,0])
 //----------------------------------------------------------------------
 module axle(){
 
-  difference(){
-    rotate([0,90,0])
-    cylinder(r1=r3-0.1,r2=r3+0.1,h=2*x1,center=true);
-    
-    translate([0,0,-5-r3+0.3])
-    cube([100,100,10],center=true);
-  }
+  rotate([0,90,0])
+  cylinder(r=r3,h=3*x1,center=true,$fn=6);
+   
 }
 
 //----------------------------------------------------------------------
@@ -187,7 +272,7 @@ module axle2(){
 }
 
 //----------------------------------------------------------------------
-module cap(){
+module cap_OLD(){
 
   difference(){
     translate([(x1+4*thick)/2-thick,-r0/2-3*thick,r0+thick])
@@ -223,10 +308,30 @@ module cap(){
   
 }
 
+//----------------------------------------------------------------------
+module cap(tol=0.2){
+
+  difference(){
+    translate([thick+x1/2,0,r0+d0+thick-1])
+    cube([x1+4*thick,2*r0+4*thick,5],center=true);
+
+    translate([thick+x1/2,0,r0+d0-1])
+    cube([x1+2*thick+tol,2*r0+2*thick+tol,5],center=true);
+  
+  }
+  
+}
+
 
 //======================================================================
 // diskA is default
 
+xoff=-100;
+yoff=100;
+
+difference(){
+  union(){
+    
 // gear for modeling
 //~ rotate([ang1,0,0])
 //~ translate([x0+1.4,0,0])
@@ -238,16 +343,23 @@ module cap(){
 
 //~ tub();
 
-cap();
+//~ cap();
 
-//~ translate([thick+0.2,0,0])
-//~ disk();
+//~ translate([-0.5,0,0])
+disk();
 
 //~ popout();
 
 //~ axle();
 
 //~ axle2();
+
+
+}
+
+translate([100+xoff,100+yoff,0])
+cube([200,200,200],center=true);
+}
 
 
 //======================================================================
