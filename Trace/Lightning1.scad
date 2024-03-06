@@ -142,6 +142,28 @@ module L1jig(){
   
 }
     
+//------------------------------------------------------------
+module L3white(){
+
+mag3=100;
+  
+  difference(){
+    
+      scale([mag3,mag3,10])
+      Lightning1white();
+  
+      translate([mag3/2,mag3/2,-1])
+      cylinder(r=mag3/4,h=20);
+      translate([-mag3/2,mag3/2,-1])
+      cylinder(r=mag3/4,h=20);
+      translate([-mag3/2,-mag3/2,-1])
+      cylinder(r=mag3/4,h=20);
+      translate([mag3/2,-mag3/2,-1])
+      cylinder(r=mag3/4,h=20);
+  }
+
+}
+
 //===============================================================
 
 //L1white();
@@ -150,7 +172,9 @@ module L1jig(){
 //L1black();    // with hanger hole
 //L1blackB();   // no hanger hole
 
-L1jig();
+//L1jig();
+
+L3white();
 
 //===============================================================
 

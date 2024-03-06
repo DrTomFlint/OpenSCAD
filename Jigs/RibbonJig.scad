@@ -9,7 +9,7 @@
 
 use <../Parts/rounder.scad>
 
-thick = 2.1;
+thick = 3;
 
 x0=87;      // length of the beam
 y0=20;      // width of the beam
@@ -46,13 +46,17 @@ module beam(){
     cylinder(r=1.7,h=x0+20,center=true,$fn=22);
 
     // magnet cuts
-    translate([(x0/2-thick/2-15),y0/2,1+0.3])
+    translate([(x0/2-thick/2-15),y0/2,1+1.01])
     cube([6.15,10.15,2.0],center=true);
 
-    translate([-(x0/2-thick/2-15),y0/2,1+0.3])
+    translate([-(x0/2-thick/2-15),y0/2,1+1.01])
     cube([6.15,10.15,2.0],center=true);
 
   }
+    translate([0,y0/2,thick])
+    linear_extrude(height=0.3,scale=1)
+    #text("FLINT", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.2);
+
   
 }
  
@@ -89,12 +93,12 @@ module foot(cut=1){
 
 //=================================================================================
 
-//~ beam();
+beam();
 
-foot();
+//~ foot();
 
-translate([0,0,20])
-foot(cut=0);
+//~ translate([0,0,20])
+//~ foot(cut=0);
 
 //=================================================================================
 

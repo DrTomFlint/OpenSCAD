@@ -9,8 +9,13 @@
 use <../Gears/gears.scad>
 
 r0 = 20;    // radius disks
+//r0 = 19;    // radius disks
 
 r3 = 2.5;     // radius of axle
+
+r3b = 2.5;     // radius of axle
+r3c = 0.866*r3b;     // radius of axle
+r3a = r3b+0.1;     // radius of axle
 
 r4 = 4;     // radius of outlet 
 ang1 = 35;  // rotation of popout to match outlet
@@ -18,12 +23,15 @@ ang1 = 35;  // rotation of popout to match outlet
 r5 = 5;  // radius of popout
 
 x0 = 2.5;     // thickness of disks
+//x0 = 4;     // thickness of disks
+
 x1 = 25;    // thickness at top of tub
 
-thick = 1.2;  // thickness of tub walls
+//thick = 1.2;  // thickness of tub walls
+thick = 0.8;  // thickness of tub walls
 
 d0 = 0.2;     // gap around edge of disk
-d1 = 1.5;     // gap from front of disk to tub
+d1 = 3;     // gap from front of disk to tub
 
 F1 = 200;
 F2 = 33;
@@ -87,10 +95,13 @@ module tub(){
     translate([-thick-1,-r0/2,-25.5])
     cylinder(r=r4-1.75,h=30,$fn=F2);              
     
-    // axle cut
+    // axle cuts
+    translate([0.75*x1,0,0])
+    rotate([0,90,0])
+    cylinder(r=r3a+0.15,h=10,center=true,$fn=F2);
     translate([0,0,0])
     rotate([0,90,0])
-    cylinder(r=r3+0.15,h=2*x1,center=true,$fn=F2);
+    cylinder(r=r3c+0.15,h=10,center=true,$fn=F2);
     
   }
 
@@ -187,7 +198,7 @@ module disk(N=5,rs=1){
       cylinder(r1=3.0*rs,r2=0.8*rs,h=4*x0,center=true,$fn=F2);
 
       rotate([360/N*i-37,0,0])
-      translate([x0/2+3.5,r0-rs-2,0])
+      translate([x0/2+4,r0-rs-2,0])
       rotate([15,-6,0])
       rotate([0,-90,0])
       scale([1.5,0.8,1])
@@ -236,9 +247,17 @@ rotate([ang1,0,0])
 //----------------------------------------------------------------------
 module axle(){
 
+  translate([x1,0,0])
   rotate([0,90,0])
-  cylinder(r=r3,h=3*x1,center=true,$fn=6);
+  cylinder(r=r3a,h=39,center=true,$fn=F2);
+
+  translate([7.5,0,0])
+  rotate([0,90,0])
+  cylinder(r=r3,h=10,center=true,$fn=6);
    
+  translate([0,0,0])
+  rotate([0,90,0])
+  cylinder(r=r3c,h=10,center=true,$fn=F2);
 }
 
 //----------------------------------------------------------------------
@@ -326,7 +345,7 @@ module cap(tol=0.2){
 //======================================================================
 // diskA is default
 
-xoff=-100;
+xoff=0;
 yoff=100;
 
 difference(){
@@ -346,11 +365,11 @@ difference(){
 //~ cap();
 
 //~ translate([-0.5,0,0])
-disk();
+//~ disk();
 
 //~ popout();
 
-//~ axle();
+axle();
 
 //~ axle2();
 

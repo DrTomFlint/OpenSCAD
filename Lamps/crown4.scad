@@ -294,7 +294,7 @@ if(0){
 }
 
 // midsection:
-if(1){
+if(0){
   color("cyan")
   intersection(){
 
@@ -322,7 +322,7 @@ if(1){
   }
 }
 // topsection:
-if(1){
+if(0){
   intersection(){
 
     union(){
