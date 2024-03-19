@@ -51,10 +51,10 @@ module bsRim2(){
     square([s0,s0],center=true);
   }
 
-  translate([-s0/2-1.2*r0,s0/2+1.2*r0,0])
+  translate([-s0/2-1.3*r0,s0/2+1.3*r0,0])
   difference(){
-    cylinder(r=r0/2,h=z0,$fn=99);
-    cylinder(r=0.4,h=5*z0,center=true,$fn=99);
+    cylinder(r=0.75*r0,h=z0,$fn=99);
+    cylinder(r=0.85,h=5*z0,center=true,$fn=99);
   }
 
 }
