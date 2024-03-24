@@ -9,7 +9,8 @@
 use <./mainstageGold.scad>
 
 layer = 0.3;
-thick = 7*layer;    // thickness not including top and bottom
+//~ thick = 7*layer;    // thickness not including top and bottom
+thick = 4*layer;    // thickness not including top and bottom
 
 mag=32;   // scaling
 R0=2;     // rounding of corners
@@ -103,15 +104,26 @@ tol=0.25;
   
 }
 
+//---------------------------------------------------------------
+module MainLoop(){
+
+  translate([-0.5*mag-R0,0.5*mag+R0,0])
+  difference(){
+    cylinder(r=R0,h=thick,$fn=22);
+    cylinder(r=R0/2,h=3*thick,center=true,$fn=22);
+  }
+}
 
 //===============================================================
 
-//Main1gold();
-//Main1black();
-//Main1top();
-//Main1bottom();
+//~ Main1gold();
 
-Main1sand();
+//~ Main1black();
+//~ Main1top();
+//~ Main1bottom();
+MainLoop();
+
+//~ Main1sand();
 
 //===============================================================
 

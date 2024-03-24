@@ -1442,6 +1442,149 @@ fit=0.15;
 }
 
 //----------------------------------------------------------------------
+// slow to render, 
+module Block(draft=0){
+  
+if(draft==0){  
+  // grip onto the timing belt
+  intersection(){
+    translate([-85,0,-5.5])
+    timing7();
+    translate([0,0,0])
+    cube([10,30,6],center=true);
+  }
+  // base
+  translate([1,0,-4])
+  cube([12,30,2],center=true);
+  
+  difference(){
+    translate([1,0,0])
+    cube([12,30,8],center=true);
+    translate([-85,0,0])
+    cylinder(r=87.75,h=20,center=true,$fn=99);
+  }
+}else{
+  // base
+  translate([1,0,-0.5])
+  cube([12,30,9],center=true);
+}
+
+}
+
+//----------------------------------------------------------------------
+// slow to render, 
+module Block2(draft=0){
+  
+if(draft==0){  
+  // grip onto the timing belt
+  intersection(){
+    translate([-85,0,-5.5])
+    timing7();
+    translate([0,0,0])
+    cube([10,30,6],center=true);
+  }
+  // base
+  translate([1,0,-4])
+  cube([12,30,2],center=true);
+  // flange
+  difference(){
+    translate([1,-13,0])
+    cube([24,4,16],center=true);
+    translate([1,-13,7])
+    cube([6,5,20],center=true);
+  }
+  
+  difference(){
+    translate([1,0,0])
+    cube([12,30,8],center=true);
+    translate([-85,0,0])
+    cylinder(r=87.75,h=20,center=true,$fn=99);
+  }
+}else{
+  // base
+  translate([1,0,-0.5])
+  cube([12,30,9],center=true);
+}
+
+}
+//----------------------------------------------------------------------
+module counterWeight(){
+  
+  // upper block
+  translate([-34,-2,postHi])  
+  rotate([0,0,180])
+  rotate([90,0,0])
+  Block(draft=0);
+      
+  // washers
+  translate([-34,20,postHi-130])
+  difference(){
+    cylinder(r=25.5/2,h=125,$fn=99);
+    translate([0,0,-1])
+    cylinder(r=7.4/2,h=127,$fn=99);
+  }
+  translate([-34,-20,postHi-130])
+  difference(){
+    cylinder(r=25.5/2,h=125,$fn=99);
+    translate([0,0,-1])
+    cylinder(r=7.4/2,h=127,$fn=99);
+  }
+
+  // lower block
+  translate([-34,-2,postHi-125])  
+  rotate([0,0,180])
+  rotate([90,0,0])
+  Block2(draft=0);
+  
+
+}
+//----------------------------------------------------------------------
+module counterPost(){
+  // posts
+  cylinder(r=7.2/2,h=140,$fn=6);
+}
+
+//----------------------------------------------------------------------
+module counterLatch(thick=2.4){
+
+
+  difference(){    
+    hull(){
+      translate([-34,20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+      translate([-34,-20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+
+      translate([-28,20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+      translate([-28,-20,postHi+2])
+      cylinder(r=25.5/2,h=thick,$fn=99);
+    }
+    translate([-34,-20,postHi+1])
+    cylinder(r=7.6/2,h=thick+2,$fn=6);
+
+    translate([-34,20,postHi+1])
+    cylinder(r=7.6/2,h=thick+2,$fn=6);
+
+    translate([-34,-2,postHi])
+    rotate([0,0,180])
+    rotate([90,0,0])
+    translate([1,0,-0.5])
+    cube([12.4,30.4,9.4],center=true);
+
+    translate([-44,-2,postHi+3])
+    cube([10,4,thick+6],center=true);
+  }
+
+    translate([-15,15,postHi+2+thick/2])
+    cube([6,8-0.5,thick],center=true);
+    translate([-15,-15,postHi+2+thick/2])
+    cube([6,8-0.5,thick],center=true);
+}
+
+
+
+//----------------------------------------------------------------------
 module dremmel(){
   
     // collet
@@ -1685,147 +1828,6 @@ tabHi2=3;   // height of tabs on the shoe
   }
 }
 
-//----------------------------------------------------------------------
-// slow to render, 
-module Block(draft=0){
-  
-if(draft==0){  
-  // grip onto the timing belt
-  intersection(){
-    translate([-85,0,-5.5])
-    timing7();
-    translate([0,0,0])
-    cube([10,30,6],center=true);
-  }
-  // base
-  translate([1,0,-4])
-  cube([12,30,2],center=true);
-  
-  difference(){
-    translate([1,0,0])
-    cube([12,30,8],center=true);
-    translate([-85,0,0])
-    cylinder(r=87.75,h=20,center=true,$fn=99);
-  }
-}else{
-  // base
-  translate([1,0,-0.5])
-  cube([12,30,9],center=true);
-}
-
-}
-
-//----------------------------------------------------------------------
-// slow to render, 
-module Block2(draft=0){
-  
-if(draft==0){  
-  // grip onto the timing belt
-  intersection(){
-    translate([-85,0,-5.5])
-    timing7();
-    translate([0,0,0])
-    cube([10,30,6],center=true);
-  }
-  // base
-  translate([1,0,-4])
-  cube([12,30,2],center=true);
-  // flange
-  difference(){
-    translate([1,-13,0])
-    cube([24,4,16],center=true);
-    translate([1,-13,7])
-    cube([6,5,20],center=true);
-  }
-  
-  difference(){
-    translate([1,0,0])
-    cube([12,30,8],center=true);
-    translate([-85,0,0])
-    cylinder(r=87.75,h=20,center=true,$fn=99);
-  }
-}else{
-  // base
-  translate([1,0,-0.5])
-  cube([12,30,9],center=true);
-}
-
-}
-//----------------------------------------------------------------------
-module counterWeight(){
-  
-  // upper block
-  translate([-34,-2,postHi])  
-  rotate([0,0,180])
-  rotate([90,0,0])
-  Block(draft=0);
-      
-  // washers
-  translate([-34,20,postHi-130])
-  difference(){
-    cylinder(r=25.5/2,h=125,$fn=99);
-    translate([0,0,-1])
-    cylinder(r=7.4/2,h=127,$fn=99);
-  }
-  translate([-34,-20,postHi-130])
-  difference(){
-    cylinder(r=25.5/2,h=125,$fn=99);
-    translate([0,0,-1])
-    cylinder(r=7.4/2,h=127,$fn=99);
-  }
-
-  // lower block
-  translate([-34,-2,postHi-125])  
-  rotate([0,0,180])
-  rotate([90,0,0])
-  Block2(draft=0);
-  
-
-}
-//----------------------------------------------------------------------
-module counterPost(){
-  // posts
-  cylinder(r=7.2/2,h=140,$fn=6);
-}
-
-//----------------------------------------------------------------------
-module counterLatch(thick=2.4){
-
-
-  difference(){    
-    hull(){
-      translate([-34,20,postHi+2])
-      cylinder(r=25.5/2,h=thick,$fn=99);
-      translate([-34,-20,postHi+2])
-      cylinder(r=25.5/2,h=thick,$fn=99);
-
-      translate([-28,20,postHi+2])
-      cylinder(r=25.5/2,h=thick,$fn=99);
-      translate([-28,-20,postHi+2])
-      cylinder(r=25.5/2,h=thick,$fn=99);
-    }
-    translate([-34,-20,postHi+1])
-    cylinder(r=7.6/2,h=thick+2,$fn=6);
-
-    translate([-34,20,postHi+1])
-    cylinder(r=7.6/2,h=thick+2,$fn=6);
-
-    translate([-34,-2,postHi])
-    rotate([0,0,180])
-    rotate([90,0,0])
-    translate([1,0,-0.5])
-    cube([12.4,30.4,9.4],center=true);
-
-    translate([-44,-2,postHi+3])
-    cube([10,4,thick+6],center=true);
-  }
-
-    translate([-15,15,postHi+2+thick/2])
-    cube([6,8-0.5,thick],center=true);
-    translate([-15,-15,postHi+2+thick/2])
-    cube([6,8-0.5,thick],center=true);
-}
-
 
 //=========================================================================================================
 
@@ -1843,15 +1845,15 @@ if(0){
 
 //**************************************************************************
 
-if(0){
+if(1){
   translate([railX+53,0,sledZ-95])
   dremmel();
 }
-if(0){
+if(1){
   translate([0,0,sledZ])
   dremmelSled();
 }
-if(0){
+if(1){
   translate([0,0,sledZ])
   dremmelCollar();
 }
@@ -1902,7 +1904,7 @@ if(0){
 //beltClip();
 
 // stand
-if(1){
+if(0){
   color("gray")
   stand1();
 }
@@ -1933,12 +1935,12 @@ rotate([0,handleAngle,0])
 translate([0,0,-postHi-36]){
 
   // top pulley
-  if(1){
+  if(0){
     translate([0,0,postHi])
     pulley();
   }
   // lever arm
-  if(1){
+  if(0){
     color("gray")
     translate([0,0,postHi])
     leverArm();
@@ -1962,7 +1964,7 @@ translate([0,0,-postHi-36]){
 }
 
 // pulley block
-if(1){
+if(0){
   translate([0,0,postHi])
   pulleyBlock();
   translate([0,0,postHi])
@@ -1972,7 +1974,7 @@ if(1){
 
 
 // rail blocks
-if(1){
+if(0){
   translate([0,0,railZ])
   color("cyan")
   railBlock();
@@ -1995,7 +1997,7 @@ difference(){
 }
 
 // full sled
-if(0){
+if(1){
   translate([0,0,sledZ])
   sled();
 }
