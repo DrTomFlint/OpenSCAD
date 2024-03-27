@@ -19,11 +19,19 @@ R0=2;     // rounding of corners
 F1=77;
 
 //------------------------------------------------------------
-module SteelYellow(){
+module SteelYellowX(){
   
   scale([mag,mag,thick])
   Tull1();
   
+  difference(){
+    translate([0.05*mag,0.05*mag,0])
+    cylinder(r=0.57*mag,h=thick,$fn=F1);
+    translate([0.05*mag,0.05*mag,-0.5*thick])
+    scale([0.9,1,1])
+    cylinder(r=0.55*mag,h=2*thick,$fn=F1);
+  }
+
 }
 
 //------------------------------------------------------------
@@ -56,24 +64,52 @@ module SteelBlue(){
 }
 
 //------------------------------------------------------------
-module SteelYellow2(){
+module SteelYellow(){
   
   difference(){
-    translate([0.05*mag,0.05*mag,0])
-    cylinder(r=0.57*mag,h=thick,$fn=F1);
-    translate([0.05*mag,0.05*mag,-0.5*thick])
-    scale([0.9,1,1])
-    cylinder(r=0.55*mag,h=2*thick,$fn=F1);
-  }
+    SteelYellowX();
 
+    translate([0,0,-9.25])
+    rotate([-2,0,0])
+    cube([2*mag,2*mag,20],center=true);
+  }
+  
 }
+
+//------------------------------------------------------------
+module SteelOrange(){
+  
+  intersection(){
+    SteelYellowX();
+
+    translate([0,0,-9.25])
+    rotate([-2,0,0])
+    cube([2*mag,2*mag,20],center=true);
+  }
+  
+}
+
+//------------------------------------------------------------
+module SteelRim(){
+
+  difference(){
+    translate([0.05*mag,0.05*mag,0])
+    cylinder(r=0.59*mag,h=thick,$fn=F1);
+    translate([0.05*mag,0.05*mag,-0.5*thick])
+    cylinder(r=0.57*mag,h=2*thick,$fn=F1);
+  }
+}
+
 
 
 //=====================================================================
 
 //~ SteelYellow();
-//~ SteelYellow2();
+//~ SteelOrange();
+
+SteelRim();
+
 //~ SteelBlue();
-SteelText();
+//~ SteelText();
 
 //=====================================================================

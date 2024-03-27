@@ -1172,7 +1172,7 @@ translate([x1/2-x2/2+trayz,y1/2-y2/2+trayz,z2/2-zfoot]){
 //bigSide2();
 
 
-if(1){
+if(0){
     difference(){
         union(){
             translate([0,0,zfoot]){
@@ -1285,7 +1285,7 @@ if(0){
  }
 }
 
-//s7();
+s7();
 
 //color("cyan")
 //translate([0,0,0])

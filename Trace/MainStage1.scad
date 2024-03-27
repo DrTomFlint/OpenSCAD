@@ -114,6 +114,16 @@ module MainLoop(){
   }
 }
 
+//---------------------------------------------------------------
+module MainLoop2(){
+
+  translate([0.5*mag+R0,0.5*mag+R0,0])
+  difference(){
+    cylinder(r=R0,h=thick,$fn=22);
+    cylinder(r=R0/2,h=3*thick,center=true,$fn=22);
+  }
+}
+
 //===============================================================
 
 //~ Main1gold();
@@ -121,7 +131,8 @@ module MainLoop(){
 //~ Main1black();
 //~ Main1top();
 //~ Main1bottom();
-MainLoop();
+//~ MainLoop();
+MainLoop2();
 
 //~ Main1sand();
 

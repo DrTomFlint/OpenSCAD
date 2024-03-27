@@ -1,8 +1,17 @@
 //======================================================================
-// A-size "Fairy Crystals"
+// Box to hold 5 A-size "Fairy Crystals" with 4 sides
 //
-// The original sierpinski code is copyright aeropic 2017
+// This should fit the FairyCrystalA4 prints
+//
+// The original sierpinski pyramid code is copyright aeropic 2017
 // Adapted to make a low base that displays the "crusaders cross"
+//
+// Note: these shapes take a long time to render in OpenSCAD, don't 
+// give up too quickly!  On my laptop this took about 5 minutes.
+// 
+// Go to the bottom of the file, uncomment 1 of the 4 parts, generate an
+// STL file.  Then repeat the process until you have A and B parts for 
+// the upper and lower sections of the box.  
 //
 // DrTomFlint 25 March 2024
 //======================================================================
@@ -22,7 +31,7 @@ sq2 = 1.41421356;
 epsl = 0.5;         // translate for cube cuts
 epsy = 0.12;        // translate for cube cuts
 
-// try to make multiple objects for multi color print
+// make multiple objects for multi color print
 layer = 0.3;
 thick = 17.5;
 z=3;
@@ -37,50 +46,32 @@ trayz=3;
 zfoot=8;
 zrise=2;
 
-use <../Parts/rounder.scad>
-use <../Fractals/Lsystem.scad>
-
 //-----------------------------------------------------------------
 module s7(){
 
     scale([1,1,0.97])
     difference(){
-        union(){
-        difference() {
-            ss(order-1);
-            // remove bottom spikes
-            translate([-120,-120,-3])cube([240,240,3]);
-        }
-        mirror([0,0,1])
-        difference() {
-            ss(order-1);
-            translate([-120,-120,bottom])
-            cube([240,240,80]);
-        }
-        }
-        
-    //    translate([-120,-120,thick*z-80])cube([240,240,80]);
-    //    translate([-120,-120,thick*z+thick])cube([240,240,80]);
-
-        if(0){
-            // cut out top section
-            size2=7.2*size;
-            translate([0,0,17.2]){
-                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-                mirror([0,0,1])
-                rotate([0,0,45])cylinder(r1=size2,r2 = epsr, h = 1.0*size2, $fn=4);
-            }
-        }
+      union(){
+      difference() {
+          ss(order-1);
+          // remove bottom spikes
+          translate([-120,-120,-3])cube([240,240,3]);
+      }
+      mirror([0,0,1])
+      difference() {
+          ss(order-1);
+          translate([-120,-120,bottom])
+          cube([240,240,80]);
+      }
     }
+  }
 
 }
-
 
 //----------------------------------------------------
 // single solid, same size
 module s7cut(tol=0.2){
     
-//    size2=size*14+tol;  // for order 4
     size2=size*7.1;  // for order 3
     
         
@@ -128,84 +119,6 @@ module ss(ord){
     } // end diff    
    } // end else
  } // end module ss
-
-//--------------------------------------------------------------
-module lipB(wide=1.7){
-// 1.5 wide for outer cut
-
-rout=31.7;    
-//rout=30.7;    
-hi0=5+2;
-
-translate([0,0,-2.5-1])
-// overlap section
-intersection(){
-    cylinder(r=rout,h=hi0,$fn=5);
-
-difference(){
-    union(){
-        difference(){    
-            cylinder(r=rout,h=hi0,$fn=5);
-            translate([0,0,-1])
-            cylinder(r=rout-wide,h=hi0+2,$fn=5);
-        }    
-        
-        for(i=[0:4]){
-            // outside round cut
-            rotate([0,0,72*i])
-            translate([rout-wide,0,0])
-            scale([1,1.3,1])
-            cylinder(r=4.8+wide-0.2,h=hi0,$fn=99);
-        }
-    }    
-
-}
-}
-
-}
-
-//--------------------------------------------------------------
-module lipC(wide=1.4){
-// 1.5 wide for outer cut
-
-rout=31.5-wide;    
-//rout=30.5-wide;    
-hi0=7;
-
-
-translate([0,0,-2.5-1])
-// overlap section
-intersection(){
-    cylinder(r=rout,h=hi0,$fn=5);
-
-difference(){
-    union(){
-        difference(){    
-            cylinder(r=rout,h=hi0,$fn=5);
-            //translate([0,0,-1])
-            //cylinder(r=rout-wide-1,h=hi0+2,$fn=5);
-        }    
-        
-        for(i=[0:4]){
-            // outside round cut
-            rotate([0,0,72*i])
-            translate([rout-wide,0,0])
-            scale([1,1.5,1])
-            cylinder(r=4.8+wide+1,h=hi0,$fn=99);
-        }
-    }    
-    for(i=[0:4]){
-        // outside round cut
-        rotate([0,0,72*i])
-        translate([rout-wide,0,-1])
-        scale([1,1.5,1])
-        cylinder(r=4.8,h=hi0+2,$fn=99);
-    }
-
-}
-}
-
-}
 
 
 //----------------------------------------------------------------
@@ -321,6 +234,7 @@ if(1){
     }
 }
 
+// Here is some alternative text
 if(0){
     if(tdeep>0){
         color("red")
@@ -363,6 +277,87 @@ if(0){
 
 
 }
+
+//--------------------------------------------------------------
+module lipB(wide=1.7){
+// 1.5 wide for outer cut
+
+rout=31.7;    
+//rout=30.7;    
+hi0=5+2;
+
+translate([0,0,-2.5-1])
+// overlap section
+intersection(){
+    cylinder(r=rout,h=hi0,$fn=5);
+
+difference(){
+    union(){
+        difference(){    
+            cylinder(r=rout,h=hi0,$fn=5);
+            translate([0,0,-1])
+            cylinder(r=rout-wide,h=hi0+2,$fn=5);
+        }    
+        
+        for(i=[0:4]){
+            // outside round cut
+            rotate([0,0,72*i])
+            translate([rout-wide,0,0])
+            scale([1,1.3,1])
+            cylinder(r=4.8+wide-0.2,h=hi0,$fn=99);
+        }
+    }    
+
+}
+}
+
+}
+
+//--------------------------------------------------------------
+module lipC(wide=1.4){
+// 1.5 wide for outer cut
+
+rout=31.5-wide;    
+//rout=30.5-wide;    
+hi0=7;
+
+
+translate([0,0,-2.5-1])
+// overlap section
+intersection(){
+    cylinder(r=rout,h=hi0,$fn=5);
+
+difference(){
+    union(){
+        difference(){    
+            cylinder(r=rout,h=hi0,$fn=5);
+            //translate([0,0,-1])
+            //cylinder(r=rout-wide-1,h=hi0+2,$fn=5);
+        }    
+        
+        for(i=[0:4]){
+            // outside round cut
+            rotate([0,0,72*i])
+            translate([rout-wide,0,0])
+            scale([1,1.5,1])
+            cylinder(r=4.8+wide+1,h=hi0,$fn=99);
+        }
+    }    
+    for(i=[0:4]){
+        // outside round cut
+        rotate([0,0,72*i])
+        translate([rout-wide,0,-1])
+        scale([1,1.5,1])
+        cylinder(r=4.8,h=hi0+2,$fn=99);
+    }
+
+}
+}
+
+}
+
+
+
 
 //-----------------------------------------------------------------------
 module Letters(z0=-13,tdeep=1.5){
@@ -453,205 +448,117 @@ if(0){
     }
 }
 
-
-
 }
 
-//-----------------------------------------------------------------
-module s8(n=6,k=1.2){
-
-ang1=360/n;
-//ang2=ang1*0.75; // for n=5 and k=1
-ang2=ang1*0.99; // for n=6 and k=1, 8 volumes?
-//ang2=ang1*1.24; // for n=7 and k=1
-//ang2=ang1*1.49; // for n=8 and k=1
-
-echo(n,k);
-
+//---------------------------------------------------------------------
+module boxUpperA(){
+  
   difference(){
-    union(){
-      scale([k,1,1])    
-      rotate([0,0,45])
-      difference(){
-          ss(order-1);
-          // remove bottom spikes
-          translate([-120,-120,-3])
-          cube([240,240,3]);
-      }
-      cylinder(r=3,h=1.2);
-    }
+    trayB(lip=0);
     
-    // slice out a pie wedge
-    rotate([0,0,ang2])
-    translate([0,-50,-50])    
-    cube([100,100,100]);
-    rotate([0,0,-ang2])
-    translate([0,-50,-50])    
-    cube([100,100,100]);
-  }
+    union(){
+      translate([0,0,-11.4])
+      cube([100,100,5*0.3],center=true);
 
+      translate([0,0,-1.5])
+      cube([100,100,5*0.3],center=true);
+
+      translate([0,0,1.8])
+      cube([100,100,5*0.3],center=true);
+    }
+  }    
+  
 }
 
-//-----------------------------------------------------------------
-module sA(n=6,k=1.2){
+//---------------------------------------------------------------------
+module boxUpperB(){
+  
+  intersection(){
+    trayB(lip=0);
+    
+    union(){
+      translate([0,0,-11.4])
+      cube([100,100,5*0.3],center=true);
 
-ang1=360/n;
-//ang2=ang1*0.75; // for n=5 and k=1
-//ang2=ang1*0.99; // for n=6 and k=1, 8 volumes?
-//ang2=ang1*1.24; // for n=7 and k=1
-//ang2=ang1*1.49; // for n=8 and k=1
+      translate([0,0,-1.5])
+      cube([100,100,5*0.3],center=true);
 
-ang2=45;
+      translate([0,0,1.8])
+      cube([100,100,5*0.3],center=true);
+    }
+  }    
+  
+  Letters();
+  
+}
 
-echo(n,k);
-
-  scale([k,1,1])    
+//---------------------------------------------------------------------
+module boxLowerA(){
+  
   difference(){
-    union(){
-//      rotate([0,0,45])
-      difference(){
-          ss(order-1);
-          // remove bottom spikes
-          translate([-120,-120,-3])
-          cube([240,240,3]);
-      }
-      cylinder(r=3,h=1.2);
-    }
+    trayB(lip=1);
     
-    // slice out a pie wedge
-    rotate([0,0,ang2])
-    translate([0,-100,-100])    
-    cube([200,200,200]);
-    rotate([0,0,-ang2])
-    translate([0,-100,-100])    
-    cube([200,200,200]);
-  }
+    union(){
+      translate([0,0,-11.4])
+      cube([100,100,5*0.3],center=true);
 
+      translate([0,0,-1.5])
+      cube([100,100,5*0.3],center=true);
+
+      translate([0,0,1.8])
+      cube([100,100,5*0.3],center=true);
+    }
+  }    
 }
 
+//---------------------------------------------------------------------
+module boxLowerB(){
+  
+  intersection(){
+    trayB(lip=1);
+    
+    union(){
+      translate([0,0,-11.4])
+      cube([100,100,5*0.3],center=true);
 
-//-----------------------------------------------------------------
-// some values of k will result in many independent pieces
-module s9(sides=6,peak=1.2){
+      translate([0,0,-1.5])
+      cube([100,100,5*0.3],center=true);
 
-ang1=360/sides;
-
-  for (i=[0:sides-1]){
-    rotate([0,0,i*ang1])
-    translate([0.01,0,0])
-    s8(n=sides,k=peak);
-  }
-}
-//-----------------------------------------------------------------
-// some values of k will result in many independent pieces
-module sB(sides=6,peak=1.2){
-
-ang1=360/sides;
-
-  for (i=[0:sides-1]){
-    rotate([0,0,i*ang1])
-    translate([0.01,0,0])
-    sA(n=sides,k=peak);
-  }
+      translate([0,0,1.8])
+      cube([100,100,5*0.3],center=true);
+    }
+  }    
+  
+  Letters();
 }
 
 //=====================================================================
 
-//s8(n=5,k=1);
-//sA(n=6,k=1.5);
-
-//scale([1,1,1.6])
-//sB(sides=7,peak=2.075);
-
-//scale([1,1,1.5])
-//sB(sides=6,peak=1.74);
-
-//scale([1,1,1.18])
-//sB(sides=5,peak=1.37);
-
-if(0){
-//  lower=5;    // for s9
-  //lower=6.5;    // sB 5, 6
-  lower=6.0;    // sB 7
-  
-
-//  s9(sides=6,peak=1);
-//  scale([1,1,1.18])
-//  sB(sides=5,peak=1.37);
-//  scale([1,1,1.5])
-//  sB(sides=6,peak=1.74);
-  scale([1,1,1.6])
-  sB(sides=7,peak=2.075);
-  difference(){
-    translate([0,0,0.01])
-    rotate([180,0,0])
-//    s9(sides=6,peak=1);
-//    scale([1,1,1.18])
-//    sB(sides=5,peak=1.37);
-//    scale([1,1,1.5])
-//    sB(sides=6,peak=1.74);
-    scale([1,1,1.6])
-    sB(sides=7,peak=2.075);
-    translate([0,0,-20-lower])
-    cube([80,80,40],center=true);
-  }
-}
-
-if(0){
-  for(j=[0:3]){
-    translate([j*40,0,0])
-    s9(n=j+5,k=1.0);
-  }
-}
-
-
-if(0){
-    difference(){
-        union(){
-            color("cyan")
-            trayB(lip=0,tdeep=0);
-            translate([0,0,0.1])
-            rotate([180,0,0])
-            trayB(lip=1,tdeep=0);
-        }
-        translate([50,0,0])
-        cube([100,100,100],center=true);
-        //translate([0,0,50])
-        //cube([100,100,100],center=true);
-        
-    }
-}
-
-
-if(0){
-    trayB(lip=0);   // lid
-    //translate([0,0,0.1])
-    //rotate([180,0,0])
-    //trayB(lip=1);   // base
-}
-
-//Letters();
-
+// For Printing:
+// Select ONE of the following 4 parts to generate an STL for printing
+// A parts are the main bulk, B parts are the highlighted stripes and 
+// text.  Assign different colors to the A and B parts in the Slicer.
 if(1){
-// slice to print in multi colors
-// be sure slice offset and thickness are multiples of layer height
-difference(){
-//intersection(){
+  boxUpperA();
+  //~ boxUpperB();
+  //~ boxLowerA();
+  //~ boxLowerB();
+}
+
+// Just show the lettering
+if(0){
+  Letters();
+}
+
+// Turn this on to see the entire box, not cut for multi-color, not for printing
+if(0){
     trayB(lip=0);
-    
-    union(){
-    translate([0,0,-11.1])
-    cube([100,100,7*0.3],center=true);
-
-    translate([0,0,-1.5-1.2-0.04+0.3])
-    cube([100,100,7*0.3],center=true);
-
-    translate([0,0,1.8+1.2-0.04-0.3])
-    cube([100,100,7*0.3],center=true);
-}
-}    
+    translate([0,0,0.1])
+    rotate([180,0,0])
+    trayB(lip=1);
 }
 
+// Turn this on to see the crystals in the box, not for printing
 if(0){
     for(i=[0:4]){
     rotate([0,0,72*i])
@@ -663,11 +570,6 @@ if(0){
  }
 }
 
-//s7();
-
-//color("cyan")
-//translate([0,0,0])
-//s7cut(tol=0);
 
 //=====================================================================
 

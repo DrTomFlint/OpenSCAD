@@ -569,7 +569,7 @@ ang1=360/sides;
 //scale([1,1,1.18])
 //sB(sides=5,peak=1.37);
 
-if(0){
+if(1){
 //  lower=5;    // for s9
   //lower=6.5;    // sB 5, 6
   lower=6.0;    // sB 7
@@ -632,7 +632,7 @@ if(0){
 
 //Letters();
 
-if(1){
+if(0){
 // slice to print in multi colors
 // be sure slice offset and thickness are multiples of layer height
 difference(){
