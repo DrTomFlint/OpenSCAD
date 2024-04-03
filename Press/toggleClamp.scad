@@ -1,17 +1,17 @@
-//====================================================
+//======================================================================
 // toggleClamp.scad
 //
-// Drill press using T-slot
+// Toggle clamp that mounts on aluminum T-slot extrusions
 //
 // Dr Tom Flint, 11 July 2023
-//====================================================
+//======================================================================
 
 use <../Parts/tslot.scad>
 use <../Parts/rounder.scad>
 use <../Parts/threads.scad>
 
 
-draft=0;
+draft=0;  // draft=0 for prints, draft=1 removes threads which are slow
 
 zbase=6;
 xbase=28;
@@ -20,7 +20,6 @@ yaisle=9;
 zwing=16;
 
 rwing=5;
-//rlink=(xbase-2*rwing)/2;
 rlink=5;
 
 rbolt1=1.55;
@@ -33,28 +32,31 @@ rtip=3;
 zlink=30;
 
 zhandle=20;
-//yhandle=ybase+14;
 yhandle=44;
 offhandle=5;
 
 F2=200;
 
-//~ // open
+// ---- select a pair of angle1, angle2 to see the clamp in different 
+// positions from fully open to fully closed, does not alter print
+
+// open
 //~ angle1=60;
 //~ angle2=40;
 
-//~ // part
-//~ angle1=30;
-//~ angle2=8;
-
-//~ // more
+// mostly open
 //~ angle1=45;
 //~ angle2=18;
 
-// closed
-angle1=0;
-angle2=0;
+// mostly closed
+angle1=30;
+angle2=8;
 
+// closed
+//~ angle1=0;
+//~ angle2=0;
+
+// derived values, don't alter these
 ax0=xbase/2-rlink;
 az0=zbase+rbolt1+offhandle;
 bx0=xbase/2+rwing;
@@ -204,12 +206,6 @@ module arm(){
     rotate([90,0,0])
     cylinder(r=rbolt2,h=xbase+1,center=true,$fn=F2);
 
-    //~ // hole to adjust M4 base bolt
-    //~ translate([0.4,0,10])
-    //~ cylinder(r=2,h=20,$fn=F2);
-    //~ translate([-0.4,0,10])
-    //~ cylinder(r=2,h=20,$fn=F2);
-    
   }
 
 
@@ -307,11 +303,6 @@ module handle(){
     rotate([90,0,0])
     cylinder(r=7/2,h=3.2,center=true,$fn=F2);
 
-    //~ // Test
-    //~ translate([xbase/2-rlink,0,zbase+zwing+zlink])
-    //~ rotate([90,0,0])
-    //~ #cylinder(r=zlink,h=1,center=true,$fn=F2);
-
     // bolt holes for base
     translate([xbase/2-rlink,0,zbase+rbolt1+offhandle])
     rotate([90,0,0])
@@ -333,7 +324,7 @@ module handle(){
 
 }
 
-//-----------------------------------------------------
+//----------------------------------------------------------------------
 module clamp1(){
 
     // base does not move
@@ -356,30 +347,34 @@ module clamp1(){
     }
 }
 
-//======================================================
+//======================================================================
 
-//rotate([0,-delta0,0])
-//translate([-ax0,0,-az0])
-//clamp1();
+// for printing select ONE of the following parts at a time
+// generate STL or 3MF files individually and then add them to
+// your slicer
 
-//translate([dx0,0,dz0])
-//rotate([90,0,0])
-//#cylinder(r=rbolt2,h=yhandle+1,center=true,$fn=F2);
+//~ base();
+//~ link();
+//~ handle();
+//~ arm();
+//~ post();
 
+//----------------------------------------------------------------------
+// below this line is for seeing the model only, NOT for printing
+
+if(1){
+  rotate([0,0,45])
+  translate([-ax0,0,-az0])
+  clamp1();
+}
 
 if(0){
-  translate([15,-75,-15])
-    rotate([0,0,90])
+  translate([-40,0,-28])
+    rotate([0,0,0])
     rotate([0,90,0])
-    tslot1(type=2,len=150);
+    tslot1(type=2,len=100);
 }
 
 
-// for printing
-base();
-//link();
-//handle();
-//arm();
-//post();
 
 //======================================================
