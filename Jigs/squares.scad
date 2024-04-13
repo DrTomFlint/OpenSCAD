@@ -7,8 +7,8 @@
 //======================================================================
 
 
-use <../Fractals/Lsystem.scad>
-use <../Parts/rounder.scad>
+use <./Lsystem.scad>
+use <./rounder.scad>
 
 
 //----------------------------------------------------------------------
@@ -31,10 +31,10 @@ $fn=99;
 
     cube([rout+2,rout+2,4]);
 
-    if(0){
+    if(0){  // set to 1 for fractal squares, render takes several minutes
       scale([4,4,1])
       linear_extrude(height=thick)
-      penrose_tiling(n=7, w=0.3);   // Recommended n <= 6
+      penrose_tiling(n=7, w=0.3); 
     }
   }
 
@@ -191,7 +191,7 @@ module boxSupport(){
 //======================================================================
 
 tol=0.1;
-if(0){
+if(1){
   sq(rin=10+tol,rout=20-tol,thick=2.1);
   sq(rin=20+tol,rout=34-tol,thick=2.4);
   sq(rin=34+tol,rout=53.6-tol,thick=2.7);
@@ -199,9 +199,9 @@ if(0){
 }
 
 //color("cyan")
-box();
+//~ box();
 
 //color("red")
-//boxSupport();
+//~ boxSupport();
 
 //======================================================================

@@ -6,7 +6,7 @@
 // Dr Tom Flint, 22 Oct 2021
 //=================================================================================
 
-use <../Parts/rounder.scad>
+use <./rounder.scad>
 
 thick = 2.1;    // thickness of the handle bar
 //length = 12;
@@ -146,7 +146,7 @@ length = 20;
 
 //=================================================================================
 
-/*
+
 
 for (i=[1:7]){
 
@@ -207,21 +207,21 @@ cube([0.8,170,0.3]);
 
 }
 
-*/
 
-probe3(rad=1);
-translate([0,20,0])
-probe3(rad=2);
-translate([15,50,0])
-probe2(rad=6);
 
-color("red")
-translate([-10,0,-thick/2])
-cube([0.8,60,0.3]);
+//~ probe3(rad=1);
+//~ translate([0,20,0])
+//~ probe3(rad=2);
+//~ translate([15,50,0])
+//~ probe2(rad=6);
 
-color("red")
-translate([-25,0,-thick/2])
-cube([0.8,60,0.3]);
+//~ color("red")
+//~ translate([-10,0,-thick/2])
+//~ cube([0.8,60,0.3]);
+
+//~ color("red")
+//~ translate([-25,0,-thick/2])
+//~ cube([0.8,60,0.3]);
 
 
 
