@@ -1,7 +1,7 @@
 //======================================================================
 // F4.scad
 // 
-// 5 pointed small fractal stars for earrings.
+// 5 pointed large fractal stars for earrings.
 //
 // DrTomFlint 23 Dec 2023
 //======================================================================
@@ -120,18 +120,43 @@ use <../Fractals/Lsystem.scad>
 //~ hi2=3;
 
 // F4o:
-sides=7;
-peak1=1.8;
-peak2=2.075;
-dxa=-2.42;
+//~ sides=7;
+//~ peak1=1.8;
+//~ peak2=2.075;
+//~ dxa=-2.42;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=0;
+//~ r1 = 28;
+//~ r2 = 34.5;
+//~ hi2=3;
+
+// F4p:
+//~ sides=7;
+//~ peak1=1.8;
+//~ peak2=2.075;
+//~ dxa=-2.42;
+//~ hi=1.5;
+//~ rescale = 1.0;
+//~ ring=0;
+//~ r1 = 28;
+//~ r2 = 34.5;
+//~ hi2=1.5;
+
+// F4q:
+sides=5;
 hi=1.5;
 rescale = 1.0;
-ring=1;
-r1 = 28;
-r2 = 34.5;
-hi2=3;
+ring=0;
+r1 = 26.0;
+r2 = 33.5;
+peak1=2.4;
+peak2=1.4;
+dxa=8.8;
+hi2=1.5;
 
-hanger=1;
+
+hanger=0;
 
 //----------------------------------------------------------
 // sierpinsky recursive code 
@@ -428,7 +453,58 @@ if(hanger==1){
 
 }
 
+//---------------------------------------------------------------------
+// make the ring and hanger its own part so it can be sliced as a solid
+module ring(){
+  
+  // outer ring
+  translate([0,0,-0.75/2*hi])
+  difference(){
+    cylinder(r=r1,h=hi*1.25,center=true,$fn=99);
+    cylinder(r=r1-1,h=hi*3,center=true,$fn=99);
+  }
+ 
 
+  // hanger loop
+  translate([-r2,0,-0.75/2*hi])
+  difference(){
+    hull(){
+      cylinder(r=1.75,h=hi*1.25,center=true,$fn=99);
+      translate([7,0,0])
+      cube([1,2,hi*1.25],center=true);
+      //cylinder(r=2,h=hi*1.25,center=true,$fn=99);
+    }
+    cylinder(r=1,h=hi*3,center=true,$fn=99);
+  }
+
+}
+  
+//---------------------------------------------------------------------
+// make the ring and hanger its own part so it can be sliced as a solid
+module thinring(){
+  
+  // outer ring
+  translate([0,0,-1/2*hi])
+  difference(){
+    cylinder(r=r1,h=hi*1.0,center=true,$fn=99);
+    cylinder(r=r1-1,h=hi*3,center=true,$fn=99);
+  }
+ 
+
+  // hanger loop
+  translate([-r2,0,-1/2*hi])
+  difference(){
+    hull(){
+      cylinder(r=1.75,h=hi*1.0,center=true,$fn=99);
+      translate([7,0,0])
+      cube([1,2,hi*1.0],center=true);
+      //cylinder(r=2,h=hi*1.25,center=true,$fn=99);
+    }
+    cylinder(r=1,h=hi*3,center=true,$fn=99);
+  }
+
+}
+  
 //=====================================================================
 
 // FIVE
@@ -436,8 +512,10 @@ if(hanger==1){
 //~ sA();
 //~ sC();
 //~ sD();
-sE();
+//~ sE();
 
+//~ ring();
+thinring();
 
 // rescale A parts
 //~ sA1();

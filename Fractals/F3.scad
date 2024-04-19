@@ -1,6 +1,11 @@
-// copyright aeropic 2017
-// A1 order 3 size 3
-// A2 order 3 size 2.5 bottom 6.0
+
+//======================================================================
+// F3.scad
+//
+// Christmas Stars, 6 point only
+//
+// DrTomFlint, Dec 2023
+//======================================================================
 
 // order of sierpinski fractal
 order = 3; //[0,1,2,3,4,5,6,7]
@@ -788,9 +793,9 @@ module rack7e(){
 // This is the small good one
 //~ translate([0,0,3.0])
 //~ rotate([0,0,30])
-//~ sE(cut=0);
+sE(cut=0);
 
-rack6();
+//~ rack6();
 
 //~ rack7c();
 //~ rack7d();
