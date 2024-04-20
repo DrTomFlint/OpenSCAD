@@ -36,8 +36,8 @@ difference(){   // cut the board and components out of
         // Bottom side battery rail
         translate ([27,51.75,-4.5]) color("red") 
         difference(){
-            linear_extrude(height=4.6,convexity=100) offset(r=1.5) square(size=[37,60.5],center=true);
-            linear_extrude(height=10,convexity=100,scale=0.9) square(size=[37,60.5],center=true);
+            linear_extrude(height=4.6,convexity=100) offset(r=1.0) square(size=[38,60.5],center=true);
+            #linear_extrude(height=10,convexity=100,scale=0.9) square(size=[38,60.5],center=true);
             // cut for cable outlet
             translate([0,-27,0])
             linear_extrude(height=10) square(size=[26,12],center=true);
@@ -46,8 +46,8 @@ difference(){   // cut the board and components out of
         translate ([27,51.75,-4]) color("cyan") 
         rotate([0,180,0])
         difference(){
-            linear_extrude(height=4,convexity=100) offset(r=1.5) square(size=[37,60.5],center=true);
-            linear_extrude(height=10,convexity=100,scale=0.9) square(size=[37,60.5],center=true);
+            linear_extrude(height=4,convexity=100) offset(r=1.0) square(size=[38,60.5],center=true);
+            linear_extrude(height=10,convexity=100,scale=0.9) square(size=[38,60.5],center=true);
             // cut for cable outlet
             translate([0,-27,0])
             linear_extrude(height=10,convexity=100) square(size=[26,12],center=true);
@@ -55,14 +55,14 @@ difference(){   // cut the board and components out of
         
         // ribs to support top end battery rail
         translate([49,55,-6.0]) color("pink")
-        linear_extrude(height=6.0) square(size=[7,3],center=true);
+        linear_extrude(height=6.0) square(size=[6,3],center=true);
         translate([49,77,-6.0]) color("pink")
-        linear_extrude(height=6.0) square(size=[7,3],center=true);
+        linear_extrude(height=6.0) square(size=[6,3],center=true);
 
         translate([5,55,-6.0]) color("pink")
-        linear_extrude(height=6.0) square(size=[7,3],center=true);
+        linear_extrude(height=6.0) square(size=[6,3],center=true);
         translate([5,77,-6.0]) color("pink")
-        linear_extrude(height=6.0) square(size=[7,3],center=true);
+        linear_extrude(height=6.0) square(size=[6,3],center=true);
         
     } // end of boss union
     
@@ -278,7 +278,7 @@ translate([24,55,4.4]) color("orange") {
 // probably look at slicer to be sure
 
 // bottom side
-if(0){
+if(1){
 difference(){
     
     chassis1();
@@ -293,7 +293,7 @@ difference(){
 
 //translate([0,0,40])
 // top side
-if(1){
+if(0){
 intersection(){
     
     chassis1();
