@@ -9,9 +9,9 @@
 
 use <../Parts/rounder.scad>
 use <../Fractals/Lsystem.scad>
-use <./card4red.scad>
-use <./card4orange.scad>
-use <./card4yellow.scad>
+use <./card5red.scad>
+use <./card5orange.scad>
+use <./card5yellow.scad>
 
 thick=0.9;
 //thin=0.3;
@@ -24,8 +24,14 @@ y0=40;
 r0=4;
 lip=1.5;
 
-mag=85;
+mag=130;
+//~ x1=5;
+//~ x2=8;
+//~ x3=11;
 
+x1=3;
+x2=10;
+x3=15;
 //----------------------------------------------------------------------
 module text1(){
 
@@ -107,52 +113,13 @@ module base(){
 }
 
 //----------------------------------------------------------------------
-module backred(){
-  
-  intersection(){
-    //~ back1();
-    translate([-2,0,0])
-    scale([mag,mag,3*thick])
-    card4red();
-    translate([30,0,0])
-    cube([60,80,3*thick],center=true);
-  }
-}
-
-//----------------------------------------------------------------------
-module backorange(){
-  
-  intersection(){
-    //~ back1();
-    translate([-2,0,0])
-    scale([mag,mag,3*thick])
-    card4orange();
-    translate([0,0,0])
-    cube([60,80,3*thick],center=true);
-  }
-}
-
-//----------------------------------------------------------------------
-module backyellow(){
-  
-  intersection(){
-    //~ back1();
-    translate([-2,0,0])
-    scale([mag,mag,3*thick])
-    card4yellow();
-    translate([-20,0,0])
-    cube([60,80,5*thick],center=true);
-  }
-}
-
-//----------------------------------------------------------------------
 module backred1(){
   
   intersection(){
     back1();
-    translate([0,0,0])
+    translate([x1,0,0])
     scale([mag,mag,3*thick])
-    card4red();
+    card5red();
     translate([30,0,0.15+0.0])
     cube([60,80,0.3],center=true);
   }
@@ -162,9 +129,9 @@ module backred2(){
   
   intersection(){
     back1();
-    translate([1,0,0])
+    translate([x2,0,0])
     scale([mag,mag,3*thick])
-    card4red();
+    card5red();
     translate([30,0,0.15+0.3])
     cube([60,80,0.3],center=true);
   }
@@ -174,9 +141,9 @@ module backred3(){
   
   intersection(){
     back1();
-    translate([2,0,0])
+    translate([x3,0,0])
     scale([mag,mag,3*thick])
-    card4red();
+    card5red();
     translate([30,0,0.15+0.6])
     cube([60,80,0.3],center=true);
   }
@@ -187,11 +154,11 @@ module backorange1(){
   
   intersection(){
     back1();
-    translate([0,0,0])
+    translate([x1,0,0])
     scale([mag,mag,3*thick])
-    card4orange();
+    card5orange();
     translate([0,0,0.15+0.0])
-    cube([60,80,0.3],center=true);
+    cube([80,80,0.3],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -199,11 +166,11 @@ module backorange2(){
   
   intersection(){
     back1();
-    translate([1,0,0])
+    translate([x2,0,0])
     scale([mag,mag,3*thick])
-    card4orange();
+    card5orange();
     translate([0,0,0.15+0.3])
-    cube([60,80,0.3],center=true);
+    cube([80,80,0.3],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -211,11 +178,11 @@ module backorange3(){
   
   intersection(){
     back1();
-    translate([2,0,0])
+    translate([x3,0,0])
     scale([mag,mag,3*thick])
-    card4orange();
+    card5orange();
     translate([0,0,0.15+0.6])
-    cube([60,80,0.3],center=true);
+    cube([80,80,0.3],center=true);
   }
 }
 
@@ -224,10 +191,10 @@ module backyellow1(){
   
   intersection(){
     back1();
-    translate([3,0,0])
+    translate([x1,0,0])
     scale([mag,mag,3*thick])
-    #card4yellow();
-    translate([-20,0,0.15+0.0])
+    card5yellow();
+    translate([-10,0,0.15+0.0])
     cube([60,80,0.3],center=true);
   }
 }
@@ -236,10 +203,10 @@ module backyellow2(){
   
   intersection(){
     back1();
-    translate([1,0,0])
+    translate([x2,0,0])
     scale([mag,mag,3*thick])
-    card4yellow();
-    translate([-20,0,0.15+0.3])
+    card5yellow();
+    translate([-10,0,0.15+0.3])
     cube([60,80,0.3],center=true);
   }
 }
@@ -248,10 +215,10 @@ module backyellow3(){
   
   intersection(){
     back1();
-    translate([2,0,0])
+    translate([x3,0,0])
     scale([mag,mag,3*thick])
-    card4yellow();
-    translate([-20,0,0.15+0.6])
+    card5yellow();
+    translate([-10,0,0.15+0.6])
     cube([60,80,0.3],center=true);
   }
 }
@@ -279,8 +246,8 @@ module backyellow3(){
 //~ backorange3();
 
 backyellow1();
-//~ backyellow2();
-//~ backyellow3();
+backyellow2();
+backyellow3();
 
 //back1();
 
