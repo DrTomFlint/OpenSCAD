@@ -337,18 +337,57 @@ translate([0,0,-lip]){
   }
 }
 }
+//----------------------------------------------------------------------
+module dispurser(num){
+
+    //~ // cut for bare led tape
+    //~ translate([0,4,-6])
+    //~ cube([100,12.2,1],center=true);
+
+    //~ //led sticks up from tape
+    //~ translate([0,4,-6+1.25])
+    //~ cube([5.0,7.0,1.5],center=true);
+    
+  difference(){
+    translate([0,4,-3])
+    //~ cube([5.0,12.0,5],center=true);
+    cube([6.0,12.0,5],center=true);
+    
+    intersection(){
+      translate([0,4+4,-3])
+      rotate([45,0,0])
+      cube([5.0,6,6],center=true);
+      translate([0,4,-3])
+      cube([5.0,14.0,4],center=true);
+    }
+
+    intersection(){
+      translate([0,4-4,-3])
+      rotate([45,0,0])
+      cube([5.0,6,6],center=true);
+      translate([0,4,-3])
+      cube([5.0,14.0,4],center=true);
+    }
+
+    translate([0,4,-4.5])
+    cube([5.0,14.0,3],center=true);
+}
+  
+}
 
 //======================================================================
 
 
-for(i=[2:4]){
+for(i=[5:5]){
   translate([(i-1)*45,0,0]){
     //~ field(num=i);
     //~ bear(num=i);
     //~ body(num=i);
-    bib(num=i);
+    //~ bib(num=i);
     //~ tab();
     //~ back(num=i);
+    
+    dispurser(num=i);
   }
 }
 

@@ -13,6 +13,7 @@
 
 tol=0.25;
 extra=4;
+use <../Parts/rounder.scad>
 
 //------------------------------
 module chassis1(){
@@ -267,10 +268,63 @@ translate([24,55,4.4]) color("orange") {
     
 } // end of module chassis1()
 
+//----------------------------------------------------------------------
+module endCap(){
+
+color("orange")
+difference(){
+  translate([-2.3,-2,-12]) 
+  cube([58.6,30,30]);
+  translate([-0.3,0,-12-2]) 
+  cube([54.6,30,30]);
+  translate([-2.3,-2,18]) 
+  rotate([0,90,0])
+  rounder(r=3,h=58.6,f=33);
+
+  // Switch 1
+  translate([2,1.6,-11])
+  translate([6.5,0,5]) rotate([90,0,0]) cylinder(r=3.3,h=10,$fn=30);
+  // Switch 2
+  translate([54-15,1.6,-11])
+  translate([6.5,0,5]) rotate([90,0,0]) cylinder(r=3.3,h=10,$fn=30);
+  
+  // anti rotate slot for switches
+  translate([13,-2,-7]) color("blue"){
+          linear_extrude(height=2.5) 
+           square(size=[3.5, 1.0]);
+  }
+  translate([50,-2,-7]) color("pink"){
+          linear_extrude(height=2.5) 
+           square(size=[3.5, 1.0]);
+  }
+  
+  // cut for the charger port
+  translate([41,-4,5])
+  cube([11,20,7],center=true);
+
+  translate([-2.3,-2,-13]) 
+  rotate([0,0,0])
+  rounder(r=1,h=34,f=33);
+
+  translate([-2.3+58.6,-2,-13]) 
+  rotate([0,0,90])
+  rounder(r=1,h=34,f=33);
+}
+
+  translate([-2,0,19-2]) 
+  rotate([0,90,0])
+  rounder(r=3,h=58,f=33);
+
+
+
+
+}
+
 //===========================================
 
 //~ chassis1();
 
+endCap();
 
 //  cutting box, CHOOSE EITHER INTER OR DIFF
 // TODO check the clearance between the 2 parts
@@ -278,7 +332,7 @@ translate([24,55,4.4]) color("orange") {
 // probably look at slicer to be sure
 
 // bottom side
-if(1){
+if(0){
 difference(){
     
     chassis1();

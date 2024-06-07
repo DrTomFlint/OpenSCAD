@@ -8,7 +8,7 @@ use <./Lightning1white.scad>
 use <./Lightning1blue.scad>
 use <./Lightning1red.scad>
 
-thick = 2.1;    // thickness of the blades
+thick = 1.5;    // thickness of the blades
 
 mag=40;
 R0=16;
@@ -166,15 +166,16 @@ mag3=100;
 
 //===============================================================
 
-//L1white();
-//L1blue();
-//L1red();
-//L1black();    // with hanger hole
+//~ L1white();
+//~ L1blue();
+//~ L1red();
+L1black();    // with hanger hole
+
 //L1blackB();   // no hanger hole
 
 //L1jig();
 
-L3white();
+//L3white();
 
 //===============================================================
 
