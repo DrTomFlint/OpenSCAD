@@ -222,6 +222,103 @@ off=32;
 
 
 }
+//----------------------------------------------------------------------
+module hang4(){
+  
+gap=7;
+wide=26;
+thick=2.1;
+rmin=50;
+off=32;
+
+
+  // tip
+  difference(){
+    union(){
+      rotate([0,0,32])
+      translate([2*rmin,0,0])
+      cylinder(r=rmin+thick+1,h=3+thick,$fn=200);
+      translate([40,0,0])
+      cube([40,rmin,thick+3]);
+    }
+    
+    rotate([0,0,32])
+    translate([2*rmin,0,0])
+    cylinder(r=rmin-3,h=5*thick,center=true,$fn=200);
+
+    rotate([0,0,32])
+    translate([2*rmin,0,0])
+    translate([0,0,thick+2])
+    rotate([0,0,180])
+    rotate_extrude($fn=99,angle=180){
+      translate([rmin,0])
+      circle(r=1.7,$fn=33);
+    }
+
+    rotate([0,0,32])
+    translate([2*rmin,2*rmin,thick+3])
+    cube([4*rmin,4*rmin,5*thick],center=true);
+    translate([3.8*rmin,0,thick+3])
+    cube([4*rmin,4*rmin,5*thick],center=true);
+  }
+  
+  // main loop
+  difference(){
+    cylinder(r=rmin+thick+1,h=3+thick,$fn=200);
+    
+    translate([0,0,thick+2])
+    rotate([0,0,32])
+    rotate_extrude($fn=99,angle=180){
+      translate([rmin,0])
+      circle(r=1.7,$fn=33);
+    }
+    rotate([0,0,32])
+    translate([2*rmin,0,0])
+    translate([0,0,thick+2])
+    rotate([0,0,180])
+    rotate_extrude($fn=99,angle=180){
+      translate([rmin,0])
+      circle(r=1.7,$fn=33);
+    }
+
+    translate([0,-2*rmin,thick+3])
+    cube([4*rmin,4*rmin,5*thick],center=true);
+
+    translate([12,0,-1])
+    cylinder(r=0.5*rmin,h=5*thick,$fn=200);
+
+    translate([2,40,-1])
+    cylinder(r=4,h=5*thick,$fn=200);
+
+// cut text for Version
+  translate ([-15,35,3+thick-0.6]) color("red")   
+  rotate([0,0,200])
+  linear_extrude(height=0.6)
+  text("2024", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.2);
+
+  translate ([20,33,3+thick-0.6]) color("red")   
+  rotate([0,0,150])
+  linear_extrude(height=0.6)
+  text("FLINT", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.2);
+
+    translate([-rmin,5,thick+3])
+    cube([30,11,5*thick],center=true);
+  }
+
+  // tabs for stapler
+  translate([-35,0,22])
+  mirror([1,0,0])
+  rotate([0,0,180])
+  rotate([180,0,0])
+  staple();
+
+  translate([35,0,22])
+  mirror([1,0,0])
+  rotate([0,0,180])
+  rotate([180,0,0])
+  staple();
+
+}
 
 //======================================================================
 
@@ -232,7 +329,9 @@ off=32;
 
 //~ hang2();
 
-hang3();
+//~ hang3();
+
+hang4();
 
 //~ staple();
 
