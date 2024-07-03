@@ -34,7 +34,8 @@ module DaisyBlackPetal(sx=2.5){
         scale([1,sx,1])
         circle(r=r2,$fn=F1);
       }
-      linear_extrude(height=thick){
+      translate([0,0,-1])
+      linear_extrude(height=thick+2){
         scale([1,sx,1])
         circle(r=r2,$fn=F1);
       }
@@ -99,6 +100,8 @@ module DaisyBlack(sd=125){
     // cut out shadow of second layer  
     for(i=[0:N2-1]){
       rotate([0,0,i*360/N2+s6[i]+180/N2])
+      translate([0,0,-0.1])
+      scale([1.01,1.01,2])
       DaisyBlackPetalX(sx=s5[i]);
     }
   }
@@ -154,6 +157,28 @@ module DaisyRed(sd=125){
 }
 
 //----------------------------------------------------------------------
+// slice the red petals into red and orange sections
+module DaisyRed2(sd=125){
+
+    difference(){
+      DaisyRed(sd=sd);
+      cylinder(r2=r1,r1=19,h=thick,$fn=F1,center=true);
+    }
+}
+
+//----------------------------------------------------------------------
+// slice the red petals into red and orange sections
+module DaisyOrange(sd=125){
+  
+    intersection(){
+      DaisyRed(sd=sd);
+      cylinder(r2=r1,r1=19,h=thick,$fn=F1,center=true);
+    }
+
+}
+
+
+//----------------------------------------------------------------------
 module DaisyYellow(){
   
   difference(){
@@ -172,6 +197,9 @@ module DaisyYellow(){
 //~ color("red")
 //~ DaisyRed();
 
+//~ DaisyRed2();
+//~ DaisyOrange();
+
 //~ color("yellow")
 //~ DaisyYellow();
 
@@ -186,7 +214,7 @@ dx = 40;
 dy = 45;
 
 // black
-if(1){
+if(0){
   for(k=[0:2]){
     translate([dx*k,0,0])
     color("gray")
@@ -210,6 +238,32 @@ if(0){
     translate([dx*k,-dy,0])
     color("red")
     DaisyRed(sd=s4[k+3]);
+  }
+}
+// red 2
+if(0){
+  for(k=[0:2]){
+    translate([dx*k,0,0])
+    color("red")
+    DaisyRed2(sd=s4[k]);
+  }
+  for(k=[0:2]){
+    translate([dx*k,-dy,0])
+    color("red")
+    DaisyRed2(sd=s4[k+3]);
+  }
+}
+// orange
+if(1){
+  for(k=[0:2]){
+    translate([dx*k,0,0])
+    color("orange")
+    DaisyOrange(sd=s4[k]);
+  }
+  for(k=[0:2]){
+    translate([dx*k,-dy,0])
+    color("orange")
+    DaisyOrange(sd=s4[k+3]);
   }
 }
 
