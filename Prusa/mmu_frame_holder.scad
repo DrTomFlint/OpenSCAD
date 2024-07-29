@@ -67,8 +67,7 @@ module frame(){
     cube([5,5,thick],center=true);
     
     rotate([0,0,8])
-    translate([x1/2+3.5,50,0])  
-    cube([5,5,thick],center=true);
+    translate([x1/2+3.5,50,0]) cube([5,5,thick],center=true);
   }
   
 }
