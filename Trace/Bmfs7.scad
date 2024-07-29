@@ -569,7 +569,7 @@ dx = 40;
 dy = 50;
 
 // black
-if(0){
+if(1){
   for(k=[0:2]){
     translate([dx*k,0,0])
     color("gray")
@@ -652,7 +652,7 @@ if(0){
 }
 
 // yellow
-if(1){
+if(0){
   for(k=[0:2]){
     translate([dx*k,0,0])
     color("yellow")

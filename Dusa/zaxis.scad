@@ -33,7 +33,7 @@ z5=6;  // thick 10
 
 difference(){
 // boss
-minkowski(){    
+//~ minkowski(){         // @TODO this crashes OpenScad with manifold and fastXXX lib
 union(){
     // over motor
     color("gray")
@@ -82,8 +82,8 @@ union(){
     translate([x1,0,z4+z5])
     cylinder(r=7,h=2,$fn=F2);
 }
-sphere(r=2,$fs=0.2);
-}
+//~ sphere(r=2,$fs=0.2);
+//~ }
 
 
 // left tower
