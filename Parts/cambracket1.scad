@@ -85,12 +85,12 @@ module cambracket1(){
   // left side of bracket
   hull(){
       color("red")
-      translate([-6,4,2.5])
+      translate([-6+0.2,4,2.5])
       rotate([0,90,0])
       cylinder(r=4,h=4,$fn=80);
 
       color("pink")
-      translate([-4,-12,2.5])
+      translate([-4+0.2,-12,2.5])
       //sphere(2,$fa=5, $fs=0.1);
       cube([4,8,8],center=true);
   }
@@ -100,12 +100,12 @@ module cambracket1(){
   mirror([1,0,0]){
     hull(){
         color("red")
-        translate([-6,4,2.5])
+        translate([-6+0.2,4,2.5])
         rotate([0,90,0])
         cylinder(r=4,h=4,$fn=80);
 
         color("pink")
-        translate([-4,-12,2.5])
+        translate([-4+0.2,-12,2.5])
         //sphere(2,$fa=5, $fs=0.1);
         cube([4,8,8],center=true);
     }
@@ -113,7 +113,7 @@ module cambracket1(){
   
     // crossbar
     translate([12.5,-14,2.5])
-    cube([37,6,8],center=true);
+    cube([37-0.4,6,8],center=true);
 
     rr=3;
     translate([12.5+14.5,-11,-1.5])

@@ -2,6 +2,8 @@
 // This is the back for the camera
 
 use <hexcut.scad>
+use <camlid1.scad>
+use <tplug.scad>
 
 
 module cambase1(){
@@ -66,13 +68,13 @@ cylinder(r1=2,r2=2.25,h=3,$fn=12);
 
 //-------------------------
 // No pins on the sides
-module cambase2(){
+module cambase2(tol=0){
     
 // main shell
 difference(){
     color("yellow")
-    linear_extrude(height=5)
-    offset(r=2,$fn=80)    
+    linear_extrude(height=5+tol)
+    offset(r=2+tol,$fn=80)    
     square(size=[25,24]);
 
     translate([0,0,1])
@@ -124,6 +126,104 @@ module cambase3(){
     }
 }
 
+//----------------------------------
+// decorate cambase2
+module cambase4(tol=0){
+    
+    difference(){
+        cambase2(tol=tol);    
+        hexcut1(x0=12.5,y0=3,R=3);
+    }
+    
+    // tabs on sides to mount
+    translate([-3,8,1+tol/2])
+    color("pink")
+    cube([3+tol,10+tol,2+tol],center=true);
+
+    translate([28,8,1+tol/2])
+    color("pink")
+    cube([3+tol,10+tol,2+tol],center=true);
+    
+}
+
+// setup azimuth and elevation
+// #1
+//~ az = -20;
+//~ el = 120;
+// #2
+//~ az = -15;
+//~ el = 130;
+// #3
+//~ az = -15;
+//~ el = 140;
+// #4
+az = 15;
+el = 140;
+// #5
+//~ az = 15;
+//~ el = 140;
+
+//-----------------------------------------
+// fixed angle mount for top of 30x30 post
+module camfixed(){
+  
+  difference(){
+    hull(){
+      // tabs on sides to mount
+      translate([-12.6,-5,20])
+      rotate([el,0,0])
+      translate([-3,8,1])
+      color("pink")
+      cube([3+2.5,10+2.5,2+2.5],center=true);
+
+      translate([-15.6,3,3])
+      cube([5.5,10,1],center=true);
+
+    }
+    translate([-12.5,-5,20])
+    rotate([el,0,0])
+    cambase4(tol=0.2);
+  }
+
+
+  difference(){
+    hull(){
+      // tabs on sides to mount
+      translate([12.6,-5,20])
+      rotate([el,0,0])
+      translate([3,8,1])
+      color("pink")
+      cube([3+2.5,10+2.5,2+2.5],center=true);
+
+      translate([15.6,3,3])
+      cube([5.5,10,1],center=true);
+
+    }
+    translate([-12.5,-5,20])
+    rotate([el,0,0])
+    cambase4(tol=0.2);
+
+  }
+
+difference(){
+  union(){
+    cylinder(r=20,h=3,$fn=77);
+    rotate([0,0,az])
+    tplug();
+  }
+  
+  translate([0,10,3-0.6])
+  rotate([0,0,180])
+  linear_extrude(height=0.9)
+  text("5", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+}
+
+
+
+  
+}
+
+
 //=================================
 
 //translate([80,0,0])
@@ -132,7 +232,20 @@ module cambase3(){
 //translate([40,0,0])
 //cambase2();
 
-cambase3();
+//~ camlid1();
+//~ cambase4();
+
+if(0){
+  translate([-12.5,-5,20])
+  //~ rotate([0,0,az])
+  rotate([el,0,0]){
+    cambase4(tol=0);
+    camlid1();
+  }
+}
+ 
+camfixed();
+
 
 //cambase1();
 
