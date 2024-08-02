@@ -18,10 +18,11 @@ use <xends2.scad>
 High0=150;        
 
 // Left extruder position, 153+
-LeftX0=152; 
+//~ LeftX0=152; 
+LeftX0=152+120; 
 
 // Right extruder position, +82 +328
-RightX0=328;
+RightX0=328-120;
 
 // Show frame
 frameOn=0;
@@ -74,7 +75,7 @@ y2=y1/2;
 F2=88;
 
 
-//------------------------------------------------------
+//----------------------------------------------------------------------
 // xcarriages
 // type 1 is left, type 2 is right
 module xmain1(
@@ -102,11 +103,47 @@ type=1
       translate([+480/2-X0+100,0+16,High0+30])   
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24+7,$fn=F2);
+      
+      // add a solid camera mount     *******************************************************************************************
+      difference(){
+        hull(){
+          translate([+480/2-X0+100-13,44,High0+24])   
+          rotate([0,0,-30])
+          cube([27,27,7],center=true);
+          translate([+480/2-X0+100-17.5,16,High0+24])   
+          cube([35,3,7],center=true);
+        }
+        translate([+480/2-X0+100-13,44,High0+26])   
+        rotate([0,0,-30])
+        cube([25.3,25.3,3.1],center=true);
+        
+        translate([+480/2-X0+100-13,44,High0+24])   
+        rotate([0,0,-30])
+        cube([17,25.3,8],center=true);
+      }
     }
     if(type==2){
       translate([+480/2-X0+68,0+16,High0+30])   
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24,$fn=F2);
+
+      // add a solid camera mount     *******************************************************************************************
+      difference(){
+        hull(){
+          translate([+480/2-X0+100-52,44,High0+24])   
+          rotate([0,0,30])
+          cube([27,27,7],center=true);
+          translate([+480/2-X0+100-45,16,High0+24])   
+          cube([22,3,7],center=true);
+        }
+        translate([+480/2-X0+100-52,44,High0+26])   
+        rotate([0,0,30])
+        cube([25.3,25.3,3.1],center=true);
+        
+        translate([+480/2-X0+100-52,44,High0+24])   
+        rotate([0,0,30])
+        cube([17,25.3,8],center=true);
+      }
     }
 
     // boss to mount the blowers      
@@ -126,11 +163,28 @@ type=1
     }
  
   } // end Boss union -----------
+  
+  // make a window to see the fiber loading area?  **************************************************************
+    if(type==1){
+      // upper mount with heat-set M3 brass
+      color("pink")
+      translate([+480/2-X0+55,0,High0+zmotor1+20])
+      rotate([-90,0,0])
+      linear_extrude(height=15)
+      offset(r=3,$fn=33)
+      square([25-6,24-6],center=true);
+    }  
+    if(type==2){
+      // upper mount with heat-set M3 brass
+      color("pink")
+      translate([+480/2-X0+80,0,High0+zmotor1+20])
+      rotate([-90,0,0])
+      linear_extrude(height=15)
+      offset(r=3,$fn=33)
+      square([25-6,24-6],center=true);
+    }  
 
     // trim front vertical block
-//    translate([+480/2-X0+34,16.5,High0+zmotor1+45.5])
-//    rotate([45,0,0])
-//    #cube([67,20,20]);
     translate([+480/2-X0+34,16.5,High0+zmotor1+45.5])
     rotate([30,0,0])
     cube([67,20,20]);
@@ -138,17 +192,17 @@ type=1
     // trim corners
     translate([+480/2-X0+91,0,High0+zmotor1+55])
     rotate([0,45,0])
-    cube([20,60,20]);
+    cube([20,20,20]);
     translate([+480/2-X0+16,0,High0+zmotor1+55])
     rotate([0,45,0])
-    cube([20,60,20]);
+    cube([20,20,20]);
     translate([+480/2-X0+16,0,High0+26.5])
     rotate([0,45,0])
-    cube([14,60,20]);
+    cube([14,20,20]);
     if(type==2){
       translate([+480/2-X0+91,0,High0+26.5])
       rotate([0,45,0])
-      cube([20,60,20]);
+      cube([20,20,20]);
     }
 
     // cut for thumbscrew
@@ -811,7 +865,7 @@ h1=6;
           // curved top of block
           translate([+480/2-X0+76+13.5/2,4.5,High0+zmotor1+51.5+h1])
           rotate([-90,0,0])
-          cylinder(r=13.5/2,h=8.5,$fn=88);
+          cylinder(r=14.5/2,h=8.5,$fn=88);
         }
         
         // right screw hole
@@ -834,11 +888,11 @@ h1=6;
           // upper
           translate([+480/2-X0+76+13.5/2,3.5,High0+zmotor1+51.5+h1])
           rotate([-90,0,0])
-          cylinder(r=8/2,h=10,$fn=88);
+          cylinder(r=4.5,h=10,$fn=88);
           // lower
           translate([+480/2-X0+76+13.5/2,4.5,High0+zmotor1+54.0])
           rotate([-90,0,0])
-          cylinder(r=8/2,h=10,$fn=88);
+          cylinder(r=4.5,h=10,$fn=88);
         }
       }
     }
@@ -870,7 +924,7 @@ h1=6;
           // curved top of block
           translate([+480/2-X0+45.5+14/2,4.5,High0+zmotor1+51.5+h1])
           rotate([-90,0,0])
-          cylinder(r=13.0/2,h=8.5,$fn=88);
+          cylinder(r=14.0/2,h=8.5,$fn=88);
         }
 
         // trim the left foot
@@ -897,11 +951,11 @@ h1=6;
           // upper
           translate([+480/2-X0+45.5+14.0/2,3.5,High0+zmotor1+51.5+h1])
           rotate([-90,0,0])
-          cylinder(r=7.5/2,h=10,$fn=88);
+          cylinder(r=4.5,h=10,$fn=88);
           // lower
           translate([+480/2-X0+45.5+14.0/2,4.5,High0+zmotor1+54.0])
           rotate([-90,0,0])
-          cylinder(r=7.5/2,h=10,$fn=88);
+          cylinder(r=4.5,h=10,$fn=88);
         }
       }
     }
@@ -1021,11 +1075,14 @@ module hoseclip(){
 //standoff();
 //touchbox();
 
-//wireclip(type=1,X0=LeftX0);
-//wireclip(type=2,X0=RightX0+135);
+//~ wireclip(type=1,X0=LeftX0);
+//~ wireclip(type=2,X0=RightX0+135);
+
+//~ wireclip(type=1,X0=0);
+//~ wireclip(type=2,X0=10);
 
 //hoseclip();  // left side
-mirror([1,0,0]) hoseclip();  // right side
+//mirror([1,0,0]) hoseclip();  // right side
 
 
 
@@ -1120,7 +1177,7 @@ if(0){
 }
 
 // Left x carriage   *********************************
-//xmain1(X0=LeftX0,type=1);
+xmain1(X0=LeftX0,type=1);
 
 // support for printing Left xmain1
 if(0){
@@ -1137,7 +1194,9 @@ if(0){
 }
 
 // Right x carriage ******************************************************
-//xmain1(X0=RightX0+135,type=2);
+if(1){
+  xmain1(X0=RightX0+135,type=2);
+}
 
 // support for printing Right xmain1
 if(0){
@@ -1244,16 +1303,16 @@ if(0){  // right side
     standoff();
 }
 
-if(0){
 // left extruder
+if(1){
 color("gray")
 translate([+480/2-LeftX0,2,High0+26+10])
 rotate([90,0,180])
 import("aqua5.stl");
 }
 
-if(0){
 // left emotor
+if(1){
 color("orange")
 translate([+480/2-LeftX0+67,-59.5,High0+44+10])
 rotate([90,-90,180])
@@ -1323,7 +1382,7 @@ idler();
 }
 
 // right x-end "Tom Flint"
-translate([0,0,High0-150])
+//translate([0,0,High0-150])
 //xright1();
 
 // right limit switch 
@@ -1343,8 +1402,8 @@ rotate([90,90,0])
 xymotor();
 }
 
-if(0){
 // right x motor pulley
+if(0){
 color("orange")
 translate([-480/2+30+xmot0,0+24,High0+zmotor2])
 rotate([90,90,0])
@@ -1356,8 +1415,8 @@ rotate([90,90,0])
 idler();
 }
 
-if(0){
 // belt upper right
+if(0){
 color("blue")
 difference(){
     hull(){ // outer
@@ -1384,8 +1443,8 @@ difference(){
     }
 }
 }
-if(0){
 // belt lower left
+if(0){
 color("gray")
 difference(){
     hull(){  // outer
@@ -1413,8 +1472,8 @@ difference(){
 }
 }
 
-if(0){
 // upper x rod
+if(0){
 color("orange")
 translate([-480/2,0+16,High0+zmotor1+34])
 rotate([0,90,0])
@@ -1429,16 +1488,17 @@ cylinder(r=4,h=480,$fn=F2);
 
 }
 
-if(0){
 // right extruder
+if(1){
 color("gray")
 translate([+480/2-RightX0,2,High0+26+10])
 rotate([90,0,180])
 mirror([1,0,0])
 import("aqua5.stl");
 }
-if(0){
+
 // right emotor
+if(1){
 color("gray")
 //translate([+480/2-LeftX0+67,-59.5,High0+44+10])
 translate([+480/2-RightX0-68,-59.5,High0+44+10])
@@ -1446,8 +1506,8 @@ rotate([90,-90,180])
 emotor();
 }
 
-
-if(0){  // right side bearings
+// right side bearings
+if(0){  
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-RightX0-76,16,High0+30])
