@@ -24,7 +24,11 @@ use <yaxis.scad>
 use <y-belt-holder.scad>
 use <topshelf.scad>
 use <xcarriage.scad>
-use <cams.scad>
+
+//use <cams.scad>
+use <../Parts/cambracket1.scad>
+use <../Parts/cambase1.scad>
+use <../Parts/camlid1.scad>
 
 //======================================
 // Customizer Values:
@@ -42,32 +46,33 @@ LeftX0=152+0;
 RightX0=327;
 
 // Bed position, +107 -107
-Bed0=1;
+//~ Bed0=1;
+Bed0=105;
 
 // ----- visibility ------------------
 // Show frame
 frameOn=1;
 
 // Show top z brackets
-tops=1;  
+tops=0;  
 
 // Show z axis left
-leftZon=1;
+leftZon=0;
 
 // Show z axis right
-rightZon=1;
+rightZon=0;
 
 // Show x axis left
-leftXon=1;
+leftXon=0;
 
 // Show x axis right
-rightXon=1;
+rightXon=0;
 
 // Show extruder left
-leftEon=1;
+leftEon=0;
 
 // Show extruder right
-rightEon=1;
+rightEon=0;
 
 // Show ybed 
 ybed=1;    
@@ -112,6 +117,9 @@ zmotorD=19;
 
 // Offset x motors from center of towers
 xmot0=-2;
+
+// Height of the camera posts
+zcam = 290;
 
 //----------------------------------
 // a module here to end the customizer section
@@ -223,28 +231,63 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 
 // cam1 
 if(cam1on==1){
+//~ az=15;
+//~ el=140;
+az=18;
+el=130;
 
-  // left side camera
+  // PI4 camera hosts
   color("silver")
-  translate([x2-50+zscrew,ytoz+156,15])
+  translate([x2-50+zscrew,ytoz+150,15])
   rotate([0,0,-90])
   pi4case();
 
-  color("red")
-  translate([x2-50-3+zscrew,ytoz+50,-15])
-  cam1(hi=150);
+  color("silver")
+  translate([-(x2-50+zscrew),ytoz+30,15])
+  rotate([0,0,90])
+  pi4case();
 
-  // right side camera
-  mirror([1,0,0]){
-    color("silver")
-    translate([x2-50+zscrew,ytoz+156,15])
+  // camera mounts
+  translate([-x2-15,y2+15,-15])
+  rotate([0,0,0])
+  tslot1(type=1,len=zcam);
+  
+  translate([-x2-15,y2+15,zcam-15])
+  rotate([0,0,90])
+  camfixed(az=az,el=el,sight=1);
+    
+  translate([x2+15,y2+15,-15])
+  rotate([0,0,0])
+  tslot1(type=1,len=zcam);
+
+  translate([x2+15,y2+15,zcam-15])
+  rotate([0,0,-90])
+  camfixed(az=-az, el=el, sight=1);
+  
+  if(0){
+    // right side
+    translate([-x2-15,y2+15,zcam-15])
+    rotate([0,0,90])
+
+    translate([-12.5,-5,20])
+    rotate([0,0,-az])
+    rotate([el,0,0]){
+      cambase4(tol=0);
+      camlid1();
+    }
+    // left side
+    translate([x2+15,y2+15,zcam-15])
     rotate([0,0,-90])
-    pi4case();
 
-    color("red")
-    translate([x2-50-3+zscrew,ytoz+50,-15])
-    cam1(hi=150);
+    translate([-12.5,-5,20])
+    rotate([0,0,az])
+    rotate([el,0,0]){
+      cambase4(tol=0);
+      camlid1();
+    }
   }
+  
+  
   
 }
         

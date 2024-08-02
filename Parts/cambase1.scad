@@ -1,11 +1,14 @@
+//======================================================================
 // cambase1.scad
 // This is the back for the camera
+//
+//======================================================================
 
 use <hexcut.scad>
 use <camlid1.scad>
 use <tplug.scad>
 
-
+//----------------------------------------------------------------------
 module cambase1(){
     
 // main shell
@@ -66,7 +69,7 @@ cylinder(r1=2,r2=2.25,h=3,$fn=12);
 
 } // end module cambase1
 
-//-------------------------
+//----------------------------------------------------------------------
 // No pins on the sides
 module cambase2(tol=0){
     
@@ -116,7 +119,7 @@ translate([23.0,22,1]){
 
 
 } // end module cambase1
-//----------------------------------
+//----------------------------------------------------------------------
 // decorate cambase2
 module cambase3(){
     
@@ -126,7 +129,7 @@ module cambase3(){
     }
 }
 
-//----------------------------------
+//----------------------------------------------------------------------
 // decorate cambase2
 module cambase4(tol=0){
     
@@ -145,6 +148,7 @@ module cambase4(tol=0){
     cube([3+tol,10+tol,2+tol],center=true);
     
 }
+//----------------------------------------------------------------------
 
 // setup azimuth and elevation
 // #1
@@ -156,17 +160,19 @@ module cambase4(tol=0){
 // #3
 //~ az = -15;
 //~ el = 140;
-// #4
-az = 15;
-el = 140;
-// #5
+// Dusa Right
 //~ az = 15;
+//~ el = 140;
+// Dusa Left
+//~ az = -15;
 //~ el = 140;
 
 //-----------------------------------------
 // fixed angle mount for top of 30x30 post
-module camfixed(){
-  
+module camfixed(az=15,el=140,sight=1){
+
+rotate([0,0,-az]){
+    
   difference(){
     hull(){
       // tabs on sides to mount
@@ -183,6 +189,10 @@ module camfixed(){
     translate([-12.5,-5,20])
     rotate([el,0,0])
     cambase4(tol=0.2);
+    // trim both sides to make space for the lid
+    translate([0,-16,22])
+    rotate([el,0,0])
+    cube([29.6,24,10],center=true);
   }
 
 
@@ -202,29 +212,47 @@ module camfixed(){
     translate([-12.5,-5,20])
     rotate([el,0,0])
     cambase4(tol=0.2);
-
+    // trim both sides to make space for the lid
+    translate([0,-16,22])
+    rotate([el,0,0])
+    cube([29.6,24,10],center=true);
   }
 
-difference(){
-  union(){
-    cylinder(r=20,h=3,$fn=77);
-    rotate([0,0,az])
-    tplug();
+  difference(){
+    union(){
+      cylinder(r=20,h=3,$fn=77);
+      rotate([0,0,az])
+      tplug();
+    }
+    
+    translate([0,8,3-0.6])
+    rotate([0,0,180])
+    linear_extrude(height=0.9)
+    if(az<0){
+      text("DL", font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.2);
+    }else{
+      text("DR", font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.2);
+    }
   }
   
-  translate([0,10,3-0.6])
-  rotate([0,0,180])
-  linear_extrude(height=0.9)
-  text("5", font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.2);
+  // add camera sight
+  if(sight==1){
+    difference(){
+      translate([0,-25,19])
+      rotate([el,0,0])
+      cylinder(r=10,h=5,$fn=33,center=true);
+      
+      translate([0,-25,19])
+      rotate([el,0,0])
+      cylinder(r1=8,r2=9,h=22,$fn=33,center=true);
+    }
+    
+  }
+
+}
 }
 
-
-
-  
-}
-
-
-//=================================
+//======================================================================
 
 //translate([80,0,0])
 //cambase1();
@@ -235,19 +263,23 @@ difference(){
 //~ camlid1();
 //~ cambase4();
 
-if(0){
+
+if(1){
   translate([-12.5,-5,20])
-  //~ rotate([0,0,az])
-  rotate([el,0,0]){
+  rotate([0,0,-15])
+  rotate([140,0,0]){
     cambase4(tol=0);
     camlid1();
   }
 }
- 
-camfixed();
+//~ rotate([0,0,75]) 
+camfixed(sight=0);
 
 
 //cambase1();
 
 //translate([0,0,30])
 //cambase2();
+
+//======================================================================
+

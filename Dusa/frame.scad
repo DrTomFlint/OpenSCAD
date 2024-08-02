@@ -28,7 +28,8 @@ module frame(
 yoff=-62,       // tower and top offset from center
 x1=480,         // length front, back, top rails
 y1=330,         // length side rails
-z1=380          // height of towers
+z1=380,          // height of towers
+zcam=150        // height of camera posts
 ){
     
 x2=x1/2;    // 240
@@ -68,7 +69,7 @@ y2=y1/2;    // 165
     // top rail
     translate([-x2,yoff,15+z1+15])
     rotate([0,90,0])
-    tslot1(type=2,len=x1);
+    tslot1(type=2,len=x1);      
     
     //--------- triangle corners in base ------------
     
