@@ -40,7 +40,7 @@ use <../Parts/camlid1.scad>
 High0=150;        
 
 // Left extruder position, +152, +398
-LeftX0=152+0; 
+LeftX0=152+1; 
 
 // Right extruder position, +82, +327
 RightX0=327;
@@ -51,31 +51,31 @@ Bed0=105;
 
 // ----- visibility ------------------
 // Show frame
-frameOn=0;
+frameOn=1;
 
 // Show top z brackets
-tops=0;  
+tops=1;  
 
 // Show z axis left
-leftZon=0;
+leftZon=1;
 
 // Show z axis right
-rightZon=0;
+rightZon=1;
 
 // Show x axis left
 leftXon=1;
 
 // Show x axis right
-rightXon=0;
+rightXon=1;
 
 // Show extruder left
 leftEon=1;
 
 // Show extruder right
-rightEon=0;
+rightEon=1;
 
 // Show ybed 
-ybed=0;    
+ybed=1;    
 
 // Show cam1
 cam1on=0;
@@ -415,6 +415,7 @@ if(leftXon){
   color("red")
   translate([0,ytoz,High0-150])
   xmain1(X0=LeftX0,type=1);
+  
   // BLtouch
   color("cyan")
   translate([+480/2-LeftX0+95.1,-2.7,High0+19.5])

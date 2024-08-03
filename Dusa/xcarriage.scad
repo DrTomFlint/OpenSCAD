@@ -7,6 +7,7 @@ use <../Parts/bltouch.scad>
 use <../Parts/blower.scad>
 use <../Parts/switch.scad>
 use <../Parts/rounder.scad>
+use <../Parts/cambase1.scad>
 
 use <frame.scad>
 use <zaxis.scad>
@@ -104,23 +105,28 @@ type=1
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24+7,$fn=F2);
       
+
       // add a solid camera mount     *******************************************************************************************
-      difference(){
-        hull(){
-          translate([+480/2-X0+100-13,44,High0+24])   
-          rotate([0,0,-30])
-          cube([27,27,7],center=true);
-          translate([+480/2-X0+100-17.5,16,High0+24])   
-          cube([35,3,7],center=true);
-        }
-        translate([+480/2-X0+100-13,44,High0+26])   
-        rotate([0,0,-30])
-        cube([25.3,25.3,3.1],center=true);
+      translate([+480/2-X0+102,51,High0+24])   
+      rotate([0,0,-28+180])
+      cambase9();
+
+      //~ difference(){
+        //~ hull(){
+          //~ translate([+480/2-X0+100-13,44,High0+24])   
+          //~ rotate([0,0,-30])
+          //~ cube([27,27,7],center=true);
+          //~ translate([+480/2-X0+100-17.5,16,High0+24])   
+          //~ cube([28,3,7],center=true);
+        //~ }
+        //~ translate([+480/2-X0+100-13,44,High0+26])   
+        //~ rotate([0,0,-30])
+        //~ cube([25.3,25.3,3.1],center=true);
         
-        translate([+480/2-X0+100-13,44,High0+24])   
-        rotate([0,0,-30])
-        cube([17,25.3,8],center=true);
-      }
+        //~ translate([+480/2-X0+100-13,44,High0+24])   
+        //~ rotate([0,0,-30])
+        //~ cube([17,25.3,8],center=true);
+      //~ }
     }
     if(type==2){
       translate([+480/2-X0+68,0+16,High0+30])   
@@ -133,8 +139,8 @@ type=1
           translate([+480/2-X0+100-52,44,High0+24])   
           rotate([0,0,30])
           cube([27,27,7],center=true);
-          translate([+480/2-X0+100-45,16,High0+24])   
-          cube([22,3,7],center=true);
+          translate([+480/2-X0+100-40,16,High0+24])   
+          #cube([18,3,7],center=true);
         }
         translate([+480/2-X0+100-52,44,High0+26])   
         rotate([0,0,30])
@@ -209,12 +215,12 @@ type=1
     if(type==1){
       translate([+480/2-X0+105,-3,High0+zmotor1+32])
       rotate([-90,0,90])
-      cylinder(r=15/2+2,h=22,$fn=F2);
+      cylinder(r=15/2+4,h=22,$fn=F2);
     }
     if(type==2){
       translate([+480/2-X0+50,-3,High0+zmotor1+32])
       rotate([-90,0,90])
-      cylinder(r=15/2+2,h=22,$fn=F2);
+      cylinder(r=15/2+4,h=22,$fn=F2);
     }
 
     // extruder motor shaft clearance

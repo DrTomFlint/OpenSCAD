@@ -70,6 +70,64 @@ cylinder(r1=2,r2=2.25,h=3,$fn=12);
 } // end module cambase1
 
 //----------------------------------------------------------------------
+module cambase9(){
+    
+// main shell
+difference(){
+    color("yellow")
+    linear_extrude(height=5)
+    offset(r=2,$fn=80)    
+    square(size=[25,24]);
+
+    translate([0,0,1.5])
+    color("orange")
+    linear_extrude(height=5)
+    offset(r=0.3,$fn=16)    
+    square(size=[25,24]);
+
+    // window for downlooking module
+    translate([7,10,-2])
+    color("red")
+    linear_extrude(height=5)
+    offset(r=0.3,$fn=16)    
+    square(size=[11,24-10]);
+
+    translate([4,-3,1.5])
+    color("green")
+    cube([17,5,5]);
+
+}
+//~ translate([3,-2.5,1.0])
+//~ #rotate([0,90,0])
+//~ scale([1,2]){
+    //~ sphere(r=1.0,$fa=5, $fs=0.1);
+    //~ translate([0,0,19])
+    //~ sphere(r=1.0,$fa=5, $fs=0.1);
+    //~ cylinder(r=1.0,h=19,$fn=80);
+//~ }
+
+// posts to support PCB
+//~ translate([2.0,9.5,1]){
+    //~ cylinder(r=2,h=1,$fn=16);
+    //~ cylinder(r=0.8,h=2.5,$fn=16);
+//~ }
+//~ translate([2.0,22,1]){
+    //~ cylinder(r=2,h=1,$fn=16);
+    //~ cylinder(r=0.8,h=2.5,$fn=16);
+//~ }
+//~ translate([23.0,9.5,1]){
+    //~ cylinder(r=2,h=1,$fn=16);
+    //~ cylinder(r=0.8,h=2.5,$fn=16);
+//~ }
+//~ translate([23.0,22,1]){
+    //~ cylinder(r=2,h=1,$fn=16);
+    //~ cylinder(r=0.8,h=2.5,$fn=16);
+//~ }
+
+
+} // end module cambase1
+
+//----------------------------------------------------------------------
 // No pins on the sides
 module cambase2(tol=0){
     
@@ -264,7 +322,7 @@ rotate([0,0,-az]){
 //~ cambase4();
 
 
-if(1){
+if(0){
   translate([-12.5,-5,20])
   rotate([0,0,-15])
   rotate([140,0,0]){
@@ -273,7 +331,9 @@ if(1){
   }
 }
 //~ rotate([0,0,75]) 
-camfixed(sight=0);
+//~ camfixed(sight=0);
+
+cambase9();
 
 
 //cambase1();
