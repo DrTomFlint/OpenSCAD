@@ -75,6 +75,90 @@ x2=x1/2;
 y2=y1/2;
 F2=88;
 
+//----------------------------------------------------------------------
+module camLeft(X0=150,type=1){
+  
+      // camera mount 
+      difference(){
+        translate([+480/2-X0+102,51,High0+30])   
+        rotate([0,0,-28+180])
+        cambase9(showcam=0);
+
+        // trim excess near blower
+        translate([+480/2-X0+64,33.75,High0+30])   
+        cube([10,20,10],center=true);
+      }
+
+      // attach the camera
+      difference(){
+        hull(){
+          translate([+480/2-X0+100-15.8,26,High0+30+1.5])   
+          cube([31,2,3],center=true);
+          
+          translate([+480/2-X0+102,51,High0+30])   
+          rotate([0,0,-28+180])
+          cube([25,24,3]);
+        }
+        translate([+480/2-X0+102,51,High0+30])   
+        rotate([0,0,-28+180])
+        linear_extrude(height=3)
+        offset(r=2,$fn=80)    
+        square(size=[25,24]);
+        
+        // trim excess near LM8U
+        translate([+480/2-X0+100,0+16,High0+30])   
+        rotate([-90,0,90])
+        cylinder(r=15/2+4,h=24+7,$fn=F2);
+        
+        // trim excess near blower
+        translate([+480/2-X0+64,33.75,High0+30])   
+        cube([10,20,10],center=true);
+      }
+  
+  
+}
+//----------------------------------------------------------------------
+module camRight(X0=150,type=1){
+  
+      // camera mount 
+      difference(){
+        translate([+480/2-X0+55,63,High0+30])   
+        rotate([0,0,28+180])
+        cambase9(showcam=0);
+
+        // trim excess near blower
+        translate([+480/2-X0+71,33.75,High0+30])   
+        cube([10,20,10],center=true);
+      }
+
+      // attach the camera
+      difference(){
+        hull(){
+          translate([+480/2-X0+56,26,High0+30+1.5])   
+          cube([22,2,3],center=true);
+          
+          translate([+480/2-X0+55,63,High0+30])   
+          rotate([0,0,28+180])
+          cube([25,24,3]);
+        }
+        translate([+480/2-X0+55,63,High0+30])   
+        rotate([0,0,28+180])
+        linear_extrude(height=3)
+        offset(r=2,$fn=80)    
+        square(size=[25,24]);
+        
+        // trim excess near LM8U
+        translate([+480/2-X0+100,0+16,High0+30])   
+        rotate([-90,0,90])
+        cylinder(r=15/2+4,h=24+7,$fn=F2);
+        
+        // trim excess near blower
+        translate([+480/2-X0+71,33.75,High0+30])   
+        cube([10,20,10],center=true);
+      }
+  
+  
+}
 
 //----------------------------------------------------------------------
 // xcarriages
@@ -105,51 +189,19 @@ type=1
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24+7,$fn=F2);
       
-
-      // add a solid camera mount     *******************************************************************************************
-      translate([+480/2-X0+102,51,High0+24])   
-      rotate([0,0,-28+180])
-      cambase9();
-
-      //~ difference(){
-        //~ hull(){
-          //~ translate([+480/2-X0+100-13,44,High0+24])   
-          //~ rotate([0,0,-30])
-          //~ cube([27,27,7],center=true);
-          //~ translate([+480/2-X0+100-17.5,16,High0+24])   
-          //~ cube([28,3,7],center=true);
-        //~ }
-        //~ translate([+480/2-X0+100-13,44,High0+26])   
-        //~ rotate([0,0,-30])
-        //~ cube([25.3,25.3,3.1],center=true);
-        
-        //~ translate([+480/2-X0+100-13,44,High0+24])   
-        //~ rotate([0,0,-30])
-        //~ cube([17,25.3,8],center=true);
-      //~ }
+      translate([+480/2-X0+70,70,High0+30])   
+      rotate([0,0,180])
+      cambase9(showcam=0);
+            
     }
     if(type==2){
       translate([+480/2-X0+68,0+16,High0+30])   
       rotate([-90,0,90])
       cylinder(r=15/2+4,h=24,$fn=F2);
 
-      // add a solid camera mount     *******************************************************************************************
-      difference(){
-        hull(){
-          translate([+480/2-X0+100-52,44,High0+24])   
-          rotate([0,0,30])
-          cube([27,27,7],center=true);
-          translate([+480/2-X0+100-40,16,High0+24])   
-          #cube([18,3,7],center=true);
-        }
-        translate([+480/2-X0+100-52,44,High0+26])   
-        rotate([0,0,30])
-        cube([25.3,25.3,3.1],center=true);
-        
-        translate([+480/2-X0+100-52,44,High0+24])   
-        rotate([0,0,30])
-        cube([17,25.3,8],center=true);
-      }
+      //~ translate([+480/2-X0-90,0,0])   
+      //~ camRight();
+
     }
 
     // boss to mount the blowers      
@@ -555,49 +607,61 @@ type=1
       }
     }
     
-    // Duct Left
+    // Duct Left   ********************************************************************************************
     if(type==1){
       if(1){
       difference(){
         union(){
           color("pink")
-          translate([+480/2-X0+45,26,High0+36]) 
+          translate([+480/2-X0+45,24,High0+44]) 
           rotate([0,90,0])
-          cylinder(r=18,h=24+0,$fn=F2);
+          cylinder(r=24,h=24+0,$fn=F2);
+          
           color("green")
-          translate([+480/2-X0+45,9.5,High0+15.5]) 
-          rotate([8,0,0])
-          cube([24+0,19,28]);
+          translate([+480/2-X0+45,14,High0+16.5]) 
+          rotate([27,0,0])
+          cube([24,24,24]);
         }
+        
+        // cut face
         translate([+480/2-X0+44,-2,High0+36.5]) 
         rotate([0,0,0])
-        cube([26+12,25,28]);
+        cube([26+12,30,40]);
+        
+        // cut to match blower angle
         translate([+480/2-X0+44,20,High0+36.5]) 
         rotate([-9,0,0])
-        cube([26+16,25,28]);
-        // cut for rail
+        cube([26+16,30,40]);
+        
+        // cut for 8mm rail
         translate([+480/2-X0+80+22,0+16,High0+30])
         rotate([-90,0,90])
-        cylinder(r=5.5,h=68,$fn=F2);
+        cylinder(r=4.2,h=68,$fn=F2);
 
+        // curved duct
         color("gray")
         difference(){
-          translate([+480/2-X0+48,26,High0+36]) 
+          translate([+480/2-X0+45,26,High0+42]) 
           rotate([0,90,0])
-          cylinder(r=16,h=17,$fn=F2);
+          cylinder(r=19,h=20,$fn=F2);
 
-          translate([+480/2-X0+46,14,High0+32]) 
+          translate([+480/2-X0+46,13,High0+32]) 
           rotate([0,90,0])
-          cylinder(r=10,h=22,$fn=F2);
+          cylinder(r=10,h=20,$fn=F2);
         }       
         
-        translate([+480/2-X0+48,8,High0+17.5]) 
-        rotate([8,0,0])
-        cube([17,18,3.8]);
+        // flat duct
+        translate([+480/2-X0+48,-4,High0+9.5]) 
+        rotate([27,0,0])
+        cube([17,36,4]);
+        translate([+480/2-X0+42,-4,High0+9.5]) 
+        cube([30,36,10]);
         
         // cut for visibility
-        //translate([+480/2-X0+30,6,High0+10]) 
-        //cube([20,40,30]);
+        if(0){
+          translate([+480/2-X0+30,6,High0+10]) 
+          cube([20,40,30]);
+        }
       }
       }
 
@@ -1076,10 +1140,10 @@ module hoseclip(){
     
 }
 
-//==========================================================================================
+//====================================================================================================================================================
 
 //standoff();
-//touchbox();
+//~ touchbox();
 
 //~ wireclip(type=1,X0=LeftX0);
 //~ wireclip(type=2,X0=RightX0+135);
@@ -1090,7 +1154,8 @@ module hoseclip(){
 //hoseclip();  // left side
 //mirror([1,0,0]) hoseclip();  // right side
 
-
+//~ camLeft();
+//~ camRight();
 
 // printing for the blower standoffs
 if(0){
@@ -1118,14 +1183,14 @@ if(0){
 
 
 // left blower
-if(0){
+if(1){
 color("cyan")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
 blower();  
 }
 // left blower flex box
-if(0){
+if(1){
 //color("red")
 translate([+480/2-LeftX0+99,22,High0+37])
 rotate([9,0,180])
@@ -1183,7 +1248,9 @@ if(0){
 }
 
 // Left x carriage   *********************************
-xmain1(X0=LeftX0,type=1);
+if(1){
+  xmain1(X0=LeftX0,type=1);
+}
 
 // support for printing Left xmain1
 if(0){
@@ -1200,7 +1267,7 @@ if(0){
 }
 
 // Right x carriage ******************************************************
-if(1){
+if(0){
   xmain1(X0=RightX0+135,type=2);
 }
 
@@ -1318,14 +1385,14 @@ import("aqua5.stl");
 }
 
 // left emotor
-if(1){
+if(0){
 color("orange")
 translate([+480/2-LeftX0+67,-59.5,High0+44+10])
 rotate([90,-90,180])
 emotor();
 }
 
-if(0){  // left side bearings
+if(1){  // left side bearings
 // x rod lm8u bearing low
 color("gray")
 translate([+480/2-LeftX0+100,0+16,High0+30])
@@ -1495,7 +1562,7 @@ cylinder(r=4,h=480,$fn=F2);
 }
 
 // right extruder
-if(1){
+if(0){
 color("gray")
 translate([+480/2-RightX0,2,High0+26+10])
 rotate([90,0,180])
@@ -1504,7 +1571,7 @@ import("aqua5.stl");
 }
 
 // right emotor
-if(1){
+if(0){
 color("gray")
 //translate([+480/2-LeftX0+67,-59.5,High0+44+10])
 translate([+480/2-RightX0-68,-59.5,High0+44+10])
@@ -1532,6 +1599,7 @@ translate([+480/2-RightX0-56-20,16,High0+zmotor1+34])
 rotate([-90,0,90])
 cylinder(r=15/2,h=24,$fn=F2);
 }
+
 
 
 //===============================================

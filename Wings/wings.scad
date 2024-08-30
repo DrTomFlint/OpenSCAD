@@ -25,7 +25,8 @@ zlever = 9;
 hi = space+2*thick;
 F=200;
 
-tall=26;
+//tall=26;    // original height of pivots
+tall=26+5;      // added height for hdpe sheets
 
 //---------------------------------------------------------
 module pivota(){
@@ -195,15 +196,15 @@ module pivotd(){
 
     // side cut to make printable
     translate([0,10,0.5*tall])
-    cube([20,10,2*tall],center=true);
+    cube([30,10,2*tall],center=true);
     
     // divot to help install tabs
     translate([3.5,0,tall+1])
-    cylinder(r=0.6,h=2*thick,$fn=F);
+    cylinder(r=1,h=2*thick,$fn=F);
 
     // divot to help install tabs
     translate([-3.5,0,tall+1])
-    cylinder(r=0.6,h=2*thick,$fn=F);
+    cylinder(r=1,h=2*thick,$fn=F);
 
   }
 }
@@ -297,17 +298,18 @@ if(0){
 //pivota();
 //pivotb();
 //translate([40,0,0])
+
 //pivotc();
 
-//pivotd();
-//washer2();
-//wedged();
+pivotd();
+//~ washer2();
+//~ wedged();
 
 //translate([60,0,0])
 //levera();
 
 //leverb();
 
-anchor2();
+//~ anchor2();
 
 //=========================================================

@@ -70,7 +70,74 @@ cylinder(r1=2,r2=2.25,h=3,$fn=12);
 } // end module cambase1
 
 //----------------------------------------------------------------------
-module cambase9(){
+module cambase9(showcam=80){
+    
+// main shell
+difference(){
+  union(){
+    color("yellow")
+    linear_extrude(height=3)
+    offset(r=2,$fn=80)    
+    square(size=[25,24]);
+
+    translate([4,0,-8])
+    color("green")
+    rotate([-10,0,0])
+    cube([17,16,11]);
+  }
+    // slot for the cam
+    translate([7,14,-15])
+    color("green")
+    rotate([-10,0,0])
+    cube([11,2,16]);
+
+    // cut for the pcb
+    translate([0,0,1.5])
+    color("orange")
+    linear_extrude(height=5)
+    offset(r=0.3,$fn=16)    
+    square(size=[25,24]);
+
+    // window for downlooking module
+    translate([5,17,-1])
+    color("red")
+    linear_extrude(height=5)
+    offset(r=0.3,$fn=16)    
+    square(size=[15,7]);
+
+    // cut for the ribbon cable
+    translate([4,-3,1.5])
+    color("green")
+    cube([17,5,5]);
+
+    translate([12,1,-12])
+    color("green")
+    rotate([0,90,0])
+    cylinder(r=12,h=40,center=true,$fn=55);
+
+}
+
+if(showcam!=0){
+
+    // main board of cam
+    translate([0,0,1.5])
+    color("green")
+    linear_extrude(height=1.5)
+    square(size=[25,24]);
+
+    // cam module V2.1
+    translate([8,12,-2])
+    color("red")
+    translate([0,10,0])
+    rotate([showcam,0,0])
+    translate([0,-10,0])
+    cube([9,9,4]);
+}
+
+} // end module cambase9
+
+//----------------------------------------------------------------------
+module cambase8(showcam=80){
     
 // main shell
 difference(){
@@ -96,36 +163,27 @@ difference(){
     color("green")
     cube([17,5,5]);
 
+
 }
-//~ translate([3,-2.5,1.0])
-//~ #rotate([0,90,0])
-//~ scale([1,2]){
-    //~ sphere(r=1.0,$fa=5, $fs=0.1);
-    //~ translate([0,0,19])
-    //~ sphere(r=1.0,$fa=5, $fs=0.1);
-    //~ cylinder(r=1.0,h=19,$fn=80);
-//~ }
 
-// posts to support PCB
-//~ translate([2.0,9.5,1]){
-    //~ cylinder(r=2,h=1,$fn=16);
-    //~ cylinder(r=0.8,h=2.5,$fn=16);
-//~ }
-//~ translate([2.0,22,1]){
-    //~ cylinder(r=2,h=1,$fn=16);
-    //~ cylinder(r=0.8,h=2.5,$fn=16);
-//~ }
-//~ translate([23.0,9.5,1]){
-    //~ cylinder(r=2,h=1,$fn=16);
-    //~ cylinder(r=0.8,h=2.5,$fn=16);
-//~ }
-//~ translate([23.0,22,1]){
-    //~ cylinder(r=2,h=1,$fn=16);
-    //~ cylinder(r=0.8,h=2.5,$fn=16);
-//~ }
+if(showcam!=0){
 
+    // main board of cam
+    translate([0,0,1.5])
+    color("green")
+    linear_extrude(height=1.5)
+    square(size=[25,24]);
 
-} // end module cambase1
+    // cam module
+    translate([7,12,-5])
+    color("red")
+    translate([0,10,0])
+    rotate([showcam,0,0])
+    translate([0,-10,0])
+    cube([12,12,5]);
+}
+
+} // end module cambase8
 
 //----------------------------------------------------------------------
 // No pins on the sides
@@ -333,7 +391,7 @@ if(0){
 //~ rotate([0,0,75]) 
 //~ camfixed(sight=0);
 
-cambase9();
+cambase9(showcam=0);
 
 
 //cambase1();
