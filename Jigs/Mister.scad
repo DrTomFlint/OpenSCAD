@@ -246,6 +246,99 @@ gap=12.25;
 
 }
 
+//----------------------------------------------------------------------
+module hang4(){
+//~ wide=26;
+wide=26;
+thick=2.1;
+gap=8;
+
+difference(){
+  union(){
+    // staple attachment
+    translate([wide,0,26])
+    rotate([0,180,0])
+    difference(){
+      translate([-(26-wide)/2,0,gap])
+      cube([26,4*thick,10]);
+      translate([-(24-wide)/2,1.5*thick,gap])
+      cube([24,7*thick,10-thick]);
+      translate([-(24-wide)/2 -5,1.5*thick,gap])
+      cube([24,7*thick,10-thick]);
+      translate([(wide-10)/2,3*thick,gap+4])
+      rotate([90,0,0])
+      cylinder(r=1.2,h=20,center=true,$fn=33);
+      translate([(wide-10)/2+10,3*thick,gap+4])
+      rotate([90,0,0])
+      cylinder(r=1.2,h=20,center=true,$fn=33);
+    }
+
+    translate([0,0,-26])
+    rotate([0,0,0])
+    difference(){
+      translate([-(26-wide)/2,0,gap])
+      cube([26,4*thick,10]);
+      translate([-(24-wide)/2,1.5*thick,gap])
+      cube([24,7*thick,10-thick]);
+      translate([-(24-wide)/2 + 5,1.5*thick,gap])
+      cube([24,7*thick,10-thick]);
+      translate([(wide-10)/2,3*thick,gap+4])
+      rotate([90,0,0])
+      cylinder(r=1.2,h=20,center=true,$fn=33);
+      translate([(wide-10)/2+10,3*thick,gap+4])
+      rotate([90,0,0])
+      cylinder(r=1.2,h=20,center=true,$fn=33);
+    }
+
+    // fiber clip
+    difference(){
+      union(){
+        translate([0,thick+7.5,0])
+        rotate([0,90,0])
+        cylinder(r=7.5+thick,h=wide,$fn=178);
+        hull(){
+          translate([0,thick+7.5,0])
+          rotate([0,90,0])
+          cylinder(r=7.5+thick+1,h=1,$fn=178);
+          translate([0,7.4,-18])
+          cube([1,1,36]);
+        }
+      }
+      
+      translate([-1,thick+7.5,0])
+      rotate([0,90,0])
+      cylinder(r=7.5,h=wide+2,$fn=178);
+
+      translate([0,-2,-7.5])
+      cube([wide,9.0,15]);
+    }
+
+    // add end walls to make it printable
+    translate([0,0,7.5])
+    cube([wide,9.0,thick]);
+    translate([0,0,-7.5-thick])
+    cube([wide,9.0,thick]);
+  
+  } // end of union
+
+  hull(){
+    translate([wide/2,10,-5])
+    rotate([40,0,0])
+    cylinder(r=4.4,h=15,$fn=99,center=true);
+
+    translate([wide/2,15,0])
+    rotate([90,0,0])
+    cylinder(r=4.4,h=15,$fn=99,center=true);
+    
+    translate([wide/2,10,5])
+    rotate([-40,0,0])
+    cylinder(r=4.4,h=15,$fn=99,center=true);
+  }
+
+} // end diff
+
+
+}
 
 
 //======================================================================
@@ -256,8 +349,9 @@ gap=12.25;
 
 //~ hang2();
 
-hang3();
+//~ hang3();
 
+hang4();
 
 //======================================================================
 
