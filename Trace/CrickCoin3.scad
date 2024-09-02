@@ -15,33 +15,48 @@ intersection(){
 
   scale([80,80,1.5]){
     
-    //color("white")
     CrickCoin3white();
-    //color("purple")
-    //CrickCoin3purple();
-    //color("white")
-    //CrickCoin3text();
+    CrickCoin3text();
+
+    //~ CrickCoin3purple();
 
     }
+  }
+}
+// for white add an earring loop
+if(1){
+  difference(){
+    hull(){
+      cylinder(r=37,h=1.5,$fn=300);
+      translate([0,40,0])
+      cylinder(r=2.5,h=1.5,$fn=300);
+    }
+    // cut loop hole
+    translate([0,38.5,0])
+    cylinder(r=1.5,h=5,$fn=30,center=true);
+    // recut center area
+    cylinder(r=37-0.5,h=5,$fn=300,center=true);
   }
 }
 
 // get black by subtraction so no voids between parts
 if(0){
-  color("black")
+  //color("black")
 difference(){
   cylinder(r=37,h=1.5,$fn=300);
 
   translate([0,0,-1])
-  scale([80,80,4]){
-  
-  CrickCoin3purple();
-  CrickCoin3white();
-  CrickCoin3text();
-  
+  scale([80,80,4]){  
+    CrickCoin3purple();
+    CrickCoin3white();
+    CrickCoin3text();  
   }
+  // trim border scrum
+  translate([-24,-40.3,0])
+  cube([40,40,6],center=true);
   
 }
+
 }
 
 // clear disk bottom
