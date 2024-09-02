@@ -4,6 +4,7 @@
 // Adapt 1 mm sideglow optic fibers to LED string
 //
 // Dr Tom Flint, 28 May 2023
+// updated 1 Sept 2024 for better fiber retension and color mixing
 //=================================================================================
 
 use <../Parts/rounder.scad>
@@ -78,6 +79,47 @@ tol=0.15;
     // cut for 4 fibers
     translate([1.2,0,1.5])
     linear_extrude(height=10,scale=1.2) 
+    offset(r=1,$fn=22)
+    square(size=[0.8,0.8],center=true);
+
+  }
+}
+
+//-------------------------------------------------------------------------
+// dense strip leds
+module ledbox3(){
+
+x0=6.92;    // spacing of leds along tape
+y0=12;      // width of tape
+z0=0.5;     // thickness of tape
+tol=0.15;
+
+  difference(){    
+    union(){
+      // box
+      translate([0,-0.5,1])
+      cube([x0,y0+3,4],center=true);
+      
+      // extension above light
+      translate([0,-2.5,6])
+      cube([x0,y0-1,10],center=true);
+    }
+    
+    // tape
+    translate([0,1,z0/2])
+    cube([x0+tol,y0+tol+2,z0+tol],center=true);
+    
+    // led
+    translate([0,3,z0+tol+1.44/2])
+    cube([5+tol,5+tol+6,1.44+tol],center=true);
+    
+    // solder bumps
+    translate([0,-3,z0+0.5])
+    cube([5+tol,1+tol,1+tol],center=true);
+    
+    // cut for 4 fibers
+    translate([1.2,0,1.5])
+    linear_extrude(height=10,scale=1.4) 
     offset(r=1,$fn=22)
     square(size=[0.8,0.8],center=true);
 
@@ -208,12 +250,22 @@ difference(){
       }
       for(i=[0:3]){
         translate([i*6.92,0,0])
-        ledbox2();
+        ledbox3();
       }
     }
   translate([-50,0,0])
   cube([100,100,100],center=true);
 }
+}
+
+// print for ledbox redux
+if(1){
+  for(i=[0:15]){
+    translate([i*6.92,0,0])
+    ledbox3();
+  }
+  translate([-10,-1/2,-1/2])
+  cube([20,15,1],center=true);
 }
 
 // first ledbox has a cutout for solder and wires
@@ -252,7 +304,7 @@ if(0){
 }
 
 //blocka();
-blockb();
+//~ blockb();
 
 
 //=================================================================================
