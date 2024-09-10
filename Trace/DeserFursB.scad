@@ -8,15 +8,27 @@
 
 use <./DesertFurs.scad>
 
-mag=30;
-thick=2.7;    // the text
-thin=0.9;     // the backside
+// This set for the large embossed version:
+//~ mag=30;
+//~ thick=2.7;    // the text
+//~ thin=0.9;     // the backside
 
-mid = 4;    // midstripe
-a1 = 20;
+//~ mid = 4;    // midstripe
+//~ a1 = 20;
+//~ a2 = 30;
+//~ xx = 0;
+//~ yy = -7;
+
+// Adjust to make earrings:
+mag=30;
+thick=1.2;    // the text
+thin=1.2;     // the backside
+
+mid = 2;    // midstripe
+a1 = 10;
 a2 = 30;
 xx = 0;
-yy = -7;
+yy = -4;
 
 F1=200;
 
