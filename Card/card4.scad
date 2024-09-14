@@ -13,9 +13,23 @@ use <./card4red.scad>
 use <./card4orange.scad>
 use <./card4yellow.scad>
 
-thick=0.9;
-//thin=0.3;
-thin=0.3;
+//~ thick=0.9;
+//~ //thin=0.3;
+//~ thin=0.3;
+//~ vspace=14;
+//~ tsize=8;
+//~ tspace=1.1;
+//~ x0=70;
+//~ y0=40;
+//~ r0=4;
+//~ lip=1.5;
+
+//~ mag=85;
+
+
+thick=0.45;
+thin=0.15;
+
 vspace=14;
 tsize=8;
 tspace=1.1;
@@ -153,8 +167,8 @@ module backred1(){
     translate([0,0,0])
     scale([mag,mag,3*thick])
     card4red();
-    translate([30,0,0.15+0.0])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+0.0])
+    cube([60,80,thin],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -165,8 +179,8 @@ module backred2(){
     translate([1,0,0])
     scale([mag,mag,3*thick])
     card4red();
-    translate([30,0,0.15+0.3])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+thin])
+    cube([60,80,thin],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -177,8 +191,8 @@ module backred3(){
     translate([2,0,0])
     scale([mag,mag,3*thick])
     card4red();
-    translate([30,0,0.15+0.6])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+2*thin])
+    cube([60,80,thin],center=true);
   }
 }
 
@@ -190,8 +204,8 @@ module backorange1(){
     translate([0,0,0])
     scale([mag,mag,3*thick])
     card4orange();
-    translate([0,0,0.15+0.0])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+0.0])
+    cube([60,80,thin],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -202,9 +216,9 @@ module backorange2(){
     translate([1,0,0])
     scale([mag,mag,3*thick])
     card4orange();
-    translate([0,0,0.15+0.3])
-    cube([60,80,0.3],center=true);
-  }
+    translate([-20,0,thin/2+thin])
+    cube([60,80,thin],center=true);
+ }
 }
 //----------------------------------------------------------------------
 module backorange3(){
@@ -214,8 +228,8 @@ module backorange3(){
     translate([2,0,0])
     scale([mag,mag,3*thick])
     card4orange();
-    translate([0,0,0.15+0.6])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+2*thin])
+    cube([60,80,thin],center=true);
   }
 }
 
@@ -227,8 +241,8 @@ module backyellow1(){
     translate([0,0,0])
     scale([mag,mag,3*thick])
     card4yellow();
-    translate([-20,0,0.15+0.0])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+0.0])
+    cube([60,80,thin],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -239,8 +253,8 @@ module backyellow2(){
     translate([1,0,0])
     scale([mag,mag,3*thick])
     card4yellow();
-    translate([-20,0,0.15+0.3])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+thin])
+    cube([60,80,thin],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -251,14 +265,14 @@ module backyellow3(){
     translate([2,0,0])
     scale([mag,mag,3*thick])
     card4yellow();
-    translate([-20,0,0.15+0.6])
-    cube([60,80,0.3],center=true);
+    translate([-20,0,thin/2+2*thin])
+    cube([60,80,thin],center=true);
   }
 }
 
 //======================================================================
 
-//~ text1();
+text1();
 //~ lip1();
 //~ base();
 
@@ -278,9 +292,9 @@ module backyellow3(){
 //~ backorange2();
 //~ backorange3();
 
-backyellow1();
-backyellow2();
-backyellow3();
+//~ backyellow1();
+//~ backyellow2();
+//~ backyellow3();
 
 //back1();
 
