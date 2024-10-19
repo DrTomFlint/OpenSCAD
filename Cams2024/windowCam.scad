@@ -11,7 +11,7 @@ use <./pi0.scad>
 use <./cameraV3.scad>
 
 az=0;     // azimuth
-el=45;     // elevation
+el=0;     // elevation
 
 F2=33;
 F1=99;
@@ -95,7 +95,7 @@ translate([0,0,20])
 rotate([az,0,0])
 translate([0,0,-20]){
   
-  translate([68,-15,23])
+  translate([70,-15,24])
   color("silver")
   pi0();
 
@@ -112,12 +112,12 @@ translate([0,0,-20]){
 
     // camera side cut
     translate([70,0,-10])
-    rotate([0,-35,0])
+    rotate([0,-37,0])
     cube([60,50,40],center=true);
 
     // pi side cut
     translate([70,0,50])
-    rotate([0,35,0])
+    rotate([0,32,0])
     cube([60,50,40],center=true);
 
   }
@@ -125,7 +125,7 @@ translate([0,0,-20]){
   // pi0 support
   difference(){
     intersection(){
-      translate([88,0,21])
+      translate([88,0,22])
       cube([95,36,3],center=true);
       
       translate([40,0,20])
@@ -139,16 +139,36 @@ translate([0,0,-20]){
     cylinder(r=14,h=10,center=true,$fn=F1);
 
     // cut for usb power wires
-    translate([80,13,15])
+    translate([82,13,15])
     scale([2,1,1])
     cylinder(r=3,h=10,$fn=F2);
   }
     
-  // camera support
-      translate([100,0,8])
+  // camera supports
+  difference(){
+    hull(){
+      translate([100,16,8])
       rotate([90,0,0])
-    #  cylinder(r=3,h=100,center=true,$fn=F2);
-  
+      cylinder(r=8,h=3,center=true,$fn=F2);
+      translate([105,16,21])
+      cube([30,3,2],center=true);
+    }
+    translate([100,16,8])
+    rotate([90,0,0])
+    cylinder(r=4,h=5,center=true,$fn=F2);
+  }
+  difference(){
+    hull(){
+      translate([100,-16,8])
+      rotate([90,0,0])
+      cylinder(r=8,h=3,center=true,$fn=F2);
+      translate([105,-16,21])
+      cube([30,3,2],center=true);
+    }
+    translate([100,-16,8])
+    rotate([90,0,0])
+    cylinder(r=4,h=5,center=true,$fn=F2);
+  }
   
 }    
 }
@@ -166,21 +186,65 @@ translate([100,0,8])
 rotate([0,el,0])
 translate([-100,0,-8]){
 
+  // camera module 3
+  //~ translate([100,0,8])
+  //~ rotate([0,180,0])
+  //~ rotate([0,0,-90])
+  //~ cameraV3();
+  
+  difference(){
+    union(){
+      translate([100,13.5,8])
+      rotate([90,0,0])
+      cylinder(r=8,h=2,center=true,$fn=F2);
+      translate([100,16,8])
+      rotate([90,0,0])
+      cylinder(r=4-0.15,h=3,center=true,$fn=F2);
+      
+      translate([100,-13.5,8])
+      rotate([90,0,0])
+      cylinder(r=8,h=2,center=true,$fn=F2);
+      translate([100,-16,8])
+      rotate([90,0,0])
+      cylinder(r=4-0.15,h=3,center=true,$fn=F2);
+    }
+    translate([100,0,0])
+    cube([50,50,10],center=true);
+  }
 
-  translate([100,0,8])
-  rotate([0,180,0])
-  rotate([0,0,-90])
-  cameraV3();
-
+      // sides
+      translate([85,13.5-5,5])
+      cube([24,5,2]);
+      translate([85,-13.5,5])
+      cube([24,5,2]);
+      // cable end
+      translate([107,-13.5,5])
+      cube([3,27,2]);
+      // non-cable end
+      translate([85,-13.5,5])
+      cube([2,27,2]);
+      
+      // mounting posts
+      translate([97.5,0,5])
+      rotate([0,0,90]){
+        translate([10.5,9.8,0])
+        cylinder(r1=1,r2=0.8,h=4,$fn=22);
+        translate([-10.5,9.8,0])
+        cylinder(r1=1,r2=0.8,h=4,$fn=22);
+        translate([10.5,9.8-12.5,0])
+        cylinder(r1=1,r2=0.8,h=4,$fn=22);
+        translate([-10.5,9.8-12.5,0])
+        cylinder(r1=1,r2=0.8,h=4,$fn=22);
+      }
 }
 }
 }
 
 //======================================================================
 
-windowCamBase();
+//~ windowCamBase();
 
-windowCamTop();
+//~ windowCamTop();
 
 windowCamHolder();
 

@@ -59,24 +59,24 @@ module cameraV3(){
     square([16.4,10],center=true);
 
     // component clearance on backside
-    color("red")
+    //color("red")
     translate([0,0,-1.5])
     difference(){
         linear_extrude(height=1.5)
         offset(r=1,$fn=22)
         square([23-0.5,22-0.5],center=true);
 
-        translate([10.5,9.8,0])
-        cylinder(r=2.5,h=1.5,$fn=22);
+        translate([10.5,9.8,-0.2])
+        cylinder(r=2.5,h=2,$fn=22);
 
-        translate([-10.5,9.8,0])
-        cylinder(r=2.5,h=1.5,$fn=22);
+        translate([-10.5,9.8,-0.2])
+        cylinder(r=2.5,h=2,$fn=22);
 
-        translate([10.5,9.8-12.5,0])
-        cylinder(r=2.5,h=1.5,$fn=22);
+        translate([10.5,9.8-12.5,-0.2])
+        cylinder(r=2.5,h=2,$fn=22);
 
-        translate([-10.5,9.8-12.5,0])
-        cylinder(r=2.5,h=1.5,$fn=22);
+        translate([-10.5,9.8-12.5,-0.2])
+        cylinder(r=2.5,h=2,$fn=22);
     }
   }
 }
