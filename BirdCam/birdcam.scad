@@ -2,6 +2,7 @@
 // birdcam.scad
 //
 // Bird camera redux
+// This is just the armored ethernet cable and mating part
 //
 // Dr Tom Flint, 24 Sept 2021
 //=================================================================================
