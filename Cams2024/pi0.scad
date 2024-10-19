@@ -8,33 +8,33 @@
 //======================================================================
 
 
+rPi=3.0;       // radius of pcb corners
+thick=1.4;    // pcb thickness
+xPi=65.0;
+yPi=30.0;  
+
+F2=33;
 
 
 //----------------------------------------------------------------------
 module pi0(cam=10,heatsink=1){
 
-r0=3.0;       // radius of pcb corners
-thick=1.4;    // pcb thickness
-x0=65.0;
-y0=30.0;  
-
-F2=33;
   
   // pcb
-  translate([r0,r0,0])
+  translate([rPi,rPi,0])
   difference(){
     linear_extrude(height=thick)
-    offset(r=r0,$fn=F2)
-    square([x0-2*r0,y0-2*r0]);
+    offset(r=rPi,$fn=F2)
+    square([xPi-2*rPi,yPi-2*rPi]);
 
     // mounting holes  
     translate([0,0,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([0,y0-2*r0,0])
+    translate([0,yPi-2*rPi,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([x0-2*r0,0,0])
+    translate([xPi-2*rPi,0,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([x0-2*r0,y0-2*r0,0])
+    translate([xPi-2*rPi,yPi-2*rPi,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
   }
   
@@ -69,10 +69,10 @@ F2=33;
   // Camera cable
   if(cam>0){
     // narrow section
-    translate([x0,9,thick])
+    translate([xPi,9,thick])
     cube([6.5,12,1]);    
     // wider section
-    translate([x0+6.5,7,thick])
+    translate([xPi+6.5,7,thick])
     cube([cam,16,1]);    
   }
   
