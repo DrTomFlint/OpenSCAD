@@ -116,7 +116,7 @@ module TenRed(){
 //----------------------------------------------------------------------
 module TenLoop(){
   
-  translate([0,0.32*mag,0])
+  translate([0,0.31*mag,0])
   difference(){
     cylinder(r=1.5,h=thick,$fn=22);
     cylinder(r=0.75,h=3*thick,center=true,$fn=22);
@@ -129,11 +129,11 @@ module TenLoop(){
 //~ TenBlue();
 //~ TenYellow();
 //~ TenBrown();
-//~ TenRed();
+TenRed();
 
 //~ scale([mag,mag,thick])
 //~ TenBuck2Black();
 
-TenLoop();
+//~ TenLoop();
 
 //======================================================================

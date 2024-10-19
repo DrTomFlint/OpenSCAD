@@ -15,7 +15,6 @@ use <./HighLonesomeStars.scad>
 use <./HighLonesomeMin.scad>
 
 thick=1.2;
-thin=0.15;
 mag=130;
 
 //----------------------------------------------------------------------
@@ -31,17 +30,35 @@ module main(){
 }
 
 //----------------------------------------------------------------------
-module min(){
+module min(eyes=1){
 
-  // magnify and trim off the registration marks
-  intersection(){
-    scale([mag,mag,thick])
-    HighLonesomeMin();
+  difference(){
+    // magnify and trim off the registration marks
+    intersection(){
+      scale([mag,mag,thick])
+      HighLonesomeMin();
 
-    cylinder(r=0.6*mag,h=3*thick,center=true);
+      cylinder(r=0.6*mag,h=3*thick,center=true);
+    }
+    if(eyes==1){
+      // mad eyes
+      translate([0.085*mag,0.074*mag,0])
+      cylinder(r=2,h=3*thick,center=true,$fn=33);
+      translate([-0.094*mag,0.074*mag,0])
+      cylinder(r=2,h=3*thick,center=true,$fn=33);
+    }
   }
 }
 
+//----------------------------------------------------------------------
+module eyes(){
+
+  translate([0.085*mag,0.072*mag,0])
+  cylinder(r=2,h=thick,$fn=33);
+  translate([-0.094*mag,0.074*mag,0])
+  cylinder(r=2,h=thick,$fn=33);
+}
+   
 //----------------------------------------------------------------------
 module mountain(){
 
@@ -82,14 +99,20 @@ module stars(){
 module back(){
 
   difference(){
-    hull(){
-      main();
-    }
+    translate([-0.75,-1,0])
+    cylinder(r=0.48*mag,h=thick,$fn=200);
+    //~ hull(){
+      //~ main();
+    //~ }
     
     main();
-    mountain();
-    water();
-    stars();
+    //~ mountain();
+    //~ water();
+    //~ stars();
+
+    // hanger hole
+    translate([-0.75,0.455*mag,0])
+    #cylinder(r=1,h=3*thick,center=true,$fn=22);
   }
 }
 
@@ -117,7 +140,7 @@ y1=0.48*mag;
 //----------------------------------------------------------------------
 module tabMin(){
 
-y1=0.495*mag;
+y1=0.505*mag;
 x1 = -0.5;
 
   difference(){
@@ -134,32 +157,84 @@ module backMin(){
 
   difference(){
     
+    // thicken in xy direction all lines in min
     linear_extrude(height=thick)
-    offset(r=2)
+    offset(r=3.5)
     projection(cut = false) 
-    //~ hull(){
-      min();
-    //~ }
-    
     min();
+    
+    // subtract out min
+    min();
+    eyes();
   }
 }
 
+//----------------------------------------------------------------------
+module min2(eyes=1){
+
+  difference(){
+    
+    // magnify and trim off the registration marks
+    linear_extrude(height=thick)
+    offset(r=0.2)
+    projection(cut = false) 
+    intersection(){
+      scale([mag,mag,thick])
+      HighLonesomeMin();
+
+      cylinder(r=0.6*mag,h=3*thick,center=true);
+    }
+    
+    
+    if(eyes==1){
+      // mad eyes
+      translate([0.085*mag,0.074*mag,0])
+      cylinder(r=2,h=3*thick,center=true,$fn=33);
+      translate([-0.094*mag,0.074*mag,0])
+      cylinder(r=2,h=3*thick,center=true,$fn=33);
+    }
+  }
+}
+
+//----------------------------------------------------------------------
+module backMin2(){
+
+  difference(){
+    
+    // thicken in xy direction all lines in min
+    linear_extrude(height=thick)
+    offset(r=3.5)
+    projection(cut = false) 
+    min();
+    
+    // subtract out min
+    min();
+    #eyes();
+  }
+}
 
 //======================================================================
+
+// Entire disk:
 
 //~ main();
 //~ mountain();
 //~ water();
 //~ stars();
 
-//~ back();
-//~ tab();
+back();
 
+//~ tab();    // dont use on full disk
 
-min();
+// Just the innner bighorn:
+
+//~ min();
 //~ backMin();
 //~ tabMin();
+//~ eyes();
 
+//~ min2();
+//~ tabMin();
+//~ backMin2();
 
 //======================================================================
