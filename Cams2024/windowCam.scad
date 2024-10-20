@@ -11,7 +11,7 @@ use <./pi0.scad>
 use <./cameraV3.scad>
 
 az=0;     // azimuth
-el=0;     // elevation
+el=60;     // elevation
 
 F2=33;
 F1=99;
@@ -28,23 +28,30 @@ thick=1.4;    // pcb thickness
 xPi=65.0;
 yPi=30.0;  
 
-
+showUsb=1;
+showPi=1;
+showCam=1;
 
 //----------------------------------------------------------------------
 module windowCamBase(){
 
-  translate([0,0,3])
-  color("green")
-  usbPower(plug=1);
+  if(showUsb==1){
+    translate([0,0,3])
+    color("green")
+    usbPower(plug=1);
+  }
   
   // base
   difference(){
     union(){
-      translate([10,0,31/2])
-      cube([62,40,31],center=true);
+      translate([10+4.5,0,31/2])
+      cube([62+9,40,31],center=true);
+      
       // add back plate to increase clearance from cam to window
-      translate([14.5,0,-3])
-      cube([71,48,6],center=true);
+      translate([14.5,0,-5])
+      cube([71,40,10],center=true);
+      translate([14.5,0,-8.5])
+      cube([71,54,3],center=true);
       
       hull(){
         translate([40,0,20])
@@ -67,37 +74,37 @@ module windowCamBase(){
     cube([34,30,26],center=true);
     
     // cut for power line in
-    hull(){
-      translate([-30,0,24])
-      rotate([0,90,0])
-      cylinder(r=4.7/2,h=20,$fn=F2);
-      translate([-30,0,24+10])
-      rotate([0,90,0])
-      cylinder(r=5/2,h=20,$fn=F2);
-    }
+    translate([-30,0,11])
+    rotate([0,90,0])
+    cylinder(r=4.9/2,h=20,$fn=F2);
     
     // top cut for rotation
-    translate([40-3,0,20])
+    translate([40-1,0,20])
     rotate([0,90,0])
-    cylinder(r=18,h=16,$fn=F1);
+    cylinder(r=18,h=12,$fn=F1);
+    
+    // material reduction
+    translate([20,0,-15])
+    scale([2,1.5,1])
+    cylinder(r=9,h=60,center=true,$fn=6);
+    
+    translate([20,0,15])
+    rotate([90,0,0])
+    scale([2,1.3,1])
+    cylinder(r=9,h=60,center=true,$fn=6);
     
   }
   
-  
-  
 }
 
+
 //----------------------------------------------------------------------
-module windowCamTop(){
+module windowCamRing(){
 
 // rotation for azimuth:
 translate([0,0,20])
 rotate([az,0,0])
 translate([0,0,-20]){
-  
-  translate([70,-15,24])
-  color("silver")
-  pi0();
 
   // ring for rotation
   difference(){
@@ -106,42 +113,72 @@ translate([0,0,-20]){
     cylinder(r=18-0.15,h=40,$fn=F1);
     
     // bore cut
-    translate([40-1,0,20])
+    translate([55+8,0,20])
     rotate([0,90,0])
     cylinder(r=16,h=44,$fn=F1);
+    
+    translate([40-1,0,20])
+    rotate([0,90,0])
+    cylinder(r=13,h=44,$fn=F1);
 
     // camera side cut
-    translate([70,0,-10])
+    translate([70,0,-12])
     rotate([0,-37,0])
     cube([60,50,40],center=true);
 
     // pi side cut
-    translate([70,0,50])
+    translate([70,0,53.5])
     rotate([0,32,0])
     cube([60,50,40],center=true);
 
+    // cut for pi support
+    translate([88,0,22])
+    cube([95,36-4,3+0.3],center=true);
   }
   
+}
+}
+
+//----------------------------------------------------------------------
+module windowCamPi(){
+
+// rotation for azimuth:
+translate([0,0,20])
+rotate([az,0,0])
+translate([0,0,-20]){
+  
+  if(showPi==1){
+    translate([70+3,-15,24])
+    color("silver")
+    pi0();
+  }
+
   // pi0 support
   difference(){
-    intersection(){
-      translate([88,0,22])
-      cube([95,36,3],center=true);
-      
-      translate([40,0,20])
-      rotate([0,90,0])
-      cylinder(r=18-0.15,h=100,$fn=F1);
-    }
+    translate([88+1.5,0,22])
+    cube([95+3,36,3],center=true);
+
+    // trim corners to fit ring
+    translate([60,20,22])
+    cube([40,8,4],center=true);
+    translate([60,-20,22])
+    cube([40,8,4],center=true);
 
     // clearance for usb power plug
-    translate([40+2,0,20])
-    scale([3,1,1])
-    cylinder(r=14,h=10,center=true,$fn=F1);
+    translate([40+4,0,20])
+    scale([2.8,1,1])
+    cylinder(r=14.5,h=10,center=true,$fn=6);
 
-    // cut for usb power wires
-    translate([82,13,15])
-    scale([2,1,1])
-    cylinder(r=3,h=10,$fn=F2);
+    // mounting holes  
+    translate([73+3,-12,24]){
+      cylinder(r=1.3,h=10,center=true,$fn=F2);
+      translate([0,yPi-2*rPi,0])
+      cylinder(r=1.3,h=10,center=true,$fn=F2);
+      translate([xPi-2*rPi,0,0])
+      cylinder(r=1.3,h=10,center=true,$fn=F2);
+      translate([xPi-2*rPi,yPi-2*rPi,0])
+      cylinder(r=1.3,h=10,center=true,$fn=F2);
+    }
   }
     
   // camera supports
@@ -183,14 +220,16 @@ translate([0,0,-20]){
 
 // rotation for elevation:
 translate([100,0,8])
-rotate([0,el,0])
+rotate([0,-el,0])
 translate([-100,0,-8]){
 
-  // camera module 3
-  //~ translate([100,0,8])
-  //~ rotate([0,180,0])
-  //~ rotate([0,0,-90])
-  //~ cameraV3();
+  if(showCam==1){
+    // camera module 3
+    translate([100,0,8])
+    rotate([0,180,0])
+    rotate([0,0,-90])
+    cameraV3();
+  }
   
   difference(){
     union(){
@@ -242,9 +281,11 @@ translate([-100,0,-8]){
 
 //======================================================================
 
-//~ windowCamBase();
+windowCamBase();
 
-//~ windowCamTop();
+windowCamRing();
+
+windowCamPi();
 
 windowCamHolder();
 
