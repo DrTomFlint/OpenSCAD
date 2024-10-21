@@ -3,6 +3,7 @@
 //
 // This is a Raspberry Pi Zero W 2
 // Beware that heat sinks may be slightly misplaced, leave extra space!
+// TODO: Mounting holes are off a bit.
 //
 // DrTomFlint, 19 Oct 2024
 //======================================================================

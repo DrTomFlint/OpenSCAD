@@ -1,8 +1,7 @@
 //======================================================================
-// usbPower.scad
+// cameraV3.scad
 //
-// USB Wall Charger, iGENJUN 2.4A Phone Charger Dual USB Port Cube 
-// Power Plug
+// Raspberry Pi Camera Model 3, larger lens box, same PCB footprint
 //
 // DrTomFlint, 19 Oct 2024
 //======================================================================
