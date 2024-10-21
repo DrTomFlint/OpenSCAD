@@ -41,32 +41,32 @@ showCam=0;
 module windowCamLid(){
 
   difference(){
-    translate([10,0,33.5])
-    cube([60,38,5],center=true);
+    translate([11,0,33.5])
+    cube([58,36,5],center=true);
 
     translate([10+2,0,33.5-1.5])
-    cube([60-2,38-6,5],center=true);
+    cube([60-2,36-6,5],center=true);
 
     // vertical 
-    translate([-20,19,-10])
+    translate([-18,18,-10])
     rotate([0,0,-90])
     rounder(r=4,h=60,f=F2);
-    translate([-20,-19,-10])
+    translate([-18,-18,-10])
     rotate([0,0,0])
     rounder(r=4,h=60,f=F2);
 
     // side cuts
-    translate([-20,19,36])
+    translate([-18,18,36])
     rotate([0,90,0])
     rotate([0,0,-90])
     rounder(r=2,h=60,f=F2);
     
-    translate([-20,-19,36])
+    translate([-18,-18,36])
     rotate([0,90,0])
     rotate([0,0,0])
     rounder(r=2,h=60,f=F2);
 
-    translate([-20,30,36])
+    translate([-18,30,36])
     rotate([90,0,0])
     rotate([0,0,-90])
     rounder(r=2,h=60,f=F2);
@@ -88,23 +88,23 @@ module windowCamText(){
 
     translate([30,0,36-0.6])
     rotate([0,0,-90])
-    #linear_extrude(height=0.6)
-    text("Cam4", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    linear_extrude(height=0.605)
+    text("Cam 7", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 
-    translate([20,0,36-0.6])
-    rotate([0,0,-90])
-    #linear_extrude(height=0.6)
-    text("Ver6", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    //~ translate([20,0,36-0.6])
+    //~ rotate([0,0,-90])
+    //~ #linear_extrude(height=0.6)
+    //~ text("Ver6", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 
-    translate([10,0,36-0.6])
-    rotate([0,0,-90])
-    #linear_extrude(height=0.6)
-    text("2024", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    //~ translate([10,0,36-0.6])
+    //~ rotate([0,0,-90])
+    //~ #linear_extrude(height=0.6)
+    //~ text("2024", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 
-    translate([-5,0,36-0.6])
-    rotate([0,0,-90])
-    #linear_extrude(height=0.6)
-    text("Flint", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    //~ translate([-5,0,36-0.6])
+    //~ rotate([0,0,-90])
+    //~ #linear_extrude(height=0.6)
+    //~ text("Flint", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 }
 
 //----------------------------------------------------------------------
@@ -119,26 +119,39 @@ module windowCamBase(){
   // base
   difference(){
     union(){
-      translate([10+5,0,31/2])
-      cube([62+8,38,31],center=true);
+      translate([16,0,31/2])
+      cube([68,36,31],center=true);
       
       // add back plate to increase clearance from cam to window
-      translate([15,0,-6])
-      cube([70,38,12],center=true);
+      translate([16,0,-6])
+      cube([68,36,12],center=true);
       
       intersection(){
         translate([40,0,20])
         rotate([0,90,0])
-        cylinder(r=22,h=10,$fn=F1);
+        cylinder(r=20,h=10,$fn=F1);
         translate([45,0,1])
-        cube([10,44,1200],center=true);
+        cube([10,36,1200],center=true);
       }
+
+        translate([45,0,30])
+        cube([10,36,12],center=true);
     }
 
-    translate([-20,19,-20])
+    translate([0,18,36])
+    rotate([0,90,0])
+    rotate([0,0,-90])
+    rounder(r=2,h=60,f=F2);
+    
+    translate([0,-18,36])
+    rotate([0,90,0])
+    rotate([0,0,0])
+    rounder(r=2,h=60,f=F2);
+
+    translate([-18,18,-20])
     rotate([0,0,-90])
     rounder(r=4,h=60,f=F2);
-    translate([-20,-19,-20])
+    translate([-18,-18,-20])
     rotate([0,0,0])
     rounder(r=4,h=60,f=F2);
     
@@ -152,34 +165,28 @@ module windowCamBase(){
     // cut for AC plugs
     translate([0,0,7])
     linear_extrude(height=26)
-    offset(r=2)
+    offset(r=2,$fn=F2)
     square([34-4,30-4],center=true);
     
-    // cut for power line in
+    // cuts for power line in
     translate([-30,0,11])
     rotate([0,90,0])
     cylinder(r=4.9/2,h=20,$fn=F2);
+    translate([-5,40,11])
+    rotate([90,0,0])
+    cylinder(r=4.9/2,h=80,$fn=F2);
     
     // top cut for rotation
     translate([40-1,0,20])
     rotate([0,90,0])
-    cylinder(r=18,h=12,$fn=F1);
-    
-    // material reduction    
-    //~ translate([20,0,20])
-    //~ rotate([90,0,0])
-    //~ scale([2,0.8,1])
-    //~ cylinder(r=9,h=60,center=true,$fn=6);
-    
-    //~ translate([20,0,-2])
-    //~ rotate([90,0,0])
-    //~ scale([2,0.8,1])
-    //~ cylinder(r=9,h=60,center=true,$fn=6);
-    //~ translate([5,0,-2])
-    //~ rotate([90,0,0])
-    //~ scale([2,0.8,1])
-    //~ cylinder(r=9,h=60,center=true,$fn=6);
-    
+    cylinder(r1=18-0.3,r2=18,h=12,$fn=F1);
+        
+    // cut to make feet
+    translate([16,30,-12])    
+    rotate([90,0,0])
+    linear_extrude(height=60)
+    offset(r=4,$fn=F2)
+    square([50,12],center=true);
   }
   
 }
@@ -274,11 +281,6 @@ translate([0,0,-20]){
     cube([16+0.15,3+2,8],center=true);
     translate([xHold,-16-1+0.2,24])
     cube([16+0.15,3+2,8],center=true);
-
-    // material reduction    
-    //~ translate([xHold+12,0,15])
-    //~ rotate([0,0,90])
-    //~ hexcut1(R=4,x0=0,y0=0,h0=10,N0=6);
 
   }
   
@@ -413,9 +415,7 @@ translate([-xHold,0,-zCam]){
     rotate([0,0,360/16])
     cylinder(r=5.5,h=40,$fn=8);
 
-
   }
-
     
   // mounting posts
   translate([xHold-2.5+12.5,0,zCam-3])
@@ -435,6 +435,10 @@ translate([-xHold,0,-zCam]){
 
 //======================================================================
 
+//~ translate([0,-12,0])
+//~ rotate([0,0,90])
+//~ rotate([0,-90,0]){
+
 //~ windowCamText();
 
 //~ intersection(){
@@ -453,7 +457,6 @@ windowCamBase();
 
 //~ windowCamRing();
 
-//~ color("silver",alpha=0.3)
 //~ windowCamPi();
 
 //~ windowCamPiBracket();
@@ -467,5 +470,7 @@ if(0){
     cube([40,30,30],center=true);
   }
 }
+
+//~ }
 
 //======================================================================
