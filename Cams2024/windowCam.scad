@@ -32,44 +32,49 @@ yPi=30.0;
 
 xHold=120;
 zCam=6;
+zWing=6.5;
 
-showUsb=0;
-showPi=0;
-showCam=0;
+showUsb=1;
+showPi=1;
+showCam=1;
+
+showLeftWing=1;
+showRightWing=0;
 
 //----------------------------------------------------------------------
 module windowCamLid(){
 
   difference(){
-    translate([11,0,33.5])
-    cube([58,36,5],center=true);
+    translate([10,0,33.5])
+    cube([60,38,5],center=true);
 
     translate([10+2,0,33.5-1.5])
-    cube([60-2,36-6,5],center=true);
+    cube([60-2,38-6,5],center=true);
 
     // vertical 
-    translate([-18,18,-10])
+    translate([-20,19,-10])
     rotate([0,0,-90])
     rounder(r=4,h=60,f=F2);
-    translate([-18,-18,-10])
+    
+    translate([-20,-19,-10])
     rotate([0,0,0])
     rounder(r=4,h=60,f=F2);
 
     // side cuts
-    translate([-18,18,36])
+    translate([-20,19,36])
     rotate([0,90,0])
     rotate([0,0,-90])
-    rounder(r=2,h=60,f=F2);
+    rounder(r=4,h=60,f=F2);
     
-    translate([-18,-18,36])
+    translate([-20,-19,36])
     rotate([0,90,0])
     rotate([0,0,0])
-    rounder(r=2,h=60,f=F2);
+    rounder(r=4,h=60,f=F2);
 
-    translate([-18,30,36])
+    translate([-20,30,36])
     rotate([90,0,0])
     rotate([0,0,-90])
-    rounder(r=2,h=60,f=F2);
+    rounder(r=4,h=60,f=F2);
     
     windowCamText();
   }
@@ -79,17 +84,18 @@ module windowCamLid(){
   linear_extrude(height=8)
   offset(r=2-0.2,$fn=F2)
   square([16-4,30-4],center=true);
-  
+
+    
 }
 
 
 //----------------------------------------------------------------------
 module windowCamText(){
 
-    translate([30,0,36-0.6])
+    translate([10,0,36-0.6])
     rotate([0,0,-90])
     linear_extrude(height=0.605)
-    text("Cam 7", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    text("7", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
 
     //~ translate([20,0,36-0.6])
     //~ rotate([0,0,-90])
@@ -119,46 +125,85 @@ module windowCamBase(){
   // base
   difference(){
     union(){
-      translate([16,0,31/2])
-      cube([68,36,31],center=true);
+      translate([15,0,31/2])
+      cube([70,38,31],center=true);
       
       // add back plate to increase clearance from cam to window
-      translate([16,0,-6])
-      cube([68,36,12],center=true);
+      //~ translate([15,0,-6])
+      //~ cube([70,38,12],center=true);
+
+      if(showLeftWing==1){
+        // left side wing
+        translate([20,30,zWing])
+        cube([60,30,3],center=true);
+        // fillet
+        translate([-10,19,zWing+1.5])
+        rotate([0,90,0])
+        rotate([0,0,90])
+        rounder(r=10,h=60,f=F2);
+      }
       
+      if(showRightWing==1){
+        // mirror left side wing
+        mirror([0,1,0]){
+          translate([20,30,zWing])
+          cube([60,30,3],center=true);
+          // fillet
+          translate([-10,19,zWing+1.5])
+          rotate([0,90,0])
+          rotate([0,0,90])
+          rounder(r=10,h=60,f=F2);
+        }
+      }
+      
+      // ring holder
       intersection(){
         translate([40,0,20])
         rotate([0,90,0])
-        cylinder(r=20,h=10,$fn=F1);
+        cylinder(r=22,h=10,$fn=F1);
         translate([45,0,1])
-        cube([10,36,1200],center=true);
+        cube([10,48,120],center=true);
       }
-
-        translate([45,0,30])
-        cube([10,36,12],center=true);
+      // taper
+      intersection(){
+        translate([40-4,0,20])
+        rotate([0,90,0])
+        cylinder(r1=14,r2=22,h=4,$fn=F1);
+        translate([45,0,12])
+        cube([40,48,60],center=true);
+      }
+      
+      // corners to match lid
+      translate([45,0,30])
+      cube([10,38,12],center=true);
     }
 
-    translate([0,18,36])
-    rotate([0,90,0])
-    rotate([0,0,-90])
-    rounder(r=2,h=60,f=F2);
+    // cut for lid
+    translate([10,0,33.5])
+    cube([60,38,5+0.5],center=true);
     
-    translate([0,-18,36])
+    translate([0,19,36])
     rotate([0,90,0])
-    rotate([0,0,0])
-    rounder(r=2,h=60,f=F2);
-
-    translate([-18,18,-20])
     rotate([0,0,-90])
     rounder(r=4,h=60,f=F2);
-    translate([-18,-18,-20])
+    
+    translate([0,-19,36])
+    rotate([0,90,0])
+    rotate([0,0,0])
+    rounder(r=4,h=60,f=F2);
+
+    translate([-20,19,-20])
+    rotate([0,0,-90])
+    rounder(r=4,h=60,f=F2);
+    
+    translate([-20,-19,-20])
     rotate([0,0,0])
     rounder(r=4,h=60,f=F2);
     
     // cut for main boss, add 0.2 tolerance
     translate([0,0,xUsb/2+3])
     rotate([0,90,0])
-    linear_extrude(height=zUsb,scale=0.96)
+    linear_extrude(height=zUsb+0.5,scale=0.96)
     offset(r=rUsb+0.2,$fn=F2)
     square([xUsb-2*rUsb,yUsb-2*rUsb],center=true);
     
@@ -181,14 +226,43 @@ module windowCamBase(){
     rotate([0,90,0])
     cylinder(r1=18-0.3,r2=18,h=12,$fn=F1);
         
-    // cut to make feet
-    translate([16,30,-12])    
-    rotate([90,0,0])
-    linear_extrude(height=60)
-    offset(r=4,$fn=F2)
-    square([50,12],center=true);
+    //~ // cut to make feet
+    //~ translate([16,30,-12])    
+    //~ rotate([90,0,0])
+    //~ linear_extrude(height=60)
+    //~ offset(r=4,$fn=F2)
+    //~ square([50,12],center=true);
+    
+    // cuts to round left side wing
+    translate([-10,45,-20])
+    rotate([0,0,-90])
+    rounder(r=8,h=60,f=F2);
+    translate([50,45,-20])
+    rotate([0,0,180])
+    rounder(r=8,h=60,f=F2);
+    
+    // cuts for left side wing attach
+    translate([0,35,zWing])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+    translate([40,35,zWing])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+
+    // mirror cuts to round left side wing
+    mirror([0,1,0]){
+      translate([-10,45,-20])
+      rotate([0,0,-90])
+      rounder(r=8,h=60,f=F2);
+      translate([50,45,-20])
+      rotate([0,0,180])
+      rounder(r=8,h=60,f=F2);
+      
+      // cuts for left side wing attach
+      translate([0,35,zWing])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+      translate([40,35,zWing])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+    }
   }
-  
 }
 
 //----------------------------------------------------------------------
@@ -445,7 +519,7 @@ translate([-xHold,0,-zCam]){
 //~ difference(){
 
   //~ translate([0,0,0.1])
-  //~ windowCamLid();
+  windowCamLid();
 
   //~ translate([0,15,10])
   //~ cube([40,30,90],center=true);
@@ -455,13 +529,13 @@ windowCamBase();
 
 //~ }
 
-//~ windowCamRing();
+windowCamRing();
 
-//~ windowCamPi();
+windowCamPi();
 
-//~ windowCamPiBracket();
+windowCamPiBracket();
 
-//~ windowCamHolder();
+windowCamHolder();
 
 if(0){
   difference(){
