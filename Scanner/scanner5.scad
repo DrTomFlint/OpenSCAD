@@ -36,17 +36,17 @@ use <./shells.scad>
 
 ElOn=0;     // elevation axis, ewheel
 AzOn=1;     // azimuth axis, turntable
-TableOn=3;  // rotational table, 0=off, 1=flat, 2=pillar, 3=modular
+TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar, 3=modular
 TableHigh=80;   // height of table pedistal
 
-ShellOn=1;  // shell cover
+ShellOn=0;  // shell cover
 Shell2On=0;  // shell cover
 ShellFOn=0;
 ShellROn=0;
 
 LidOn=0;    // lid
 
-TowerOn=1;  // towers
+TowerOn=0;  // towers
 Tower4On=0;
 BaseOn=1;   // base plate
 Arm2On=0;    // camera arm

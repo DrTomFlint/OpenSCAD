@@ -17,6 +17,8 @@ el=0;     // elevation
 
 F2=99;
 F1=299;
+Version="D";
+camID="9";
 
 // from usbPower:
 rUsb=6.0;     
@@ -35,7 +37,7 @@ zCam=6;
 zWing=6.5;
 
 showUsb=0;
-showPi=0;
+showPi=1;
 showCam=0;
 
 showLeftWing=1;
@@ -78,6 +80,13 @@ module windowCamLid(){
     
     windowCamText();
     
+    // version number
+    translate([30,0,35])
+    rotate([0,180,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.605)
+    text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
+
     // match stress relief for insert usbPower
     translate([40,0,20+18])
     cube([1,44,40],center=true);
@@ -85,11 +94,17 @@ module windowCamLid(){
   }
   
   // insert into cut for AC plugs
-  translate([-9-0.2,0,27])
+  translate([-14-0.2,0,27])
   linear_extrude(height=8)
   offset(r=2-0.2,$fn=F2)
-  square([16-4,30-4],center=true);
+  square([6-4,30-4],center=true);
 
+  // locking tab
+  translate([-14-0.2-3,0,27+1])
+  rotate([0,0,0])
+  rotate([90,0,0])
+  cylinder(r=1,h=20,$fn=6,center=true);
+  
     // tabs at top
   difference(){
     union(){
@@ -106,7 +121,10 @@ module windowCamLid(){
     linear_extrude(height=zUsb+0.5+6,scale=0.96)
     offset(r=rUsb+0.2,$fn=F2)
     square([xUsb-2*rUsb,yUsb-2*rUsb],center=true);
+
   }
+   
+
    
 }
 
@@ -117,7 +135,7 @@ module windowCamText(){
     translate([10,0,36-0.6])
     rotate([0,0,-90])
     linear_extrude(height=0.605)
-    text("7", font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
+    text(camID, font = "Open Sans:style=Bold", size=12,halign="center",valign="center",spacing=1.1);
 
     //~ translate([20,0,36-0.6])
     //~ rotate([0,0,-90])
@@ -200,6 +218,27 @@ module windowCamBase(){
       translate([45,0,30])
       cube([10,38,12],center=true);
     }
+
+    // version number
+    translate([0,0,0])
+    rotate([0,0,0])
+    rotate([0,0,90])
+    #linear_extrude(height=0.605)
+    text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
+
+    // locking tab
+    translate([-14-0.2-3,0,27+1])
+    rotate([0,0,0])
+    rotate([90,0,0])
+    cylinder(r=1+0.5,h=20+1,$fn=6,center=true);
+  
+    // finger grips to open the lid
+    translate([-8,23.5,27+1])
+    rotate([10,0,0])
+    cylinder(r=6,h=20+1,$fn=F2,center=true);
+    translate([-8,-23.5,27+1])
+    rotate([-10,0,0])
+    cylinder(r=6,h=20+1,$fn=F2,center=true);
 
     // cut slot in tabs to tighen
     translate([45,0,45])
@@ -351,6 +390,80 @@ translate([0,0,-20]){
 }
 
 //----------------------------------------------------------------------
+module windowCamRing2(){
+
+// rotation for azimuth:
+translate([0,0,20])
+rotate([az,0,0])
+translate([0,0,-20]){
+
+  // ring for rotation
+  difference(){
+    translate([40,0,20])
+    rotate([0,90,0])
+    cylinder(r=18-0.15,h=32,$fn=F1);
+
+    //~ translate([40-0.01,0,20])
+    //~ rotate([0,90,0])
+    //~ cylinder(r1=14,r2=16,h=32.1,$fn=F1);
+    
+    // bore cut
+    difference(){
+      union(){
+        translate([40-0.01+4,0,20])
+        rotate([0,90,0])
+        cylinder(r1=16,r2=16,h=32.1-4,$fn=F1);
+        translate([40-0.01,0,20])
+        rotate([0,90,0])
+        cylinder(r1=15,r2=15,h=4.1,$fn=F1);
+      }
+      
+      // don't cut near the pi mounts
+      translate([40-0.01,15,20+2])
+      scale([1,1,2])
+      rotate([0,90,0])
+      cylinder(r=2,h=32.1,$fn=F1);
+      translate([40-0.01,-15,20+2])
+      scale([1,1,2])
+      rotate([0,90,0])
+      cylinder(r=2,h=32.1,$fn=F1);
+    }
+    
+    // cut for pi support
+    translate([92,0,22])
+    cube([94,36-4,2.5+0.2],center=true);
+    
+    intersection(){
+      // version number
+      translate([50,0,2])
+      rotate([0,0,0])
+      rotate([0,0,-90])
+      linear_extrude(height=3)
+      text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
+      // bore cut
+        translate([40-0.01+4,0,19])
+        rotate([0,90,0])
+        cylinder(r1=16+0.3,r2=16+0.3,h=32.1-4,$fn=F1);
+    }
+  }
+
+  // add liddish
+  difference(){
+    translate([70,0,20])
+    sphere(r=18,$fn=F2);
+    translate([70,0,20])
+    sphere(r=16,$fn=F2);
+    translate([52,0,20])
+    cube([40,40,40],center=true);
+    translate([70,0,41-0.3])
+    cube([40,40,40],center=true);
+  }
+  
+  
+}
+}
+
+//----------------------------------------------------------------------
 module windowCamPi(){
 
 // rotation for azimuth:
@@ -476,106 +589,121 @@ translate([0,0,-20]){
 
   difference(){
     union(){
-
-      //~ translate([107,0,29.5-0])
-      //~ cube([70,38,18],center=true);
+      // base
       translate([107,0,29.5-1])
       cube([70,38,18-2],center=true);
       translate([107,0,29.5-1+8])
       linear_extrude(height=2,scale=0.9)
       square([70,38],center=true);
       
-      //~ translate([141,0,23.5-3])
-      //~ cylinder(r=19,h=18,$fn=F2);
+      // round top
       translate([141,0,23.5-3])
       cylinder(r=19,h=18-2,$fn=F2);
       translate([141,0,23.5-3+16])
       cylinder(r1=19,r2=0.9*19,h=2,$fn=F2);
 
+      // add a lip at the base
+      translate([71-2,0,20])
+      rotate([0,90,0])
+      cylinder(r1=18-0.3-2-0.4,r2=18-0.1-2,h=4,$fn=F1);
+
     }
     
     // inner cut
-      //~ translate([107,0,29.5-1])
-      //~ cube([70-2,38-2,18],center=true);
-      translate([107,0,29.5-2])
-      cube([70-2,38-2,18-2+0.1],center=true);
-      translate([107,0,29.5-1+8-1])
-      linear_extrude(height=2,scale=0.9)
-      square([70-2,38-2],center=true);
-      
-      //~ difference(){
-        //~ translate([141,0,23.5-3-1])
-        //~ cylinder(r=19-1,h=18,$fn=F2);
-        //~ translate([161,0,29.5+2.5])
-        //~ cube([10,38-2,18],center=true);
-      //~ }
-      
-      translate([141,0,23.5-3-1])
-      cylinder(r=19-1,h=18-2,$fn=F2);
-      translate([141,0,23.5-3+16-1])
-      cylinder(r1=19-1,r2=0.9*18,h=2,$fn=F2);
+    translate([107,0,29.5-2])
+    cube([70-2,38-2,18-2+0.1],center=true);
+    translate([107,0,29.5-1+8-1])
+    linear_extrude(height=2,scale=0.9)
+    square([70-2,38-2],center=true);
+    
+    translate([141,0,23.5-3-1])
+    cylinder(r=19-1,h=18-2,$fn=F2);
+    translate([141,0,23.5-3+16-1])
+    cylinder(r1=19-1,r2=0.9*18,h=2,$fn=F2);
       
     // clearance to install over pi    
-    translate([72,0,19])
+    translate([72,0,18.8])
     cube([6,36,10],center=true);
+    translate([72,0,24])
+    cube([6,31,9],center=true);
 
-    //~ translate([35.5,0,20])
-//~ #    cube([40,50,40],center=true);
-
-    translate([71,0,20])
+    // cut to ring
+    translate([71-2,0,20])
     rotate([0,90,0])
-    cylinder(r=18-0.15-2.5,h=3,$fn=F1);
+    cylinder(r1=18-0.3-3-1,r2=18-0.3-3-1,h=4,$fn=F1);
+    translate([80,0,10])
+    cube([30,60,20],center=true);
     
     // top vent
     translate([145,0,40])
-    cube([3,26,20],center=true);
+    hull(){
+      translate([0,8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+      translate([0,-8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+    }
     translate([135,0,40])
-    cube([3,26,20],center=true);
+    hull(){
+      translate([0,8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+      translate([0,-8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+    }
 
     // bottom vent
-    translate([80,0,40])
-    cube([3,26,20],center=true);
-    translate([90,0,40])
-    cube([3,26,20],center=true);
+    translate([84,0,40])
+    hull(){
+      translate([0,8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+      translate([0,-8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+    }
+    translate([94,0,40])
+    hull(){
+      translate([0,8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+      translate([0,-8,0])
+      cylinder(r=2,h=20,center=true,$fn=F2);
+    }
 
   }
 
+  // version number
+  translate([120,0,38])
+  rotate([0,180,0])
+  rotate([0,0,90])
+  linear_extrude(height=0.905)
+  text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
+
   // tab at top
   intersection(){
-    translate([161,0,19.75])
+    translate([159,0,19.75])
     cube([10,60,1.5],center=true);
     translate([141,0,23.5-3-4])
     cylinder(r=19,h=18+4,$fn=F2);
   }
   intersection(){
-    translate([161,0,19.75+1.5+2.5+2])
-    cube([10,60,1.5+4],center=true);
+    translate([158,0,31+2.5+0.3-5])
+    cube([10,60,10],center=true);
     translate([141,0,23.5-3-4])
     cylinder(r=19,h=18+4,$fn=F2);
   }
 
-  // ring for rotation
-  intersection(){
-    difference(){
-      translate([40,0,20])
-      rotate([0,90,0])
-      cylinder(r=18-0.15,h=32,$fn=F1);
-      
-      // bore cut
-      translate([40-0.01,0,20])
-      rotate([0,90,0])
-      cylinder(r1=14,r2=16,h=32.1,$fn=F1);
-    }
-    // pi side cut
-    translate([70,0,46])
-    cube([30-0.2,50-0.2,40-0.2],center=true);
-    
-  }
-    // tab at base
-    translate([58,0,34.8])
-    rotate([0,-10,0])
-    cube([12,6,2],center=true);
+  // posts to support pi
+    translate([140,18,  31+2.5+0.3-4])
+    cube([3,2,12],center=true);
+    translate([140,-18,  31+2.5+0.3-4])
+    cube([3,2,12],center=true);
 
+    translate([102,18,  31+2.5+0.3-4])
+    cube([6,2,12],center=true);
+    translate([102,-18,  31+2.5+0.3-4])
+    cube([6,2,12],center=true);
+
+    translate([76,18,  31+2.5+0.3-4])
+    cube([6,2,12],center=true);
+    translate([76,-18,  31+2.5+0.3-4])
+    cube([6,2,12],center=true);
   
 }
 }
@@ -797,17 +925,18 @@ translate([-xHold,0,-zCam]){
 //~ difference(){
 
   //~ translate([0,0,0.1])
-  windowCamLid();
+  //~ windowCamLid();
 
   //~ translate([0,15,10])
   //~ cube([40,30,90],center=true);
 //~ }
 
-windowCamBase();
+//~ windowCamBase();
 
 //~ }
 
 //~ windowCamRing();
+//~ windowCamRing2();
 
 //~ windowCamPi();
 
@@ -816,7 +945,7 @@ windowCamBase();
 //~ translate([0,0,0.1])
 //~ windowCamBack();
 
-//~ windowCamBack2();
+windowCamBack2();
 
 //~ windowCamPiBracket();
 

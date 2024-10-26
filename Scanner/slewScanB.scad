@@ -1,6 +1,7 @@
 //==================================================================
-// slew10.scad
+// slewB.scad
 // A slewing joint with cross roller bearings.
+// Adapted for turntable use, 25 Oct 2024.
 //
 // This has only been tested with the default parameters, if you are
 // changing them be careful and look closely at the models.  I am not
@@ -52,11 +53,11 @@ RollersOn = 0;    // use this only for design, see how roller fit
 RollerPrint = 0;  // use this only for printing the rollers
 OuterRaceOn = 1;
 InnerHiOn = 1;
-InnerLowOn = 1;
-PulleyOn = 1;
+InnerLowOn = 0;
+PulleyOn = 0;
 
-OuterTab = 2; // 0=off, 1=inner, 2=outer
-InnerTab = 2; // 0=off, 1=inner, 2=outer
+OuterTab = 1; // 0=off, 1=inner, 2=outer
+InnerTab = 1; // 0=off, 1=inner, 2=outer
 
 CutawayOn = 0;    // turn this on to make a sectional view
 CutawayAngle = 0; // adjust the angle of the sectional cut
@@ -485,7 +486,7 @@ for(i=[0:Nr-1]){
 
 //=====================================================================
 
-module slew10(){
+module slewB(){
 // make a union of all the parts to allow a cutaway view
 difference(){
 union(){    
@@ -546,6 +547,6 @@ if(CutawayOn){
 }
 
 //=======================
-slew10();
+slewB();
 
 //=====================================================================
