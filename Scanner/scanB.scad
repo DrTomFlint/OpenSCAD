@@ -105,33 +105,19 @@ thick5=3.5;
         }
 
         // azimuth motor
-        translate([138,18,0])
-        cylinder(r=8,h=thick5,$fn=88);
-        translate([138,-18,0])
-        cylinder(r=8,h=thick5,$fn=88);
+        translate([142,26,0])
+        cylinder(r=4,h=thick5,$fn=88);
+        translate([142,-26,0])
+        cylinder(r=4,h=thick5,$fn=88);
 
       }
     }
     
-    // bore hole
-    translate([0,0,-1])
-    cylinder(r=50,h=25,$fn=F2,center=true);
-    
-    // additional cuts for material reduction   **************************************************************
-    if(1){
-    for (i=[-1:1]){
-      rotate([0,0,i*15])
-      translate([70,0,0])
-      rotate([0,0,-i*15])
-      scale([1.6,1,1])
-      cylinder(r=7,h=40,center=true,$fn=99);
-    }
-  }
-    
-  // make motor mount slide to tension the belt:
-  dxa=8;
-
-  // cuts for feet
+  // bore hole
+  translate([0,0,-1])
+  cylinder(r=50,h=25,$fn=F2,center=true);
+      
+  // cuts for 3 feet
   rotate([0,0,60+10])
   translate([ax1/2+2,0,3.75])  
   cube([4+0.2,10+0.2,7.5],center=true);
@@ -146,13 +132,25 @@ thick5=3.5;
   translate([ax1/2+2,0,3.75])  
   cube([4+0.2,10+0.2,7.5],center=true);
 
+  rotate([0,0,180+10])
+  translate([ax1/2+2,0,3.75])  
+  cube([4+0.2,10+0.2,7.5],center=true);
+  rotate([0,0,180-10])
+  translate([ax1/2+2,0,3.75])  
+  cube([4+0.2,10+0.2,7.5],center=true);
+
   // azimuth motor
+  // make motor mount slide to tension the belt:
+  dxa=12;
+
+  // collar around shaft
   hull(){  
     translate([-ax1-dxa,ay1,1])
     cylinder(r=12,h=2.2,center=true);
     translate([-ax1+dxa,ay1,1])
     cylinder(r=12,h=2.2,center=true);
   }
+  // main shaft
   hull(){  
     translate([-ax1-dxa,ay1,1])
     cylinder(r=3,h=12,center=true);
@@ -161,6 +159,7 @@ thick5=3.5;
   }
   
   // M3 bolts for azimuth motor
+  translate([0,0,-4]){
   hull(){
     translate([-ax1+31/2-dxa,ay1+31/2,0])
     cylinder(r=1.7,h=10,$fn=12);
@@ -185,31 +184,78 @@ thick5=3.5;
     translate([-ax1+31/2+dxa,ay1-31/2,0])
     cylinder(r=1.7,h=10,$fn=12);
   }
-  
 }
 
-    // inner tabs for bolting down  
-    translate([0,0,-5.5])
-      for(i=[0:Ntabi-1]){
-        rotate([0,0,i*360/Ntabi+0]){
-          color("gray")
-          difference(){
-            hull(){
-              translate([0,oid,ohi/2])
-              scale([1,1.5,1])
-              cylinder(r=5,h=3.5,$fn=F1);      
 
-              translate([0,oid+2,ohi/2])
-              scale([3,1,1])
-              cylinder(r=3,h=3.5,$fn=F1);      
-            }
-            translate([0,oid-4,ohi/2-4])
-            cylinder(r=1.7,h=8.5,$fn=F1);
+  // version number
+  translate([73,6,3.5-0.6])
+  linear_extrude(height=0.605)
+  text("FLINT", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  translate([73,-6,3.5-0.6])
+  linear_extrude(height=0.605)
+  text("2024", font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+  
+} // end of diff
+
+  // add inner tabs for bolting down  
+  translate([0,0,-5.5])
+    for(i=[0:Ntabi-1]){
+      rotate([0,0,i*360/Ntabi+0]){
+        color("gray")
+        difference(){
+          hull(){
+            translate([0,oid,ohi/2])
+            scale([1,1.5,1])
+            cylinder(r=5,h=3.5,$fn=F1);      
+
+            translate([0,oid+2,ohi/2])
+            scale([3,1,1])
+            cylinder(r=3,h=3.5,$fn=F1);      
           }
+          translate([0,oid-4,ohi/2-4])
+          cylinder(r=1.7,h=8.5,$fn=F1);
         }
       }
+    }
 
-  
+   // add ridges to prevent bending
+  hull(){
+    rotate([0,0,34])
+    translate([-ax1/2-2,0,-2])  
+    cylinder(r1=0.2,r2=4,h=4,$fn=F2);
+    
+    translate([142,27,0])
+    cylinder(r1=0.2,r2=2,h=2,$fn=F2);
+  }
+  hull(){
+    rotate([0,0,-34])
+    translate([-ax1/2-2,0,-2])  
+    cylinder(r1=0.2,r2=4,h=4,$fn=F2);
+    
+    translate([142,-27,0])
+    cylinder(r1=0.2,r2=2,h=2,$fn=F2);
+  }
+
+  difference(){
+    translate([0,0,-2])
+    cylinder(r1=54.5+0.1,r2=57,h=4,$fn=222);
+    translate([0,0,-2.05])
+    cylinder(r1=54.5-0.1,r2=52,h=4.1,$fn=222);
+    
+    // cuts for the feet
+    rotate([0,0,180])
+    translate([ax1/2+2,0,-10]) 
+    cube([12,30+0.4,40],center=true);
+    rotate([0,0,60])
+    translate([ax1/2+2,0,-10]) 
+    cube([12,30+0.4,40],center=true);      
+    rotate([0,0,-60])
+    translate([ax1/2+2,0,-10]) 
+    cube([12,30+0.4,40],center=true);
+    
+    //~ translate([-30,0,-10]) 
+    //~ cube([120,120,40],center=true);
+  }
 
 }
 
@@ -302,8 +348,8 @@ module scanner(){
 AzOn=0;     // azimuth axis, turntable
 TableOn=0;  // rotational table, 0=off, 1=flat, 2=pillar, 3=modular
 TableHigh=80;   // height of table pedistal
-FeetOn=1;
-BaseOn=0;   // base plate
+FeetOn=0;
+BaseOn=1;   // base plate
 
 //~ intersection(){
   
@@ -326,9 +372,10 @@ BaseOn=0;   // base plate
   }
   
   if(FeetOn){
-    //~ feet(60);
-    //~ feet(-60);
-    feet(0);
+    feet(60);
+    feet(-60);
+    feet(180);
+    //~ feet(0);
   }
   
 

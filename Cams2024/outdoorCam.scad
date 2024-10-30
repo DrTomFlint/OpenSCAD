@@ -13,7 +13,7 @@ use <../Parts/rounder.scad>
 use <../Parts/hexcut.scad>
 
 az=0;     // azimuth
-el=20;     // elevation
+el=0;     // elevation
 
 F2=99;
 F1=299;
@@ -38,9 +38,9 @@ rOut=5;
 xHold=15;
 zCam=70;
 
-showUsb=1;
-showPi=1;
-showCam=1;
+showUsb=0;
+showPi=0;
+showCam=0;
 
 //----------------------------------------------------------------------
 module outdoorCamShell(){
@@ -85,25 +85,28 @@ module outdoorCamBase(){
 
   intersection(){
     union(){
-      //~ outdoorCamInner();
-      outdoorCamInner2();
+      //~ outdoorCamInner1();
+      //~ outdoorCamInner2();
+      outdoorCamInner3();
     }
   
+    translate([0,0,55])    // cut off bottom 
+    
     translate([2,0,-34-1])
     linear_extrude(height=135+2)
     offset(r=rOut-2-0.25,$fn=F2)
     square([xOut,yOut],center=true);
   }
   
-    //
 }
 
 //----------------------------------------------------------------------
-module outdoorCamInner(){
+module outdoorCamInner1(){
 
-    // pi support
-    translate([-23,0,0])
-    cube([4,44,90],center=true);
+  // pi support
+  translate([6,0,50]){
+    translate([-23,0,-20])
+    cube([4,44,145],center=true);
   
     // mounting pegs  
     translate([-21,-12,-22])
@@ -127,139 +130,81 @@ module outdoorCamInner(){
       translate([23,58,0])
       cylinder(r=2,h=2.5,center=true,$fn=F2);
     }
-
-    // floor
-    translate([0,0,-34])
-    cube([xOut+2*rOut,yOut+2*rOut,3],center=true);
-    
-    // front plate
-    difference(){
-      translate([23.5,0,0])
-      cube([18,44,96],center=true);
-      
-      // cut for usb
-      translate([5.5,0,-16])
-      rotate([0,0,0])
-      linear_extrude(height=zUsb,scale=0.96)
-      offset(r=rUsb+0.2,$fn=F2)
-      square([xUsb-2*rUsb,yUsb-2*rUsb],center=true);
-
-      // lens cut
-      translate([25,0,39])
-      rotate([0,-90,0])
-      cylinder(r=4,h=30,$fn=F2);
-      translate([16,0,36])
-      cube([10,18,26],center=true);
-    
-    }
-    
-    // mounting posts
-    translate([15,0,36])
-    rotate([0,-90,0])
-    rotate([0,0,90]){
-      translate([10.5,9.8,0])
-      cylinder(r1=1,r2=0.8,h=4,$fn=22);
-      translate([-10.5,9.8,0])
-      cylinder(r1=1,r2=0.8,h=4,$fn=22);
-      translate([10.5,9.8-12.5,0])
-      cylinder(r1=1,r2=0.8,h=4,$fn=22);
-      translate([-10.5,9.8-12.5,0])
-      cylinder(r1=1,r2=0.8,h=4,$fn=22);
-    }
+  }
   
 }
 
-
 //----------------------------------------------------------------------
 module outdoorCamInner2(){
-
-    // pi support
-    if(0){
-    translate([6,0,50]){
-      translate([-23,0,-20])
-      cube([4,44,145],center=true);
-    
-      // mounting pegs  
-      translate([-21,-12,-22])
-      rotate([0,90,0])
-      rotate([0,0,90]){
-        translate([0,0,2])
-        cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-        translate([0,58,2])
-        cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-        translate([23,0,2])
-        cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-        translate([23,58,2])
-        cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-
-        translate([0,0,0])
-        cylinder(r=2,h=2.5,center=true,$fn=F2);
-        translate([0,58,0])
-        cylinder(r=2,h=2.5,center=true,$fn=F2);
-        translate([23,0,0])
-        cylinder(r=2,h=2.5,center=true,$fn=F2);
-        translate([23,58,0])
-        cylinder(r=2,h=2.5,center=true,$fn=F2);
-      }
-    }
-  }
   
-    // floor
-    translate([0,0,-34])
-    cube([xOut+2*rOut,yOut+2*rOut,3],center=true);
+  // floor
+  translate([0,0,-34])
+  cube([xOut+2*rOut,yOut+2*rOut,3],center=true);
+  
+}
+
+//----------------------------------------------------------------------
+module outdoorCamInner3(){
+
+  
+  // front plate
+  difference(){
+    union(){
+      translate([23.5,0,10])
+      cube([18,44,130],center=true);
+      translate([16,0,70])
+      rotate([90,0,0])
+      cylinder(r=26,h=44,$fn=F2,center=true);
+    }
+
+    // cut for usb
+    translate([5.5,0,-16])
+    rotate([0,0,0])
+    linear_extrude(height=zUsb,scale=0.96)
+    offset(r=rUsb+0.2,$fn=F2)
+    square([xUsb-2*rUsb,yUsb-2*rUsb],center=true);
+
+    // cut for cam
+    translate([-1,0,zCam])
+    cube([40,29,55],center=true);
+    translate([12,0,zCam])
+    cube([20,24,55],center=true);
     
-    // front plate
-    difference(){
-      union(){
-        translate([23.5,0,10])
-        cube([18,44,130],center=true);
-        translate([16,0,70])
-        rotate([90,0,0])
-        cylinder(r=26,h=44,$fn=F2,center=true);
-      }
+    translate([xHold,0,zCam])
+    rotate([0,-90,0])
+    translate([0,15.5,0])
+    rotate([90,0,0])
+    cylinder(r1=2,r2=2.5,h=2,center=true,$fn=F2);
+    
+    translate([xHold,0,zCam])
+    rotate([0,-90,0])
+    translate([0,-15.5,0])
+    rotate([-90,0,0])
+    #cylinder(r1=2,r2=2.5,h=2,center=true,$fn=F2);
+    //~ outdoorCamHolderB();
 
-      // cut for usb
-      translate([5.5,0,-16])
-      rotate([0,0,0])
-      linear_extrude(height=zUsb,scale=0.96)
-      offset(r=rUsb+0.2,$fn=F2)
-      square([xUsb-2*rUsb,yUsb-2*rUsb],center=true);
-
-      // cut for cam
-      translate([-1,0,zCam])
-      cube([40,29,55],center=true);
-      translate([12,0,zCam])
-      cube([20,24,55],center=true);
-      translate([xHold,0,zCam])
-      rotate([0,-90,0])
-      outdoorCamHolder();
-
-      // cut for cam glass window
-      translate([21,0,zCam-8])
-      cube([1.5,25,75],center=true);
-      
-      // cut for tilt tightener
-      for(i=[-60:1:60])
+    // cut for cam glass window
+    translate([21,0,zCam-8])
+    cube([1.5,25,76],center=true);
+    
+    // cut for tilt tightener
+    for(i=[-60:1:60])
     // rotation for elevation:
     translate([xHold,0,zCam])
     rotate([0,i,0])
     translate([-xHold,0,-zCam])
-      
+    // cut series of bolt holes    
     translate([-4,0,zCam])
     rotate([90,0,0])
     cylinder(r=2,h=70,center=true,$fn=F2);
 
+    // cuts to allow space for bolt heads
     translate([xHold-15,-21,zCam])
     cube([20,10,60],center=true);
     translate([xHold-15,21,zCam])
-    cube([20,10,60],center=true);
-    
-    }
-    
-  
+    cube([20,10,60],center=true);    
+  }    
 }
-
-
 
 //----------------------------------------------------------------------
 module outdoorCamTilt(){
@@ -279,7 +224,7 @@ translate([-xHold,0,-zCam]){
 }
 
 //----------------------------------------------------------------------
-module outdoorCamHolder(){
+module outdoorCamHolderA(){
 
 zPcb=10;
 
@@ -291,38 +236,7 @@ zPcb=10;
     rotate([0,0,90])
     cameraV3();
   }
-  
-  // pivots
-  difference(){
-    union(){
-      hull(){
-        translate([0,13.5,0])
-        rotate([90,0,0])
-        cylinder(r=4,h=2,center=true,$fn=F2);
-        translate([0,13.5,0+20])
-        rotate([90,0,0])
-        cylinder(r=4,h=2,center=true,$fn=F2);
-      }
-      translate([0,15.5,0])
-      rotate([90,0,0])
-      cylinder(r1=2,r2=2.5,h=2,center=true,$fn=F2);
-      hull(){
-        translate([0,-13.5,0])
-        rotate([90,0,0])
-        cylinder(r=4,h=2,center=true,$fn=F2);
-        translate([0,-13.5,0+20])
-        rotate([90,0,0])
-        cylinder(r=4,h=2,center=true,$fn=F2);
-      }
-      translate([0,-15.5,0])
-      rotate([90,0,0])
-      cylinder(r1=2.5,r2=2,h=2,center=true,$fn=F2);
-    }
-    translate([0,0,0+20])
-    rotate([90,0,0])
-    cylinder(r=2,h=70,center=true,$fn=F2);
-  }
-    
+      
   // cam lid
   difference(){
     
@@ -345,6 +259,24 @@ zPcb=10;
     rotate([0,0,360/16])
     cylinder(r=5.5,h=40,$fn=8);
 
+
+    // cut for pivots
+    hull(){
+      translate([0,13.5,0])
+      rotate([90,0,0])
+      cylinder(r=4+0.15,h=2,center=true,$fn=F2);
+      translate([0,13.5,0+20])
+      rotate([90,0,0])
+      cylinder(r=4+0.15,h=2,center=true,$fn=F2);
+    }
+    hull(){
+      translate([0,-13.5,0])
+      rotate([90,0,0])
+      cylinder(r=4,h=2,center=true,$fn=F2);
+      translate([0,-13.5,0+20])
+      rotate([90,0,0])
+      cylinder(r=4,h=2,center=true,$fn=F2);
+    }
   }
     
   // mounting posts
@@ -361,6 +293,32 @@ zPcb=10;
   }
 }
 
+//----------------------------------------------------------------------
+module outdoorCamHolderB(){
+
+zPcb=10;
+  
+  // pivots
+  difference(){
+    union(){
+      hull(){
+        translate([0,13.5,0])
+        rotate([90,0,0])
+        cylinder(r=4,h=2,center=true,$fn=F2);
+        translate([0,13.5,0+20])
+        rotate([90,0,0])
+        cylinder(r=4,h=2,center=true,$fn=F2);
+      }
+      translate([0,15.5,0])
+      rotate([90,0,0])
+      cylinder(r1=2,r2=2.5,h=2,center=true,$fn=F2);
+    }
+    translate([0,0,0+19])
+    rotate([90,0,0])
+    cylinder(r=2,h=70,center=true,$fn=F2);
+  }
+    
+}
 
 //======================================================================
 
@@ -389,15 +347,17 @@ if(showPi==1){
 
 
 //~ outdoorCamShell();
+
 outdoorCamBase();
-//~ outdoorCamInner();
+//~ outdoorCamInner1();
 //~ outdoorCamInner2();
+//~ outdoorCamInner3();
 
-//~ outdoorCamHolder();
+//~ outdoorCamHolderA();
+//~ outdoorCamHolderB();
 
-outdoorCamTilt();
+//~ outdoorCamTilt();
 
-//~ outdoorCamYolk();
 
 //~ }
     //~ translate([50,50,50])
