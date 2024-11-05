@@ -173,12 +173,12 @@ module outdoorCamHolderB2(){
         
         translate([-14-3,13.5,23.9])
         rotate([0,-90,0])
-        #cylinder(r=1.5,h=10,$fn=F2);
+        cylinder(r=1.5,h=9,$fn=F2);
         
-        translate([-14-3-30,13.5,23.9])
+        translate([-22,13.5,23.9])
         rotate([0,-90,0])
         rotate([0,0,30])
-       cylinder(r=2-0.15,h=4,$fn=6);
+        cylinder(r=2-0.15,h=4,$fn=6);
 
       }
       // side cut to make printable edge
@@ -314,7 +314,7 @@ module servoGearA(){
     cylinder(r=7,h=4,$fn=F2);
     translate([0,0,-6.5])
     arm1cut(tol=0.2);
-    translate([0,0,-8.4])
+    translate([0,0,-8.45])
     arm1cut(tol=0.2);
     
   }
@@ -381,8 +381,8 @@ module servoGearMount(){
   translate([-15,0,-7])
   cylinder(r=7,h=6.5,$fn=F2);
 
-  translate([-15,0,0])
-  cylinder(r=2-0.15,h=10,$fn=F2);
+  translate([-15,0,-1])
+  cylinder(r=2-0.15,h=11,$fn=F2);
   
   difference(){
     translate([-5.25,0,-12])
@@ -411,22 +411,22 @@ translate([-36,13.5,23.9])
 rotate([0,90,0])
 rotate([0,0,180]){
 
-  //~ servoGearA();
-  //~ servoGearB();
-  //~ servoGearC();
+  servoGearA();
+  servoGearB();
+  servoGearC();
   
-  //~ servoGearMount();
+  servoGearMount();
 
 
-  //~ translate([-5.25,0,-34]){
-    //~ servo1();
-    //~ translate([5.25,0,28])
-    //~ arm1();
-  //~ }
+  translate([-5.25,0,-34]){
+    servo1();
+    translate([5.25,0,28])
+    arm1();
+  }
 }
 
 //~ translate([0,0,2])
-//~ servoBracket();  
+servoBracket();  
   
 //~ union(){
 
@@ -434,7 +434,7 @@ rotate([0,0,180]){
   translate([xCam,0,zCam])
   rotate([0,-el,0])
   translate([-xCam,0,-zCam]){
-    //~ outdoorCamHolderA();
+    outdoorCamHolderA();
   if(showCam==1){
     // camera module 3
     color("silver")
@@ -445,8 +445,8 @@ rotate([0,0,180]){
   }
   } // end of rotate for elevation
 
-//~ outdoorCamHolderB();
-//~ outdoorCamHolderB2();
+outdoorCamHolderB();
+outdoorCamHolderB2();
 outdoorCamHolderC();
 
 //~ } // end of union
