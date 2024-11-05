@@ -97,7 +97,7 @@ difference(){
 
 //------------------------------------------
 // arm2
-module arm2(){
+module arm2(holes=1){
 difference(){
     union(){
         // Boss
@@ -107,7 +107,7 @@ difference(){
             translate([0,0,4.75-1.85])
             cylinder(r=3.2,h=1.85,$fn=22);
 
-            translate([14,0,4.75-1.85])
+            translate([12.5,0,4.75-1.85])
             cylinder(r=3.9/2,h=1.85,$fn=22);
         }
         // arm
@@ -115,11 +115,12 @@ difference(){
             translate([0,0,4.75-1.85])
             cylinder(r=3.2,h=1.85,$fn=22);
 
-            translate([-14,0,4.75-1.85])
+            translate([-12.5,0,4.75-1.85])
             cylinder(r=3.9/2,h=1.85,$fn=22);
         }
     }
 
+  if(holes==1){
     // bottom cut
     cylinder(r=2.2,h=3.0,$fn=22);
     // thru cut
@@ -136,6 +137,7 @@ difference(){
     for(i=[0:5])
     translate([-4.7-i*9.75/5,0,4.75-1.85])
     cylinder(r=0.4,h=2,$fn=22);
+  }
 }
 } // ---------- end module arm1 -------
 

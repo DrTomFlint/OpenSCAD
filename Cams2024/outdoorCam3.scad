@@ -14,6 +14,7 @@ use <../Parts/hexcut.scad>
 use <../Parts/threads.scad>
 use <../Gears/gears.scad>
 use <../Parts/servo1.scad>
+use <../Parts/arm1.scad>
 
 az=0;     // azimuth
 el=0;     // elevation
@@ -219,6 +220,12 @@ module outdoorCamHolderB2(){
         translate([-14-3,13.5,23.9])
         rotate([0,-90,0])
         cylinder(r=1.5,h=30,$fn=F2);
+        
+        translate([-14-3-30,13.5,23.9])
+        rotate([0,-90,0])
+        rotate([0,0,30])
+       cylinder(r=2-0.15,h=4,$fn=6);
+
       }
       // side cut to make printable edge
       translate([-14-3-11,13.5,23.9-6.5])
@@ -309,18 +316,280 @@ module outdoorCamHolderC(){
 
 }
 
+//--------------------------------------------------------------------------------
+module servoGearA(){
 
+  translate([0,0,-1])
+  cylinder(r1=10,r2=9,h=1,$fn=F2);
+  difference(){
+    translate([0,0,-5])
+    cylinder(r=10,h=4,$fn=F2);
+    translate([0,0,-6])
+    arm1cut(tol=0.2);
+    translate([0,0,-7.9])
+    arm1cut(tol=0.2);
+    
+  }
+  $fn=99;
+  // input gear
+  rotate([0,0,180/12])
+  spur_gear (modul=1, tooth_number=12, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([0,0,3])
+    cylinder(r=4,h=1);
+    //~ translate([0,0,3])
+    //~ cylinder(r=2,h=1);
+  }
 
+  translate([0,0,3])
+  cylinder(r=2-0.15,h=4,$fn=F2);
+  
+}
+//--------------------------------------------------------------------------------
+module servoGearB(){
+
+  // mid gears
+  $fn=99;
+  translate([-21.5,0,0])
+  spur_gear (modul=1, tooth_number=30, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([-21.5,0,3])
+    cylinder(r1=10,r2=7,h=1);
+    translate([-21.5,0,3])
+    cylinder(r=2,h=1);
+  }
+  translate([-21.5,0,4])
+  rotate([0,0,180/12])
+  spur_gear (modul=1, tooth_number=12, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  
+}
+
+//--------------------------------------------------------------------------------
+module servoGearC(){
+
+  // output gear
+  $fn=99;
+  translate([0,0,4])
+  spur_gear (modul=1, tooth_number=30, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  
+  difference(){
+    translate([0,0,7])
+    cylinder(r1=5,r2=3,h=3,$fn=F2);
+    translate([0,0,7])
+    cylinder(r=2,h=4,$fn=6);
+  }
+}
+
+//--------------------------------------------------------------------------------
+module servoGearMount(){
+
+  translate([-21.5,0,0])
+  cylinder(r=2-0.15,h=8,$fn=F2);
+  translate([-21.5,0,-8])
+  cylinder(r=7,h=8,$fn=F2);
+  
+  difference(){
+    translate([-5.25-2.25,0,-12])
+    cube([42,14,10],center=true);
+    translate([-5.25,0,-34])
+    servo1cut(tol=0.15);
+  }
+
+}
+
+//--------------------------------------------------------------------------------
+module servoGearA2(){
+
+  translate([0,0,-1])
+  cylinder(r1=10,r2=9,h=1,$fn=F2);
+  difference(){
+    translate([0,0,-3])
+    cylinder(r=10,h=2,$fn=F2);
+    translate([0,0,-6])
+    arm1cut();
+    
+  }
+  $fn=99;
+  // input gear
+  //~ rotate([0,0,180/9])
+  spur_gear (modul=1, tooth_number=9, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([0,0,3])
+    cylinder(r=3.4,h=1);
+    //~ translate([0,0,3])
+    //~ cylinder(r=2,h=1);
+  }
+
+  translate([0,0,3])
+  cylinder(r=2-0.15,h=4,$fn=F2);
+  
+}
+//--------------------------------------------------------------------------------
+module servoGearB2(){
+
+  // mid gears
+  $fn=99;
+  translate([-21.5,0,0])
+  spur_gear (modul=1, tooth_number=33, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([-21.5,0,3])
+    cylinder(r1=10,r2=6,h=1);
+    translate([-21.5,0,3])
+    cylinder(r=1.6,h=1);
+  }
+  translate([-21.5,0,4])
+  //~ rotate([0,0,180/9])
+  spur_gear (modul=1, tooth_number=9, width=3, bore=3, pressure_angle=20, helix_angle=0, optimized=false);
+  
+}
+
+//--------------------------------------------------------------------------------
+module servoGearC2(){
+
+  // output gear
+  $fn=99;
+  translate([0,0,4])
+  spur_gear (modul=1, tooth_number=33, width=3, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  
+  difference(){
+    translate([0,0,7])
+    cylinder(r1=5,r2=3,h=3,$fn=F2);
+    translate([0,0,7])
+    cylinder(r=2,h=4,$fn=6);
+  }
+}
+
+//--------------------------------------------------------------------------------
+module servoGearMount2(){
+
+  difference(){
+    translate([-21.5,0,-8])
+    cylinder(r=7,h=8,$fn=F2);
+    translate([-21.5,0,-15])
+    cylinder(r=1.6,h=30,$fn=F2);
+  }
+  
+  difference(){
+    translate([-5.25-2.25,0,-12])
+    cube([42,14,10],center=true);
+    translate([-5.25,0,-34])
+    servo1cut(tol=0.15);
+    translate([-21.5,0,-32])
+    cylinder(r=4,h=30,$fn=F2);
+  }
+
+}
+
+//--------------------------------------------------------------------------------
+module servoGearA3(){
+
+  translate([0,0,-1])
+  cylinder(r1=7,r2=5.5,h=1,$fn=F2);
+  difference(){
+    translate([0,0,-5])
+    cylinder(r=7,h=4,$fn=F2);
+    translate([0,0,-6])
+    arm1cut(tol=0.2);
+    translate([0,0,-7.9])
+    arm1cut(tol=0.2);
+    
+  }
+  $fn=99;
+  // input gear
+  //~ rotate([0,0,180/9])
+  spur_gear (modul=1, tooth_number=9, width=4, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([0,0,4])
+    cylinder(r=3.4,h=1);
+    //~ translate([0,0,3])
+    //~ cylinder(r=2,h=1);
+  }
+
+  translate([0,0,4])
+  cylinder(r=2-0.15,h=4,$fn=F2);
+  
+}
+//--------------------------------------------------------------------------------
+module servoGearB3(){
+
+  // mid gears
+  $fn=99;
+  translate([-15,0,0])
+  spur_gear (modul=1, tooth_number=20, width=4, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  difference(){
+    translate([-15,0,4])
+    cylinder(r1=7,r2=5.5,h=1);
+    translate([-15,0,4])
+    cylinder(r=2.0,h=1);
+  }
+  translate([-15,0,5])
+  //~ rotate([0,0,180/9])
+  spur_gear (modul=1, tooth_number=9, width=4, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  
+}
+
+//--------------------------------------------------------------------------------
+module servoGearC3(){
+
+  // output gear
+  $fn=99;
+  translate([0,0,5])
+  rotate([0,0,180/20])
+  spur_gear (modul=1, tooth_number=20, width=4, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  
+  difference(){
+    translate([0,0,7])
+    cylinder(r1=5,r2=3,h=3,$fn=F2);
+    translate([0,0,7])
+    cylinder(r=2,h=4,$fn=6);
+  }
+}
+
+//--------------------------------------------------------------------------------
+module servoGearMount3(){
+
+  translate([-15,0,-7])
+  cylinder(r=7,h=7,$fn=F2);
+
+  translate([-15,0,0])
+  cylinder(r=2-0.15,h=10,$fn=F2);
+  
+  difference(){
+    translate([-5.25,0,-12])
+    cube([36,14,10],center=true);
+    translate([-5.25,0,-34])
+    servo1cut(tol=0.15);
+  }
+
+}
 //======================================================================
+
+//~ intersection(){
+//~ difference(){
+
+//~ servoGearA();
+//~ servoGearB();
+//~ servoGearC();
+//~ servoGearMount();
+
+//~ servoGearA2();
+//~ servoGearB2();
+//~ servoGearC2();
+//~ servoGearMount2();
+
+//~ servoGearA3();
+//~ servoGearB3();
+//~ servoGearC3();
+servoGearMount3();
+
+//~ translate([-5.25,0,-34]){
+  //~ servo1();
+  //~ translate([5.25,0,28])
+  //~ arm1();
+//~ }
 
 //~ servoMate();
 
-//~ intersection(){
-
-
-  
-  
-//~ difference(){
   
 //~ union(){
 
@@ -339,7 +608,7 @@ module outdoorCamHolderC(){
   }
   } // end of rotate for elevation
 
-outdoorCamHolderB();
+//~ outdoorCamHolderB();
 //~ outdoorCamHolderB2();
 //~ outdoorCamHolderC();
 
