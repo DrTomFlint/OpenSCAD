@@ -1,9 +1,9 @@
 //======================================================================
-// outdoorCam2.scad
+// outdoorCam5.scad
 //
 // Outdoor camera mounting for Frigate Cam2024
 //
-// DrTomFlint, 19 Oct 2024
+// DrTomFlint, 6 Nov 2024
 //======================================================================
 
 use <./usbPower.scad>
@@ -40,7 +40,7 @@ zCam=0;
 zPcb=6;
 xCam=0;
 
-xIdler=15.3;
+xIdler=19;
 
 showUsb=0;
 showPi=0;
@@ -287,33 +287,46 @@ module servoBracket(){
 
 
 //--------------------------------------------------------------------------------
-module servoGearA(){
+module servoGearA(bolt=0){
 
-  translate([0,0,-1.0])
-  cylinder(r1=7.5,r2=5.5,h=0.5,$fn=F2);
   difference(){
-    translate([0,0,-6.5])
-    cylinder(r=7.5,h=5.5,$fn=F2);
+    // boss
+    union(){
+      // base
+      translate([0,0,-6.5])
+      cylinder(r=13,h=5.5,$fn=F2);
+      translate([0,0,-1.0])
+      cylinder(r1=8,r2=7,h=1,$fn=F2);
 
-  hull(){
-    translate([0,0,-6.5])
-    arm2(holes=0,tol=0.15);
-    translate([0,0,-8.45])
-    arm2(holes=0,tol=0.15);
+      // input gear
+      $fn=99;
+      rotate([0,0,180/12])
+      translate([0,0,0])
+      spur_gear (modul=1, tooth_number=12, width=4, bore=0, pressure_angle=20, helix_angle=0, optimized=false);
+      // washer
+      translate([0,0,3.5])
+      cylinder(r=4.75,h=1);
+    }
+    // cut for servoDisk
+    translate([0,0,2.3-6-5])
+    cylinder(r=23.65/2+0.15,h=1.6+0.15+5,$fn=F2);
+    // cut topside clearance for nut
+    translate([0,0,2.3+1.6-6])
+    cylinder(r=5.44/2+0.15,h=0.5+0.15,$fn=F2);  
+    // cut for M3 bolt
+    translate([0,0,-2])
+    cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    translate([0,0,-2])
+    cylinder(r=2.9/2+0.15,h=15,$fn=F2);
   }
   
+  if(bolt==1){
+    // M3 bolt
+    translate([0,0,-2])
+    #cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    translate([0,0,-2+3])
+    #cylinder(r=2.9/2+0.15,h=10,$fn=F2);
   }
-  $fn=99;
-  // input gear
-  //~ rotate([0,0,180/9])
-  translate([0,0,-0.5])
-  spur_gear (modul=1, tooth_number=9, width=4, bore=0, pressure_angle=20, helix_angle=0, optimized=false);
-  // washer
-  translate([0,0,3.5])
-  cylinder(r=3.4,h=1);
-  // axle
-  translate([0,0,4])
-  cylinder(r=2-0.15,h=5.5,$fn=F2);
   
 }
 //--------------------------------------------------------------------------------
@@ -322,64 +335,150 @@ module servoGearB(){
   // mid gears
   $fn=99;
   intersection(){
-    translate([-xIdler,0,-0.5])  
-    spur_gear (modul=1, tooth_number=20, width=4, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
-    translate([-xIdler,0,-0.75])  
-    cylinder(r1=10,r2=16,h=6);
+    translate([-xIdler,0,0])  
+    spur_gear (modul=1, tooth_number=25, width=4, bore=3, pressure_angle=20, helix_angle=0, optimized=false);
+    translate([-xIdler,0,-1])  
+    cylinder(r1=11,r2=17,h=6);
   }
   difference(){
     translate([-xIdler,0,3.5])
-    cylinder(r1=7,r2=5.5,h=1);
+    cylinder(r1=8,r2=7,h=1);
     translate([-xIdler,0,3.5])
-    cylinder(r=2.0,h=1);
+    cylinder(r=1.6,h=1);
   }
   translate([-xIdler,0,4.5])
-  //~ rotate([0,0,180/9])
-  spur_gear (modul=1, tooth_number=9, width=5, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
+  rotate([0,0,180/12])
+  spur_gear (modul=1, tooth_number=12, width=5, bore=3, pressure_angle=20, helix_angle=0, optimized=false);
   
 }
 
 //--------------------------------------------------------------------------------
 module servoGearC(){
 
-  // output gear
-  $fn=99;
-  intersection(){
-    translate([0,0,4.5])
-    rotate([0,0,180/20])
-    spur_gear (modul=1, tooth_number=20, width=5, bore=4, pressure_angle=20, helix_angle=0, optimized=false);
-    translate([0,0,4.5])
-    cylinder(r1=10,r2=16,h=6);
-  }
-  
+
+  // top washer
   difference(){
     union(){
       translate([0,0,9.5])
-      cylinder(r1=7,r2=6,h=4.4,$fn=F2);
-      translate([0,0,9.5+4.4])
-      cylinder(r=3-0.2,h=2-0.2,$fn=F2);
+      cylinder(r=8,h=1.5);
+      // output gear
+      $fn=99;
+      intersection(){
+        translate([0,0,4.5])
+        rotate([0,0,180/20])
+        spur_gear (modul=1, tooth_number=25, width=5, bore=3, pressure_angle=20, helix_angle=0, optimized=false);
+        translate([0,0,4.0])
+        cylinder(r1=11,r2=17,h=6);
+      }
     }
-    translate([0,0,9.5])
-    rotate([0,0,30])
-    cylinder(r=2.0,h=12,$fn=6);
+    // cut for axle
+    translate([0,0,9])
+    cylinder(r=1.6,center=true,h=6);
+
+    // cut for output spline
+    translate([0,0,8])
+    cylinder(r=6+0.15,h=4,$fn=6);
   }
   
 }
 
 //--------------------------------------------------------------------------------
-module servoGearMount(){
+// retain and center gears A and C, anchor to gearB and gearMount
+module servoGearD(){
 
-  translate([-xIdler,0,-7])
-  #cylinder(r=7,h=6.5,$fn=F2);
-
-  translate([-xIdler,0,-1])
-  #cylinder(r=2-0.15,h=11,$fn=F2);
+$fn=F2;
   
   difference(){
-    translate([-5.25,0,-12])
-    cube([36,14,10],center=true);
+    union(){
+      translate([-xIdler,0,9.5])
+      cylinder(r=4,h=0.6);
+      translate([0,0,9.5])
+      cylinder(r=11,h=0.6);
+      hull(){
+        translate([-xIdler,0,10.1])
+        cylinder(r=4,h=0.9);
+        translate([0,0,10.1])
+        cylinder(r=11,h=0.9);
+      }
+
+    }
+    // cut for axle B
+    translate([-xIdler,0,9.5])
+    cylinder(r=1.6,h=10,center=true);
+    // cut for axle AC
+    translate([0,0,9.5])
+    cylinder(r=8+0.2,center=true,h=6);
+  }
+
+}
+  
+
+//--------------------------------------------------------------------------------
+// output spline to avoid M3 bolt and nut
+module servoSpline(){
+
+$fn=F2;
+  
+  // lower section
+  difference(){
+    union(){
+      translate([0,0,8])
+      cylinder(r=6,h=6,$fn=6);
+      translate([0,0,14])
+      cylinder(r1=6,r2=3,h=3,$fn=6);
+    }
+    // cut bolt clearances
+    translate([0,0,8-0.1])
+    cylinder(r=4,h=4.2,$fn=F2);
+    
+    // cut for output axle    
+    translate([0,0,8-0.1])
+    cylinder(r=3,h=20,$fn=6);
+  }
+
+
+}
+  
+//--------------------------------------------------------------------------------
+// shaft matching spline
+module servoShaft(){
+
+$fn=F2;
+  
+  difference(){
+    union(){
+      translate([0,0,12])
+      cylinder(r=3-0.15,h=10,$fn=6);
+      translate([0,0,12+10])
+      cylinder(r=0.866*3-0.15,h=4,$fn=F2);
+    }
+    translate([0,0,12+10])
+    cylinder(r=1,h=40,center=true,$fn=6);
+  }
+}
+  
+//--------------------------------------------------------------------------------
+module servoGearMount(bolt=0){
+
+
+  difference(){
+    union(){
+      translate([-5.25,0,-12])
+      cube([40,14,10],center=true);
+      translate([-19.25,0,-5.1])
+      cube([12,14,10],center=true);
+    }
     translate([-5.25,0,-34])
     servo1cut(tol=0.15);
+    
+    // cut for M3 bolt
+    translate([-xIdler,0,-18])
+    cylinder(r=7/2+0.15,h=8.15,$fn=F2);
+    translate([-xIdler,0,-10])
+    cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    translate([-xIdler,0,-10+3])
+    cylinder(r=2.9/2+0.15,h=35,$fn=F2);
+    
   }
   
   // keyway for servoBracket
@@ -389,31 +488,62 @@ module servoGearMount(){
     //~ translate([-46,13.5,36])
     //~ linear_extrude(height=2-0.15,scale=[1,1.3])
     //~ square([10,6-0.3],center=true);
-    translate([-46,13.5,36])
+    translate([-46,13.5,38])
     linear_extrude(height=3,scale=[1,1.3])
     square([10,6],center=true);
   }
 
-
+  if(bolt==1){
+    translate([-xIdler,0,-10])
+    #cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    translate([-xIdler,0,-10+3])
+    #cylinder(r=2.9/2+0.15,h=20,$fn=F2);
+  }
 }
 
+//--------------------------------------------------------------------------------
+module servoDisk(){
+
+  difference(){
+    cylinder(r=6.8/2,h=2.3,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=4.65/2,h=2.3+2,$fn=F2);
+  }
+
+  translate([0,0,2.3])
+  difference(){
+    cylinder(r=23.65/2,h=1.6,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=2/2,h=1.6+2,$fn=F2);
+  }
+    
+  translate([0,0,2.3+1.6])
+  difference(){
+    cylinder(r=5.44/2,h=0.5,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=4.5/2,h=0.5+2,$fn=F2);
+  }
+}
 
 //--------------------------------------------------------------------------------
 module servoGearFull(){
 
 
-  servoGearA();
+  servoGearA(bolt=1);
   servoGearB();
   servoGearC();
-  
-  servoGearMount();
+  servoGearD();
+  servoSpline();
+  servoShaft();
+  servoGearMount(bolt=1);
 
 
   translate([-5.25,0,-34]){
     servo1();
     translate([5.25,0,28])
-    //~ //arm1()
-    arm2();
+    //arm1()
+    //arm2();
+    servoDisk();
   }
 
 }
@@ -421,7 +551,7 @@ module servoGearFull(){
 //======================================================================
 
 //~ intersection(){
-//~ difference(){
+difference(){
 
 servoGearFull();
 
@@ -472,8 +602,11 @@ servoGearFull();
 
   //~ // cut across the worm gear
   //~ translate([0,30+13.5,0])
-  //~ cube([90,60,60],center=true);
+//~ #  cube([90,60,60],center=true);
+
+  // cut across the servo
+  translate([0,30,0])
+  cube([90,60,90],center=true);
 
 
-
-//~ }// end diff or intersection
+}// end diff or intersection

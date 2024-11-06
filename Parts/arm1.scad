@@ -97,26 +97,26 @@ difference(){
 
 //------------------------------------------
 // arm2
-module arm2(holes=1){
+module arm2(holes=1,tol=0){
 difference(){
     union(){
         // Boss
-        cylinder(r=3.55,h=4.75,$fn=44);
+        cylinder(r=3.55+tol,h=4.75+tol,$fn=44);
         // arm
         hull(){
             translate([0,0,4.75-1.85])
-            cylinder(r=3.2,h=1.85,$fn=22);
+            cylinder(r=3.2+tol,h=1.85+tol,$fn=22);
 
             translate([12.5,0,4.75-1.85])
-            cylinder(r=3.9/2,h=1.85,$fn=22);
+            cylinder(r=3.9/2+tol,h=1.85+tol,$fn=22);
         }
         // arm
         hull(){
             translate([0,0,4.75-1.85])
-            cylinder(r=3.2,h=1.85,$fn=22);
+            cylinder(r=3.2+tol,h=1.85+tol,$fn=22);
 
             translate([-12.5,0,4.75-1.85])
-            cylinder(r=3.9/2,h=1.85,$fn=22);
+            cylinder(r=3.9/2+tol,h=1.85+tol,$fn=22);
         }
     }
 
