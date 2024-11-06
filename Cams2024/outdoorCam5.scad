@@ -321,11 +321,11 @@ module servoGearA(bolt=0){
   }
   
   if(bolt==1){
-    // M3 bolt
+    // M3x12 bolt
     translate([0,0,-2])
-    #cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
     translate([0,0,-2+3])
-    #cylinder(r=2.9/2+0.15,h=10,$fn=F2);
+    cylinder(r=2.9/2+0.15,h=12,$fn=F2);
   }
   
 }
@@ -360,7 +360,7 @@ module servoGearC(){
   difference(){
     union(){
       translate([0,0,9.5])
-      cylinder(r=8,h=1.5);
+      cylinder(r=8,h=2.5);
       // output gear
       $fn=99;
       intersection(){
@@ -396,9 +396,9 @@ $fn=F2;
       cylinder(r=11,h=0.6);
       hull(){
         translate([-xIdler,0,10.1])
-        cylinder(r=4,h=0.9);
+        cylinder(r=4,h=2);
         translate([0,0,10.1])
-        cylinder(r=11,h=0.9);
+        cylinder(r=11,h=2);
       }
 
     }
@@ -423,8 +423,8 @@ $fn=F2;
   difference(){
     union(){
       translate([0,0,8])
-      cylinder(r=6,h=6,$fn=6);
-      translate([0,0,14])
+      cylinder(r=6,h=8,$fn=6);
+      translate([0,0,16])
       cylinder(r1=6,r2=3,h=3,$fn=6);
     }
     // cut bolt clearances
@@ -474,8 +474,16 @@ module servoGearMount(bolt=0){
     // cut for M3 bolt
     translate([-xIdler,0,-18])
     cylinder(r=7/2+0.15,h=8.15,$fn=F2);
+
+    //~ translate([-xIdler,0,-10])
+    //~ cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    
+    // heatset insert
     translate([-xIdler,0,-10])
-    cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    cylinder(r=2.3,h=3.5,$fn=22);
+    translate([-xIdler,0,-5])
+    cylinder(r=1.8,h=3.5+5,center=true,$fn=22);
+
     translate([-xIdler,0,-10+3])
     cylinder(r=2.9/2+0.15,h=35,$fn=F2);
     
@@ -494,11 +502,13 @@ module servoGearMount(bolt=0){
   }
 
   if(bolt==1){
-    translate([-xIdler,0,-10])
-    #cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
-    translate([-xIdler,0,-10+3])
-    #cylinder(r=2.9/2+0.15,h=20,$fn=F2);
+    // M3x25
+    translate([-xIdler,0,12])
+    cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
+    translate([-xIdler,0,-12.5])
+    cylinder(r=2.9/2+0.15,h=25,$fn=F2);
   }
+  
 }
 
 //--------------------------------------------------------------------------------
@@ -605,7 +615,7 @@ servoGearFull();
 //~ #  cube([90,60,60],center=true);
 
   // cut across the servo
-  translate([0,30,0])
+  translate([0,-30,0])
   cube([90,60,90],center=true);
 
 
