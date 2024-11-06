@@ -160,17 +160,6 @@ module outdoorCamHolderB(){
   }
 }
 //----------------------------------------------------------------------
-// drive shaft
-module outdoorCamHolderB2(){
-
-    // mate into worm gear
-    translate([-14,13.5,23.9])
-    rotate([0,-90,0])
-    rotate([0,0,30])
-    cylinder(r=2-0.15,h=3+10,$fn=6);
-}
-
-//----------------------------------------------------------------------
 // support structure
 module outdoorCamHolderC(){
 
@@ -244,16 +233,18 @@ module outdoorCamHolderC(){
   cylinder(r1=2.5,r2=2,h=3,$fn=F2);
 
   // back plate
-  translate([-2,0,19+11])
-  cube([40,41,2],center=true);
+  translate([-2,0,31.5])
+  cube([40,41,6],center=true);
+  
+  // fillet
   translate([-2-20,-14.8,19+10])
   rotate([0,90,0])
   rounder(r=4,h=40,f=F2);
 
   // keyway
-  translate([-17+15,13.5,31])
-  linear_extrude(height=3,scale=[1,1.3])
-  square([10+30,6],center=true);
+  translate([-2,0,34])
+  linear_extrude(height=4,scale=[1,1.3])
+  square([10+30,16],center=true);
 
 }
 
@@ -264,23 +255,23 @@ module servoBracket(){
   // cam end
   difference(){
     // block
-    translate([-17+15,13.5,34])
-    cube([10+30,14,6],center=true);
+    translate([-17+15,13.5,35])
+    cube([10+30,14,8],center=true);
     // keyway
     translate([-17+15,13.5,31])
-    linear_extrude(height=3,scale=[1,1.3])
-    square([10+30+0.4,6],center=true);
+    linear_extrude(height=3.2,scale=[1,1.3])
+    square([10+30+0.4,6+0.4],center=true);
   }
 
   // servo end
   difference(){
     // block
-    translate([-32.5+15,13.5,38.15+0.5])
-    cube([41+30,14,4],center=true);
+    translate([-32.5+12,13.5,38.15+2.5])
+    cube([41+36,14,4],center=true);
     // keyway
-    translate([-48,13.5,36])
-    linear_extrude(height=3,scale=[1,1.3])
-    square([10+0.4,6],center=true);
+    translate([-46-8,13.5,38])
+    linear_extrude(height=3.2,scale=[1,1.3])
+    square([10+0.4,6+0.4],center=true);
   }
 
 }
@@ -429,7 +420,7 @@ $fn=F2;
     }
     // cut bolt clearances
     translate([0,0,8-0.1])
-    cylinder(r=4,h=4.2,$fn=F2);
+    cylinder(r=4,h=4.5,$fn=F2);
     
     // cut for output axle    
     translate([0,0,8-0.1])
@@ -445,16 +436,15 @@ module servoShaft(){
 
 $fn=F2;
   
-  difference(){
-    union(){
-      translate([0,0,12])
-      cylinder(r=3-0.15,h=10,$fn=6);
-      translate([0,0,12+10])
-      cylinder(r=0.866*3-0.15,h=4,$fn=F2);
-    }
-    translate([0,0,12+10])
-    cylinder(r=1,h=40,center=true,$fn=6);
-  }
+  translate([0,0,13.5])
+  cylinder(r=3-0.15,h=8,$fn=6);
+  translate([0,0,12.5+6.5])
+  cylinder(r=4-0.15,h=3,$fn=F2);
+  translate([0,0,12.5+7.25+2])
+  cylinder(r=3-0.15,h=3,$fn=F2);
+  translate([0,0,12.5+7.25+2+3])
+  cylinder(r=2-0.15,h=3,$fn=6);
+
 }
   
 //--------------------------------------------------------------------------------
@@ -539,84 +529,125 @@ module servoDisk(){
 module servoGearFull(){
 
 
-  servoGearA(bolt=1);
+  servoGearA(bolt=0);
   servoGearB();
   servoGearC();
   servoGearD();
   servoSpline();
   servoShaft();
-  servoGearMount(bolt=1);
+  //~ servoGearMount(bolt=1);
 
 
   translate([-5.25,0,-34]){
     servo1();
     translate([5.25,0,28])
-    //arm1()
-    //arm2();
     servoDisk();
   }
 
 }
 
+//--------------------------------------------------------------------------------
+module servoMountDouble(){
+
+intersection(){
+  union(){
+    // top link
+    translate([-50.5-0.1,0,40])
+    cube([17,41,3],center=true);
+
+    // bottom link
+    translate([-50.6,0,0.15])
+    cube([17,16,3],center=true);
+
+    // pan
+    translate([-59-0.15,-13.5,23.9])
+    rotate([0,-90,0])
+    rotate([0,0,0])
+    servoGearMount(bolt=0);
+
+    // tilt
+    translate([-42,13.5,23.9])
+    rotate([0,90,0])
+    rotate([0,0,180])
+    servoGearMount(bolt=0);
+  }
+  // ensure print down edge is perfectly flat, (some 0.15's missing)
+  translate([-50.5-0.1,0,20])
+  cube([16.75,48,45],center=true);
+}
+
+  // tiltcam link
+  translate([-32,0,40])
+  cube([22,41,3],center=true);
+  
+  // back plate
+  difference(){
+    translate([-2,0,38])
+    cube([40,41,7],center=true);
+    // keyway
+    translate([-2,0,34])
+    linear_extrude(height=4+0.2,scale=[1,1.3])
+    square([10+30+0.4,16+0.4],center=true);
+  }
+}
+
 //======================================================================
 
 //~ intersection(){
-difference(){
+//~ difference(){
 
-servoGearFull();
-
-//~ translate([-36,13.5,23.9])
-//~ rotate([0,90,0])
-//~ rotate([0,0,180]){
-
-  //~ servoGearA();
-  //~ servoGearB();
-  //~ servoGearC();
-  
-  //~ servoGearMount();
-
-
-  //~ translate([-5.25,0,-34]){
-    //~ servo1();
-    //~ translate([5.25,0,28])
-    //arm1()
-    //~ arm2();
-  //~ }
-//~ }
-
-//~ servoBracket();  
-  
 //~ union(){
 
+//~ servoBracket();  
+
+//~ translate([-60,-15,42])
+//~ rotate([0,0,0])
+//~ rotate([0,0,0])
+//~ pi0();
+
+servoMountDouble();
+
+// pan
+translate([-59-0.15,-13.5,23.9])
+rotate([0,-90,0])
+rotate([0,0,0])
+servoGearFull();
+
+// tilt
+translate([-42,13.5,23.9])
+rotate([0,90,0])
+rotate([0,0,180])
+servoGearFull();
+
+  
   // rotation for elevation:
   translate([xCam,0,zCam])
   rotate([0,-el,0])
   translate([-xCam,0,-zCam]){
-    //~ outdoorCamHolderA();
-  if(showCam==1){
-    // camera module 3
-    color("silver")
-    translate([0,0,zPcb])
-    rotate([0,180,0])
-    rotate([0,0,90])
-    cameraV3();
-  }
+    outdoorCamHolderA();
+    if(showCam==1){
+      // camera module 3
+      color("silver")
+      translate([0,0,zPcb])
+      rotate([0,180,0])
+      rotate([0,0,90])
+      cameraV3();
+    }
   } // end of rotate for elevation
 
 //~ outdoorCamHolderB();
-//~ outdoorCamHolderB2();
-//~ outdoorCamHolderC();
+outdoorCamHolderC();
 
 //~ } // end of union
 
 
   //~ // cut across the worm gear
   //~ translate([0,30+13.5,0])
-//~ #  cube([90,60,60],center=true);
+  //~ cube([200,60,120],center=true);
 
-  // cut across the servo
-  translate([0,-30,0])
-  cube([90,60,90],center=true);
+  //~ // cut across the servo
+  //~ translate([0,-30,0])
+  //~ cube([90,60,90],center=true);
 
 
-}// end diff or intersection
+//~ }// end diff or intersection
