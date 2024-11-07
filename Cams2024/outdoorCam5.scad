@@ -16,8 +16,9 @@ use <../Gears/gears.scad>
 use <../Parts/servo1.scad>
 use <../Parts/arm1.scad>
 
-az=0;     // azimuth
-el=0;     // elevation
+el=45;     // elevation
+zPan=12;
+panAngle=360-0;
 
 F2=99;
 F1=299;
@@ -42,9 +43,10 @@ xCam=0;
 
 xIdler=19;
 
+
 showUsb=0;
 showPi=0;
-showCam=0;
+showCam=1;
 
 //----------------------------------------------------------------------
 // camera and spur gear with pivots
@@ -300,7 +302,7 @@ module servoGearA(bolt=0){
     }
     // cut for servoDisk
     translate([0,0,2.3-6-5])
-    cylinder(r=23.65/2+0.15,h=1.6+0.15+5,$fn=F2);
+    cylinder(r=23.65/2+0.05,h=1.6+0.15+5,$fn=F2);
     // cut topside clearance for nut
     translate([0,0,2.3+1.6-6])
     cylinder(r=5.44/2+0.15,h=0.5+0.15,$fn=F2);  
@@ -448,6 +450,22 @@ $fn=F2;
 }
   
 //--------------------------------------------------------------------------------
+// shaft matching spline, gear for pan 
+module servoShaft2(){
+
+$fn=F2;
+  
+  translate([0,0,13.5])
+  cylinder(r=3-0.15,h=8,$fn=6);
+  translate([0,0,12.5+6.5])
+  cylinder(r=4-0.15,h=3,$fn=F2);
+  translate([0,0,12.5+7.25])
+  spur_gear (modul=1, tooth_number=12, width=5, bore=0, pressure_angle=20, helix_angle=0, optimized=false);
+
+
+}
+  
+//--------------------------------------------------------------------------------
 module servoGearMount(bolt=0){
 
 
@@ -526,7 +544,7 @@ module servoDisk(){
 }
 
 //--------------------------------------------------------------------------------
-module servoGearFull(){
+module servoGearFull(axle=1){
 
 
   servoGearA(bolt=0);
@@ -534,9 +552,13 @@ module servoGearFull(){
   servoGearC();
   servoGearD();
   servoSpline();
-  servoShaft();
+  if(axle==1){
+    servoShaft();
+  }
+  if(axle==2){
+    servoShaft2();
+  }
   //~ servoGearMount(bolt=1);
-
 
   translate([-5.25,0,-34]){
     servo1();
@@ -589,6 +611,111 @@ intersection(){
     linear_extrude(height=4+0.2,scale=[1,1.3])
     square([10+30+0.4,16+0.4],center=true);
   }
+  
+    // keyway 3
+    translate([-91,0,12])
+    translate([37,7,0])
+    rotate([90,0,0])
+    linear_extrude(height=4+0.2,scale=[1,1.3])
+    square([10,10],center=true);
+
+}
+
+
+//--------------------------------------------------------------------------------
+module panRing(bearing=0){
+
+  translate([-84,0,0])
+  rotate([0,90,0])
+  ring_gear (modul=1, tooth_number=48, width=5, rim_width=3, pressure_angle=20, helix_angle=0, $fn=F2);
+
+  // base 
+  translate([-84-7,0,0])
+  rotate([0,90,0])
+  difference(){
+    cylinder(r=28,h=7,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=11+0.15,h=7+2,$fn=F2);
+  }
+
+  // center bearing
+  if(bearing==1){
+    translate([-84-7,0,0])
+    rotate([0,90,0])
+    difference(){
+      cylinder(r=11,h=7,$fn=F2);
+      translate([0,0,-1])
+      cylinder(r=4,h=7+2,$fn=F2);
+    }
+  }
+}
+
+//--------------------------------------------------------------------------------
+module panPost(bearing=0){
+
+  // post
+  difference(){
+    union(){
+      translate([-84-7,0,0])
+      rotate([0,90,0])
+      cylinder(r=4-0.15,h=7,$fn=F2);
+      
+      translate([-84,0,0])
+      rotate([0,90,0])
+      cylinder(r=5,h=1,$fn=F2);
+      
+      translate([-84+1,0,0])
+      rotate([0,90,0])
+      cylinder(r=10,h=4,$fn=F2);
+    }
+    // cut for 5V0 in wires
+    translate([-84+1,0,0])
+    rotate([0,90,0])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+  }
+  
+  // rider feet
+  rotate([30,0,0])
+  translate([-84+1,12,0])
+  rotate([0,90,0])
+  scale([1,2,1])
+  cylinder(r=5,h=4,$fn=F2);
+  rotate([-90,0,0])
+  translate([-84+1,12,0])
+  rotate([0,90,0])
+  scale([1,2,1])
+  cylinder(r=5,h=4,$fn=F2);
+
+  // riser to main chassis
+  translate([-84-7,0,0])
+  difference(){
+    translate([25,3,0])
+    cube([34,7,20.5],center=true);
+
+    // keyway 3
+    translate([37,7,0])
+    rotate([90,0,0])
+    linear_extrude(height=4+0.2,scale=[1,1.3])
+    square([10+0.4,10+0.4],center=true);
+  
+    // cut for 5V0 in wires
+    translate([10,0,0])
+    rotate([0,90,0])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+  }
+  
+  
+  // center bearing
+  if(bearing==1){
+    translate([-84-7,0,0])
+    rotate([0,90,0])
+    difference(){
+      cylinder(r=11,h=7,$fn=F2);
+      translate([0,0,-1])
+      cylinder(r=4,h=7+2,$fn=F2);
+    }
+  }
+
 }
 
 //======================================================================
@@ -600,43 +727,60 @@ intersection(){
 
 //~ servoBracket();  
 
-//~ translate([-60,-15,42])
-//~ rotate([0,0,0])
-//~ rotate([0,0,0])
-//~ pi0();
+  // glass
+    translate([-12.5,0,-22])
+    #cube([76,25,1.2],center=true);
 
-servoMountDouble();
 
-// pan
-translate([-59-0.15,-13.5,23.9])
-rotate([0,-90,0])
-rotate([0,0,0])
-servoGearFull();
+panRing();
 
-// tilt
-translate([-42,13.5,23.9])
-rotate([0,90,0])
-rotate([0,0,180])
-servoGearFull();
+// rotation for pan
+//~ translate([0,0,zPan])
+rotate([panAngle,0,0])
+translate([0,0,-zPan]){
 
+  translate([0,0,zPan])
+  panPost(bearing=0);
   
-  // rotation for elevation:
-  translate([xCam,0,zCam])
-  rotate([0,-el,0])
-  translate([-xCam,0,-zCam]){
-    outdoorCamHolderA();
-    if(showCam==1){
-      // camera module 3
-      color("silver")
-      translate([0,0,zPcb])
-      rotate([0,180,0])
-      rotate([0,0,90])
-      cameraV3();
-    }
-  } // end of rotate for elevation
+translate([-58,-15,42])
+rotate([0,0,0])
+rotate([0,0,0])
+pi0();
 
-//~ outdoorCamHolderB();
-outdoorCamHolderC();
+  servoMountDouble();
+
+  // pan
+  translate([-59-0.15,-13.5,23.9])
+  rotate([0,-90,0])
+  rotate([0,0,0])
+  servoGearFull(axle=2);
+
+  // tilt
+  translate([-42,13.5,23.9])
+  rotate([0,90,0])
+  rotate([0,0,180])
+  servoGearFull(axle=1);
+
+    
+    // rotation for elevation:
+    translate([xCam,0,zCam])
+    rotate([0,-el,0])
+    translate([-xCam,0,-zCam]){
+      outdoorCamHolderA();
+      if(showCam==1){
+        // camera module 3
+        color("silver")
+        translate([0,0,zPcb])
+        rotate([0,180,0])
+        rotate([0,0,90])
+        cameraV3();
+      }
+    } // end of rotate for elevation
+
+  outdoorCamHolderB();
+  outdoorCamHolderC();
+
+}
 
 //~ } // end of union
 
