@@ -16,7 +16,7 @@ use <../Gears/gears.scad>
 use <../Parts/servo1.scad>
 use <../Parts/arm1.scad>
 
-el=45;     // elevation
+el=0;     // elevation
 zPan=12;
 panAngle=360-0;
 
@@ -234,48 +234,29 @@ module outdoorCamHolderC(){
   rotate([-90,0,0])
   cylinder(r1=2.5,r2=2,h=3,$fn=F2);
 
-  // back plate
-  translate([-2,0,31.5])
-  cube([40,41,6],center=true);
-  
-  // fillet
-  translate([-2-20,-14.8,19+10])
-  rotate([0,90,0])
-  rounder(r=4,h=40,f=F2);
-
-  // keyway
-  translate([-2,0,34])
-  linear_extrude(height=4,scale=[1,1.3])
-  square([10+30,16],center=true);
-
-}
-
-
-//--------------------------------------------------------------------------------
-module servoBracket(){
-  
-  // cam end
+  // make a pass-through for the camera cable
   difference(){
-    // block
-    translate([-17+15,13.5,35])
-    cube([10+30,14,8],center=true);
-    // keyway
-    translate([-17+15,13.5,31])
-    linear_extrude(height=3.2,scale=[1,1.3])
-    square([10+30+0.4,6+0.4],center=true);
-  }
+    union(){
+      // back plate
+      translate([-2,0,31.5])
+      cube([40,41,6],center=true);
+      
+      // fillet
+      translate([-2-20,-14.8,19+10])
+      rotate([0,90,0])
+      rounder(r=4,h=40,f=F2);
 
-  // servo end
-  difference(){
-    // block
-    translate([-32.5+12,13.5,38.15+2.5])
-    cube([41+36,14,4],center=true);
-    // keyway
-    translate([-46-8,13.5,38])
-    linear_extrude(height=3.2,scale=[1,1.3])
-    square([10+0.4,6+0.4],center=true);
+      // keyway 2
+      translate([-2,0,34])
+      linear_extrude(height=4,scale=[1,1.3])
+      square([10+30,16],center=true);
+    }
+    // camera cable cut
+    translate([-2,0,31.5])
+    rotate([0,-35,0])
+    cube([80,18,3],center=true);
   }
-
+  
 }
 
 
@@ -497,7 +478,7 @@ module servoGearMount(bolt=0){
     
   }
   
-  // keyway for servoBracket
+  // keyway 1 for servoBracket
   rotate([0,0,180])
   rotate([0,-90,0])
   translate([34,-13.5,-23.9]){
@@ -598,6 +579,10 @@ intersection(){
   cube([16.75,48,45],center=true);
 }
 
+  // tail for mounting pi0, extends into panSkirt
+  translate([-66-1.8,0,40])
+  cube([22,41,3],center=true);
+
   // tiltcam link
   translate([-32,0,40])
   cube([22,41,3],center=true);
@@ -606,18 +591,50 @@ intersection(){
   difference(){
     translate([-2,0,38])
     cube([40,41,7],center=true);
-    // keyway
+    // keyway -2 to holderC
     translate([-2,0,34])
     linear_extrude(height=4+0.2,scale=[1,1.3])
     square([10+30+0.4,16+0.4],center=true);
+
+    // camera cable cut
+    translate([-2,0,31.5])
+    rotate([0,-35,0])
+    cube([80,18,3],center=true);
+    
   }
   
-    // keyway 3
-    translate([-91,0,12])
-    translate([37,7,0])
-    rotate([90,0,0])
-    linear_extrude(height=4+0.2,scale=[1,1.3])
-    square([10,10],center=true);
+  // extra bit at the top mates into hat
+  translate([20,0,40])
+  cube([6,41,3],center=true);
+
+  // posts for pi0
+    translate([-65,-12.5,43]){
+      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
+      translate([0,yPi-2*rPi,0])
+      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
+      
+      translate([xPi-2*rPi-1,0,0])
+      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
+      translate([xPi-2*rPi-1,yPi-2*rPi,0])
+      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
+    }
+    translate([-65,-12.5,41.5]){
+      cylinder(r=2,h=2.5,center=true,$fn=F2);
+      translate([0,yPi-2*rPi,0])
+      cylinder(r=2,h=2.5,center=true,$fn=F2);
+      translate([xPi-2*rPi-1,0,0])
+      cylinder(r=2,h=2.5,center=true,$fn=F2);
+      translate([xPi-2*rPi-1,yPi-2*rPi,0])
+      cylinder(r=2,h=2.5,center=true,$fn=F2);
+    }
+  
+  
+  // keyway +3 to panPost
+  translate([-91,0,12])
+  translate([37,7,0])
+  rotate([90,0,0])
+  linear_extrude(height=4+0.2,scale=[1,1.3])
+  square([10,10],center=true);
 
 }
 
@@ -636,6 +653,13 @@ module panRing(bearing=0){
     cylinder(r=28,h=7,$fn=F2);
     translate([0,0,-1])
     cylinder(r=11+0.15,h=7+2,$fn=F2);
+
+    difference(){
+      translate([0,0,2])
+      cylinder(r1=20,r2=23.8,h=6,$fn=F2);
+      translate([0,0,2])
+      cylinder(r1=14,r2=12,h=6,$fn=F2);
+    }
   }
 
   // center bearing
@@ -651,8 +675,47 @@ module panRing(bearing=0){
 }
 
 //--------------------------------------------------------------------------------
-module panPost(bearing=0){
+module panSkirt(bearing=0){
+rs=12;
 
+  difference(){
+    // skirt out to shell
+    intersection(){
+      translate([-78.75,0,0])
+      rotate([0,90,0])
+      cylinder(r=60,h=2.5,$fn=F2);
+      // main bore
+      translate([-100-0.05,0,6])
+      rotate([0,90,0])
+      linear_extrude(height=130+0.1,scale=0.9)
+      offset(r=rs-0.2,$fn=F2)
+      square([74-2*rs, 58-2*rs],center=true);
+    }
+      
+    // cut for center post  
+    translate([0,0,0])
+    panPost(tol=0.2);
+
+    // cut for pan pinion gear
+    translate([-80,-13.5,12])
+    rotate([0,90,0])
+    cylinder(r=8,h=40,center=true,$fn=F2);
+    
+    // tail for mounting pi0
+    translate([-66-1.8,0,40-12])
+    cube([22+0.4,41+0.4,3+0.4],center=true);
+
+    // ventilation at base of pi
+    translate([-80,-20,36])
+    rotate([0,90,0])
+    hexcut1(R=1.6,x0=0,y0=0,h0=10,N0=13);
+    
+  }
+}
+
+//--------------------------------------------------------------------------------
+module panPost(bearing=0,tol=0){
+rs=12;
   // post
   difference(){
     union(){
@@ -662,11 +725,13 @@ module panPost(bearing=0){
       
       translate([-84,0,0])
       rotate([0,90,0])
-      cylinder(r=5,h=1,$fn=F2);
+      cylinder(r=5+tol,h=1+tol,$fn=F2);
       
       translate([-84+1,0,0])
       rotate([0,90,0])
-      cylinder(r=10,h=4,$fn=F2);
+      cylinder(r=10+tol,h=4+tol,$fn=F2);
+
+
     }
     // cut for 5V0 in wires
     translate([-84+1,0,0])
@@ -674,23 +739,11 @@ module panPost(bearing=0){
     cylinder(r=2,h=20,center=true,$fn=F2);
   }
   
-  // rider feet
-  rotate([30,0,0])
-  translate([-84+1,12,0])
-  rotate([0,90,0])
-  scale([1,2,1])
-  cylinder(r=5,h=4,$fn=F2);
-  rotate([-90,0,0])
-  translate([-84+1,12,0])
-  rotate([0,90,0])
-  scale([1,2,1])
-  cylinder(r=5,h=4,$fn=F2);
-
   // riser to main chassis
   translate([-84-7,0,0])
   difference(){
-    translate([25,3,0])
-    cube([34,7,20.5],center=true);
+    translate([25,4,0])
+    cube([34+tol,5+tol,20.5+tol],center=true);
 
     // keyway 3
     translate([37,7,0])
@@ -703,8 +756,7 @@ module panPost(bearing=0){
     rotate([0,90,0])
     cylinder(r=2,h=20,center=true,$fn=F2);
   }
-  
-  
+    
   // center bearing
   if(bearing==1){
     translate([-84-7,0,0])
@@ -718,34 +770,213 @@ module panPost(bearing=0){
 
 }
 
+//--------------------------------------------------------------------------------
+module shell(bearing=0){
+
+rs=12;
+
+  difference(){    
+    // main surround
+    translate([-100,0,6])
+    rotate([0,90,0])
+    linear_extrude(height=130,scale=0.9)
+    offset(r=rs+2,$fn=F2)
+    square([74-2*rs, 58-2*rs],center=true);
+    // main bore
+    translate([-100-0.05,0,6])
+    rotate([0,90,0])
+    linear_extrude(height=130+0.1,scale=0.9)
+    offset(r=rs,$fn=F2)
+    square([74-2*rs, 58-2*rs],center=true);
+    
+    // cut front glass
+    translate([2,0,-36])
+    cube([120,40,30],center=true);
+
+    // cut hat angle
+    translate([65,0,10])
+    rotate([0,-10,0])
+    cube([80,80,120],center=true);
+    
+    // cut ventilation slot
+    translate([15,0,40])
+    rotate([0,0,0])
+    cube([8,24,7],center=true);
+    
+  }
+  
+  // window sill
+  intersection(){
+    translate([-8,0,-31])
+    rotate([0,-2,0])
+    difference(){    
+      linear_extrude(height=8,scale=0.7)
+      offset(r=5,$fn=F2)
+      square([100, 36],center=true);
+      
+      translate([0,0,-0.05])
+      linear_extrude(height=8.1-3,scale=0.7)
+      offset(r=2,$fn=F2)
+      square([100, 36],center=true);
+
+      // glass slot, 20 mm of frost on one end
+      translate([5,0,6])
+      cube([76+10,25,1.5],center=true);
+      // glass viewport
+      translate([2,0,7])
+      cube([76-2,25-2,20],center=true);
+      // rain drain
+      translate([-36,0,4.0])
+      rotate([0,20,0])
+      cube([5,23,3],center=true);
+  
+    }
+    // main surround
+    translate([-100,0,6])
+    rotate([0,90,0])
+    linear_extrude(height=130,scale=0.9)
+    offset(r=rs+2,$fn=F2)
+    square([74-2*rs, 58-2*rs],center=true);
+  }
+}
+
+
+//--------------------------------------------------------------------------------
+module hat(){
+
+rs=12;
+
+  // inset into shell
+  difference(){    
+    // main bore
+    translate([-100-0.05,0,6])
+    rotate([0,90,0])
+    linear_extrude(height=130+0.1,scale=0.9)
+    offset(r=rs,$fn=F2)
+    square([74-0.4-2*rs, 58-0.4-2*rs],center=true);
+
+    // lip inner bore
+    translate([-100-0.05,0,6])
+    rotate([0,90,0])
+    linear_extrude(height=130+0.1,scale=0.9)
+    offset(r=rs-2,$fn=F2)
+    square([74-4-2*rs, 58-4-2*rs],center=true);
+
+    // hat cut angle
+    translate([66,0,10])    
+    rotate([0,-10,0])
+    cube([80,80,120],center=true);
+
+    // hat cut lower
+    translate([-17,0,-10])    
+    rotate([0,-10,0])
+    cube([80,80,120],center=true);
+    
+    // cut lower part
+    translate([-80,0,10])
+    cube([160,100,100],center=true);
+    
+    // cut front glass
+    translate([2,0,-36])
+    cube([120,40,30],center=true);
+    
+    // cut ventilation slot
+    translate([14,0,38])
+    rotate([0,-10,0])
+    cube([10,30,7],center=true);
+    
+  }
+
+  // overhanging roof
+  difference(){    
+    // lip and pyramid
+    union(){
+      translate([24.5,0,6])
+      rotate([0,80,0])
+      linear_extrude(height=2,scale=1)
+      offset(r=15,$fn=F2)
+      square([55, 39],center=true);
+      
+      translate([24.5+2,0,6])
+      rotate([0,80,0])
+      linear_extrude(height=7+0.1,scale=0.3)
+      offset(r=15,$fn=F2)
+      square([55, 39],center=true);
+    }
+    
+    // extra bit at the top mates into hat
+    translate([20,0,40-12])
+    cube([6+0.4,41+0.4,3+0.4],center=true);
+
+  }
+
+  // outer lip
+  difference(){    
+      translate([24.5-4,0,6-1])
+      rotate([0,80,0])
+      linear_extrude(height=4.2,scale=1)
+      offset(r=15,$fn=F2)
+      square([55, 39],center=true);
+      
+      translate([24.5-4.1,0,6-1])
+      rotate([0,80,0])
+      linear_extrude(height=4.2,scale=1)
+      offset(r=13,$fn=F2)
+      square([55, 39],center=true);
+    
+    // cut lower part
+    translate([-61,0,10])
+    rotate([0,-10,0])
+    cube([160,140,140],center=true);
+
+  }
+  
+  // add ventilation flap
+  translate([13,0,46])
+  rotate([0,0,0])
+  cube([10,30,3],center=true);
+  
+}
+
 //======================================================================
 
 //~ intersection(){
 //~ difference(){
 
-//~ union(){
-
-//~ servoBracket();  
-
-  // glass
-    translate([-12.5,0,-22])
-    #cube([76,25,1.2],center=true);
+union(){
 
 
-panRing();
 
-// rotation for pan
-//~ translate([0,0,zPan])
+//~ // rotation for pan
+//translate([0,0,zPan])
 rotate([panAngle,0,0])
 translate([0,0,-zPan]){
 
+
+
+  //~ // glass, 20 mm of frost on one end
+  //~ translate([0,0,zPan])
+  //~ translate([-10,0,-25])
+  //~ rotate([0,-2,0])
+  //~ #cube([76,25,1.2],center=true);
+
+
+  translate([0,0,zPan])
+  hat();
+
+  translate([0,0,zPan])
+  shell();
+
+  translate([0,0,zPan])
+  panRing(bearing=1);
+
   translate([0,0,zPan])
   panPost(bearing=0);
+  translate([0,0,zPan])
+  panSkirt(bearing=0);
   
-translate([-58,-15,42])
-rotate([0,0,0])
-rotate([0,0,0])
-pi0();
+  translate([-68,-15,42.5])
+  pi0();
 
   servoMountDouble();
 
@@ -780,9 +1011,9 @@ pi0();
   outdoorCamHolderB();
   outdoorCamHolderC();
 
-}
+} // end of pan
 
-//~ } // end of union
+} // end of union
 
 
   //~ // cut across the worm gear
@@ -792,6 +1023,10 @@ pi0();
   //~ // cut across the servo
   //~ translate([0,-30,0])
   //~ cube([90,60,90],center=true);
+
+  //~ // cut across rotational axis
+  //~ translate([-30,-30,0])
+  //~ cube([150,60,140],center=true);
 
 
 //~ }// end diff or intersection
