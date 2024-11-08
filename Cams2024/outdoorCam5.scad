@@ -18,7 +18,7 @@ use <../Parts/arm1.scad>
 
 el=0;     // elevation
 zPan=12;
-panAngle=360-0;
+panAngle=360-30;
 
 F2=99;
 F1=299;
@@ -43,8 +43,12 @@ xCam=0;
 
 xIdler=19;
 
+zWall=12;
 
 showUsb=0;
+showDr=0;       // approx model
+showSolar=0;    // approx model
+
 showPi=0;
 showCam=1;
 
@@ -640,7 +644,24 @@ intersection(){
 
 
 //--------------------------------------------------------------------------------
-module panRing(bearing=0){
+module panRingMate(bearing=0){
+
+
+  translate([-84-7,0,0])
+  rotate([0,90,0]){
+    difference(){
+      translate([0,0,-1])
+      metric_thread (diameter=46-0.4, pitch=2, length=5+1-0.1, internal=false, n_starts=1,
+                      thread_size=-1, groove=false, square=false, rectangle=0,
+                      angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
+      translate([0,0,-2])
+      cylinder(r=19,h=7+4,$fn=F2);
+    }
+  }
+}
+
+//--------------------------------------------------------------------------------
+module panRing(bearing=1){
 
   translate([-84,0,0])
   rotate([0,90,0])
@@ -654,12 +675,20 @@ module panRing(bearing=0){
     translate([0,0,-1])
     cylinder(r=11+0.15,h=7+2,$fn=F2);
 
-    difference(){
-      translate([0,0,2])
-      cylinder(r1=20,r2=23.8,h=6,$fn=F2);
-      translate([0,0,2])
-      cylinder(r1=14,r2=12,h=6,$fn=F2);
-    }
+    translate([0,0,-1])
+    metric_thread (diameter=46, pitch=2, length=5+1, internal=true, n_starts=1,
+                    thread_size=-1, groove=false, square=false, rectangle=0,
+                    angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
+
+  }
+
+  // bearing sleeve
+  translate([-84-7,0,0])
+  rotate([0,90,0])
+  difference(){
+    cylinder(r=13,h=7,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=11+0.15,h=7+2,$fn=F2);
   }
 
   // center bearing
@@ -790,7 +819,7 @@ rs=12;
     square([74-2*rs, 58-2*rs],center=true);
     
     // cut front glass
-    translate([2,0,-36])
+    translate([2+4,0,-36])
     cube([120,40,30],center=true);
 
     // cut hat angle
@@ -799,7 +828,7 @@ rs=12;
     cube([80,80,120],center=true);
     
     // cut ventilation slot
-    translate([15,0,40])
+    translate([15.5,0,40])
     rotate([0,0,0])
     cube([8,24,7],center=true);
     
@@ -938,14 +967,290 @@ rs=12;
   
 }
 
+//--------------------------------------------------------------------------------
+module panTube(){
+
+  panRingMate();
+
+  translate([-116,0,0])
+  rotate([0,90,0]){
+    difference(){
+      cylinder(r=21,h=25,$fn=F2);
+      translate([0,0,-0.5])
+      cylinder(r=21-2,h=25+1,$fn=F2);
+    }
+  }
+
+  translate([-29.9,0,0])
+  panRingMate();
+    
+}
+
+//--------------------------------------------------------------------------------
+module wallHat(){
+
+    difference(){
+      union(){
+        translate([20,0,91.5-31+zWall])   
+        scale([1,2,1])
+        cylinder(r=19+2,h=30+3,$fn=F2);
+        translate([16,0,78-1+zWall])    
+        color("green")
+        cube([10,72+12,27+4+2],center=true);
+
+        // hump for usb and ventilation  
+        translate([14,0,64+zWall])    
+        color("green")
+        rotate([0,90,0])
+        scale([0.8,1,1])
+        cylinder(r=18+4,h=6,$fn=F2);
+
+        translate([14+5-1,0,64+zWall])    
+        scale([1,1,0.8])
+        sphere(r=18+5,$fn=F2);
+        
+      }
+      
+      translate([20-1,0,91.5-31+2+zWall])   
+      scale([1,2,1])
+      cylinder(r=19+0.,h=31.1,$fn=F2);
+
+      translate([16,0,78+zWall])    
+      color("green")
+      cube([10-4,72+12-8+0.4,31+0.4],center=true);
+
+      translate([14+5-1,0,64+zWall])    
+      scale([1,1,0.8])
+      sphere(r=18+2+0.2,$fn=F2);
+
+      // slice lower half off
+      translate([4,0,78+zWall])    
+      color("green")
+      cube([20,90,80],center=true);
+
+      // hump for usb and ventilation  
+      translate([14,0,64+zWall])    
+      color("green")
+      rotate([0,90,0])
+      scale([0.8,1,1])
+      cylinder(r=18+2,h=6,$fn=F2);
+
+    }
+    
+    // side slots
+    difference(){
+      translate([20,-36,78+zWall])    
+      cube([12,6,27],center=true);
+      translate([17,-37,78+zWall])    
+      cube([9,3,27],center=true);
+    }
+    translate([20+6,-36+1.5,78+zWall])    
+    cube([6,3,27],center=true);
+      // side slots
+    difference(){
+      translate([20,36,78-1+zWall])    
+      cube([12,6,20],center=true);
+      translate([17,37,78-1+zWall])    
+      cube([9,3,20],center=true);
+    }
+    translate([20+6,36-1.5,78+zWall])    
+    cube([6,3,27],center=true);
+
+}
+
+//--------------------------------------------------------------------------------
+module wallMount(){
+
+  // ring for panTube
+  translate([-122,0,0])
+  rotate([0,90,0])
+  difference(){
+    cylinder(r1=30,r2=28,h=7,$fn=F2);
+
+    translate([0,0,-0.05])
+    metric_thread (diameter=46, pitch=2, length=7.1, internal=true, n_starts=1,
+                    thread_size=-1, groove=false, square=false, rectangle=0,
+                    angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
+  }
+
+
+  difference(){
+    // outer volume
+    union(){
+      // main box
+      translate([-60,0,78+zWall])    
+      color("green")
+      cube([158+4,72+4,27+4],center=true);
+      // hump for usb and ventilation  
+      translate([-60-158/2-2,0,64+zWall])    
+      color("green")
+      rotate([0,90,0])
+      scale([0.6,1,1])
+      cylinder(r=18+2,h=158+4,$fn=F2);
+
+      // arm to panRing
+      hull(){
+        translate([-122-19,0,0])
+        rotate([0,90,0])
+        cylinder(r=30,h=19,$fn=F2);
+
+        translate([-122-19+19/2+5,0,78+zWall])    
+        color("green")
+        cube([19+10,72+2+6,27+4],center=true);
+      }
+
+    } // end union
+
+    // cut for locking tab, bottom side door
+    translate([-137,0,90+zWall])    
+    cube([3,18,10],center=true);
+        
+    // inner volume
+    translate([-60-4,0,78+zWall])    
+    color("green")
+    cube([158+8+10,72,27],center=true);
+    
+    translate([-140,0,72+zWall])    
+    color("green")
+    cube([20,66,27],center=true);
+
+    translate([-60-158/2-2-5,0,64+zWall])    
+    color("green")
+    rotate([0,90,0])
+    scale([0.6,1,1])
+    cylinder(r=18,h=158+10,$fn=F2);
+
+
+    // ring below tube
+    hull(){
+      translate([-122-19+2,0,0])
+      rotate([0,90,0])
+      cylinder(r=30-2,h=19-4,$fn=F2);
+
+      translate([-122-19+19/2+5,0,78])    
+      color("green")
+      cube([19-4+10,72+2-4,27+2-4],center=true);
+    }
+    
+    // cut through to panTube
+    translate([-130,0,0])
+    rotate([0,90,0])
+    cylinder(r=24,h=19-4,$fn=F2);
+  }
+
+  // lower side tabs for wall attach
+  if(1){
+    difference(){
+      hull(){
+        translate([-126.5,57,91.5+zWall])    
+        cylinder(r=29/2,h=4,center=true,$fn=F2);
+        translate([-126.5,40,91.5+zWall])    
+        cube([19+10,4,4],center=true);
+      }
+      
+      translate([-126.5,63,91.5+zWall])    
+      rotate([0,0,0])
+      cylinder(r=2,h=12,center=true,$fn=F2);
+    }
+    translate([-126.5-14.5,40,91.5-2+zWall])    
+    rotate([0,90,0])
+    rounder(r=10,h=29,f=44);
+    
+    mirror([0,1,0]){
+      difference(){
+        hull(){
+          translate([-126.5,57,91.5+zWall])    
+          cylinder(r=29/2,h=4,center=true,$fn=F2);
+          translate([-126.5,40,91.5+zWall])    
+          cube([19+10,4,4],center=true);
+        }
+        
+        translate([-126.5,63,91.5+zWall])    
+        rotate([0,0,0])
+        cylinder(r=2,h=12,center=true,$fn=F2);
+      }
+      translate([-126.5-14.5,40,91.5-2+zWall])    
+      rotate([0,90,0])
+      rounder(r=10,h=29,f=44);
+    }
+  }
+  
+  // upper side tab for wall attach
+  if(1){
+    difference(){
+      translate([20,0,91.5+zWall])   
+      scale([1,2,1])
+      cylinder(r=19,h=2,$fn=F2);
+      
+      translate([32,0,91.5+zWall])    
+      rotate([0,0,0])
+      cylinder(r=2,h=12,center=true,$fn=F2);
+    }
+  }
+  
+  
+  
+  if(showUsb==1){
+    translate([-50,0,60+zWall])    
+    color("green")
+    rotate([0,0,180])
+    usbPower(plug=1);
+  }
+  if(showDr==1){
+    translate([-40,0,60+13+5+zWall])    
+    color("green")
+    cube([97,64,26],center=true);
+  }
+  if(showSolar==1){
+    translate([-40,0,60+13+5+zWall])    
+    color("green")
+    cube([109,72,26],center=true);
+  }
+
+}
+
 //======================================================================
 
+// Printing List:
+// parts are not aligned for assembly
+if(0){
+  
+//~ outdoorCamHolderA();
+//~ outdoorCamHolderB();
+//~ outdoorCamHolderC();
+//~ servoGearA();
+//~ servoGearB();
+//~ servoGearC();
+//~ servoGearD();
+//~ servoSpline();
+//~ servoShaft();
+//~ servoShaft2();
+//~ servoMountDouble();
+//~ panRing(bearing=0);
+//~ panSkirt();
+//~ panPost();
+//~ shell();
+hat();
+
+}
+
+//======================================================================
+
+// Design List:
+// parts are aligned for assembly, duplicates are shown
+if(1){
+  
 //~ intersection(){
 //~ difference(){
 
+//~ translate([0,0,100])
+//~ rotate([0,-90,0])
 union(){
 
-
+  wallMount();
+  
+  translate([1.2,0,0])
+  wallHat();
 
 //~ // rotation for pan
 //translate([0,0,zPan])
@@ -968,48 +1273,57 @@ translate([0,0,-zPan]){
   shell();
 
   translate([0,0,zPan])
-  panRing(bearing=1);
+  panRing();
 
   translate([0,0,zPan])
-  panPost(bearing=0);
-  translate([0,0,zPan])
-  panSkirt(bearing=0);
+  panTube();
+
+  //~ translate([0,0,zPan])
+  //~ wallMount();
+
+  //~ translate([0,0,zPan])
+  //~ panRingMate();
+
+  //~ translate([0,0,zPan])
+  //~ panPost(bearing=0);
+  //~ translate([0,0,zPan])
+  //~ panSkirt(bearing=0);
   
-  translate([-68,-15,42.5])
-  pi0();
+  //~ translate([-68,-15,42.5])
+  //~ pi0();
 
-  servoMountDouble();
+  //~ servoMountDouble();
 
-  // pan
-  translate([-59-0.15,-13.5,23.9])
-  rotate([0,-90,0])
-  rotate([0,0,0])
-  servoGearFull(axle=2);
+  //~ // pan
+  //~ translate([-59-0.15,-13.5,23.9])
+  //~ rotate([0,-90,0])
+  //~ rotate([0,0,0])
+  //~ servoGearFull(axle=2);
 
-  // tilt
-  translate([-42,13.5,23.9])
-  rotate([0,90,0])
-  rotate([0,0,180])
-  servoGearFull(axle=1);
+  //~ // tilt
+  //~ translate([-42,13.5,23.9])
+  //~ rotate([0,90,0])
+  //~ rotate([0,0,180])
+  //~ servoGearFull(axle=1);
 
     
-    // rotation for elevation:
-    translate([xCam,0,zCam])
-    rotate([0,-el,0])
-    translate([-xCam,0,-zCam]){
-      outdoorCamHolderA();
-      if(showCam==1){
-        // camera module 3
-        color("silver")
-        translate([0,0,zPcb])
-        rotate([0,180,0])
-        rotate([0,0,90])
-        cameraV3();
-      }
-    } // end of rotate for elevation
+    //~ // rotation for elevation:
+    //~ translate([xCam,0,zCam])
+    //~ rotate([0,-el,0])
+    //~ translate([-xCam,0,-zCam]){
+      //~ outdoorCamHolderA();
+      //~ if(showCam==1){
+        //~ // camera module 3
+        //~ color("silver")
+        //~ translate([0,0,zPcb])
+        //~ rotate([0,180,0])
+        //~ rotate([0,0,90])
+        //~ cameraV3();
+      //~ }
+    //~ } // end of rotate for elevation
 
-  outdoorCamHolderB();
-  outdoorCamHolderC();
+  //~ outdoorCamHolderB();
+  //~ outdoorCamHolderC();
 
 } // end of pan
 
@@ -1026,7 +1340,13 @@ translate([0,0,-zPan]){
 
   //~ // cut across rotational axis
   //~ translate([-30,-30,0])
-  //~ cube([150,60,140],center=true);
+  //~ cube([240,60,300],center=true);
+
+  //~ // cut across rotational axis
+  //~ translate([-40,-30,-80])
+  //~ cube([240,60,300],center=true);
 
 
 //~ }// end diff or intersection
+
+} // end of design list
