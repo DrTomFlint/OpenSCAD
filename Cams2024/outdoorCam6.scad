@@ -33,8 +33,8 @@ zPan=-14;   // pan servo
 
 twist=45;
 
-xTilt=17;
-yTilt=0;
+xTilt=17-1;
+yTilt=0+1;
 zTilt=-36;  // tilt servo
 
 zShell=100;
@@ -57,12 +57,12 @@ F1=299;
 // 
 xIdler=(25+12)/2;
 
-showUsb=1;
+showUsb=0;
 showDr=0;       // approx model
 showSolar=0;    // approx model
 showGlass=0;
 
-showPi=0;
+showPi=1;
 showCam=1;
 
 //--------------------------------------------------------------------------------
@@ -501,20 +501,14 @@ $fn=F2;
   difference(){
     union(){
       translate([0,0,8])
-      cylinder(r=6,h=8,$fn=6);
+      cylinder(r=6,h=6,$fn=6);
 
-      translate([0,0,16])
-      cylinder(r=7.75,h=2,$fn=F2);
-      translate([0,0,16+2])
-      cylinder(r1=7.75,r2=5.5,h=2,$fn=F2);
-
-
-      translate([0,0,12.5+7.25])
       intersection(){
-        translate([0,0,-2])
-        spur_gear (modul=1, tooth_number=12, width=5+2, bore=0, pressure_angle=20, helix_angle=0, optimized=false);
-        translate([0,0,-2])
-        cylinder(r1=13,r2=3,h=10,$fn=F2);
+        translate([0,0,12.5+7.25-zGear])
+        rotate([0,0,180/nSpur2])
+        spur_gear (modul=mod, tooth_number=nSpur2, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
+        translate([0,0,14])
+        cylinder(r1=6,r2=12,h=6,$fn=F2);
       }
     }
     // cut M3 nut clearance
@@ -594,9 +588,9 @@ module servoGearMount(bolt=0){
   
   if(bolt==1){
     // M3x25
-    translate([-xIdler,0,12])
+    translate([-xIdler,0,16])
     cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
-    translate([-xIdler,0,-12.5])
+    translate([-xIdler,0,-9])
     cylinder(r=2.9/2+0.15,h=25,$fn=F2);
   }
   
@@ -633,7 +627,7 @@ module servoGearFull(axle=1){
   servoGearA(bolt=1);
   servoGearB();
   servoGearC();
-  servoGearD();
+  //~ servoGearD();
   if(axle==1){
     servoSpline();
     servoShaft();
@@ -776,56 +770,124 @@ module panRingMate(bearing=0){
 }
 
 //--------------------------------------------------------------------------------
-module panRing(bearing=1){
+module panRing(bearing=0){
 
   translate([0,0,0])
   ring_gear (modul=mod, tooth_number=nRing, width=zGear, rim_width=1, pressure_angle=20, helix_angle=0,$fn=F2);
 
-  translate([offX,offY,0])
-  spur_gear (modul=mod, tooth_number=nSpur, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
+  //~ translate([offX,offY,0])
+  //~ spur_gear (modul=mod, tooth_number=nSpur, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
 
-  translate([offX2,offY2,0])
-  rotate([0,0,180/nSpur2])
-  spur_gear (modul=mod, tooth_number=nSpur2, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
+  //~ translate([offX2,offY2,0])
+  //~ rotate([0,0,180/nSpur2])
+  //~ spur_gear (modul=mod, tooth_number=nSpur2, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
 
-  // base 
-  //~ difference(){
-    //~ cylinder(r=28.15,h=10,$fn=F2);
-    //~ // cut for bearing, extra large, let sleeve fill extra
-    //~ translate([0,0,-1])
-    //~ cylinder(r=13,h=10+2,$fn=F2);
+}
 
-    //~ translate([0,0,-0.05])
-    //~ metric_thread (diameter=50, pitch=3, length=7.5, internal=true, n_starts=3,
-                    //~ thread_size=-1, groove=false, square=false, rectangle=0,
-                    //~ angle=30, taper=0, leadin=1, leadfac=1.0, test=false);
+//--------------------------------------------------------------------------------
+module panIdler(bearing=0){
 
-  //~ }
+  intersection(){
+    translate([offX,offY,0])
+    spur_gear (modul=mod, tooth_number=nSpur, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
+    translate([offX,offY,-4])
+    cylinder(r1=16,r2=3,h=zGear+7,$fn=F2);
+    translate([offX,offY,-3])
+    cylinder(r2=16,r1=3,h=zGear+7,$fn=F2);
+  }
+  
+  // axle
+  translate([offX,offY,-4])
+  cylinder(r=3,h=zGear+7,$fn=F2);
+}
+
+//--------------------------------------------------------------------------------
+module panPost(bearing=1){
+  
+  // post through bearing
+  translate([0,0,8])
+  cylinder(r=4-0.15,h=7,$fn=F2);
+  
+  // 
+  difference(){
+    translate([0,0,-8])
+    cylinder(r=31,h=8+6+3,$fn=F2);
+
+    // idler
+    hull(){
+      translate([offX,offY,-0.15])
+      cylinder(r=8.4,h=6.3,$fn=F2);
+      translate([offX,offY+10,-0.15])
+      cylinder(r=8.4,h=6.3,$fn=F2);
+    }
+    
+    // idler axle
+    hull(){
+      translate([offX,offY,-0.15-4.5])
+      cylinder(r=3+0.15,h=6.3+8,$fn=F2);
+      translate([offX,offY+10,-0.15-4.5])
+      cylinder(r=3-0.15,h=6.3+8,$fn=F2);
+    }
+    
+    // drive pinion
+    translate([offX2,offY2,-0.15])
+    cylinder(r=8.4,h=6.3,$fn=F2);
+    
+    // cut for M3 from GearA
+    translate([offX2,offY2,-0.15])
+    cylinder(r=1.8,h=14,$fn=F2);
 
 
-  //~ // bearing sleeve
-  //~ difference(){
-    //~ cylinder(r1=13.5,r2=13.5,h=10,$fn=F2);
-    //~ translate([0,0,3-0.1])
-    //~ cylinder(r1=11,r2=11+0.2,h=7.2,$fn=F2);
-    //~ translate([0,0,-1])
-    //~ cylinder(r=9,h=12,$fn=F2);
-    //~ translate([0,0,2])
-    //~ cube([40,1,10],center=true);
-    //~ translate([0,0,2])
-    //~ cube([1,40,10],center=true);
-  //~ }
+    // gearC collar
+    translate([offX2,offY2,-0.15-6])
+    cylinder(r=8+0.15,h=6.3,$fn=F2);
+    
+    // gear AC stack clearance
+    translate([offX2,offY2,-0.15-18-4.5])
+    cylinder(r=14+0.15,h=18.3,$fn=F2);
+    
+    // stack B
+    translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),-10])
+    cylinder(r=8.2,h=6,$fn=F2);
+    translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),-4])
+    cylinder(r=1.7,h=6,$fn=F2);
+    translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),2])
+    cylinder(r=3.5,h=10,$fn=F2);
 
+
+    // pan servo
+    translate([offX2,offY2,zPan-34])
+    rotate([0,0,0])
+    rotate([0,0,twist])
+    translate([-5,0,0])
+    servo1cut(tol=0.2);
+
+    // tilt servo
+    translate([xTilt,yTilt,zPan])
+    rotate([0,0,-45-90])
+    rotate([0,180,0])
+    translate([-5,0,-12])
+    servo1cut(tol=0.2);
+    // cut for servo wires
+    translate([xTilt,yTilt,zPan])
+    rotate([0,0,-45-90])
+    translate([-10,0,0])
+    cube([10,8,20],center=true);
+    
+  }
+  
   // center bearing
   if(bearing==1){
-    translate([0,0,7])
+    translate([0,0,8])
     difference(){
       cylinder(r=11,h=7,$fn=F2);
       translate([0,0,-1])
       cylinder(r=4,h=7+2,$fn=F2);
     }
   }
+
 }
+
 
 //--------------------------------------------------------------------------------
 module panRing2(bearing=0){
@@ -858,10 +920,22 @@ module panRing2(bearing=0){
 }
 
 //----------------------------------------------------------------------------------------------------
-module arm(){
+module arm(bearing=1){
+
+
+
+  // center bearing
+  if(bearing==1){
+    translate([0,0,9.1])
+    difference(){
+      cylinder(r=11,h=7,$fn=F2);
+      translate([0,0,-1])
+      cylinder(r=4,h=7+2,$fn=F2);
+    }
+  }
 
   if(showUsb==1){
-    translate([-20,0,20])    
+    translate([-80,0,20])    
     rotate([0,0,0])
     #usbPower(plug=1);
   }
@@ -871,12 +945,10 @@ module arm(){
 //----------------------------------------------------------------------------------------------------
 module panServo(){
 
-
-
     translate([offX2,offY2,zPan])
     rotate([0,0,0])
     rotate([0,0,twist])
-    servoGearFull(axle=0);
+    servoGearFull(axle=2);
 
 
 }
@@ -896,7 +968,7 @@ module tiltServo(){
     }
     
     xCam=0;
-    el=60;
+    el=45;
     zPcb=6;
     translate([xTilt,yTilt,zTilt])
     //~ rotate([0,0,twist-90-45])
@@ -920,14 +992,21 @@ module tiltServo(){
     } // end of rotate for elevation
 
 
-    
+    if(showPi==1){
+      translate([xTilt,yTilt,zTilt])
+      rotate([0,0,twist-90])
+      translate([14,-25,20])
+      rotate([0,90,0])
+      pi0();
+    }
+      
 
 }
 
 //----------------------------------------------------------------------------------------------------
 module shell(){
 
-rGlass=20;
+rGlass=22;
 thick=1.5;
 
   difference(){
@@ -977,23 +1056,27 @@ thick=1.5;
 if(1){
   
 //~ intersection(){
-difference(){
+//~ difference(){
 
 
-union(){
+//~ union(){
 
   //~ arm();
-  panRing();
-  //~ panRing2();
+  //~ panRing();
+  
+  // panRing2();
+
+  #panPost(bearing=0);
 
   // rotation for pan
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
   panServo();
+  panIdler();
   tiltServo();
   
-  shell();
+  //~ shell();
 
   //~ translate([0,0,zPan])
   //~ panTube();
@@ -1002,7 +1085,6 @@ union(){
   //~ panRingMate();
 
   //~ translate([0,0,zPan])
-  //~ panPost(bearing=0);
   //~ translate([0,0,zPan])
   //~ panSkirt(bearing=0);
   
@@ -1044,7 +1126,7 @@ union(){
 
 } // end of pan
 
-} // end of union
+//~ } // end of union
 
 
   //~ // cut across the worm gear
@@ -1060,12 +1142,12 @@ union(){
   //~ cube([240,60,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,-45])
-  translate([0,-100,0])
-  cube([240,200,300],center=true);
+  //~ rotate([0,0,90])
+  //~ translate([0,-100,0])
+  //~ cube([240,200,300],center=true);
 
 
-}// end diff or intersection
+//~ }// end diff or intersection
 
 } // end of design list
 
@@ -1089,14 +1171,15 @@ if(0){
 //~ panRing(bearing=0);
 //~ panSkirt();
 //~ panTube();
-//~ panPost();
+panPost(bearing=0);
+panIdler();
 //~ shell();
 //~ hat();
 //~ wallMount();
 //~ wallMount2();
 //~ wallMount3();
 //~ wallMount3Plug();
-Number();
+//~ Number();
 //~ wallHat();
 
 
