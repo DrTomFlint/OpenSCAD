@@ -38,6 +38,10 @@ yTilt=0+1;
 zTilt=-40;  // tilt servo
 
 zShell=100;
+rGlass=22;
+thick=1.5;
+
+
 
 // derived pan ring
 rRing=(nRing*mod)/2;
@@ -184,22 +188,28 @@ module outdoorCamHolderB(){
   worm_gear(modul=1, tooth_number=42, thread_starts=1, width=2, length=24, worm_bore=0, gear_bore=3, pressure_angle=20, lead_angle=10, optimized=0, together_built=1, show_spur=0, show_worm=1);
 
   // small end insert into pocket
-  translate([13,13.5,23.9])
+  translate([13+2,13.5,23.9])
   rotate([0,-90,0])
-  cylinder(r=4,h=2,$fn=F2);
-  translate([13+4,13.5,23.9])
-  rotate([0,-90,0])
-  cylinder(r1=1.5,r2=2,h=4,$fn=F2);
+  cylinder(r=4,h=6,$fn=F2);
 
   // large end attaches to shaft
   difference(){
-    translate([-12,13.5,23.9])
-    rotate([0,-90,0])
-    cylinder(r=4,h=5,$fn=F2);
+    union(){
+      translate([-12,13.5,23.9])
+      rotate([0,-90,0])
+      cylinder(r=4,h=13.5,$fn=F2);
+
+      translate([-23,13.5,23.9])
+      rotate([0,-90,0])
+      rotate([0,0,15])
+      cylinder(r=6,h=4,$fn=6);
+    }
+    
     translate([-14,13.5,23.9])
     rotate([0,-90,0])
     rotate([0,0,30])
-    cylinder(r=2,h=3,$fn=6);
+    cylinder(r=1.7,h=10,$fn=F2);
+
   }
 }
 //----------------------------------------------------------------------
@@ -300,6 +310,91 @@ module outdoorCamHolderC(){
   
 }
 
+
+//----------------------------------------------------------------------
+// camera and spur gear with pivots
+module outdoorCamHolderD(){
+zPcb=6;
+      
+  // gear
+  difference(){
+    intersection(){
+      $fn=99;
+      translate([0,13.5,21])
+      rotate([0,-90,0])       // rotate to get worm behind the cam
+      rotate([90,0,0])
+      worm_gear(modul=1, tooth_number=42, thread_starts=1, width=2, length=24, worm_bore=0, gear_bore=0, pressure_angle=20, lead_angle=10, optimized=0, together_built=1, show_spur=1, show_worm=0);
+
+      translate([0,0,zPcb+10])
+      rotate([90,0,0])
+      cylinder(r=20,h=40,center=true,$fn=F2);
+    }
+    // pivot gear side
+    translate([0,14.5,0])
+    rotate([90,0,0])
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+  }
+
+  // offside round
+  difference(){
+    intersection(){
+      translate([0,-13.5,0])
+      rotate([90,0,0])
+      cylinder(r=10,h=2,$fn=F2,center=true);
+      translate([0,0,zPcb+10])
+      rotate([90,0,0])
+      cylinder(r=20,h=40,center=true,$fn=F2);
+    }
+    // pivot offside
+    translate([0,-14.5,0])
+    rotate([-90,0,0])
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+  }  
+      
+  // cam lid
+  difference(){    
+    // boss
+    intersection(){
+      translate([0,0,zPcb-5.75])
+      cube([34,25,9],center=true);
+      translate([0,0,zPcb+10])
+      rotate([90,0,0])
+      cylinder(r=20,h=30,center=true,$fn=F2);
+    }
+    // lens box cut  
+    translate([0,0,zPcb-2])
+    cube([13,13,10],center=true);
+    translate([0,0,zPcb-2])
+    cube([26,16,4],center=true);
+
+    // lens cut
+    translate([0,0,-20+zPcb])
+    rotate([0,0,360/16])
+    cylinder(r=5.5,h=40,$fn=8);
+
+    // pivot gear side
+    translate([0,14.5,0])
+    rotate([90,0,0])
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+    // pivot offside
+    translate([0,-14.5,0])
+    rotate([-90,0,0])
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+  }
+    
+  // mounting posts
+  translate([0-2.5+12.5,0,-3+zPcb])
+  rotate([0,0,90]){
+    translate([10.5,9.8,0])
+    cylinder(r1=1,r2=0.8,h=4,$fn=22);
+    translate([-10.5,9.8,0])
+    cylinder(r1=1,r2=0.8,h=4,$fn=22);
+    translate([10.5,9.8-12.5,0])
+    cylinder(r1=1,r2=0.8,h=4,$fn=22);
+    translate([-10.5,9.8-12.5,0])
+    cylinder(r1=1,r2=0.8,h=4,$fn=22);
+  }
+}
 
 //--------------------------------------------------------------------------------
 module servoGearA(bolt=0){
@@ -641,41 +736,123 @@ module servoGearFull(axle=1){
     translate([5.25,0,28])
     servoDisk();
   }
-  //~ servoGearMount(bolt=1);
+  servoGearMount(bolt=1);
 
 }
 
 //--------------------------------------------------------------------------------
 module servoMountDouble(){
 
-  // surround the servos
-  difference(){  
-    translate([0,0,zPan-13])
-    rotate([0,0,45])
-    translate([5,-3,0])
-    cube([35,43,9],center=true);
-    
-    // pan servo
-    translate([offX2,offY2,zPan-34])
-    rotate([0,0,0])
-    rotate([0,0,twist])
-    translate([-5,0,0])
-    servo1cut(tol=0.2);
-
-    // tilt servo
-    translate([xTilt,yTilt,zPan])
-    rotate([0,0,-45-90])
-    rotate([0,180,0])
-    translate([-5,0,-8])
-    servo1cut(tol=0.2);
+  // back post near Pi
+  //~ translate([0,0,zPan-3])
+  //~ rotate([0,0,45])
+  //~ translate([2,-22.5,0])
+  //~ cube([32,4,29],center=true);
+  
+  // axle through camA
+  //~ translate([0,0,zPan])
+  //~ rotate([0,0,45])
+  //~ translate([0,13.5,-61])
+  //~ rotate([0,90,0])
+  //~ cylinder(r=2,h=100,center=true,$fn=33);
+  
+  // pivot offside
+  translate([0,0,zPan])
+  rotate([0,0,45])
+  translate([-15.75,13.5,-61])
+  rotate([0,90,0]){
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r=4,h=1,$fn=F2);
   }
-  // @TODO interface to base
-  // post up to ring
-    translate([0,0,zPan-6])
-    rotate([0,0,45])
-    translate([2,-21,0])
-    #cube([32,7,23],center=true);
+  
+  // pivot gearside
+  translate([0,0,zPan])
+  rotate([0,0,45])
+  translate([10.25,13.5,-61])
+  rotate([0,90,0]){
+    // pin
+    cylinder(r2=2.5,r1=2,h=3,$fn=F2);
+    // washer
+    translate([0,0,3])
+    cylinder(r=4,h=1,$fn=F2);
+  }
+  
+  
+  //~ // axle through Worm
+  //~ translate([xTilt,yTilt,zPan-61])
+  //~ cylinder(r=2,h=60,center=true,$fn=33);
 
+  // capture top end of Worm
+  translate([xTilt,yTilt,zPan-76])
+  difference(){
+    rotate([0,0,45])
+    cube([14,14,6],center=true);
+    translate([0,0,2])
+    cylinder(r=4+0.2,h=6,center=true,$fn=33);
+  }
+  // capture base of Worm
+  translate([xTilt,yTilt,zPan-39])
+  difference(){
+    rotate([0,0,45])
+    translate([-10,0,0])
+    cube([40,14,6],center=true);
+
+    // worm
+    translate([0,0,2])
+    cylinder(r=4+0.2,h=6,center=true,$fn=33);
+
+    // Gear C collar
+    translate([0,0,2])
+    cylinder(r=8+0.2,h=3,center=true,$fn=33);
+    
+    // top of GearB M3
+    translate([xTilt-cos(45)*xIdler,yTilt-cos(45)*xIdler,zPan-39])
+    translate([0,0,2])
+    cylinder(r=4+0.2,h=60,center=true,$fn=33);
+  }
+
+  // surround 2 sides worm
+  translate([xTilt,yTilt,zPan-58.5+1])
+  rotate([0,0,-45]){
+    translate([0,8,0])
+    cube([14,4,43],center=true);
+    translate([8,-10,0])
+    cube([2,40,43],center=true);
+    translate([1,-31,0])
+    cube([16,2,43],center=true);
+  }
+  
+  // arm to offside pivot, thin to flex!
+  hull(){
+    translate([xTilt,yTilt,zPan-58.5+1])
+    rotate([0,0,-45])
+    translate([1,-31,0])
+    cube([16,2,43],center=true);
+    // pivot offside
+    translate([0,0,zPan])
+    rotate([0,0,45])
+    translate([-15.75,13.5,-61])
+    rotate([0,90,0])
+    translate([0,0,-3])
+    cylinder(r=4,h=2,$fn=F2);
+  }
+  
+  // arm to gearside pivot
+  hull(){
+    translate([xTilt,yTilt,zPan-58.5])
+    rotate([0,0,-45])
+    translate([0,8,0])
+    cube([14,4,41],center=true);
+
+    // pivot gearside
+    translate([0,0,zPan])
+    rotate([0,0,45])
+    translate([10.25,13.5,-61])
+    rotate([0,90,0])
+    translate([0,0,4])
+    cylinder(r=4,h=2,$fn=F2);
+  }
 }
 
 
@@ -705,7 +882,7 @@ module panRing(bearing=0){
 
   translate([0,0,0])
   difference(){
-    metric_thread (diameter=nRing*mod+10, pitch=3, length=zGear+6, internal=false, n_starts=3,
+    metric_thread (diameter=nRing*mod+20, pitch=3, length=zGear+6, internal=false, n_starts=3,
                 thread_size=-1, groove=false, square=false, rectangle=0,
                 angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
     cylinder(r=nRing*mod/2+2,h=zGear+0.4,$fn=F2);
@@ -723,21 +900,22 @@ module panLock(bearing=0){
 
   translate([0,0,0])
   difference(){
-    cylinder(r=nRing*mod/2+9,h=10,$fn=F2);
+    cylinder(r=nRing*mod/2+14,h=10,$fn=F2);
     
-    metric_thread (diameter=nRing*mod+10+1, pitch=3, length=zGear+6, internal=false, n_starts=3,
+    metric_thread (diameter=nRing*mod+20+1, pitch=3, length=zGear+6, internal=false, n_starts=3,
                 thread_size=-1, groove=false, square=false, rectangle=0,
                 angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
   }
-  translate([0,0,-4])
+  translate([0,0,-6])
   difference(){
-   cylinder(r=nRing*mod/2+9,h=4,$fn=F2);
-   cylinder(r=35+0.4,h=4+0.6,$fn=F2);
+   cylinder(r=nRing*mod/2+14,h=6,$fn=F2);
+   cylinder(r=40+0.4,h=6+0.6,$fn=F2);
  }
-  translate([0,0,-8])
+ 
+  translate([0,0,-10])
   difference(){
-   cylinder(r1=nRing*mod/2+9-3,r2=nRing*mod/2+9,h=4,$fn=F2);
-   cylinder(r=31+0.4,h=4+0.6,$fn=F2);
+   cylinder(r1=nRing*mod/2+14-3,r2=nRing*mod/2+14,h=4,$fn=F2);
+   cylinder(r1=38,r2=37,h=4+0.6,$fn=F2);
  }
 
 }
@@ -775,9 +953,22 @@ module panPost(bearing=1){
       translate([0,0,-8])
       cylinder(r=31,h=8+6+3,$fn=F2);
       // drag ring / retainer
-      translate([0,0,-4])
-      cylinder(r=35,h=4-0.15,$fn=F2);
+      translate([0,0,-6.0])
+      cylinder(r=40-0.5,h=6-0.15,$fn=F2);
+      // fill area to the shell
+      translate([0,0,-8.0])
+      cylinder(r=35,h=6-0.15,$fn=F2);
     }
+    
+    // cut for shell
+    translate([0,0,-9])
+    difference(){
+      translate([0,0,-zShell-thick])
+      cylinder(r=35+thick+0.15,h=zShell+6+thick,$fn=F2);
+      translate([0,0,-zShell])
+      cylinder(r=34-0.15,h=zShell+6+0.1,$fn=F2);
+    }
+    
     // wiring pass through
     translate([0,-2,-10])
     rotate([-3,0,0])
@@ -787,7 +978,7 @@ module panPost(bearing=1){
     hull(){
       translate([offX,offY,-0.15])
       cylinder(r=8.4,h=6.3,$fn=F2);
-      translate([offX,offY+10,-0.15])
+      translate([offX,offY+20,-0.15])
       cylinder(r=8.4,h=6.3,$fn=F2);
     }
     
@@ -795,7 +986,7 @@ module panPost(bearing=1){
     hull(){
       translate([offX,offY,-0.15-4.5])
       cylinder(r=3+0.15,h=6.3+8,$fn=F2);
-      translate([offX,offY+10,-0.15-4.5])
+      translate([offX,offY+20,-0.15-4.5])
       cylinder(r=3-0.15,h=6.3+8,$fn=F2);
     }
     
@@ -856,7 +1047,7 @@ module arm(bearing=1){
   // main plate
   translate([0,0,12-0.1])
   difference(){
-    cylinder(r=45,h=3,$fn=F2);
+    cylinder(r=48,h=3,$fn=F2);
     translate([0,0,-0.1])
     cylinder(r1=30,r2=34,h=3.2,$fn=F2);
   }
@@ -923,7 +1114,9 @@ module tiltServo(){
     //~ rotate([0,0,twist-90-45])
     rotate([0,0,twist-90])
     translate([-24,-13.25,-35])
-    rotate([0,90,0])
+    rotate([0,90,0]){
+
+    //~ outdoorCamHolderD();
 
     // rotation for elevation:
     translate([xCam,0,0])
@@ -939,38 +1132,35 @@ module tiltServo(){
         cameraV3();
       }
     } // end of rotate for elevation
+  }
 
 
-    if(showPi==1){
-      translate([xTilt,yTilt,zTilt])
-      rotate([0,0,twist-90])
-      translate([14,-25,20])
-      rotate([0,90,0])
-      pi0();
-    }
-      
 
 }
 
 //----------------------------------------------------------------------------------------------------
 module shell(){
 
-rGlass=22;
-thick=1.5;
-
   difference(){
     // outer shell
     translate([0,0,-zShell-thick])
-    cylinder(r1=35+thick,r2=35+thick,h=zShell+6+thick,$fn=F2);
-    // inner cut
+    cylinder(r1=35+thick,r2=35+thick,h=zShell-3.25+thick,$fn=F2);
+    // inner cut less window area
     difference(){
       translate([0,0,-zShell])
-      cylinder(r1=35,r2=35,h=zShell+6+0.1,$fn=F2);
+      cylinder(r1=35,r2=35,h=zShell-10,$fn=F2);
       
       translate([-rGlass-5,rGlass+5,-zShell+34])
       rotate([0,0,-45])
       cube([20,100,100],center=true);
     }    
+    
+    // bevel and thicker at top
+    translate([0,0,-10])
+    cylinder(r1=35,r2=34,h=2,$fn=F2);
+    translate([0,0,-8])
+    cylinder(r1=34,r2=34,h=5,$fn=F2);
+
     // glass cut
     translate([-rGlass,rGlass,-zShell+38-2])
     rotate([0,0,-45])
@@ -1005,15 +1195,30 @@ thick=1.5;
 if(1){
   
 //~ intersection(){
-difference(){
+//~ difference(){
 
 
 union(){
 
-  arm();
+
+    if(showPi==1){
+      //~ translate([xTilt,yTilt,zTilt])
+      //~ rotate([0,0,twist-90])
+      //~ translate([14,-25,20])
+      //~ rotate([0,90,0])
+      //~ pi0();
+      translate([0,0,0])
+      rotate([0,0,45])
+      translate([-22,-15,-90])
+      rotate([0,-90,0])
+      #pi0();
+    }
+      
+
+  //~ arm();
   
-  translate([0,0,-0.1])
-  panLock();
+  //~ translate([0,0,-0.1])
+  //~ panLock();
 
 
   // rotation for pan
@@ -1022,11 +1227,11 @@ union(){
 
   panPost(bearing=0);
   panServo();
-  panIdler();
+  //~ panIdler();
   tiltServo();
   servoMountDouble();
   
-  shell();
+  //~ shell();
 
   //~ translate([0,0,zPan])
   //~ panTube();
@@ -1092,12 +1297,12 @@ union(){
   //~ cube([240,60,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,-45])
-  translate([0,-100,0])
-  cube([240,200,300],center=true);
+  //~ rotate([0,0,45])
+  //~ translate([0,-100,0])
+  //~ cube([240,200,300],center=true);
 
 
-}// end diff or intersection
+//~ }// end diff or intersection
 
 } // end of design list
 
@@ -1123,7 +1328,7 @@ if(0){
 panPost(bearing=0);
 //~ panIdler();
 //~ panLock();
-arm(bearing=0);
+//~ arm(bearing=0);
 
 //~ shell();
 
