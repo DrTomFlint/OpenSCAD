@@ -773,14 +773,45 @@ module panRingMate(bearing=0){
 module panRing(bearing=0){
 
   translate([0,0,0])
-  ring_gear (modul=mod, tooth_number=nRing, width=zGear, rim_width=1, pressure_angle=20, helix_angle=0,$fn=F2);
+  ring_gear (modul=mod, tooth_number=nRing, width=zGear+1, rim_width=1, pressure_angle=20, helix_angle=0,$fn=F2);
 
-  //~ translate([offX,offY,0])
-  //~ spur_gear (modul=mod, tooth_number=nSpur, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
 
-  //~ translate([offX2,offY2,0])
-  //~ rotate([0,0,180/nSpur2])
-  //~ spur_gear (modul=mod, tooth_number=nSpur2, width=zGear, bore=0, pressure_angle=20, helix_angle=0, optimized=false,$fn=F2);
+  translate([0,0,0])
+  difference(){
+    metric_thread (diameter=nRing*mod+10, pitch=3, length=zGear+6, internal=false, n_starts=3,
+                thread_size=-1, groove=false, square=false, rectangle=0,
+                angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+    cylinder(r=nRing*mod/2+2,h=zGear+0.4,$fn=F2);
+    translate([0,0,3])
+    cylinder(r=31.4,h=zGear+0.4,$fn=F2);
+    
+    // cut for washer to bearing inner race
+    translate([0,0,9])
+    cylinder(r=4.65,h=zGear+0.4,$fn=F2);
+    
+  }  
+}
+//--------------------------------------------------------------------------------
+module panLock(bearing=0){
+
+  translate([0,0,0])
+  difference(){
+    cylinder(r=nRing*mod/2+9,h=10,$fn=F2);
+    
+    metric_thread (diameter=nRing*mod+10+1, pitch=3, length=zGear+6, internal=false, n_starts=3,
+                thread_size=-1, groove=false, square=false, rectangle=0,
+                angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+  }
+  translate([0,0,-4])
+  difference(){
+   cylinder(r=nRing*mod/2+9,h=4,$fn=F2);
+   cylinder(r=35+0.4,h=4+0.6,$fn=F2);
+ }
+  translate([0,0,-8])
+  difference(){
+   cylinder(r1=nRing*mod/2+9-3,r2=nRing*mod/2+9,h=4,$fn=F2);
+   cylinder(r=31+0.4,h=4+0.6,$fn=F2);
+ }
 
 }
 
@@ -804,15 +835,27 @@ module panIdler(bearing=0){
 //--------------------------------------------------------------------------------
 module panPost(bearing=1){
   
-  // post through bearing
-  translate([0,0,8])
-  cylinder(r=4-0.15,h=7,$fn=F2);
-  
   // 
   difference(){
-    translate([0,0,-8])
-    cylinder(r=31,h=8+6+3,$fn=F2);
-
+    union(){
+      // post through bearing
+      translate([0,0,8])
+      cylinder(r=4-0.15,h=12,$fn=F2);
+      // washer
+      translate([0,0,8])
+      cylinder(r=4.5,h=4.1,$fn=F2);
+      // boss
+      translate([0,0,-8])
+      cylinder(r=31,h=8+6+3,$fn=F2);
+      // drag ring / retainer
+      translate([0,0,-4])
+      cylinder(r=35,h=4-0.15,$fn=F2);
+    }
+    // wiring pass through
+    translate([0,-2,-10])
+    rotate([-3,0,0])
+    cylinder(r=1.5,h=40,$fn=F2);
+    
     // idler
     hull(){
       translate([offX,offY,-0.15])
@@ -876,57 +919,36 @@ module panPost(bearing=1){
     
   }
   
-  // center bearing
-  if(bearing==1){
-    translate([0,0,8])
-    difference(){
-      cylinder(r=11,h=7,$fn=F2);
-      translate([0,0,-1])
-      cylinder(r=4,h=7+2,$fn=F2);
-    }
-  }
-
-}
-
-
-//--------------------------------------------------------------------------------
-module panRing2(bearing=0){
-
-  rotate([0,0,90])
-  translate([nGear2/2,0,zGear/2])
-  worm_gear(modul=mod, tooth_number=nGear2, thread_starts=1, width=zGear, length=20, worm_bore=1.7, gear_bore=1, pressure_angle=20, lead_angle=10, optimized=0, together_built=1, show_spur=1, show_worm=1);
-
-  //~ // bearing sleeve
-  //~ difference(){
-    //~ cylinder(r1=13.5,r2=13.5,h=10,$fn=F2);
-    //~ translate([0,0,3-0.1])
-    //~ cylinder(r1=11,r2=11+0.2,h=7.2,$fn=F2);
-    //~ translate([0,0,-1])
-    //~ cylinder(r=9,h=12,$fn=F2);
-    //~ translate([0,0,2])
-    //~ cube([40,1,10],center=true);
-    //~ translate([0,0,2])
-    //~ cube([1,40,10],center=true);
-  //~ }
-
-  // center bearing
-  if(bearing==1){
-    difference(){
-      cylinder(r=11,h=7,$fn=F2);
-      translate([0,0,-1])
-      cylinder(r=4,h=7+2,$fn=F2);
-    }
-  }
 }
 
 //----------------------------------------------------------------------------------------------------
 module arm(bearing=1){
 
+  panRing();
 
-
+  // main plate
+  translate([0,0,12-0.1])
+  difference(){
+    cylinder(r=45,h=3,$fn=F2);
+    translate([0,0,-0.1])
+    cylinder(r1=30,r2=34,h=3.2,$fn=F2);
+  }
+  
+  // bearing retainer
+  translate([0,0,12-0.1])
+  difference(){
+    cylinder(r1=14,r2=13,h=7,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r1=11-0.15,r2=11+0.15,h=7+2,$fn=F2);
+    translate([0,0,7])
+    cube([40,1,13],center=true);
+    translate([0,0,7])
+    cube([1,40,13],center=true);
+  }
+    
   // center bearing
   if(bearing==1){
-    translate([0,0,9.1])
+    translate([0,0,12.1])
     difference(){
       cylinder(r=11,h=7,$fn=F2);
       translate([0,0,-1])
@@ -1056,27 +1078,25 @@ thick=1.5;
 if(1){
   
 //~ intersection(){
-//~ difference(){
+difference(){
 
 
-//~ union(){
+union(){
 
-  //~ arm();
-  //~ panRing();
-  
-  // panRing2();
+  arm();
+  panLock();
 
-  #panPost(bearing=0);
 
   // rotation for pan
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
+  panPost(bearing=0);
   panServo();
   panIdler();
   tiltServo();
   
-  //~ shell();
+  shell();
 
   //~ translate([0,0,zPan])
   //~ panTube();
@@ -1126,7 +1146,7 @@ if(1){
 
 } // end of pan
 
-//~ } // end of union
+} // end of union
 
 
   //~ // cut across the worm gear
@@ -1142,12 +1162,12 @@ if(1){
   //~ cube([240,60,300],center=true);
 
   // cut across rotational axis
-  //~ rotate([0,0,90])
-  //~ translate([0,-100,0])
-  //~ cube([240,200,300],center=true);
+  rotate([0,0,-45])
+  translate([0,-100,0])
+  cube([240,200,300],center=true);
 
 
-//~ }// end diff or intersection
+}// end diff or intersection
 
 } // end of design list
 
@@ -1167,20 +1187,15 @@ if(0){
 //~ servoSpline2();
 //~ servoShaft();
 //~ servoShaft2();
-//~ servoMountDouble();
 //~ panRing(bearing=0);
 //~ panSkirt();
 //~ panTube();
 panPost(bearing=0);
-panIdler();
+//~ panIdler();
+//~ panLock();
+arm(bearing=0);
+
 //~ shell();
-//~ hat();
-//~ wallMount();
-//~ wallMount2();
-//~ wallMount3();
-//~ wallMount3Plug();
-//~ Number();
-//~ wallHat();
 
 
   //~ // support blocker for wallMount2
