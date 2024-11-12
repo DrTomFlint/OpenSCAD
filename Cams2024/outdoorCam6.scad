@@ -35,7 +35,7 @@ twist=45;
 
 xTilt=17-1;
 yTilt=0+1;
-zTilt=-36;  // tilt servo
+zTilt=-40;  // tilt servo
 
 zShell=100;
 
@@ -641,113 +641,40 @@ module servoGearFull(axle=1){
     translate([5.25,0,28])
     servoDisk();
   }
-  servoGearMount(bolt=1);
+  //~ servoGearMount(bolt=1);
 
 }
 
 //--------------------------------------------------------------------------------
 module servoMountDouble(){
 
-intersection(){
-  union(){
-    // top link
-    translate([-50.5-0.1,0,40])
-    cube([17,41,3],center=true);
-
-    // bottom link
-    translate([-50.6,0,0.15])
-    cube([17,16,3],center=true);
-
-    // pan
-    translate([-59-0.15,-13.5,23.9])
-    rotate([0,-90,0])
-    rotate([0,0,0])
-    servoGearMount(bolt=1);
-
-    // tilt
-    translate([-42,13.5,23.9])
-    rotate([0,90,0])
-    rotate([0,0,180])
-    servoGearMount(bolt=1);
-  }
-  // ensure print down edge is perfectly flat, (some 0.15's missing)
-  translate([-50.5-0.1,0,20])
-  cube([16.75,48,45],center=true);
-}
-
-  // tail for mounting pi0, extends into panSkirt
-  difference(){
-    translate([-66-1.8,0,40])
-    cube([22,41,3],center=true);
-
-    translate([-59-0.15,-13.5,23.9])
-    rotate([0,-90,0])
-    rotate([0,0,0])
-    translate([20-5,0,10.1+1])
-    cube([6+0.3,6+0.3,2+0.3],center=true);
-  }
-
-  // tiltcam link
-  difference(){
-    translate([-32,0,40])
-    cube([22,41,3],center=true);
-  
-    // cut for tiltcam Gear D
-    translate([-42,13.5,23.9])
-    rotate([0,90,0])
-    rotate([0,0,180])
-    translate([20-5,0,10.1+1])
-    cube([6+0.3,6+0.3,2+0.3],center=true);
-  }
-  
-  // back plate
-  difference(){
-    translate([-2,0,38])
-    cube([40,41,7],center=true);
-    // keyway -2 to holderC
-    translate([-2,0,34])
-    linear_extrude(height=4+0.2,scale=[1,1.3])
-    square([10+30+0.4,16+0.4],center=true);
-
-    // camera cable cut
-    translate([-2,0,31.5])
-    rotate([0,-35,0])
-    cube([80,18,3],center=true);
+  // surround the servos
+  difference(){  
+    translate([0,0,zPan-13])
+    rotate([0,0,45])
+    translate([5,-3,0])
+    cube([35,43,9],center=true);
     
-  }
-  
-  // extra bit at the top mates into hat
-  translate([20,0,40])
-  cube([6,41,3],center=true);
+    // pan servo
+    translate([offX2,offY2,zPan-34])
+    rotate([0,0,0])
+    rotate([0,0,twist])
+    translate([-5,0,0])
+    servo1cut(tol=0.2);
 
-  // posts for pi0
-    translate([-57,-12.5,44]){
-      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-      translate([0,yPi-2*rPi,0])
-      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-      
-      translate([xPi-2*rPi-1,0,0])
-      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-      translate([xPi-2*rPi-1,yPi-2*rPi,0])
-      cylinder(r1=1.3,r2=1.0,h=3,center=true,$fn=F2);
-    }
-    translate([-57,-12.5,42]){
-      cylinder(r=3,h=2.5,center=true,$fn=F2);
-      translate([0,yPi-2*rPi,0])
-      cylinder(r=3,h=2.5,center=true,$fn=F2);
-      translate([xPi-2*rPi-1,0,0])
-      cylinder(r=3,h=2.5,center=true,$fn=F2);
-      translate([xPi-2*rPi-1,yPi-2*rPi,0])
-      cylinder(r=3,h=2.5,center=true,$fn=F2);
-    }
-  
-  
-  // keyway +3 to panPost
-  translate([-91,0,12])
-  translate([37,7,0])
-  rotate([90,0,0])
-  linear_extrude(height=4+0.2,scale=[1,1.3])
-  square([10,10],center=true);
+    // tilt servo
+    translate([xTilt,yTilt,zPan])
+    rotate([0,0,-45-90])
+    rotate([0,180,0])
+    translate([-5,0,-8])
+    servo1cut(tol=0.2);
+  }
+  // @TODO interface to base
+  // post up to ring
+    translate([0,0,zPan-6])
+    rotate([0,0,45])
+    translate([2,-21,0])
+    #cube([32,7,23],center=true);
 
 }
 
@@ -1084,6 +1011,8 @@ difference(){
 union(){
 
   arm();
+  
+  translate([0,0,-0.1])
   panLock();
 
 
@@ -1095,6 +1024,7 @@ union(){
   panServo();
   panIdler();
   tiltServo();
+  servoMountDouble();
   
   shell();
 
