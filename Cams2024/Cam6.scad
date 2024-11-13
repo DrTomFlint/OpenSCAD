@@ -54,7 +54,7 @@ offY=sin(offAng)*offLen;
 offX2=offX;
 offY2=offY-rSpur-rSpur2;
 
-F2=88;
+F2=299;
 F1=299;
 
 showUsb=0;
@@ -1128,18 +1128,18 @@ module rail(tol=0){
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
-if(1){
+if(0){
   
 //~ intersection(){
-//~ difference(){
+difference(){
 
 
 union(){
 
-  //~ arm();
+  arm();
   
-  //~ translate([0,0,-0.1])
-  //~ panLock();
+  translate([0,0,-0.1])
+  panLock();
 
   // rotation for pan
   rotate([0,0,panAngle])
@@ -1159,7 +1159,7 @@ union(){
   //~ rail();
   //~ rail2();
     
-  //~ shell();
+  shell();
 
   //~ if(showPi==1){
     //~ translate([0,0,0])
@@ -1186,20 +1186,20 @@ union(){
   //~ translate([-30,-30,0])
   //~ cube([240,60,300],center=true);
 
-  //~ // cut across rotational axis
-  //~ rotate([0,0,0])
-  //~ translate([0,-100,0])
-  //~ cube([240,200,300],center=true);
+  // cut across rotational axis
+  rotate([0,0,0])
+  translate([0,-100,0])
+  cube([240,200,300],center=true);
 
 
-//~ }// end diff or intersection
+}// end diff or intersection
 
 } // end of design list
 
 //==================================================================
 // Printing List:
 // parts are not aligned for assembly
-if(0){
+if(1){
   
 //~ camHolderA();
 //~ camHolderB();
