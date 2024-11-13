@@ -9,6 +9,39 @@
 
 
 
+//----------------------------------------------------------------------
+module pi0pegs(zBase=2,zPeg=3){
+
+r0=3.0;       // radius of pcb corners
+thick=1.4;    // pcb thickness
+x0=65.0;
+y0=30.0;  
+
+F2=33;
+  
+    // mounting pegs  
+    translate([r0,r0,0]){
+      translate([0.5,0.5,zBase])
+      cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+      translate([0.5,0.5,0])
+      cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+
+      translate([0.5,y0-2*r0-0.5,zBase])      
+      cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+      translate([0.5,y0-2*r0-0.5,0])      
+      cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      
+      translate([x0-2*r0-0.5,0.5,zBase])
+      cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+      translate([x0-2*r0-0.5,0.5,0])
+      cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      
+      translate([x0-2*r0-0.5,y0-2*r0-0.5,zBase])
+      cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+      translate([x0-2*r0-0.5,y0-2*r0-0.5,0])
+      cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+    }
+}
 
 //----------------------------------------------------------------------
 module pi0(cam=10,heatsink=1){
@@ -28,13 +61,13 @@ F2=33;
     square([x0-2*r0,y0-2*r0]);
 
     // mounting holes  
-    translate([0,0,0])
+    translate([0.5,0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([0,y0-2*r0,0])
+    translate([0.5,y0-2*r0-0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([x0-2*r0,0,0])
+    translate([x0-2*r0-0.5,0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([x0-2*r0,y0-2*r0,0])
+    translate([x0-2*r0-0.5,y0-2*r0-0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
   }
   
@@ -91,5 +124,6 @@ F2=33;
 //======================================================================
 
 pi0();
+pi0pegs();
 
 //======================================================================

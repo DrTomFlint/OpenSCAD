@@ -3,37 +3,76 @@
 //
 // This is a Raspberry Pi Zero W 2
 // Beware that heat sinks may be slightly misplaced, leave extra space!
-// TODO: Mounting holes are off a bit.
 //
 // DrTomFlint, 19 Oct 2024
 //======================================================================
 
-rPi=3.0;       // radius of pcb corners
+
+
+//----------------------------------------------------------------------
+module pi0pegs(zBase=2,zPeg=3,one=1,two=1,three=1,four=1){
+
+r0=3.0;       // radius of pcb corners
 thick=1.4;    // pcb thickness
-xPi=65.0;
-yPi=30.0;  
+x0=65.0;
+y0=30.0;  
 
 F2=33;
+  
+    // mounting pegs  
+    translate([r0,r0,0]){
+      if(one==1){
+        translate([0.5,0.5,zBase])
+        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        translate([0.5,0.5,0])
+        cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      }
+      if(two==1){
+        translate([0.5,y0-2*r0-0.5,zBase])      
+        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        translate([0.5,y0-2*r0-0.5,0])      
+        cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      }
+      if(three==1){
+        translate([x0-2*r0-0.5,0.5,zBase])
+        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        translate([x0-2*r0-0.5,0.5,0])
+        cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      }
+      if(four==1){
+        translate([x0-2*r0-0.5,y0-2*r0-0.5,zBase])
+        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        translate([x0-2*r0-0.5,y0-2*r0-0.5,0])
+        cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
+      }
+    }
+}
 
 //----------------------------------------------------------------------
 module pi0(cam=10,heatsink=1){
 
+r0=3.0;       // radius of pcb corners
+thick=1.4;    // pcb thickness
+x0=65.0;
+y0=30.0;  
+
+F2=33;
   
   // pcb
-  translate([rPi,rPi,0])
+  translate([r0,r0,0])
   difference(){
     linear_extrude(height=thick)
-    offset(r=rPi,$fn=F2)
-    square([xPi-2*rPi,yPi-2*rPi]);
+    offset(r=r0,$fn=F2)
+    square([x0-2*r0,y0-2*r0]);
 
     // mounting holes  
-    translate([0,0,0])
+    translate([0.5,0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([0,yPi-2*rPi,0])
+    translate([0.5,y0-2*r0-0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([xPi-2*rPi,0,0])
+    translate([x0-2*r0-0.5,0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
-    translate([xPi-2*rPi,yPi-2*rPi,0])
+    translate([x0-2*r0-0.5,y0-2*r0-0.5,0])
     cylinder(r=1.3,h=4*thick,center=true,$fn=F2);
   }
   
@@ -68,10 +107,10 @@ module pi0(cam=10,heatsink=1){
   // Camera cable
   if(cam>0){
     // narrow section
-    translate([xPi,9,thick])
+    translate([x0,9,thick])
     cube([6.5,12,1]);    
     // wider section
-    translate([xPi+6.5,7,thick])
+    translate([x0+6.5,7,thick])
     cube([cam,16,1]);    
   }
   
@@ -89,6 +128,8 @@ module pi0(cam=10,heatsink=1){
 
 //======================================================================
 
+translate([0,0,2])
 pi0();
+pi0pegs();
 
 //======================================================================

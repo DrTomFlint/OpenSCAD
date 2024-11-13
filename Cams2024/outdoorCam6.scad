@@ -35,7 +35,7 @@ twist=45;
 
 xTilt=17-1;
 yTilt=0+1;
-zTilt=-40;  // tilt servo
+zTilt=-40+2;  // tilt servo
 
 zShell=100;
 rGlass=22;
@@ -558,13 +558,17 @@ module camHolderC(){
     translate([0,0,2])
     cylinder(r=4+0.2,h=6,center=true,$fn=33);
   }
+  
   // capture base of Worm
   translate([xTilt,yTilt,zPan-39])
   difference(){
     rotate([0,0,45])
-    translate([-10,0,0])
-    cube([40,14,6],center=true);
-
+    union(){
+      translate([-10,0,0])
+      cube([40,14,6],center=true);
+      translate([-12,12,1.5])
+      cube([18,30,3],center=true);
+    }
     // worm
     translate([0,0,2])
     cylinder(r=4+0.2,h=6,center=true,$fn=33);
@@ -605,6 +609,13 @@ module camHolderC(){
     translate([0,0,-3])
     cylinder(r=4,h=2,$fn=F2);
   }
+  
+  translate([0,0,-2])
+  rotate([0,0,45])
+  translate([-20,-15,-89])
+  rotate([0,-90,0])
+  pi0pegs(two=0,three=0,four=0);
+  
   
   // arm to gearside pivot
   hull(){
@@ -815,7 +826,7 @@ module panPost(bearing=1){
     servo1cut(tol=0.2);
 
     // tilt servo
-    translate([xTilt,yTilt,zPan])
+    translate([xTilt,yTilt,zTilt+26])
     rotate([0,0,-45-90])
     rotate([0,180,0])
     translate([-5,0,-8.15])
@@ -905,7 +916,7 @@ module camera(){
     }
     
     xCam=0;
-    el=0;
+    el=-45;
     zPcb=6;
     translate([xTilt,yTilt,zTilt])
     //~ rotate([0,0,twist-90-45])
@@ -986,15 +997,21 @@ module chassis(){
     // non-pi side
     translate([0,0,0])
     rotate([0,0,twist])
-    translate([26,0,-27])
-    cube([4,35,12],center=true);
+    translate([26,0,-26])
+    cube([4,35,10],center=true);
 
     // pi side
     translate([0,0,0])
     rotate([0,0,twist])
-    translate([-16,0,-27])
-    cube([8,35,12],center=true);
-
+    translate([-16,0,-26])
+    cube([8,35,10],center=true);
+    
+    translate([0,0,0])
+    rotate([0,0,45])
+    translate([-20,-15,-89])
+    rotate([0,-90,0])
+    pi0pegs(one=0,two=0);
+    
     // pan servo mount
     translate([offX2,offY2,zPan])
     rotate([0,0,0])
@@ -1011,36 +1028,44 @@ module chassis(){
     difference(){
       hull(){
         rotate([0,0,twist])
-        translate([-4,17,-27])
-        cube([16,1,12],center=true);
+        translate([-4,17,-26])
+        cube([16,1,10],center=true);
 
         rotate([0,0,twist])
-        translate([-4,28,-27])
-        cylinder(r=6,h=12,center=true,$fn=F2);
+        translate([-4,28,-26])
+        cylinder(r=6,h=10,center=true,$fn=F2);
       }
       rotate([0,0,twist])
       translate([-4,28,-16])
       cylinder(r=3+0.15,h=40,center=true,$fn=6);
     }
     rotate([0,0,twist])
-    translate([4,18,-27])
-    cube([48,2,12],center=true);
+    translate([4,18,-26])
+    cube([48,2,10],center=true);
 
     // Tab back side
     difference(){
       hull(){
         translate([0,0,0])
         rotate([0,0,twist])
-        translate([4,-18,-27])
-        cube([48,1,12],center=true);
+        translate([4,-18,-26])
+        cube([48,1,10],center=true);
 
         translate([0,0,0])
         rotate([0,0,twist])
-        translate([0,-32,-27])
-        cube([18,1,12],center=true);
+        translate([0,-32,-26])
+        cube([18,1,10],center=true);
       }
       rail(tol=0.2);
     }
+}
+
+//----------------------------------------------------------------------------------------------------
+module rail2(tol=0){
+
+      rotate([0,0,twist])
+      translate([-4,28,-16])
+      cylinder(r=3,h=30,center=true,$fn=6);
 }
 
 
@@ -1076,15 +1101,15 @@ module rail(tol=0){
 if(1){
   
 //~ intersection(){
-difference(){
+//~ difference(){
 
 
 union(){
 
-  //~ arm();
+  arm();
   
-  //~ translate([0,0,-0.1])
-  //~ panLock();
+  translate([0,0,-0.1])
+  panLock();
 
   // rotation for pan
   rotate([0,0,panAngle])
@@ -1094,19 +1119,22 @@ union(){
   panServo();
   panIdler();
   tiltServo();
-  //~ camera();
+  translate([0,0,2])
+  camera();
+  translate([0,0,2])
   camHolderC();
   
 
   chassis();
   rail();
+  rail2();
     
-  //~ shell();
+  shell();
 
   if(showPi==1){
     translate([0,0,0])
     rotate([0,0,45])
-    translate([-22,-15,-90])
+    translate([-22,-15,-89])
     rotate([0,-90,0])
     pi0();
   }
@@ -1129,12 +1157,12 @@ union(){
   //~ cube([240,60,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,-35])
-  translate([0,-100,0])
-  cube([240,200,300],center=true);
+  //~ rotate([0,0,-35])
+  //~ translate([0,-100,0])
+  //~ cube([240,200,300],center=true);
 
 
-}// end diff or intersection
+//~ }// end diff or intersection
 
 } // end of design list
 
