@@ -58,7 +58,7 @@ offY2=offY-rSpur-rSpur2;
 F2=299;
 F1=299;
 
-showUsb=0;
+showUsb=1;
 showDr=0;       // approx model
 showSolar=0;    // approx model
 showGlass=0;
@@ -691,7 +691,7 @@ module panRing(bearing=0){
 //--------------------------------------------------------------------------------
 module panLock(bearing=0){
 
-  translate([0,0,0])
+  translate([0,0,-3.1])
   difference(){
     cylinder(r=nRing*mod/2+16,h=10,$fn=F2);
     
@@ -925,9 +925,25 @@ module arm(bearing=1){
   // main plate
   translate([0,0,12-0.1])
   difference(){
-    cylinder(r=48,h=3,$fn=F2);
+    cylinder(r=60,h=7,$fn=F2);
     translate([0,0,-0.1])
-    cylinder(r1=30,r2=34,h=3.2,$fn=F2);
+    cylinder(r1=30,r2=34,h=7.2,$fn=F2);
+  }
+
+  // drip ring / locking collar
+  translate([0,0,0-0.1])
+  difference(){
+    cylinder(r1=53,r2=57,h=12,$fn=F2);
+    translate([0,0,-0.1])
+    cylinder(r1=50,r2=49,h=8.1,$fn=F2);
+    
+   // knurl
+   k=32;
+   for(i=[0:(k-1)]){
+     rotate([0,0,360/k*i])
+     translate([49,0,-15])
+     cylinder(r=3,h=zGear+6+15,$fn=88);
+   }    
   }
   
   // bearing retainer
@@ -952,11 +968,24 @@ module arm(bearing=1){
     }
   }
 
-  if(showUsb==1){
-    translate([-80,0,20])    
-    rotate([0,0,0])
-    #usbPower(plug=1);
+  // usb arm
+  difference(){
+    translate([-75,0,-45.1])    
+    linear_extrude(height=64)
+    offset(r=3,$fn=F2)
+    square([38-6,38-6],center=true);
+    
+    translate([-75,0,-45.1-1.5])    
+    linear_extrude(height=64)
+    offset(r=1.5,$fn=F2)
+    square([38-6,38-6],center=true);
   }
+
+  //~ if(showUsb==1){
+    //~ translate([-105,0,34])    
+    //~ rotate([180,0,0])
+    //~ usbPower(plug=1);
+  //~ }
 }
 
 
@@ -1080,8 +1109,8 @@ module chassisA(){
   difference(){
     chassis();
     rotate([0,0,45])
-    translate([-8,-12,-35.5])
-    cube([14+0.4,18+0.4,10],center=true);
+    translate([-8,-12,-34])
+    cube([14+0.4,18+0.4,10+0.4],center=true);
   }
   
 }
@@ -1092,7 +1121,7 @@ module chassisB(){
   intersection(){
     chassis();
     rotate([0,0,45])
-    translate([-8,-12,-35.5])
+    translate([-8,-12,-34])
     cube([14,18,10],center=true);
   }
 }
@@ -1204,45 +1233,48 @@ module rail(tol=0){
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
-if(0){
+if(1){
   
 //~ intersection(){
-//~ difference(){
+difference(){
 
 
 union(){
 
-  //~ arm();
+  arm();
   
-  //~ translate([0,0,-0.1])
-  //~ panLock();
+  translate([0,0,-0.1])
+  panLock();
 
   // rotation for pan
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
   panPost(bearing=0);
-  panServo();
-  panIdler();
-  tiltServo();
-  translate([0,0,2])
-  camera();
-  translate([0,0,2])
-  camHolderC();
+  //~ panServo();
+  //~ panIdler();
+  //~ tiltServo();
+
+  //~ translate([0,0,2])
+  //~ camera();
+  //~ translate([0,0,2])
+  //~ camHolderC();
   
-  chassis();
-  rail();
-  rail2();
+  //~ chassis();
+  //~ chassisA();
+  //~ chassisB();
+  //~ rail();
+  //~ rail2();
     
   //~ shell();
 
-  if(showPi==1){
-    translate([0,0,0])
-    rotate([0,0,45])
-    translate([-22,-15,-89])
-    rotate([0,-90,0])
-    pi0();
-  }
+  //~ if(showPi==1){
+    //~ translate([0,0,0])
+    //~ rotate([0,0,45])
+    //~ translate([-22,-15,-89])
+    //~ rotate([0,-90,0])
+    //~ pi0();
+  //~ }
       
 } // end of pan
 
@@ -1266,22 +1298,26 @@ union(){
   //~ translate([0,-100,0])
   //~ cube([240,200,300],center=true);
 
+  // cut across rotational axis
+  rotate([0,0,45])
+  translate([0,-100,-130])
+  cube([240,200,300],center=true);
 
-//~ } // end diff or intersection
+} // end diff or intersection
 
 } // end of design list
 
 //==================================================================
 // Printing List:
 // parts are not aligned for assembly
-if(1){
+if(0){
   
 //~ camHolderA();
 //~ camHolderB();
 //~ camHolderC();
 //~ servoGearA();
 //~ servoGearB();
-//~ servoGearC();
+servoGearC();
 //~ servoGearD();
 //~ servoSpline();
 //~ servoSpline2();
@@ -1295,9 +1331,9 @@ if(1){
 //~ panLock();
 //~ arm(bearing=0);
 
-//~ chassis();
 //~ chassisA();
-chassisB();
+//~ chassisB();
+
 //~ rail();
 //~ rail2();
 

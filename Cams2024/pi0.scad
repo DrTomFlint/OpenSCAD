@@ -23,25 +23,25 @@ F2=33;
     translate([r0,r0,0]){
       if(one==1){
         translate([0.5,0.5,zBase])
-        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        cylinder(r1=1.15,r2=1.0,h=zPeg,$fn=F2);
         translate([0.5,0.5,0])
         cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
       }
       if(two==1){
         translate([0.5,y0-2*r0-0.5,zBase])      
-        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        cylinder(r1=1.15,r2=1.0,h=zPeg,$fn=F2);
         translate([0.5,y0-2*r0-0.5,0])      
         cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
       }
       if(three==1){
         translate([x0-2*r0-0.5,0.5,zBase])
-        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        cylinder(r1=1.15,r2=1.0,h=zPeg,$fn=F2);
         translate([x0-2*r0-0.5,0.5,0])
         cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
       }
       if(four==1){
         translate([x0-2*r0-0.5,y0-2*r0-0.5,zBase])
-        cylinder(r1=1.15,r2=1.25,h=zPeg,$fn=F2);
+        cylinder(r1=1.15,r2=1.0,h=zPeg,$fn=F2);
         translate([x0-2*r0-0.5,y0-2*r0-0.5,0])
         cylinder(r1=3.5,r2=3,h=zBase,$fn=F2);
       }
