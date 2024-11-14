@@ -40,6 +40,7 @@ zTilt=-40+2;  // tilt servo
 zShell=100;
 rGlass=22;
 thick=1.5;
+lockAngle=-15;
 
 xIdler=(25+12)/2; // distance Gears A-B and B-C
 
@@ -452,16 +453,13 @@ module servoGearMount(bolt=0){
     translate([-5.25,0,-34])
     servo1cut(tol=0.15);
     
-    // cut for M3 bolt access
-    translate([-xIdler,0,-18])
-    cylinder(r=7/2+0.15,h=8.15,$fn=F2);
-
     // heatset insert
-    translate([-xIdler,0,-10])
-    cylinder(r=2.3,h=3.5,$fn=22);
-
-    translate([-xIdler,0,-10+3])
-    cylinder(r=2.9/2,h=35,$fn=F2);
+    translate([-xIdler,0,-14-6])
+    cylinder(r=2.3,h=3.5+6,$fn=22);
+  
+    // M3 bolt hole
+    translate([-xIdler,0,-20])
+    cylinder(r=1.7,h=35,$fn=F2);
     
   }
   
@@ -695,23 +693,50 @@ module panLock(bearing=0){
 
   translate([0,0,0])
   difference(){
-    cylinder(r=nRing*mod/2+14,h=10,$fn=F2);
+    cylinder(r=nRing*mod/2+16,h=10,$fn=F2);
     
     metric_thread (diameter=nRing*mod+20+1, pitch=3, length=zGear+6, internal=false, n_starts=1,
                 thread_size=-1, groove=false, square=false, rectangle=0,
                 angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+
+   // knurl
+   k=30;
+   for(i=[0:(k-1)]){
+     rotate([0,0,360/k*i])
+     translate([49,0,-15])
+     cylinder(r=3,h=zGear+6+15,$fn=88);
+   }
   }
-  translate([0,0,-6])
+  
+  
+  translate([0,0,-8])
   difference(){
-   cylinder(r=nRing*mod/2+14,h=6,$fn=F2);
-   cylinder(r=40+0.4,h=6+0.6,$fn=F2);
+   cylinder(r=nRing*mod/2+16,h=8,$fn=F2);
+   cylinder(r=41+0.4,h=8+0.6,$fn=F2);
+
+   // knurl
+   k=30;
+   for(i=[0:(k-1)]){
+     rotate([0,0,360/k*i])
+     translate([49,0,-15])
+     cylinder(r=3,h=zGear+6+15,$fn=88);
+   }
  }
  
-  translate([0,0,-10])
+  translate([0,0,-12])
   difference(){
-   cylinder(r1=nRing*mod/2+14-3,r2=nRing*mod/2+14,h=4,$fn=F2);
+   cylinder(r1=nRing*mod/2+16-3,r2=nRing*mod/2+16,h=4,$fn=F2);
    cylinder(r1=38,r2=37,h=4+0.6,$fn=F2);
+
+   // knurl
+   k=30;
+   for(i=[0:(k-1)]){
+     rotate([0,0,360/k*i])
+     translate([49,0,-15])
+     cylinder(r=3,h=zGear+6+15,$fn=88);
+   }
  }
+ 
 
 }
 
@@ -739,35 +764,63 @@ module panPost(bearing=1){
   difference(){
     union(){
       // post through bearing
-      translate([0,0,8])
-      cylinder(r=4-0.15,h=12,$fn=F2);
+      translate([0,0,12])
+      cylinder(r1=4,r2=4.2,h=9,$fn=F2);
       // washer
       translate([0,0,8])
-      cylinder(r=4.5,h=4.1,$fn=F2);
-      // boss
+      cylinder(r=5.5,h=4.1,$fn=F2);
+      // boss around gears
       translate([0,0,-8])
       cylinder(r=31,h=8+6+3,$fn=F2);
       // drag ring / retainer
-      translate([0,0,-6.0])
-      cylinder(r=40-0.5,h=6-0.15,$fn=F2);
-      // fill area to the shell
-      translate([0,0,-8.0])
-      cylinder(r=35,h=6-0.15,$fn=F2);
+      intersection(){
+        translate([0,0,-8.0])
+        cylinder(r=41-0.5,h=8-0.15,$fn=F2);
+        translate([0,0,-8.0])
+        cylinder(r1=39.5,r2=39.5+6,h=8.2,$fn=F2);
+        translate([0,0,-8.0])
+        cylinder(r2=39.5,r1=39.5+6,h=8.2,$fn=F2);
+      }
     }
+    // bearing post cuts
+    translate([0,0,19])
+    cube([0.5,10,11],center=true);
+    translate([0,0,19])
+    cube([10,0.5,11],center=true);
     
+    // material reduction
+    rxx=21;
+    axx=-108;
+    rotate([0,0,axx])
+    translate([rxx,0,0])
+    cylinder(r=9,h=40,center=true,$fn=F2);
+    
+    // material reduction
+    rotate([0,0,0])
+    difference(){
+      translate([0,0,20-0.15])
+      cube([100,100,40],center=true);
+      hull(){
+        translate([0,0,9])
+        cylinder(r1=12,r2=8,h=20,center=true,$fn=F2);
+        translate([0,80,9])
+        cylinder(r1=12+2,r2=8+2,h=20,center=true,$fn=F2);
+      }
+    }
+      
     // cut for rail
     rail(tol=0.2);
     
     // cut for front post
     rotate([0,0,twist])
-    translate([-4,28,-23])
-    cylinder(r=3+0.15,h=40,center=true,$fn=6);
+    translate([0,24,-16])
+    cylinder(r=2+0.15,h=30,center=true,$fn=6);
 
     // cut for shell
     translate([0,0,-9])
     difference(){
       translate([0,0,-zShell-thick])
-      cylinder(r=35+thick+0.15,h=zShell+6+thick,$fn=F2);
+      cylinder(r=35+thick+0.3,h=zShell+6+thick,$fn=F2);
       translate([0,0,-zShell])
       cylinder(r=34-0.15,h=zShell+6+0.1,$fn=F2);
     }
@@ -815,8 +868,8 @@ module panPost(bearing=1){
     cylinder(r=8.2,h=6,$fn=F2);
     translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),-4])
     cylinder(r=1.7,h=6,$fn=F2);
-    translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),2])
-    cylinder(r=3.5,h=10,$fn=F2);
+    translate([offX2-xIdler*cos(45),offY2-xIdler*sin(45),-0.15])
+    cylinder(r=4,h=10,$fn=F2);
 
     // pan servo
     translate([offX2,offY2,zPan-34])
@@ -840,8 +893,8 @@ module panPost(bearing=1){
     
     
     // twist lock vertical cut
-    for(i=[0:3]){
-      rotate([0,0,i*90+15+30])
+    for(i=[0:2]){
+      rotate([0,0,i*120+15+lockAngle])
       translate([32,0,-5.5])
       rotate([0,90,0])
       hull(){
@@ -852,9 +905,9 @@ module panPost(bearing=1){
       }
     }
     // twist lock horizontal cut
-    for(i=[0:3]){
+    for(i=[0:2]){
       for(j=[0:15]){
-        rotate([0,0,i*90+j+30])
+        rotate([0,0,i*120+j+lockAngle])
         translate([32,0,-5.5])
         rotate([0,90,0])
         cylinder(r1=0.5+0.15,r2=2+0.15,h=2+0.15,$fn=F2);
@@ -1004,8 +1057,8 @@ module shell(){
   }
   
   // twist lock
-  for(i=[0:3]){
-    rotate([0,0,i*90+30])
+  for(i=[0:2]){
+    rotate([0,0,i*120+lockAngle])
     translate([32,0,-5.5])
     rotate([0,90,0])
     cylinder(r1=0.5,r2=2,h=2,$fn=F2);
@@ -1019,6 +1072,29 @@ module shell(){
     #cube([76,25,1.2],center=true);
   }
 
+}
+
+//----------------------------------------------------------------------------------------------------
+module chassisA(){
+
+  difference(){
+    chassis();
+    rotate([0,0,45])
+    translate([-8,-12,-35.5])
+    cube([14+0.4,18+0.4,10],center=true);
+  }
+  
+}
+
+//----------------------------------------------------------------------------------------------------
+module chassisB(){
+
+  intersection(){
+    chassis();
+    rotate([0,0,45])
+    translate([-8,-12,-35.5])
+    cube([14,18,10],center=true);
+  }
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -1046,28 +1122,28 @@ module chassis(){
     translate([offX2,offY2,zPan])
     rotate([0,0,0])
     rotate([0,0,twist])
-    servoGearMount(bolt=1);
+    servoGearMount(bolt=0);
 
     // tilt servo mount
     translate([xTilt,yTilt,zTilt])
     rotate([0,0,twist])
     rotate([180,0,0])
-    servoGearMount(bolt=1);
+    servoGearMount(bolt=0);
     
     // Tab pi side
     difference(){
       hull(){
         rotate([0,0,twist])
-        translate([-4,17,-26])
-        cube([16,1,10],center=true);
+        translate([0,17,-26])
+        cube([8,1,10],center=true);
 
         rotate([0,0,twist])
-        translate([-4,28,-26])
-        cylinder(r=6,h=10,center=true,$fn=F2);
+        translate([0,24,-26])
+        cylinder(r=3,h=10,center=true,$fn=F2);
       }
       rotate([0,0,twist])
-      translate([-4,28,-16])
-      cylinder(r=3+0.15,h=40,center=true,$fn=6);
+      translate([0,24,-16])
+      cylinder(r=2+0.15,h=40,center=true,$fn=6);
     }
     rotate([0,0,twist])
     translate([4,18,-26])
@@ -1094,8 +1170,8 @@ module chassis(){
 module rail2(tol=0){
 
       rotate([0,0,twist])
-      translate([-4,28,-16])
-      cylinder(r=3,h=30,center=true,$fn=6);
+      translate([0,24,-16])
+      cylinder(r=2,h=30,center=true,$fn=6);
 }
 
 
@@ -1131,43 +1207,42 @@ module rail(tol=0){
 if(0){
   
 //~ intersection(){
-difference(){
+//~ difference(){
 
 
 union(){
 
-  arm();
+  //~ arm();
   
-  translate([0,0,-0.1])
-  panLock();
+  //~ translate([0,0,-0.1])
+  //~ panLock();
 
   // rotation for pan
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
   panPost(bearing=0);
-  //~ panServo();
-  //~ panIdler();
-  //~ tiltServo();
-  //~ translate([0,0,2])
-  //~ camera();
-  //~ translate([0,0,2])
-  //~ camHolderC();
+  panServo();
+  panIdler();
+  tiltServo();
+  translate([0,0,2])
+  camera();
+  translate([0,0,2])
+  camHolderC();
   
-
-  //~ chassis();
-  //~ rail();
-  //~ rail2();
+  chassis();
+  rail();
+  rail2();
     
-  shell();
+  //~ shell();
 
-  //~ if(showPi==1){
-    //~ translate([0,0,0])
-    //~ rotate([0,0,45])
-    //~ translate([-22,-15,-89])
-    //~ rotate([0,-90,0])
-    //~ pi0();
-  //~ }
+  if(showPi==1){
+    translate([0,0,0])
+    rotate([0,0,45])
+    translate([-22,-15,-89])
+    rotate([0,-90,0])
+    pi0();
+  }
       
 } // end of pan
 
@@ -1186,13 +1261,13 @@ union(){
   //~ translate([-30,-30,0])
   //~ cube([240,60,300],center=true);
 
-  // cut across rotational axis
-  rotate([0,0,0])
-  translate([0,-100,0])
-  cube([240,200,300],center=true);
+  //~ // cut across rotational axis
+  //~ rotate([0,0,-45])
+  //~ translate([0,-100,0])
+  //~ cube([240,200,300],center=true);
 
 
-}// end diff or intersection
+//~ } // end diff or intersection
 
 } // end of design list
 
@@ -1215,10 +1290,16 @@ if(1){
 //~ panRing(bearing=0);
 //~ panSkirt();
 //~ panTube();
-panPost(bearing=0);
+//~ panPost(bearing=0);
 //~ panIdler();
 //~ panLock();
 //~ arm(bearing=0);
+
+//~ chassis();
+//~ chassisA();
+chassisB();
+//~ rail();
+//~ rail2();
 
 //~ shell();
 
