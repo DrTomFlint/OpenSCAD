@@ -72,7 +72,7 @@ function segments (diameter) = min (50, max (ceil (diameter*6), 25));
 //~ function segments (diameter) = min (50*4, max (ceil (diameter*6*4), 25*4));
 
 
-// ----------------------------------------------------------------------------
+//~ // ----------------------------------------------------------------------------
 // diameter -    outside diameter of threads in mm. Default: 8.
 // pitch    -    thread axial "travel" per turn in mm.  Default: 1.
 // length   -    overall axial length of thread in mm.  Default: 1.
