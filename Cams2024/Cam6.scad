@@ -67,7 +67,7 @@ showGlass=0;
 showPi=1;
 showCam=1;
 
-Version="A";
+Version="B";
 
 //--------------------------------------------------------------------------------
 module panTube(){
@@ -670,7 +670,7 @@ module panRing(bearing=0){
   difference(){
     metric_thread (diameter=nRing*mod+20, pitch=3, length=zGear+6, internal=false, n_starts=1,
                 thread_size=-1, groove=false, square=false, rectangle=0,
-                angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+                angle=30, taper=0, leadin=3, leadfac=1.0, test=false);
     
     translate([0,0,-0.01])
     cylinder(r=nRing*mod/2+2,h=zGear+2+0.4,$fn=F2);
@@ -1559,11 +1559,17 @@ module shell(){
       rotate([0,0,-45])
       cube([20,100,100],center=true);
     }    
+
+    // make a way to remove the glass from the slot
+    rotate([0,0,45])
+    translate([0,rGlass+16+0.15,-zShell+76])
+    rotate([90,0,0])
+    cylinder(r=4,h=8,$fn=F2);
     
     // version number near glass shellA part
     rotate([0,0,45])
-    translate([0,rGlass+6+0.15,-zShell+78])
-    rotate([0,0,0])
+    translate([0,rGlass+6.5,-zShell+78])
+    rotate([0,0,180])
     rotate([-90,0,0])
     linear_extrude(height=0.605)
     text(Version, font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.1);
@@ -1649,9 +1655,9 @@ module shell(){
   // twist lock
   for(i=[0:2]){
     rotate([0,0,i*120+lockAngle])
-    translate([32,0,-5.5])
+    translate([32,0,-5.0])
     rotate([0,90,0])
-    cylinder(r1=0.5,r2=2,h=2,$fn=F2);
+    cylinder(r1=0.25,r2=1.75,h=2,$fn=F2);
   }
 
   // glass, 20 mm of frost on one end
@@ -1820,20 +1826,20 @@ union(){
   //~ translate([0,0,-5.0])
   //~ arm3();
 
-  //~ translate([0,0,1.5]
+  //~ translate([0,0,1.5])
   //~ arm4();
 
-  //~ translate([0,0,-5.0])
-  //~ arm5();
+  translate([0,0,-5.0])
+  arm5();
 
-  //~ translate([0,0,-0.1])
-  //~ panLock();
+  translate([0,0,-0.1])
+  panLock();
 
   // rotation for pan
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  //~ panPost(bearing=0);
+  panPost(bearing=0);
   //~ panServo();
   //~ tiltServo();
 
@@ -1848,7 +1854,7 @@ union(){
     
   //~ shell();
 
-  shellA();
+  //~ shellA();
   //~ shellB();
 
   //~ if(showPi==1){
@@ -1908,7 +1914,7 @@ if(0){
 //~ servoShaft2();
 //~ panPost(bearing=0);
 //~ panIdler();
-//~ panLock();
+panLock();
 
 //~ arm4(bearing=0);
 //~ arm5();
@@ -1920,7 +1926,7 @@ if(0){
 //~ rail2();
 
 //~ shellA();
-shellB();
+//~ shellB();
 
 
   //~ // support blocker for wallMount2
