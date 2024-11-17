@@ -42,6 +42,7 @@ rGlass=22;
 thick=1.5;
 //~ thick=0.9;
 lockAngle=-15;
+ventAngle=-45;
 
 xIdler=(25+12)/2; // distance Gears A-B and B-C
 
@@ -64,10 +65,11 @@ showDr=0;       // approx model
 showSolar=0;    // approx model
 showGlass=0;
 
-showPi=1;
+showPi=0;
 showCam=1;
 
 Version="B";
+CamID="1";
 
 //--------------------------------------------------------------------------------
 module panTube(){
@@ -1383,6 +1385,13 @@ module arm5(){
     linear_extrude(height=0.605)
     text(Version, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
     
+    // camera ID
+    translate([-53.6,-24,38])
+    rotate([0,90,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.605)
+    text(CamID, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    
     // cut mounting holes in the tab
     translate([-55,30,40])
     rotate([0,90,0])
@@ -1538,7 +1547,7 @@ module shellB(){
     // trim excess ribs
     rotate([0,0,45])
     translate([0,-10,-zShell+10])
-    cube([80,60,10],center=true);
+    cube([80,70,10],center=true);
   }
 }
 
@@ -1559,12 +1568,6 @@ module shell(){
       rotate([0,0,-45])
       cube([20,100,100],center=true);
     }    
-
-    // make a way to remove the glass from the slot
-    rotate([0,0,45])
-    translate([0,rGlass+16+0.15,-zShell+76])
-    rotate([90,0,0])
-    cylinder(r=4,h=8,$fn=F2);
     
     // version number near glass shellA part
     rotate([0,0,45])
@@ -1594,6 +1597,12 @@ module shell(){
     rotate([0,90,0])
     cube([76+4,25+0.6,1.2+0.3],center=true);
     
+    // extra glass cut
+    translate([-rGlass,rGlass,-zShell+75])
+    rotate([0,0,-45])
+    rotate([0,90,0])
+    cube([8,25+0.6,2],center=true);
+    
     // window cut
     translate([-rGlass+2.5,rGlass-2.5,-zShell+38])
     rotate([0,0,-45])
@@ -1604,7 +1613,7 @@ module shell(){
     
     // ventilation cut
     intersection(){
-      rotate([0,0,45])
+      rotate([0,0,ventAngle])
       translate([0,-32-1,-zShell])
       cube([40,10,12],center=true);
       // outer shell
@@ -1617,7 +1626,7 @@ module shell(){
     }        
   }
   // ribs
-  for(i=[10,-100,60,-160, -45])
+  for(i=[10,-100,70,-170, -45])
   rotate([0,0,i])
   translate([35,0,-zShell-1.5])
   scale([1,2,1])
@@ -1626,7 +1635,7 @@ module shell(){
   // vent block
   difference(){
     intersection(){
-      rotate([0,0,45])
+      rotate([0,0,ventAngle])
       translate([0,-32,-zShell])
       cube([60,10,10],center=true);
       // outer shell
@@ -1639,7 +1648,7 @@ module shell(){
     }
     // cut
     intersection(){
-      rotate([0,0,45])
+      rotate([0,0,ventAngle])
       translate([0,-32-1,-zShell])
       cube([40,10,12],center=true);
       // outer shell
@@ -1659,6 +1668,15 @@ module shell(){
     rotate([0,90,0])
     cylinder(r1=0.25,r2=1.75,h=2,$fn=F2);
   }
+
+  // Camera ID near glass shellA part
+  rotate([0,0,45])
+  translate([0,36,-18])
+  rotate([0,180,0])
+  rotate([-90,0,0])
+  linear_extrude(height=0.7)
+  text(CamID, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+
 
   // glass, 20 mm of frost on one end
   if(showGlass==1){
@@ -1796,10 +1814,11 @@ module rail(tol=0){
 
 //======================================================================
 
+Design=0;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
-if(1){
+if(Design==1){
   
 //~ intersection(){
 difference(){
@@ -1829,17 +1848,17 @@ union(){
   //~ translate([0,0,1.5])
   //~ arm4();
 
-  translate([0,0,-5.0])
-  arm5();
+  //~ translate([0,0,-5.0])
+  //~ arm5();
 
-  translate([0,0,-0.1])
-  panLock();
+  //~ translate([0,0,-0.1])
+  //~ panLock();
 
-  // rotation for pan
+  // rotation for pan ------------
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  panPost(bearing=0);
+  //~ panPost(bearing=0);
   //~ panServo();
   //~ tiltServo();
 
@@ -1855,17 +1874,17 @@ union(){
   //~ shell();
 
   //~ shellA();
-  //~ shellB();
+  shellB();
 
-  //~ if(showPi==1){
-    //~ translate([0,0,0])
-    //~ rotate([0,0,45])
-    //~ translate([-22,-15,-89])
-    //~ rotate([0,-90,0])
-    //~ pi0();
-  //~ }
+  if(showPi==1){
+    translate([0,0,0])
+    rotate([0,0,45])
+    translate([-22,-15,-89])
+    rotate([0,-90,0])
+    pi0();
+  }
       
-} // end of pan
+} // end of pan -----------------
 
 } // end of union
 
@@ -1899,7 +1918,7 @@ union(){
 //==================================================================
 // Printing List:
 // parts are not aligned for assembly
-if(0){
+if(Design==0){
   
 //~ camHolderA();
 //~ camHolderB();
@@ -1914,7 +1933,7 @@ if(0){
 //~ servoShaft2();
 //~ panPost(bearing=0);
 //~ panIdler();
-panLock();
+//~ panLock();
 
 //~ arm4(bearing=0);
 //~ arm5();
@@ -1925,7 +1944,7 @@ panLock();
 //~ rail();
 //~ rail2();
 
-//~ shellA();
+shellA();
 //~ shellB();
 
 
