@@ -938,334 +938,9 @@ module panPost(bearing=1){
   }
 }
 
-//----------------------------------------------------------------------------------------------------
-module arm(bearing=0){
-
-  panRing();
-
-  difference(){
-    union(){
-      // main plate
-      translate([0,0,12-0.1])
-      cylinder(r=60,h=7,$fn=F2);
-      
-      // drip ring / locking collar
-      translate([0,0,0-0.1])
-      cylinder(r1=53,r2=57,h=12,$fn=F2);
-      
-      // usb arm
-      translate([-75,0,-19.1])    
-      linear_extrude(height=38)
-      offset(r=3,$fn=F2)
-      square([38-6,100-6],center=true);
-            
-      // usb arm extension to main plate
-      translate([-75+30,0,19-2.1])    
-      linear_extrude(height=2)
-      offset(r=3,$fn=F2)
-      square([38-6,100-6],center=true);
-
-      // side tabs
-      difference(){
-        translate([-95,0,-1.1])    
-        linear_extrude(height=20)
-        offset(r=1,$fn=F2)
-        square([4-2,150-2],center=true);
-        
-        translate([-95,0,20])    
-        cube([4,108,13],center=true);
-      }
-      
-
-      // bottom tab
-      translate([-95,0,-1.1-35])    
-      linear_extrude(height=44)
-      offset(r=1,$fn=F2)
-      square([4-2,20-2],center=true);
-    }
-    
-    // mounting holes in the tabs
-    translate([-100,0,-28])    
-    rotate([0,90,0])
-    cylinder(r=3,h=40,$fn=F2);
-    
-    translate([-100,65,9])    
-    rotate([0,90,0])
-    cylinder(r=3,h=40,$fn=F2);
-    
-    translate([-100,-65,9])    
-    rotate([0,90,0])
-    cylinder(r=3,h=40,$fn=F2);
-    
-    // main plate
-    translate([0,0,12-0.1])
-    translate([0,0,-0.1])
-    cylinder(r1=30,r2=34,h=7.2,$fn=F2);
-
-    // drip ring / locking collar 
-    translate([0,0,0-0.1])
-    translate([0,0,-0.1])
-    cylinder(r1=50,r2=49,h=8.1,$fn=F2);
-
-    // knurl cuts
-    k=32;
-    for(i=[0:(k-1)]){
-     rotate([0,0,360/k*i])
-     translate([49,0,-18])
-     cylinder(r=3,h=zGear+6+15,$fn=88);
-    }    
-
-    // cut for DC wire
-    translate([-20,0,20])
-    rotate([0,-90,0])
-    cylinder(r=7,h=60,$fn=F2);
-
-    // cut for AC wire
-    translate([-85,-40,-60])
-    cylinder(r=2.5,h=60,$fn=F2);
-    
-    // cuts to secure lid
-    translate([-50,-44,-20])
-    cylinder(r=3,h=60,$fn=F2);
-    translate([-50,44,-20])
-    cylinder(r=3,h=60,$fn=F2);
-    
-    // cut usb arm
-    translate([-75,0,-19.1+1.5])    
-    linear_extrude(height=38-3+3)
-    offset(r=1.5,$fn=F2)
-    square([38-6,100-6-1.5],center=true);
-     
-    // cut panPost 
-    translate([0,0,-6])
-    cylinder(r=4.3,h=20,$fn=F2);
-  }
-  
-  // bearing retainer
-  translate([0,0,12-0.1])
-  difference(){
-    cylinder(r1=14,r2=13,h=7,$fn=F2);
-    translate([0,0,-1])
-    cylinder(r1=11-0.15,r2=11+0.15,h=7+2,$fn=F2);
-    translate([0,0,-6])
-    cylinder(r=4.3,h=20,$fn=F2);
-    translate([0,0,7])
-    cube([40,1,13],center=true);
-    translate([0,0,7])
-    cube([1,40,13],center=true);
-  }
-    
-  // center bearing
-  if(bearing==1){
-    translate([0,0,12.1])
-    difference(){
-      cylinder(r=11,h=7,$fn=F2);
-      translate([0,0,-1])
-      cylinder(r=4,h=7+2,$fn=F2);
-    }
-  }
-
-  // usb power block
-  if(showUsb==1){
-    translate([-90,-30,0])    
-    rotate([0,0,90])
-    rotate([90,0,0])
-    #usbPower(plug=1);
-  }
-
-
-}
 
 //----------------------------------------------------------------------------------------------------
-module arm2(bearing=1){
-
-  difference(){
-    panRing();
-  
-    // ventilation holes
-    for(i=[0:2])
-    rotate([0,0,i*120+60])
-    translate([22.5,0,20])
-    cylinder(r=7,h=60,center=true,$fn=F2);
-  }
-  
-  difference(){
-    union(){
-      // main plate
-      translate([0,0,5.5])
-      metric_thread (diameter=120, pitch=3, length=7, internal=false, n_starts=1,
-                thread_size=-1, groove=false, square=false, rectangle=0,
-                angle=30, taper=0, leadin=1, leadfac=1.0, test=false);
-            
-      // drip ring / locking collar
-      translate([0,0,-1.5])
-      cylinder(r1=54,r2=57,h=7.5,$fn=F2);
-      
-    }
-
-    // version number
-    translate([20,0,6.0])
-    rotate([0,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=2.605)
-    text(Version, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
-
-    // ventilation holes
-    for(i=[0:2])
-    rotate([0,0,i*120+60])
-    translate([22.5,0,20])
-    cylinder(r=7,h=60,center=true,$fn=F2);
-    
-    // main plate
-    translate([0,0,12-0.1])
-    translate([0,0,-0.1])
-    cylinder(r1=44-4,r2=44,h=7.2,$fn=F2);
-
-    // drip ring / locking collar 
-    translate([0,0,-2])
-    cylinder(r1=50,r2=49,h=10.1,$fn=F2);
-
-    // knurl cuts
-    k=32;
-    for(i=[0:(k-1)]){
-     rotate([0,0,360/k*i])
-     translate([49,0,-21.1])
-     cylinder(r=3,h=zGear+6+15,$fn=88);
-    }    
-
-    // cut for bearing
-    translate([0,0,0])
-    cylinder(r=11,h=20,$fn=F2);
-  }
-  
-  // center bearing
-  if(bearing==1){
-    translate([0,0,8.1])
-    difference(){
-      cylinder(r=11,h=7,$fn=F2);
-      translate([0,0,-1])
-      cylinder(r=4,h=7+2,$fn=F2);
-    }
-  }
-
-}
-
-//----------------------------------------------------------------------------------------------------
-module arm3(){
-
-  difference(){
-    union(){
-      // base ring
-      translate([0,0,12-0.1])
-      cylinder(r1=66,r2=66,h=7,$fn=F2);
-      
-      // hood
-      hull(){
-        translate([0,0,12-0.1+7])
-        cylinder(r1=66,r2=66,h=3,$fn=F2);
-        translate([-80,0,12-0.1+3.5+4])
-        cube([4,40,7],center=true);
-
-        translate([15,0,45])
-        scale([1,1,0.5])
-        sphere(r=20,$fn=F2);
-        translate([-35,0,45])
-        scale([1,1,0.5])
-        sphere(r=20,$fn=F2);
-      }      
-      
-      // wall connection
-      hull(){
-        translate([0,0,12-0.1])
-        cylinder(r1=66,r2=66,h=7,$fn=F2);
-        
-        translate([-80,0,12-0.1+3.5])
-        cube([4,40,7],center=true);
-      }
-      
-      // tab
-      hull(){
-        translate([-78.5,26,40])
-        rotate([0,90,0])
-        cylinder(r=9,h=7,center=true,$fn=F2);
-        
-        translate([-78.5,-26,40])
-        rotate([0,90,0])
-        cylinder(r=9,h=7,center=true,$fn=F2);
-        
-        // center
-        translate([-78.5,0,54])
-        rotate([0,90,0])
-        cylinder(r=9,h=7,center=true,$fn=F2);
-
-        translate([-80+4,0,12-0.1+3.5])
-        cube([12,40,4],center=true);
-      }
-    }
-
-    // version number
-    translate([-72,14,11.75])
-    rotate([0,0,0])
-    rotate([0,0,90])
-    linear_extrude(height=0.605)
-    text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
-    
-    // cut mounting holes in the tab
-    translate([-73,26,40])
-    rotate([0,90,0])
-    cylinder(r=6,h=4,center=true,$fn=F2);
-    translate([-73,26,40])
-    rotate([0,90,0])
-    cylinder(r=2,h=20,center=true,$fn=F2);
-
-    translate([-73,-26,40])
-    rotate([0,90,0])
-    cylinder(r=6,h=4,center=true,$fn=F2);
-    translate([-73,-26,40])
-    rotate([0,90,0])
-    cylinder(r=2,h=20,center=true,$fn=F2);
-
-    translate([-73,0,54])
-    rotate([0,90,0])
-    cylinder(r=6,h=4,center=true,$fn=F2);
-    translate([-73,0,54])
-    rotate([0,90,0])
-    cylinder(r=2,h=20,center=true,$fn=F2);
-
-    // ac cord for usb block
-    translate([-69,0,16])
-    rotate([0,30,0])
-    cylinder(r=2.5,h=12,center=true,$fn=F2);
-
-    // cut for arm2
-    translate([0,0,12-0.1])
-    metric_thread (diameter=120+1, pitch=3, length=7, internal=false, n_starts=1,
-              thread_size=-1, groove=false, square=false, rectangle=0,
-              angle=30, taper=0, leadin=1, leadfac=1.0, test=false);
-                  
-
-      // cut hood
-      hull(){
-        translate([0,0,12-0.1+7])
-        cylinder(r1=62,r2=62,h=3,$fn=F2);
-        translate([-80+12,0,12-0.1+3.5+4+3])
-        cube([4,36,7],center=true);
-        
-        translate([15,0,45-0.5])
-        scale([1,1,0.5])
-        sphere(r=17,$fn=F2);
-        translate([-35,0,45-0.5])
-        scale([1,1,0.5])
-        sphere(r=17,$fn=F2);
-      }      
-
-  }
-    
-        
-}
-
-//----------------------------------------------------------------------------------------------------
-module arm4(bearing=0){
+module arm4(bearing=1){
 
   difference(){
     panRing();
@@ -1300,6 +975,16 @@ module arm4(bearing=0){
 
 //----------------------------------------------------------------------------------------------------
 module arm5(){
+
+  // usb power block
+  if(showUsb==1){
+    //~ translate([-30,0,20])    
+    //~ rotate([0,0,0])
+    //~ rotate([0,0,0])
+    //~ usbPower(plug=1);
+    translate([-14,0,28])    
+    cube([28.3,35,19],center=true);
+  }
 
   difference(){
     union(){
@@ -1377,6 +1062,162 @@ module arm5(){
       scale([1,1,0.5])
       sphere(r=22,$fn=F2);
     }      
+
+    // version number
+    translate([-53.6,24,38])
+    rotate([0,90,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.605)
+    text(Version, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    
+    // camera ID
+    translate([-53.6,-24,38])
+    rotate([0,90,0])
+    rotate([0,0,90])
+    linear_extrude(height=0.605)
+    text(CamID, font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    
+    // cut mounting holes in the tab
+    translate([-55,30,40])
+    rotate([0,90,0])
+    cylinder(r=2,h=6,center=true,$fn=F2);
+
+    translate([-55,-30,40])
+    rotate([0,90,0])
+    cylinder(r=2,h=6,center=true,$fn=F2);
+
+    // ventilation cuts into the tab
+    translate([-56.1,0,30])
+    cube([3.5,20,60],center=true);
+    
+    translate([-56.1,0,35])
+    cube([10,0.7,10],center=true);
+    translate([-56.1,8,35])
+    cube([10,0.7,8],center=true);
+    translate([-56.1,-8,35])
+    cube([10,0.7,8],center=true);
+
+    // ac cord for usb block
+    translate([-50,0,20])
+    rotate([0,25,0])
+    cylinder(r=2.5,h=25,center=true,$fn=F2);
+
+    // cut for arm4
+    translate([0,0,12-0.1])
+    rotate([0,0,90])
+    metric_thread (diameter=nRing*mod+20+1, pitch=3, length=6, internal=false, n_starts=1,
+                thread_size=-1, groove=false, square=false, rectangle=0,
+                angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+    
+
+    // lip so arm4 stops screwing in at some point
+    translate([0,0,12-0.1])
+    cylinder(r=40,h=20,center=true,$fn=F2);
+
+    // cut to make a rain lip, base ring is 50 rad
+    translate([0,0,13])
+    difference(){
+      cylinder(r1=49.5,r2=46.5,h=6,center=true,$fn=F2);
+      cylinder(r1=43.5,r2=46.5,h=6.1,center=true,$fn=F2);
+    }
+
+  }
+    
+  word = ["O","U","T","P","O","S","T"];
+  for(i=[0:6])
+  rotate([0,0,10*(i-3)])
+  translate([49.5,0,17])
+  rotate([0,90,0])
+  rotate([0,0,90])
+  linear_extrude(height=0.8)
+  text(word[i], font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+    
+        
+}
+
+//----------------------------------------------------------------------------------------------------
+module arm6(){
+
+  // usb power block
+  if(showUsb==1){
+    //~ translate([-30,0,20])    
+    //~ rotate([0,0,0])
+    //~ rotate([0,0,0])
+    //~ usbPower(plug=1);
+    translate([-31,0,30])    
+    cube([35,28.3,19],center=true);
+  }
+
+  difference(){
+    union(){
+      // hood
+      hull(){
+        // base ring
+        translate([0,0,12-0.1+7])
+        cylinder(r=50,h=3,$fn=F2);
+        
+        // wall side
+        translate([-55,0,5+12])
+        cube([4,50,10],center=true);
+        
+        // front hump
+        translate([-15,0,39])
+        scale([1,1,0.3])
+        sphere(r=17,$fn=F2);
+        
+        // back hump
+        translate([-55,0,39])
+        scale([1,1,0.3])
+        rotate([0,90,0])
+        cylinder(r=17,h=40,$fn=F2);
+      }      
+      
+      // wall connection
+      hull(){
+        translate([0,0,12-0.1])
+        cylinder(r=50,h=7,$fn=F2);
+        
+        translate([-55,0,12-0.1+3.5])
+        cube([4,50,7],center=true);
+      }
+      
+      // tab
+      hull(){
+        translate([-55,30,40])
+        rotate([0,90,0])
+        cylinder(r=5,h=4,center=true,$fn=F2);
+        
+        translate([-55,-30,40])
+        rotate([0,90,0])
+        cylinder(r=5,h=4,center=true,$fn=F2);
+        
+        translate([-55+0,0,12-0.1+2])
+        cube([4,50,4],center=true);
+      }
+
+    }  // end of union
+                  
+    // hood
+      hull(){
+        // base ring
+        translate([0,0,12-0.1+7])
+        cylinder(r=50-3,h=3,$fn=F2);
+        
+        // wall side
+        translate([-55+4,0,5+12+7])
+        cube([4,50-8,10],center=true);
+        
+        // front hump
+        translate([-15,0,39-0.5])
+        scale([1,1,0.3])
+        sphere(r=17-2,$fn=F2);
+        
+        // back hump
+        translate([-55+2,0,39])
+        scale([1,1,0.3])
+        rotate([0,90,0])
+        cylinder(r=17-3,h=40-4,$fn=F2);
+      }      
 
     // version number
     translate([-53.6,24,38])
@@ -1826,30 +1667,14 @@ difference(){
 
 union(){
 
-  // usb power block
-  if(showUsb==1){
-    //~ translate([-30,0,20])    
-    //~ rotate([0,0,0])
-    //~ rotate([0,0,0])
-    //~ usbPower(plug=1);
-    translate([-14,0,28])    
-    cube([28.3,35,19],center=true);
-  }
-
-
-  //~ translate([0,0,1.5])
-  //~ arm();
-  
-  //~ translate([0,0,1.5])
-  //~ arm2();
-  //~ translate([0,0,-5.0])
-  //~ arm3();
-
   //~ translate([0,0,1.5])
   //~ arm4();
 
   //~ translate([0,0,-5.0])
   //~ arm5();
+
+  translate([0,0,-5.0])
+  arm6();
 
   //~ translate([0,0,-0.1])
   //~ panLock();
@@ -1874,7 +1699,7 @@ union(){
   //~ shell();
 
   //~ shellA();
-  shellB();
+  //~ shellB();
 
   if(showPi==1){
     translate([0,0,0])
@@ -1907,7 +1732,7 @@ union(){
   //~ cube([240,200,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,-45+180])
+  rotate([0,0,0])
   translate([0,-100,0])
   cube([240,200,300],center=true);
 
@@ -1937,6 +1762,7 @@ if(Design==0){
 
 //~ arm4(bearing=0);
 //~ arm5();
+arm6();
 
 //~ chassisA();
 //~ chassisB();
@@ -1944,7 +1770,7 @@ if(Design==0){
 //~ rail();
 //~ rail2();
 
-shellA();
+//~ shellA();
 //~ shellB();
 
 
