@@ -847,9 +847,9 @@ module panPost(bearing=1){
     }
     
     // wiring pass through
-    translate([0,-2,-10])
-    rotate([-3,0,0])
-    cylinder(r=1.5,h=40,$fn=F2);
+    translate([0,-3,-10])
+    rotate([-7,0,0])
+    #cylinder(r=2,h=40,$fn=F2);
     
     // idler
     hull(){
@@ -1201,22 +1201,22 @@ module arm6(){
       hull(){
         // base ring
         translate([0,0,12-0.1+7])
-        cylinder(r=50-3,h=3,$fn=F2);
+        cylinder(r=50-2,h=3-0.5,$fn=F2);
         
         // wall side
         translate([-55+4,0,5+12+7])
-        cube([4,50-8,10],center=true);
+        cube([4,40,10],center=true);
         
         // front hump
-        translate([-15,0,39-0.5])
+        translate([-12,0,39])
         scale([1,1,0.3])
-        sphere(r=17-2,$fn=F2);
+        sphere(r=17-5,$fn=F2);
         
         // back hump
-        translate([-55+2,0,39])
+        translate([-55+2,0,39-0.5])
         scale([1,1,0.3])
         rotate([0,90,0])
-        cylinder(r=17-3,h=40-4,$fn=F2);
+        cylinder(r=17-2,h=40-4,$fn=F2);
       }      
 
     // version number
@@ -1281,7 +1281,7 @@ module arm6(){
     
   word = ["O","U","T","P","O","S","T"];
   for(i=[0:6])
-  rotate([0,0,10*(i-3)])
+  rotate([0,0,10*(i-3)-60])
   translate([49.5,0,17])
   rotate([0,90,0])
   rotate([0,0,90])
@@ -1655,7 +1655,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=0;
+Design=1;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1673,8 +1673,8 @@ union(){
   //~ translate([0,0,-5.0])
   //~ arm5();
 
-  translate([0,0,-5.0])
-  arm6();
+  //~ translate([0,0,-5.0])
+  //~ arm6();
 
   //~ translate([0,0,-0.1])
   //~ panLock();
@@ -1683,7 +1683,7 @@ union(){
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  //~ panPost(bearing=0);
+  panPost(bearing=0);
   //~ panServo();
   //~ tiltServo();
 
@@ -1732,7 +1732,7 @@ union(){
   //~ cube([240,200,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,0])
+  rotate([0,0,90])
   translate([0,-100,0])
   cube([240,200,300],center=true);
 
