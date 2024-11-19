@@ -214,7 +214,6 @@ module camHolderB(){
 
   }
 }
-//----------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
 module servoGearA(bolt=0){
@@ -255,7 +254,6 @@ module servoGearA(bolt=0){
     translate([0,0,-2])
     cylinder(r=5.6/2+0.15,h=3.15,$fn=F2);
     translate([0,0,-2+3])
-    //~ #cylinder(r=2.9/2+0.15,h=12,$fn=F2);
     cylinder(r=2.9/2+0.15,h=20,$fn=F2);
   }
   
@@ -735,8 +733,8 @@ module panLock(bearing=0){
  
     // version number
     translate([0,44.6,-2])
+    rotate([0,0,180])
     rotate([90,0,0])
-    rotate([0,0,0])
     linear_extrude(height=1.605)
     text(Version, font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
 
@@ -849,7 +847,7 @@ module panPost(bearing=1){
     // wiring pass through
     translate([0,-3,-10])
     rotate([-7,0,0])
-    #cylinder(r=2,h=40,$fn=F2);
+    cylinder(r=2,h=40,$fn=F2);
     
     // idler
     hull(){
@@ -937,7 +935,6 @@ module panPost(bearing=1){
     
   }
 }
-
 
 //----------------------------------------------------------------------------------------------------
 module arm4(bearing=1){
@@ -1154,33 +1151,28 @@ module arm6(){
       hull(){
         // base ring
         translate([0,0,12-0.1+7])
-        cylinder(r=50,h=3,$fn=F2);
-        
+        cylinder(r=50,h=0.1,$fn=F2);        
         // wall side
         translate([-55,0,5+12])
-        cube([4,50,10],center=true);
-        
+        cube([4,36,10],center=true);        
         // front hump
         translate([-15,0,39])
         scale([1,1,0.3])
-        sphere(r=17,$fn=F2);
-        
+        sphere(r=17,$fn=F2);        
         // back hump
         translate([-55,0,39])
         scale([1,1,0.3])
         rotate([0,90,0])
         cylinder(r=17,h=40,$fn=F2);
-      }      
-      
+      }            
       // wall connection
       hull(){
         translate([0,0,12-0.1])
         cylinder(r=50,h=7,$fn=F2);
         
         translate([-55,0,12-0.1+3.5])
-        cube([4,50,7],center=true);
-      }
-      
+        cube([4,36,7],center=true);
+      }      
       // tab
       hull(){
         translate([-55,30,40])
@@ -1192,31 +1184,25 @@ module arm6(){
         cylinder(r=5,h=4,center=true,$fn=F2);
         
         translate([-55+0,0,12-0.1+2])
-        cube([4,50,4],center=true);
+        cube([4,36,4],center=true);
       }
-
-    }  // end of union
-                  
+    }  // end of union                  
     // hood
       hull(){
-        // base ring
         translate([0,0,12-0.1+7])
-        cylinder(r=50-2,h=3-0.5,$fn=F2);
-        
+        cylinder(r=40,h=3.5,$fn=F2);        
         // wall side
-        translate([-55+4,0,5+12+7])
-        cube([4,40,10],center=true);
-        
+        translate([-55+4,0,5+12+6.85])
+        #cube([4,30,10],center=true);        
         // front hump
-        translate([-12,0,39])
+        translate([-15,0,39-1])
         scale([1,1,0.3])
-        sphere(r=17-5,$fn=F2);
-        
+        sphere(r=17,$fn=F2);        
         // back hump
-        translate([-55+2,0,39-0.5])
+        translate([-55+2,0,39-1])
         scale([1,1,0.3])
         rotate([0,90,0])
-        cylinder(r=17-2,h=40-4,$fn=F2);
+        #cylinder(r=17,h=40-2,$fn=F2);
       }      
 
     // version number
@@ -1261,7 +1247,7 @@ module arm6(){
     // cut for arm4
     translate([0,0,12-0.1])
     rotate([0,0,90])
-    metric_thread (diameter=nRing*mod+20+1, pitch=3, length=6, internal=false, n_starts=1,
+    metric_thread (diameter=nRing*mod+20+1.5, pitch=3, length=6, internal=false, n_starts=1,
                 thread_size=-1, groove=false, square=false, rectangle=0,
                 angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
     
@@ -1278,15 +1264,24 @@ module arm6(){
     }
 
   }
+
+  //~ // top ridge
+  //~ translate([-54,0,44])
+  //~ scale([1,1,0.5])
+  //~ rotate([0,90,0])
+  //~ cylinder(r=2,h=42,$fn=F2);
+  //~ translate([-54+42,0,44])
+  //~ scale([1,1,0.5])
+  //~ sphere(r=2,$fn=F2);        
     
   word = ["O","U","T","P","O","S","T"];
   for(i=[0:6])
-  rotate([0,0,10*(i-3)-60])
-  translate([49.5,0,17])
+  rotate([0,0,10*(i-3)-0])
+  translate([49.5,0,15.5])
   rotate([0,90,0])
   rotate([0,0,90])
   linear_extrude(height=0.8)
-  text(word[i], font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.1);
+  text(word[i], font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
     
         
 }
@@ -1655,7 +1650,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=1;
+Design=0;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1673,8 +1668,8 @@ union(){
   //~ translate([0,0,-5.0])
   //~ arm5();
 
-  //~ translate([0,0,-5.0])
-  //~ arm6();
+  translate([0,0,-5.0])
+  arm6();
 
   //~ translate([0,0,-0.1])
   //~ panLock();
@@ -1683,7 +1678,7 @@ union(){
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  panPost(bearing=0);
+  //~ panPost(bearing=0);
   //~ panServo();
   //~ tiltServo();
 
@@ -1732,7 +1727,7 @@ union(){
   //~ cube([240,200,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,90])
+  rotate([0,0,0])
   translate([0,-100,0])
   cube([240,200,300],center=true);
 
@@ -1758,11 +1753,11 @@ if(Design==0){
 //~ servoShaft2();
 //~ panPost(bearing=0);
 //~ panIdler();
-//~ panLock();
+panLock();
 
 //~ arm4(bearing=0);
 //~ arm5();
-arm6();
+//~ arm6();
 
 //~ chassisA();
 //~ chassisB();
