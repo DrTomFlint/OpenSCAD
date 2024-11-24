@@ -708,10 +708,16 @@ module panRing(bearing=0){
     text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
 
 
-    // ventilation hole
+    // ventilation cuts
     rotate([0,0,90])
-    translate([22.5,0,20])
-    cylinder(r=7,h=60,center=true,$fn=F2);
+    translate([22.5,0,10])
+    cube([0.7,16,10],center=true);
+    rotate([0,0,90])
+    translate([26.5,0,10])
+    cube([0.7,16,10],center=true);
+    rotate([0,0,90])
+    translate([18.5,0,10])
+    cube([0.7,16,10],center=true);
   }  
     
   
@@ -1126,6 +1132,38 @@ module tiltServo(){
 
 }
 
+
+//----------------------------------------------------------------------------------------------------
+module shellA1(){
+
+  difference(){
+    shellA();
+    difference(){
+      translate([0,0,-zShell+7.5])
+      cylinder(r=40.1,h=20.2,center=true,$fn=F2);
+      translate([0,0,-zShell])
+      rotate([0,0,45])
+      cube([25-0.3,25-0.3,10],center=true);
+    }
+  }
+}
+
+//----------------------------------------------------------------------------------------------------
+module shellA2(){
+
+  intersection(){
+    shellA();
+    #difference(){
+      translate([0,0,-zShell+7.5])
+      cylinder(r=40,h=20,center=true,$fn=F2);
+      translate([0,0,-zShell])
+      rotate([0,0,45])
+      cube([25,25,10],center=true);
+    }
+  }
+
+}
+
 //----------------------------------------------------------------------------------------------------
 module camera(){
   
@@ -1230,9 +1268,9 @@ module lid(){
   // dome drip lip
   difference(){
     translate([0,0,-zShell-thick-3])
-    cylinder(r=42,h=2,$fn=F2);
+    cylinder(r=42,h=1.5,$fn=F2);
     translate([0,0,-zShell-thick-3])
-    cylinder(r=41,h=2,$fn=F2);
+    cylinder(r=41,h=1.5,$fn=F2);
   }
 
   difference(){
@@ -1580,7 +1618,9 @@ union(){
   //~ lid();
   
   //~ translate([0,0,-30])
-  shellA();
+  //~ shellA();
+  shellA1();
+  shellA2();
   //~ shellB();
 
   //~ if(showPi==1){
@@ -1614,7 +1654,7 @@ union(){
   //~ cube([240,200,300],center=true);
 
   // cut across rotational axis
-  rotate([0,0,-45+180])
+  rotate([0,0,-18])
   translate([0,-100,0])
   cube([240,200,300],center=true);
 
@@ -1633,11 +1673,7 @@ if(Design==0){
 //~ servoGearA();
 //~ servoGearB();
 //~ servoGearC();
-//~ servoGearD();
-//~ servoSpline();
 //~ servoSpline2();
-//~ servoShaft();
-//~ servoShaft2();
 //~ panPostA(bearing=0);
 //~ panPostB(bearing=0);
 //~ panRing();
@@ -1653,6 +1689,8 @@ if(Design==0){
 //~ rail2();
 
 shellA();
+//~ shellA1();
+//~ shellA2();
 //~ shellB();
 
 
