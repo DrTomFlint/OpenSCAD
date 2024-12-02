@@ -69,7 +69,7 @@ showPi=1;
 showCam=1;
 
 Version="D";
-CamID="2";
+CamID="4";
 
 //----------------------------------------------------------------------
 // camera and spur gear with pivots
@@ -1662,7 +1662,7 @@ if(Design==0){
 //~ panPostA(bearing=0);
 //~ panPostB(bearing=0);
 //~ panRing();
-panIdler();
+//~ panIdler();
 //~ panLock();
 
 //~ arm4(bearing=0);
@@ -1676,7 +1676,7 @@ panIdler();
 //~ shellA();
 //~ shellA1();
 //~ shellA2();
-//~ shellB();
+shellB();
 
 
   //~ // support blocker for wallMount2

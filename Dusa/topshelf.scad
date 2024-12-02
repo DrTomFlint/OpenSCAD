@@ -1202,6 +1202,13 @@ z1=2*z0;
 
 module dryLid(){
 
+x0=280;
+y0=230;
+z0=110;
+c0=40;
+
+z1=2*z0;
+
   // top
   translate([-3,-3,220])
   cube([x0+6,y0+6,3]);
@@ -1437,31 +1444,30 @@ module blowerBox(){
 
 
 //===============================
-//color("silver")
-//blower2();
+//~ color("silver")
+//~ blower2();
 
 //difference(){
- intersection(){
+ //~ intersection(){
 
-  blowerBox();
+  //~ blowerBox();
   
-  translate([10,50+0.1,0])
-  cube([100,100,100],center=true);
+  //~ translate([10,50+0.1,0])
+  //~ cube([100,100,100],center=true);
 
-}
+//~ }
 
 //port();
 
-//inner();
-//outer();
+//~ inner();
+//~ outer();
+centerBlock();
+endBlock();
 
-//centerBlock();
-//endBlock();
-
-//translate([-x2+90,yoff-220,30+z1+15]){
-  //dryBox();
-  //dryLid();
-//}
+translate([-x2+90,yoff-220,30+z1+15]){
+  dryBox();
+  dryLid();
+}
 
 //estop();
 
