@@ -913,6 +913,103 @@ translate([-xHold,0,-zCam]){
 }
 }
 
+
+//----------------------------------------------------------------------
+module windowCamCurtain1(){
+  
+  difference(){
+    cube([20,3,10],center=true);
+    translate([3,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+    translate([-6,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+  }
+  
+  translate([10,18.5,0])
+  cube([3,40,10],center=true);
+  
+  translate([50-0.5,38,0])
+  difference(){
+    scale([1,0.4,1])
+    cylinder(r=41,h=10,center=true,$fn=F2);
+    translate([0,-1,0])
+    scale([1,0.4,1])
+    cylinder(r=38,h=11,center=true,$fn=F2);
+    
+    translate([2,-20,0])
+    cube([80,40,12],center=true);
+  }
+  
+}
+
+//----------------------------------------------------------------------
+module windowCamCurtain2(){
+  
+  difference(){
+    cube([20,3,10],center=true);
+    translate([3,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+    translate([-6,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+  }
+  
+  translate([10,18.5,0])
+  cube([3,40,10],center=true);
+  
+  translate([55,23,0])
+  rotate([0,0,-20])
+  difference(){
+    scale([1.2,0.4,1])
+    cylinder(r=41,h=10,center=true,$fn=F2);
+    translate([0,-1,0])
+    scale([1.2,0.4,1])
+    cylinder(r=38,h=11,center=true,$fn=F2);
+    
+    translate([-6,-20,0])
+    cube([80,40,12],center=true);
+    translate([30,-12,0])
+    cube([40,40,12],center=true);
+  }
+  
+}
+
+//----------------------------------------------------------------------
+module windowCamCurtain3(){
+  
+  difference(){
+    cube([20,3,10],center=true);
+    translate([3,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+    translate([-6,0,0])
+    rotate([90,0,0])
+    cylinder(r=0.65,h=11,center=true,$fn=F2);
+  }
+  
+  translate([10,18.5,0])
+  cube([3,40,10],center=true);
+  
+  translate([66.5,19,0])
+  rotate([0,0,-20])
+  difference(){
+    scale([1.5,0.4,1])
+    cylinder(r=41,h=10,center=true,$fn=F2);
+    translate([0,-1,0])
+    scale([1.5,0.4,1])
+    cylinder(r=39,h=11,center=true,$fn=F2);
+    
+    translate([-6,-20,0])
+    cube([104,40,12],center=true);
+    translate([45,-19,0])
+    cube([40,40,12],center=true);
+  }
+  
+}
+
 //======================================================================
 
 //~ translate([0,-12,0])
@@ -945,11 +1042,13 @@ translate([-xHold,0,-zCam]){
 //~ translate([0,0,0.1])
 //~ windowCamBack();
 
-windowCamBack2();
+//~ windowCamBack2();
 
 //~ windowCamPiBracket();
 
 //~ windowCamHolder();
+
+windowCamCurtain3();
 
 
 //~ }
