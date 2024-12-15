@@ -16,7 +16,7 @@ use <../Gears/gears.scad>
 use <../Parts/servo1.scad>
 use <../Parts/arm1.scad>
 
-panAngle=360-0;
+panAngle=360-45;
 
 // pan ring 
 zGear=4;
@@ -170,18 +170,22 @@ module camHolderA(){
       rotate([90,0,0])
       worm_gear(modul=1, tooth_number=50, thread_starts=1, width=3, length=24, worm_bore=0, gear_bore=0, pressure_angle=20, lead_angle=10, optimized=0, together_built=1, show_spur=1, show_worm=0);
 
-      translate([0,0,zPcb+10])
+      translate([0,0,zPcb+10+2])
       rotate([90,0,0])
-      cylinder(r=20,h=40,center=true,$fn=F2);
+      cylinder(r=22,h=40,center=true,$fn=F2);
 
     }
     // small cut for camera board edge
-      translate([-2,5,zPcb+1])
-      cube([26,20,5],center=true);
+    translate([-2,5,zPcb+1.75])
+    cube([26,20,6],center=true);
 
     // pivot gear side
     translate([0,15,-4.5])
     rotate([90,0,0])
+    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
+    // pivot offside
+    translate([0,-14.5,-4.5])
+    rotate([-90,0,0])
     cylinder(r1=2.5,r2=2,h=3,$fn=F2);
   }
 
@@ -191,9 +195,10 @@ module camHolderA(){
       translate([0,-13.5,-4.5])
       rotate([90,0,0])
       cylinder(r=5,h=2,$fn=F2,center=true);
-      translate([0,0,zPcb+10])
+      
+      translate([0,0,zPcb+10+2])
       rotate([90,0,0])
-      cylinder(r=20,h=40,center=true,$fn=F2);
+      cylinder(r=22,h=40,center=true,$fn=F2);
     }
     // pivot offside
     translate([0,-14.5,-4.5])
@@ -207,9 +212,9 @@ module camHolderA(){
     intersection(){
       translate([0,0,zPcb-5.75])
       cube([34,25,9],center=true);
-      translate([0,0,zPcb+10])
+      translate([0,0,zPcb+10+2])
       rotate([90,0,0])
-      cylinder(r=20,h=30,center=true,$fn=F2);
+      cylinder(r=22,h=30,center=true,$fn=F2);
     }
     // lens box cut  
     translate([0,0,zPcb-2])
@@ -223,11 +228,11 @@ module camHolderA(){
     cylinder(r=5.5,h=40,$fn=8);
 
     // pivot gear side
-    translate([0,14.5,0])
+    translate([0,14.5,-4.5])
     rotate([90,0,0])
     cylinder(r1=2.5,r2=2,h=3,$fn=F2);
     // pivot offside
-    translate([0,-14.5,0])
+    translate([0,-14.5,-4.5])
     rotate([-90,0,0])
     cylinder(r1=2.5,r2=2,h=3,$fn=F2);
   }
@@ -422,15 +427,8 @@ module camHolderC_OLD(){
     rail(tol=0.2);
   }
 
-  // usb power block
-  if(showUsb==1){
-    rotate([0,0,45])    
-    translate([-8.5,-15.5,-76])    
-    #cube([28.3,18.5,35],center=true);
-
-  }
-
 }
+
 //--------------------------------------------------------------------------------
 module camHolderC(){
 
@@ -479,6 +477,13 @@ module camHolderC(){
     translate([-4,6,18.5])
     cube([17,4,33],center=true);
   }
+  translate([xTilt,yTilt,zPan-77])
+  rotate([0,0,45])
+  rotate([0,90,0])
+  translate([-35,5,-32])
+  rotate([0,0,-90])
+  rounder(r=2,h=19.5,f=F2);
+  
   
   // capture base of Worm
   translate([xTilt,yTilt,zPan-39])
@@ -533,10 +538,10 @@ module camHolderC(){
     }
   
   }
-    translate([xTilt,yTilt,zPan-77])
-    rotate([0,0,45])
-    translate([-30,7,-2])
-    rounder(r=4,h=38,f=F2);
+  translate([xTilt,yTilt,zPan-77])
+  rotate([0,0,45])
+  translate([-30,7,-2])
+  rounder(r=4,h=38,f=F2);
   
   // arm to gearside pivot
   hull(){
@@ -582,7 +587,7 @@ module camHolderC(){
   if(showUsb==1){
     rotate([0,0,45])    
     translate([-8.5,-15.5,-76])    
-    #cube([28.3,18.5,35],center=true);
+    cube([28.3,18.5,35],center=true);
 
   }
 
@@ -1711,7 +1716,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=1;
+Design=0;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1723,13 +1728,13 @@ if(Design==1){
 
 union(){
 
-  //~ // usb power block
-  //~ if(showUsb==1){
-    //~ rotate([0,0,45])    
-    //~ translate([-8.5,-13,-76])    
-    //~ cube([28.3,18.5,35],center=true);
+  // usb power block
+  if(showUsb==1){
+    rotate([0,0,45])    
+    translate([-8.5,-13,-76])    
+    cube([28.3,18.5,35],center=true);
 
-  //~ }
+  }
 
 
   //~ translate([0,0,1.5])
@@ -1745,22 +1750,24 @@ union(){
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  //~ panPost(bearing=0);
-  //~ panServo();
-  //~ panIdler();
+  panPost(bearing=0);
+  panServo();
+  panIdler();
 
-  //~ tiltServo();
+  tiltServo();
 
   translate([0,0,2])
   camera();
   translate([0,0,2])
   camHolderC();
   
-  //~ chassis();
-  //~ rail();
-  //~ rail2();
-    
-  //~ shell();
+  chassis();
+  rail();
+  rail2();
+
+  // test for twist-lock clearance:
+  //~ rotate([0,0,15])
+  shell();
   //~ lid();
   
   //~ translate([0,0,-30])
@@ -1769,13 +1776,13 @@ union(){
   //~ shellA2();
   //~ shellB();
 
-  //~ if(showPi==1){
-    //~ translate([0,0,0])
-    //~ rotate([0,0,45])
-    //~ translate([-22,-15,-89])
-    //~ rotate([0,-90,0])
-    //~ pi0();
-  //~ }
+  if(showPi==1){
+    translate([0,0,0])
+    rotate([0,0,45])
+    translate([-22,-15,-89])
+    rotate([0,-90,0])
+    pi0();
+  }
       
 } // end of pan -----------------
 
@@ -1815,7 +1822,7 @@ if(Design==0){
   
 //~ camHolderA();
 //~ camHolderB();
-//~ camHolderC();
+camHolderC();
 //~ servoGearA();
 //~ servoGearB();
 //~ servoGearC();
@@ -1837,7 +1844,7 @@ if(Design==0){
 //~ shellA();
 //~ shellA1();
 //~ shellA2();
-shellB();
+//~ shellB();
 
 
   //~ // support blocker for wallMount2
