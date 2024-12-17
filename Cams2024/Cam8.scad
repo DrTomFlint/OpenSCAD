@@ -67,95 +67,11 @@ showDr=0;       // approx model
 showSolar=0;    // approx model
 showGlass=0;
 
-showPi=1;
+showPi=0;
 showCam=1;
 
 Version="E";
 CamID="4";
-
-//----------------------------------------------------------------------
-// camera and spur gear with pivots
-module camHolderA_OLD(){
-      
-  // gear
-  difference(){
-    intersection(){
-      $fn=99;
-      translate([0,13.5,21])
-      rotate([0,-90,0])       // rotate to get worm behind the cam
-      rotate([90,0,0])
-      worm_gear(modul=1, tooth_number=42, thread_starts=1, width=2, length=24, worm_bore=0, gear_bore=0, pressure_angle=20, lead_angle=10, optimized=0, together_built=1, show_spur=1, show_worm=0);
-
-      translate([0,0,zPcb+10])
-      rotate([90,0,0])
-      cylinder(r=20,h=40,center=true,$fn=F2);
-    }
-    // pivot gear side
-    translate([0,14.5,0])
-    rotate([90,0,0])
-    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
-  }
-
-  // offside round
-  difference(){
-    intersection(){
-      translate([0,-13.5,0])
-      rotate([90,0,0])
-      cylinder(r=5,h=2,$fn=F2,center=true);
-      translate([0,0,zPcb+10])
-      rotate([90,0,0])
-      cylinder(r=20,h=40,center=true,$fn=F2);
-    }
-    // pivot offside
-    translate([0,-14.5,0])
-    rotate([-90,0,0])
-    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
-  }  
-      
-  // cam lid
-  difference(){    
-    // boss
-    intersection(){
-      translate([0,0,zPcb-5.75])
-      cube([34,25,9],center=true);
-      translate([0,0,zPcb+10])
-      rotate([90,0,0])
-      cylinder(r=20,h=30,center=true,$fn=F2);
-    }
-    // lens box cut  
-    translate([0,0,zPcb-2])
-    cube([13,13,10],center=true);
-    translate([0,0,zPcb-2])
-    cube([26,16,4],center=true);
-
-    // lens cut
-    translate([0,0,-20+zPcb])
-    rotate([0,0,360/16])
-    cylinder(r=5.5,h=40,$fn=8);
-
-    // pivot gear side
-    translate([0,14.5,0])
-    rotate([90,0,0])
-    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
-    // pivot offside
-    translate([0,-14.5,0])
-    rotate([-90,0,0])
-    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
-  }
-    
-  // mounting posts
-  translate([0-2.5,0,-3+zPcb])
-  rotate([0,0,90]){
-    translate([10.5,9.8,0])
-    cylinder(r1=1,r2=0.8,h=4,$fn=22);
-    translate([-10.5,9.8,0])
-    cylinder(r1=1,r2=0.8,h=4,$fn=22);
-    translate([10.5,9.8-12.5,0])
-    cylinder(r1=1,r2=0.8,h=4,$fn=22);
-    translate([-10.5,9.8-12.5,0])
-    cylinder(r1=1,r2=0.8,h=4,$fn=22);
-  }
-}
 
 //----------------------------------------------------------------------
 // camera and spur gear with pivots
@@ -285,148 +201,6 @@ module camHolderB(){
     cylinder(r=1.7,h=10,$fn=F2);
 
   }
-}
-
-//--------------------------------------------------------------------------------
-module camHolderC_OLD(){
-
-  // pivot offside
-  translate([0,0,zPan])
-  rotate([0,0,45])
-  translate([-15.75,13.5,-61])
-  rotate([0,90,0]){
-    cylinder(r1=2.5,r2=2,h=3,$fn=F2);
-    translate([0,0,-2+0.1])
-    cylinder(r=4,h=2,$fn=F2);
-  }
-  
-  // pivot gearside
-  translate([0,0,zPan])
-  rotate([0,0,45])
-  translate([10.25,13.5,-61])
-  rotate([0,90,0]){
-    // pin
-    cylinder(r2=2.5,r1=2,h=3,$fn=F2);
-    // washer
-    translate([0,0,3-0.1])
-    cylinder(r=4,h=2,$fn=F2);
-  }
-    
-  // capture top end of Worm
-  translate([xTilt,yTilt,zPan-77])
-  difference(){
-    rotate([0,0,45])
-    translate([2,-1,0])
-    cube([16,16,4],center=true);
-    translate([0,0,2])
-    cylinder(r=4+0.2,h=6,center=true,$fn=F2);
-  }
-  
-  // front wall
-  difference(){
-    translate([xTilt,yTilt,zPan-77])
-    rotate([0,0,45])
-    translate([-18,6,17])
-    cube([28,2,38],center=true);
-    
-    translate([xTilt,yTilt,zPan-77])
-    rotate([0,0,45])
-    translate([-13.5,6,12])
-    cube([17,4,2],center=true);
-  }
-  
-  // capture base of Worm
-  translate([xTilt,yTilt,zPan-39])
-  difference(){
-    rotate([0,0,45])
-    union(){
-      translate([-11,-3,0])
-      cube([42,20,6],center=true);
-
-      // back panel
-      rotate([0,0,-90])
-      translate([8,2,-18.5])
-      cube([2,16,43],center=true);
-    }
-    // worm
-    translate([0,0,2])
-    cylinder(r=4+0.2,h=12,center=true,$fn=F2);
-
-    // Gear C collar
-    translate([0,0,2])
-    cylinder(r=8+0.2,h=3,center=true,$fn=F2);
-    
-    // M3 from Gear B
-    translate([-xIdler*cos(45),-xIdler*cos(45),0])
-    cylinder(r=1.7,h=10,center=true,$fn=33);
-    
-    // version number
-    rotate([0,0,45+180])
-    translate([-2,8.5,-20])
-    rotate([-90,0,0])
-    linear_extrude(height=0.605)
-    text(Version, font = "Open Sans:style=Bold", size=10,halign="center",valign="center",spacing=1.1);
-
-    
-    
-  }
-
-  // arm to offside pivot, thin to flex!
-  hull(){
-    translate([xTilt,yTilt,zPan-77])
-    rotate([0,0,45])
-    translate([-31,6,17])
-    cube([2,2,38],center=true);
-    
-    // pivot offside
-    translate([0,0,zPan])
-    rotate([0,0,45])
-    translate([-15.75,13.5,-61])
-    rotate([0,90,0])
-    translate([0,0,-3])
-    cylinder(r=4,h=2,$fn=F2);
-  }
-    translate([xTilt,yTilt,zPan-77])
-    rotate([0,0,45])
-    translate([-30,7,-2])
-    rounder(r=4,h=38,f=F2);
-  
-  // arm to gearside pivot
-  hull(){
-    translate([xTilt,yTilt,zPan-58.5])
-    rotate([0,0,-45])
-    translate([-5,8,-0.5])
-    cube([4,4,40],center=true);
-
-    // pivot gearside
-    translate([0,0,zPan])
-    rotate([0,0,45])
-    translate([10.25,13.5,-61])
-    rotate([0,90,0])
-    translate([0,0,4])
-    cylinder(r=4,h=2,$fn=F2);
-  }
-  translate([xTilt,yTilt,zPan-58.5])
-  rotate([0,0,-45])
-  translate([0,8,0])
-  cube([14,4,34],center=true);
-  
-  // Tab back side
-  difference(){
-    hull(){
-      translate([0,0,zPan-14])
-      rotate([0,0,twist])
-      translate([1,-23,-25])
-      cube([42,1,6],center=true);
-
-      translate([0,0,zPan-14])
-      rotate([0,0,twist])
-      translate([0,-32,-25])
-      cube([18,1,6],center=true);
-    }
-    rail(tol=0.2);
-  }
-
 }
 
 //--------------------------------------------------------------------------------
@@ -715,9 +489,6 @@ $fn=F2;
     cylinder(r=1.8,h=14,$fn=F2);
     
   }
-
-
-
 }
       
 //--------------------------------------------------------------------------------
@@ -1138,7 +909,7 @@ module panPost(bearing=1){
 }
 
 //----------------------------------------------------------------------------------------------------
-module arm4(bearing=1){
+module arm4_OLD(bearing=1){
 
 
   // keyway
@@ -1256,6 +1027,229 @@ module arm4(bearing=1){
   }
 
 }
+
+//----------------------------------------------------------------------------------------------------
+module arm4(bearing=0){
+
+
+  // keyway
+  difference(){
+    translate([0,-12,7])
+    cube([4,6,3],center=true);
+    translate([0,0,-1])
+    cylinder(r=11.2,h=9+2,$fn=F2);
+  }
+  
+  // surround the bearing
+  translate([0,0,8.1])
+  difference(){
+    cylinder(r1=13+4,r2=13,h=5,$fn=F2);
+    translate([0,0,-1])
+    cylinder(r1=11.2,r2=11.0,h=5+2,$fn=F2);
+  }
+
+  // arm below
+  translate([0,0,12.1])
+  difference(){
+    union(){
+      cylinder(r=13,h=5,$fn=F2);
+      hull(){
+        cylinder(r=5,h=5,$fn=F2);
+        translate([40,59,2.5])
+        cube([10,0.1,5],center=true);
+      }
+      hull(){
+        cylinder(r=5,h=5,$fn=F2);
+        translate([-40,59,2.5])
+        cube([10,0.1,5],center=true);
+      }
+      translate([0,15,2.5])
+      cube([16,6,5],center=true);
+    }
+    // make hole large enough to use a screwdriver to remove the bearing
+    translate([0,0,-1])
+    cylinder(r=7.5,h=5+2,$fn=F2);
+
+    // cut for lower beam
+    hull(){
+      translate([0,12,16-12.1])
+      rotate([0,90,0])
+      cylinder(r=2+0.15,h=10+0.4,$fn=F2,center=true);
+      translate([0,59,2.5+12.5+49.6-12.1])
+      cube([10.4,0.1,5.4],center=true);
+    }
+
+    // version number
+    translate([30,44,0.6])
+    rotate([0,180,0])
+    linear_extrude(height=0.605)
+    text(Version, font = "Open Sans:style=Bold", size=5,halign="center",valign="center",spacing=1.1);
+    
+  }
+      
+  // feet
+  translate([40,59,2.5+12.1])
+  rotate([-90,0,0])
+  linear_extrude(height=5,scale=[1.5,1])
+  square([10,5],center=true);
+  
+  translate([-40,59,2.5+12.1])
+  rotate([-90,0,0])
+  linear_extrude(height=5,scale=[1.5,1])
+  square([10,5],center=true);
+  
+
+  // center bearing
+  if(bearing==1){
+    translate([0,0,5.1])
+    difference(){
+      cylinder(r=11,h=7,$fn=F2);
+      translate([0,0,-1])
+      cylinder(r=4,h=7+2,$fn=F2);
+    }
+  }
+
+}
+
+//----------------------------------------------------------------------------------------------------
+module arm5(bearing=1){
+
+  // foot
+  translate([0,59,2.5+12.1+50])
+  rotate([-90,0,0])
+  linear_extrude(height=5,scale=[1.5,1])
+  square([10,5],center=true);
+
+  // beam
+  hull(){
+    translate([0,12,16])
+    rotate([0,90,0])
+    cylinder(r=2,h=10,$fn=F2,center=true);
+    translate([0,59,2.5+12.5+49.6])
+    cube([10,0.1,5],center=true);
+  }
+
+}
+
+//----------------------------------------------------------------------------------------------------
+module plate(){
+
+  // low foot
+  difference(){
+    translate([0,63,2.5+12.1+50+1])
+    cube([20,8,7],center=true);
+
+    translate([0,59,2.5+12.1+50])
+    rotate([-90,0,0])
+    linear_extrude(height=5.3,scale=[1.5,1])
+    square([10.3,5.3],center=true);
+  }
+
+
+  // upper feet
+  difference(){
+    translate([40,63,2.5+12.1+0+1])
+    cube([20,8,7],center=true);
+
+    translate([40,59,2.5+12.1+0])
+    rotate([-90,0,0])
+    linear_extrude(height=5.3,scale=[1.5,1])
+    square([10.3,5.3],center=true);
+  }
+
+  difference(){
+    translate([-40,63,2.5+12.1+0+1])
+    cube([20,8,7],center=true);
+
+    translate([-40,59,2.5+12.1+0])
+    rotate([-90,0,0])
+    linear_extrude(height=5.3,scale=[1.5,1])
+    square([10.3,5.3],center=true);
+  }
+
+  // plate
+  difference(){
+    union(){
+      hull(){
+        translate([0,66,2.5+12.1+50+1])
+        cube([20,3,7],center=true);
+        
+        translate([0,66,2.5+12.1+50+1+8])
+        rotate([90,0,0])
+        cylinder(r=5,h=3,center=true,$fn=F2);
+        
+        translate([40,66,2.5+12.1+0+1])
+        cube([20,3,7],center=true);
+        translate([-40,66,2.5+12.1+0+1])
+        cube([20,3,7],center=true);
+      }
+      
+      // reinforce the mounting holes
+      translate([0,64,2.5+12.1+59])
+      rotate([-90,0,0])
+      cylinder(r1=4.5,r2=5,h=2,center=true,$fn=F2);
+      
+      translate([36,64,2.5+12.1+10])
+      rotate([-90,0,0])
+      cylinder(r1=4.5,r2=5,h=2,center=true,$fn=F2);
+        
+      translate([-36,64,2.5+12.1+10])
+      rotate([-90,0,0])
+      cylinder(r1=4.5,r2=5,h=2,center=true,$fn=F2);
+      
+    }
+    // cut mounting holes
+    translate([0,66,2.5+12.1+59])
+    rotate([-90,0,0])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+    
+    translate([36,66,2.5+12.1+10])
+    rotate([-90,0,0])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+      
+    translate([-36,66,2.5+12.1+10])
+    rotate([-90,0,0])
+    cylinder(r=2,h=20,center=true,$fn=F2);
+      
+    // countersink mounting holes
+    translate([0,64,2.5+12.1+59])
+    rotate([-90,0,0])
+    cylinder(r1=4.2,r2=2,h=2,center=true,$fn=F2);
+    
+    translate([36,64,2.5+12.1+10])
+    rotate([-90,0,0])
+    cylinder(r1=4.2,r2=2,h=2,center=true,$fn=F2);
+      
+    translate([-36,64,2.5+12.1+10])
+    rotate([-90,0,0])
+    cylinder(r1=4.2,r2=2,h=2,center=true,$fn=F2);
+      
+      
+    // material reduction center cut
+    hull(){
+      translate([0,66,2.5+12.1+38])
+      rotate([-90,0,0])
+      cylinder(r=6,h=20,center=true,$fn=F2);
+      
+      translate([20,66,2.5+12.1+12])
+      rotate([-90,0,0])
+      cylinder(r=6,h=20,center=true,$fn=F2);
+        
+      translate([-20,66,2.5+12.1+12])
+      rotate([-90,0,0])
+      cylinder(r=6,h=20,center=true,$fn=F2);
+    }
+
+    // version number
+    #translate([25,64.3,40])
+    rotate([90,0,0])
+    rotate([0,180,0])
+    linear_extrude(height=0.605)
+    text(Version, font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+
+  }    
+}
+
 
 //----------------------------------------------------------------------------------------------------
 module panServo(){
@@ -1716,7 +1710,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=0;
+Design=1;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1737,8 +1731,12 @@ union(){
   }
 
 
+  translate([0,0,1.5])
+  arm4();
   //~ translate([0,0,1.5])
-  //~ arm4();
+  //~ arm5();
+  //~ translate([0,0,1.5])
+  //~ plate();
 
   //~ translate([0,0,1.5])
   //~ panRing();
@@ -1750,24 +1748,24 @@ union(){
   rotate([0,0,panAngle])
   translate([0,0,0]){
 
-  panPost(bearing=0);
-  panServo();
-  panIdler();
+  //~ panPost(bearing=0);
+  //~ panServo();
+  //~ panIdler();
 
-  tiltServo();
+  //~ tiltServo();
 
-  translate([0,0,2])
-  camera();
-  translate([0,0,2])
-  camHolderC();
+  //~ translate([0,0,2])
+  //~ camera();
+  //~ translate([0,0,2])
+  //~ camHolderC();
   
-  chassis();
-  rail();
-  rail2();
+  //~ chassis();
+  //~ rail();
+  //~ rail2();
 
   // test for twist-lock clearance:
   //~ rotate([0,0,15])
-  shell();
+  //~ shell();
   //~ lid();
   
   //~ translate([0,0,-30])

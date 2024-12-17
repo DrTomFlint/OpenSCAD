@@ -903,7 +903,7 @@ ang1=360/sides;
 //=====================================================================
 
 
-if(1){
+if(0){
 //  lower=5;    // for s9
   //lower=6.5;    // sB 5
   //lower=7;      // sB 6
@@ -1013,7 +1013,7 @@ if(0){
  }
 }
 
-//s7();
+s7();
 
 
 //color("cyan")
@@ -1072,7 +1072,7 @@ if(0){
                     bigTrayFoot2();
                 }
             }
-            if(1){
+            if(0){
                 color("silver",alpha=0.3)
                 bigBox();
                 color("silver",alpha=0.3)
