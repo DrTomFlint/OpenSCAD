@@ -44,6 +44,11 @@ in3 = 1.5;      // inset of tape from edge
 lip3 = 2;
 in3b = 6.5;     // inset of center bore
 
+
+F1=299;
+F2=99;
+
+
 //----------------------------------------------------------------------------------
 // this is for the black light strip
 module tape(tol=0,extra=0){
@@ -392,7 +397,108 @@ module basec(){
   }
 }
 
+
+//-----------------------------------------------------------------------------------
+// Should fit entirely in the lid of the midsize boxes 185 x 135 x 20
+// 10 leds on white backed strip, use the slightly yellow looking leds
+// the clear ones are black light
+module midsize(){
+  
+  difference(){
+    linear_extrude(height=20)
+    offset(r=2,$fn=F2)
+    square([185-4,135-4],center=true);
+    
+    // main cut, bevel to allow leds to show
+    translate([0,60,-1])
+    rotate([0,0,180])
+    linear_extrude(height=20+2,scale=[1,1.4])
+    translate([-(185-16)/2,0])
+    offset(r=2,$fn=F2)
+    square([185-4-12,135-4-80]);
+    
+    // second cut to reduce thickness of bottom section
+    translate([0,-60,12])
+    linear_extrude(height=8.1)
+    translate([-(185-16)/2,0])
+    offset(r=2,$fn=F2)
+    square([185-4-12,135-4-60]);
+    
+    // battery
+    translate([0,-30,4.9])
+    cube([62,40,10],center=true);
+    
+    // switch
+    translate([65,-35,-8]){
+      translate([0,0,18])
+      rotate([0,0,90])
+      rotate([0,0,0])
+      switch4(pos=1,holes=0,tol=0.25);
+      // clearance for toggle
+      translate([0,0,18])
+      rotate([0,0,90])
+      cube([11.2+0.2,5.3+0.2,20],center=true);
+      // backside cut
+      translate([0,0,8])
+      rotate([0,0,90])
+      cube([20,5.3+0.2,20],center=true);
+    }
+
+
+    // sparkfun charger
+    translate([81,-30,-0.1])
+    linear_extrude(height=7.3)
+    offset(r=0.5,$fn=55)
+    square([20.3,32.2],center=true);
+    // cut for the USB port
+    translate([90,-30,-0.1])
+    linear_extrude(height=7.3)
+    offset(r=0.5,$fn=55)
+    square([10,32.5],center=true);
+    // cut for the switch wires
+    translate([70,-35,-0.1])
+    linear_extrude(height=7.3)
+    offset(r=0.5,$fn=55)
+    square([10,16],center=true);
+
+    // cut for the battery connector
+    translate([78,-10,-0.1])
+    linear_extrude(height=7.3)
+    offset(r=0.5,$fn=55)
+    square([16,16],center=true);
+
+    // cut for the battery wires
+    translate([50,-19,-0.1+4])
+    rotate([0,0,-60])
+    cube([8,50,8],center=true);
+        
+    // cuts for led strip
+    for(i=[0:9]){
+      translate([i*x0-7/2*x0-17,65,9]){
+        rotate([0,0,180])
+        tapeb(tol=0.2,extra=1);
+      }
+    }
+    translate([0,67,9])
+    cube([200,5,14],center=true);
+    // wires from strip to charger board
+    translate([91,0,9])
+    cube([5,200,14],center=true);
+    
+    // text
+    translate([-15,-32,11.4])
+    rotate([0,0,0])
+    linear_extrude(height=0.605)
+    text("Flint's Finest", font = "Open Sans:style=Bold", size=13,halign="center",valign="center",spacing=1.2);
+    
+  }
+  
+}
+
 //===================================================================================  
+
+
+midsize();
 
 //ring();
 //base();
@@ -412,8 +518,8 @@ if(0){
 //ringb();
 //baseb();
 
-ringc();
-//basec();
+//~ ringc();
+//~ basec();
 
 if(0){
   // switch
