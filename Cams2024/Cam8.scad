@@ -462,6 +462,46 @@ module servoGearC(){
 }
 
 //--------------------------------------------------------------------------------
+module servoGearD(){
+
+  // extended version of GearC for the tilt servo, adds 2 mm height
+  difference(){
+    union(){
+      translate([0,0,9.5])
+      cylinder(r=8,h=2.5+2);
+      // output gear
+      $fn=99;
+      intersection(){
+        translate([0,0,4.5])
+        rotate([0,0,180/20])
+        spur_gear (modul=1, tooth_number=25, width=5, bore=3, pressure_angle=20, helix_angle=0, optimized=false);
+        translate([0,0,4.0])
+        cylinder(r1=11,r2=17,h=6);
+      }
+    }
+
+    // cut for output spline
+    translate([0,0,8+2])
+    cylinder(r=6+0.15,h=4.1,$fn=6);
+    // center bore for M3
+    cylinder(r=1.7,h=12,$fn=F2);
+  }
+  
+}
+
+//--------------------------------------------------------------------------------
+module servoWasher(){
+
+  // top washer
+  translate([-xIdler,0,9.5])
+  
+  difference(){
+    cylinder(r=4.5,h=2.25,$fn=F2);
+    cylinder(r=1.7,h=2.5,$fn=F2);
+  }
+  
+}
+//--------------------------------------------------------------------------------
 module servoSpline2(){
 
 $fn=F2;
@@ -555,13 +595,22 @@ module servoGearFull(axle=1){
 
   servoGearA(bolt=0);
   servoGearB();
-  servoGearC();
-  //~ servoGearD();
+  
+  // tilt servo
+  if(axle==0){
+    servoGearD();
+    translate([0,0,0])
+    #servoWasher();
+  }
+  
+  // not used
   if(axle==1){
     servoSpline();
     servoShaft();
   }
+  // pan servo
   if(axle==2){
+    servoGearC();
     servoSpline2();
   }
 
@@ -1045,7 +1094,7 @@ module arm4block(){
     translate([0,0,12.1-1])
     cylinder(r=14,h=8,$fn=F2,center=true);
     translate([0,0,12.1-8])
-    #cylinder(r=18,h=8,$fn=F2,center=true);
+    cylinder(r=18,h=8,$fn=F2,center=true);
     // cut for the bottom vent
     translate([0,25,12.1-1])
     cube([20,15,40],center=true);
@@ -1274,7 +1323,6 @@ module plate(){
   }    
 }
 
-
 //----------------------------------------------------------------------------------------------------
 module panServo(){
 
@@ -1352,7 +1400,7 @@ module camera(){
 
     // rotation for elevation:
     xCam=0;
-    el=0;
+    el=20;
     translate([xCam,0,0])
     rotate([0,-el,0])
     translate([-xCam,0,0]){
@@ -1734,14 +1782,14 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=0;
+Design=1;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
 if(Design==1){
   
 //~ intersection(){
-//~ difference(){
+difference(){
 
 
 union(){
@@ -1755,18 +1803,18 @@ union(){
   }
 
 
-  translate([0,0,1.5])
-  arm4();
-  translate([0,0,1.5])
-  arm4block();
+  //~ translate([0,0,1.5])
+  //~ arm4();
+  //~ translate([0,0,1.5])
+  //~ arm4block();
   
   //~ translate([0,0,1.5])
   //~ arm5();
   //~ translate([0,0,1.5])
   //~ plate();
 
-  translate([0,0,1.5])
-  panRing();
+  //~ translate([0,0,1.5])
+  //~ panRing();
 
   //~ translate([0,0,-0.1])
   //~ panLock();
@@ -1779,16 +1827,16 @@ union(){
   //~ panServo();
   //~ panIdler();
 
-  //~ tiltServo();
+  tiltServo();
 
-  //~ translate([0,0,2])
-  //~ camera();
-  //~ translate([0,0,2])
-  //~ camHolderC();
+  translate([0,0,0])
+  camera();
+  translate([0,0,0])
+  camHolderC();
   
-  //~ chassis();
-  //~ rail();
-  //~ rail2();
+  chassis();
+  rail();
+  rail2();
 
   // test for twist-lock clearance:
   //~ rotate([0,0,15])
@@ -1831,12 +1879,12 @@ union(){
   //~ translate([0,-100,0])
   //~ cube([240,200,300],center=true);
 
-  //~ // cut across rotational axis
-  //~ rotate([0,0,90])
-  //~ translate([0,-100,0])
-  //~ cube([240,200,300],center=true);
+  // cut across rotational axis
+  rotate([0,0,-45])
+  translate([0,-100,0])
+  cube([240,200,300],center=true);
 
-//~ } // end diff or intersection
+} // end diff or intersection
 
 } // end of design list
 
@@ -1851,6 +1899,8 @@ if(Design==0){
 //~ servoGearA();
 //~ servoGearB();
 //~ servoGearC();
+servoGearD();
+//~ servoWasher();
 //~ servoSpline2();
 //~ panPostA(bearing=0);
 //~ panPostB(bearing=0);
@@ -1859,7 +1909,7 @@ if(Design==0){
 //~ panLock();
 
 //~ arm4(bearing=0);
-arm4block();
+//~ arm4block();
 
 //~ chassisA();
 //~ chassisB();

@@ -68,8 +68,8 @@
 
 
 // TF TEST increase number of segments by 4x makes smoother threads
-//~ function segments (diameter) = min (50, max (ceil (diameter*6), 25));
-function segments (diameter) = min (50*4, max (ceil (diameter*6*4), 25*4));
+function segments (diameter) = min (50, max (ceil (diameter*6), 25));
+//~ function segments (diameter) = min (50*4, max (ceil (diameter*6*4), 25*4));
 
 
 //~ // ----------------------------------------------------------------------------
