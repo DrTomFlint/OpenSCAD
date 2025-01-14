@@ -40,8 +40,8 @@ showUsb=0;
 showPi=1;
 showCam=0;
 
-showLeftWing=1;
-showRightWing=0;
+showLeftWing=0;
+showRightWing=1;
 
 //----------------------------------------------------------------------
 module windowCamLid(){
@@ -1028,7 +1028,7 @@ module windowCamCurtain3(){
   //~ cube([40,30,90],center=true);
 //~ }
 
-//~ windowCamBase();
+windowCamBase();
 
 //~ }
 
@@ -1048,7 +1048,7 @@ module windowCamCurtain3(){
 
 //~ windowCamHolder();
 
-windowCamCurtain3();
+//~ windowCamCurtain3();
 
 
 //~ }

@@ -1029,6 +1029,30 @@ module arm4_OLD(bearing=1){
 }
 
 //----------------------------------------------------------------------------------------------------
+module arm4block(){
+
+  difference(){
+    hull(){
+      translate([0,40,12.1-2.0])
+      cube([74,0.1,4.2],center=true);
+      translate([0,0,12.1-2.0])
+      cylinder(r=10,h=4.2,$fn=F2,center=true);
+    }
+    // cut to fit the arm
+    scale([1.02,1.02,1])
+    arm4();
+    // cut for center hole
+    translate([0,0,12.1-1])
+    cylinder(r=14,h=8,$fn=F2,center=true);
+    translate([0,0,12.1-8])
+    #cylinder(r=18,h=8,$fn=F2,center=true);
+    // cut for the bottom vent
+    translate([0,25,12.1-1])
+    cube([20,15,40],center=true);
+  }
+}
+
+//----------------------------------------------------------------------------------------------------
 module arm4(bearing=0){
 
 
@@ -1710,7 +1734,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=1;
+Design=0;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1733,13 +1757,16 @@ union(){
 
   translate([0,0,1.5])
   arm4();
+  translate([0,0,1.5])
+  arm4block();
+  
   //~ translate([0,0,1.5])
   //~ arm5();
   //~ translate([0,0,1.5])
   //~ plate();
 
-  //~ translate([0,0,1.5])
-  //~ panRing();
+  translate([0,0,1.5])
+  panRing();
 
   //~ translate([0,0,-0.1])
   //~ panLock();
@@ -1820,7 +1847,7 @@ if(Design==0){
   
 //~ camHolderA();
 //~ camHolderB();
-camHolderC();
+//~ camHolderC();
 //~ servoGearA();
 //~ servoGearB();
 //~ servoGearC();
@@ -1832,6 +1859,7 @@ camHolderC();
 //~ panLock();
 
 //~ arm4(bearing=0);
+arm4block();
 
 //~ chassisA();
 //~ chassisB();
