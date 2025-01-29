@@ -38,7 +38,9 @@ module pogo(tol=0){
 
   // barrel
   translate([0,0,2.5])
-  cylinder(r=1.52/2+tol,h=4.5,$fn=F2);
+  //~ cylinder(r=1.52/2+tol,h=4.5,$fn=F2);
+  // increase barrel cut to size of ring
+  cylinder(r=1.74/2+tol,h=4.5,$fn=F2);
   
   // ring
   translate([0,0,6])
