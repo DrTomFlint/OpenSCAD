@@ -37,11 +37,11 @@ module purpRim(){
   }
 
   // add hanger loop
-  translate([10,17,0])
+  translate([10,17.5,0])
   difference(){
-    cylinder(r=1.0,h=1,$fn=44);
+    cylinder(r=1.5,h=1,$fn=44);
     translate([0,0,-1])
-    cylinder(r=0.5,h=3,$fn=44);
+    cylinder(r=0.75,h=3,$fn=44);
   }
   
 }
@@ -322,10 +322,10 @@ tsize=3;
 
 //~ purp();
 
-//~ purpRim();
+purpRim();
 
-translate([8.5,17.5,0])
-crick();
+//~ translate([8.5,17.5,0])
+//~ crick();
 
 //~ translate([8.5,17.5,0])
 //~ crickRim();
@@ -333,8 +333,8 @@ crick();
 //~ translate([9,17.5,0])
 //~ wooder();
 
-//~ translate([9,17.5,0])
-//~ wooderRim();
+translate([9,17.5,0])
+wooderRim();
 
 
 
