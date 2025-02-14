@@ -1,8 +1,8 @@
 // dusatest1.scad
 // a series of test prints for calibrating the Prusa Dusa
 
-difference(){
-//intersection(){  
+//~ difference(){
+intersection(){  
 
   union(){
     // chimney
