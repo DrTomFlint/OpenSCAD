@@ -290,7 +290,7 @@ y2=y1/2;    // 165
     
     // power supply
     color("silver")
-    translate([x2-45,yoff-30,90])
+    translate([x2-45+20,yoff-30,90])
     rotate([0,0,180])
     ps();
     

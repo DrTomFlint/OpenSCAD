@@ -37,17 +37,21 @@ use <../Parts/camlid1.scad>
 
 // ---- positioning -------------------
 // Height of x rods, +46 hardstop, ~51 bed height, +290 hardstop
-High0=150;        
+High0=51;        
+//~ High0=150;        
+//~ High0=290;        
 
 // Left extruder position, +152, +398
-LeftX0=152+1; 
+//~ LeftX0=152+1; 
+LeftX0=152+100; 
 
 // Right extruder position, +82, +327
-RightX0=327;
+//~ RightX0=327;
+RightX0=327-100;
 
 // Bed position, +107 -107
-//~ Bed0=1;
-Bed0=105;
+Bed0=-107;
+//~ Bed0=105;
 
 // ----- visibility ------------------
 // Show frame
@@ -78,7 +82,7 @@ rightEon=1;
 ybed=1;    
 
 // Show cam1
-cam1on=0;
+cam1on=1;
 
 // ----- dimensions -------------------
 // Length front, back, top rail
@@ -118,8 +122,9 @@ zmotorD=19;
 // Offset x motors from center of towers
 xmot0=-2;
 
-// Height of the camera posts
-zcam = 290;
+// Location of the camera posts
+zcam = 30;
+xcam = 150;
 
 //----------------------------------
 // a module here to end the customizer section
@@ -233,8 +238,8 @@ frame(yoff=ytower,x1=x1,y1=y1,z1=z1);
 if(cam1on==1){
 //~ az=15;
 //~ el=140;
-az=18;
-el=130;
+az=-55;
+el=105;
 
   // PI4 camera hosts
   color("silver")
@@ -248,36 +253,38 @@ el=130;
   pi4case();
 
   // camera mounts
-  translate([-x2-15,y2+15,-15])
+  //~ translate([-x2-15,y2+15,-15])
+  translate([-xcam,-y1/2-15,45])
   rotate([0,0,0])
   tslot1(type=1,len=zcam);
   
-  translate([-x2-15,y2+15,zcam-15])
+  //~ translate([-x2-15,y2+15,zcam-15])
+  translate([-xcam,-y1/2-15,45+zcam])
   rotate([0,0,90])
   camfixed(az=az,el=el,sight=1);
     
-  translate([x2+15,y2+15,-15])
+  translate([xcam,-y1/2-15,45])
   rotate([0,0,0])
   tslot1(type=1,len=zcam);
-
-  translate([x2+15,y2+15,zcam-15])
+  
+  translate([xcam,-y1/2-15,45+zcam])
   rotate([0,0,-90])
   camfixed(az=-az, el=el, sight=1);
   
-  if(0){
+  if(1){
     // right side
-    translate([-x2-15,y2+15,zcam-15])
-    rotate([0,0,90])
+  translate([-xcam,-y1/2-15,45+zcam])
+  rotate([0,0,90])
 
     translate([-12.5,-5,20])
     rotate([0,0,-az])
-    rotate([el,0,0]){
+#    rotate([el,0,0]){
       cambase4(tol=0);
       camlid1();
     }
     // left side
-    translate([x2+15,y2+15,zcam-15])
-    rotate([0,0,-90])
+  translate([xcam,-y1/2-15,45+zcam])
+  rotate([0,0,-90])
 
     translate([-12.5,-5,20])
     rotate([0,0,az])

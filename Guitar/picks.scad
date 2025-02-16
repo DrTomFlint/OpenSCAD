@@ -9,6 +9,7 @@ use <../Parts/rounder.scad>
 use <../Trace/guitarPick.scad>
 use <../Trace/guitarPick2.scad>
 use <../Trace/guitarPick3.scad>
+use <../Trace/guitarPick4.scad>
 
 //-----------------------------------------------------------------------------------
 module thumb1(){
@@ -353,6 +354,87 @@ module flat3support(T=0.8,R=28,X=14,F=600){
   }
 }
 
+
+//-----------------------------------------------------------------------------------
+// 346 style
+module flat7blank(T=1.2,R=28,X=14,F=600,Z=0.2){
+
+    intersection(){
+      translate([X,0,0])
+      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+      rotate([0,0,120])
+      translate([X,0,0])
+      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+      rotate([0,0,240])
+      translate([X,0,0])
+      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+    }
+}
+
+//-----------------------------------------------------------------------------------
+// 346 style
+module flat7lower(T=1.2,R=28,X=14,F=600,Z=0.2){
+
+    difference(){
+      flat7blank(T=T,R=R,X=X,F=F,Z=Z);
+
+      translate([-1.5,2.0,0])
+      rotate([0,0,32])
+      scale([25,25,Z])
+      //~ guitarPick2();
+      //~ guitarPick3();
+      guitarPick4();
+    }
+}
+//-----------------------------------------------------------------------------------
+// 346 style
+module flat7upper(T=1.2,R=28,X=14,F=600,Z=0.2){
+
+//    difference(){
+      flat7blank(T=T,R=R,X=X,F=F,Z=Z);
+
+      translate([-1.5,2.0,-Z])
+      rotate([0,0,32])
+      scale([25,25,Z])
+      //~ guitarPick2();
+      //~ guitarPick3();
+      guitarPick4();
+//    }
+
+}
+
+//-----------------------------------------------------------------------------------
+// 346 style
+module flat7(T=1.2,R=28,X=14,F=600,Z=0.2){
+  
+  //~ flat7lower(T=T,R=R,X=X,F=F,Z=Zbottom);
+  flat7upper(T=T,R=R,X=X,F=F,Z=Ztop);
+  translate([0,0,T])
+  rotate([180,0,0])
+  flat7upper(T=T,R=R,X=X,F=F,Z=Ztop);
+    
+}
+//-----------------------------------------------------------------------------------
+module flat7support(T=0.8,R=28,X=14,F=200){
+
+  difference(){
+    translate([0,0,-0.2])
+    intersection(){
+      translate([X,0,0])
+      cylinder(r=R+1,h=T/2+0.2,$fn=F);
+      rotate([0,0,120])
+      translate([X,0,0])
+      cylinder(r=R+1,h=T/2+0.2,$fn=F);
+      rotate([0,0,240])
+      translate([X,0,0])
+      cylinder(r=R+1,h=T/2+0.2,$fn=F);
+    }
+    translate([0,0,0])
+    //~ flat7lower();
+    flat7upper();
+  }
+}
+
 //-----------------------------------------------------------------------------------
 // 346 style
 module flat4half(T=1.2,R=28,X=14,F=600,Z=0.4){
@@ -373,7 +455,8 @@ module flat4half(T=1.2,R=28,X=14,F=600,Z=0.4){
     rotate([0,0,32])
     scale([25,25,Z])
     //~ guitarPick2();
-    guitarPick3();
+    //~ guitarPick3();
+    guitarPick4();
     
   }
 }
@@ -535,14 +618,17 @@ Zbottom=0.2;
 
 //~ flat4half();
 //~ translate([0,0,0.3])
-//~ flat4();
+//~ flat4(T=0.8);
 //~ flat4support();
 
+
+//~ flat7(T=0.8);
+flat7support(T=0.8);
 
 //~ flat5half();
 //~ translate([0,0,0.3])
 //~ flat5();
 //~ flat5support();
-flat5support2();
+//~ flat5support2();
 
 //===================================================================================
