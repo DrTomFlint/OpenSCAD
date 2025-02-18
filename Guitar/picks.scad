@@ -10,6 +10,7 @@ use <../Trace/guitarPick.scad>
 use <../Trace/guitarPick2.scad>
 use <../Trace/guitarPick3.scad>
 use <../Trace/guitarPick4.scad>
+use <../Trace/guitarTear2.scad>
 
 //-----------------------------------------------------------------------------------
 module thumb1(){
@@ -159,201 +160,6 @@ difference(){
 }
 
 }
-//-----------------------------------------------------------------------------------
-// 346 style
-module flat1half(T=1.2,R=28,X=14,F=99){
-  
-  intersection(){
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    rotate([0,0,120])
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    rotate([0,0,240])
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-  }
-    
-}
-//-----------------------------------------------------------------------------------
-// soft center section of TPU
-module flat1soft(T=1.2,R=28,X=14,F=99){
-  
-    cylinder(r1=R/4,r2=1.02*R/4,h=T/3,$fn=7);
-    translate([0,0,2*T/3])
-    cylinder(r2=R/4,r1=1.02*R/4,h=T/3+0.2,$fn=7);
-
-}
-
-//-----------------------------------------------------------------------------------
-// 346 style
-module flat1(T=1.2,R=28,X=14,F=99){
-
-  difference(){
-    union(){
-      flat1half(T=T,R=R,X=X,F=F);
-      translate([0,0,T])
-      rotate([180,0,0])
-      flat1half(T=T,R=R,X=X,F=F);
-    }
-    flat1soft(T=T,R=R,X=X,F=F);
-  }
-
-}
-
-//-----------------------------------------------------------------------------------
-// 346 style
-module flat2half(T=1.2,R=28,X=14,F=99){
-  
-  intersection(){
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    rotate([0,0,120])
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    rotate([0,0,240])
-    translate([X,0,0])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-  }
-    
-}
-//-----------------------------------------------------------------------------------
-// soft center section of TPU
-module flat2soft(T=1.2,R=28,X=14,F=99){
-  
-    cylinder(r1=R/5,r2=1.03*R/5,h=T/3,$fn=7);
-    translate([0,0,2*T/3])
-    cylinder(r2=R/5,r1=1.03*R/5,h=T/3+0.2,$fn=7);
-
-}
-
-//-----------------------------------------------------------------------------------
-// 346 style
-module flat2(T=1.2,R=28,X=14,F=99){
-
-  difference(){
-    union(){
-      flat2half(T=T,R=R,X=X,F=F);
-      translate([0,0,T])
-      rotate([180,0,0])
-      flat2half(T=T,R=R,X=X,F=F);
-    }
-    flat2soft(T=T,R=R,X=X,F=F);
-  }
-
-}
-//-----------------------------------------------------------------------------------
-// teardrop style
-module tear1half(T=1.2,R=8,X=4.3,F=99){
-  
-  hull(){
-    translate([1.8*X,0,0])
-    scale([1,1.4,1])
-    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    rotate([0,0,110])
-    translate([X,0,0])
-    scale([0.8,2,1])
-    cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
-    rotate([0,0,-110])
-    translate([X,0,0])
-    scale([0.8,2,1])
-    cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
-  }
-    
-}
-//-----------------------------------------------------------------------------------
-// tear center section of TPU
-module tear1soft(T=1.2,R=8,X=4.5,F=99){
-  
-    translate([0.5*R,0,0])
-    cylinder(r1=0.75*R,r2=0.79*R,h=T/2,$fn=7);
-    translate([0.5*R,0,T/2])
-    cylinder(r2=0.75*R,r1=0.79*R,h=T/2,$fn=7);
-
-}
-
-//-----------------------------------------------------------------------------------
-// tear style
-module tear1(T=1.2,R=8,X=4.5,F=200){
-
-  difference(){
-    union(){
-      tear1half(T=T,R=R,X=X,F=F);
-      translate([0,0,T])
-      rotate([180,0,0])
-      tear1half(T=T,R=R,X=X,F=F);
-    }
-    tear1soft(T=T,R=R,X=X,F=F);
-  }
-
-}
-
-//-----------------------------------------------------------------------------------
-// 346 style
-module flat3half(T=1.2,R=28,X=14,F=600){
-  
-  difference(){
-    intersection(){
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    }
-  
-    // diamond grip is 0.2 mm high, match the first layer height
-    //~ dx=6;
-    //~ dy=6;  
-    //~ for(x=[-1:1]){
-      //~ for(y=[-1:1]){
-        //~ translate([dx*x,dy*y,0])
-        //~ rotate([0,0,90*(-1*(x+y)%2)+45])
-        //~ #cube([4,1,0.6],center=true);
-      //~ }
-    //~ }
-
-    translate([-1,2,0])
-    rotate([0,0,28])
-    scale([30,30,0.2])
-    guitarPick();
-    
-  }
-}
-
-//-----------------------------------------------------------------------------------
-// 346 style, pointy
-module flat3(T=1.2,R=28,X=14,F=600){
-
-  flat3half(T=T,R=R,X=X,F=F);
-  translate([0,0,T])
-  rotate([180,0,0])
-  flat3half(T=T,R=R,X=X,F=F);
-
-}
-//-----------------------------------------------------------------------------------
-// 346 style, pointy
-module flat3support(T=0.8,R=28,X=14,F=600){
-
-  difference(){
-    translate([0,0,0])
-    intersection(){
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-    }
-    translate([0,0,0])
-    flat3half();
-  }
-}
-
 
 //-----------------------------------------------------------------------------------
 // 346 style
@@ -436,199 +242,194 @@ module flat7support(T=0.8,R=28,X=14,F=200){
 }
 
 //-----------------------------------------------------------------------------------
-// 346 style
-module flat4half(T=1.2,R=28,X=14,F=600,Z=0.4){
+// teardrop style
+module tear2half(T=0.8,R=8,X=5.1,F=99,Z=0.2){
   
-  difference(){
-    intersection(){
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
-    }
-  
-    translate([-1.5,2.0,0])
-    rotate([0,0,32])
-    scale([25,25,Z])
-    //~ guitarPick2();
-    //~ guitarPick3();
-    guitarPick4();
+  hull(){
+    translate([1.45*X,0,0])
+    scale([0.95,1.4,1])
+    #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
     
+    rotate([0,0,113])
+    translate([X,0,0])
+    scale([0.7,1.95,1])
+    #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+    
+    rotate([0,0,-113])
+    translate([X,0,0])
+    scale([0.7,1.95,1])
+    cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
   }
+
+  translate([0,0,-Z])
+  rotate([0,0,0])
+  scale([23,23,Z])
+  guitarTear2();
+    
 }
-
 //-----------------------------------------------------------------------------------
-// 346 style, pointy
-module flat4(T=1.2,R=28,X=14,F=600){
+module tear2(T=0.8,R=8,X=5.1,F=99,Z=0.2){
 
-  flat4half(T=T,R=R,X=X,F=F,Z=Zbottom);
+  tear2half(T=T,R=R,X=X,F=F,Z=Zbottom);
   translate([0,0,T])
   rotate([180,0,0])
-  flat4half(T=T,R=R,X=X,F=F,Z=Ztop);
+  tear2half(T=T,R=R,X=X,F=F,Z=Ztop);
 
-}
-//-----------------------------------------------------------------------------------
-// 346 style, pointy
-module flat4support(T=0.8,R=28,X=14,F=200){
-
-  difference(){
-    translate([0,0,0])
-    intersection(){
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-    }
-    translate([0,0,0])
-    flat4half();
-  }
 }
 
 //-----------------------------------------------------------------------------------
-// 346 style
-module flat5half(T=1.2,R=28,X=14,F=600,Z=0.2){
-
-roff=4;
-Tedge=0.1;
-Redge=0.1;
+// teardrop style
+module tear2support(T=0.8,R=8,X=5.2,F=99,Z=0.2){
   
   difference(){
-    intersection(){
-      translate([X,0,0])
-      cylinder(r1=R-roff,r2=1.02*R,h=T/2-Tedge,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r1=R-roff,r2=1.02*R,h=T/2-Tedge,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r1=R-roff,r2=1.02*R,h=T/2-Tedge,$fn=F);
-    }
-  
-    translate([-1.5,2.0,0])
-    rotate([0,0,32])
-    scale([20,20,Z])
-    //~ guitarPick2();
-    guitarPick3();
+    translate([0,0,-Z])
+    scale([1.05,1.05,1])
+      hull(){
+        translate([1.45*X,0,0])
+        scale([0.95,1.4,1])
+        #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+        
+        rotate([0,0,113])
+        translate([X,0,0])
+        scale([0.7,1.95,1])
+        #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+        
+        rotate([0,0,-113])
+        translate([X,0,0])
+        scale([0.7,1.95,1])
+        cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+      }
     
+    tear2half();
   }
-  
-  // thickness at edge
-    intersection(){
-      translate([X,0,T/2-Tedge])
-      cylinder(r1=1.02*R,r2=1.02*R+Redge,h=Tedge,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,T/2-Tedge])
-      cylinder(r1=1.02*R,r2=1.02*R+Redge,h=Tedge,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,T/2-Tedge])
-      cylinder(r1=1.02*R,r2=1.02*R+Redge,h=Tedge,$fn=F);
-    }
-
 }
-
 //-----------------------------------------------------------------------------------
-module flat5(T=1.2,R=28,X=14,F=600){
+// teardrop style
+module tear3half(T=0.6,R=8,X=5.2,F=99,Z=0.2){
+  
+  hull(){
+    translate([1.45*X,0,0])
+    scale([0.95,1.4,1])
+    #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+    
+    rotate([0,0,115])
+    translate([X,0,0])
+    scale([0.7,1.95,1])
+    #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+    
+    rotate([0,0,-115])
+    translate([X,0,0])
+    scale([0.7,1.95,1])
+    cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+  }
 
-  flat5half(T=T,R=R,X=X,F=F,Z=Zbottom);
+  translate([0,0,-Z])
+  rotate([0,0,0])
+  scale([23,23,Z])
+  guitarTear2();
+    
+}
+//-----------------------------------------------------------------------------------
+module tear3(T=0.6,R=8,X=5.2,F=99,Z=0.2){
+
+  tear3half(T=T,R=R,X=X,F=F,Z=Zbottom);
   translate([0,0,T])
   rotate([180,0,0])
-  flat5half(T=T,R=R,X=X,F=F,Z=Ztop);
+  tear3half(T=T,R=R,X=X,F=F,Z=Ztop);
 
 }
-//-----------------------------------------------------------------------------------
-module flat5support(T=0.8,R=28,X=14,F=200){
 
+//-----------------------------------------------------------------------------------
+// teardrop style
+module tear3support(T=0.6,R=8,X=5.2,F=99,Z=0.2){
+  
   difference(){
-    translate([0,0,0])
-    intersection(){
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T/2+0.2,$fn=F);
-    }
-    translate([0,0,0])
-    flat5half();
+    translate([0,0,-Z])
+    scale([1.05,1.05,1])
+      hull(){
+        translate([1.45*X,0,0])
+        scale([0.95,1.4,1])
+        #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+        
+        rotate([0,0,113])
+        translate([X,0,0])
+        scale([0.7,1.95,1])
+        #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+        
+        rotate([0,0,-113])
+        translate([X,0,0])
+        scale([0.7,1.95,1])
+        cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+      }
+    
+    tear3half();
   }
 }
 
 //-----------------------------------------------------------------------------------
-module flat5support2(T=1.2,R=28,X=14,F=100){
+module pickTestA(){
+  
+  // right base
+  cube([10,10,0.2]);
 
-  difference(){
-    translate([0,0,0])
-    intersection(){
-      translate([X,0,0])
-      cylinder(r=R+2,h=T,$fn=F);
-      rotate([0,0,120])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T,$fn=F);
-      rotate([0,0,240])
-      translate([X,0,0])
-      cylinder(r=R+2,h=T,$fn=F);
-    }
-    translate([0,0,0])
-    flat5();
-  }
+  // right above
+  translate([-10,0,0.2])  
+  cube([10,5,0.2]);
+  
 }
+//-----------------------------------------------------------------------------------
+module pickTestB(){
 
+  // left base
+  translate([-10,0,0])  
+  cube([10,10,0.2]);
+
+  // left above
+  translate([0,0,0.2])  
+  cube([10,5,0.2]);
+
+
+}
 
 //===================================================================================
+
+Ztop=0.2;
+Zbottom=0.2;
+
+//~ pickTestA();
+//~ color("green")
+//~ pickTestB();
+
+//~ guitarTear2();
+
+//~ tear2half();
+
+//~ intersection(){
+//~ scale([1.1,1.1,1])
+//~ tear2();
+//~ scale([1.1,1.1,1])
+//~ tear2support();
+//~ }
+
+
+//~ intersection(){
+//~ translate([0,0,2])
+
+//~ scale([1.1,1.1,1])
+//~ tear3(T=1.0);
+scale([1.1,1.1,1])
+tear3support(T=1.0);
+
+//~ }
+
 
 //~ scale([30,30,0.4])
 //~ guitarPick2();
 
 //~ thumb2();   // This is the good yellow one
 
-// #1 use defaults
-//~ flat1();
-//~ flat1soft();
-
-// #2 more pointy
-//~ translate([0,0,5])
-//~ flat2(T=1.2, R=39, X=27, F=99);
-//~ flat2soft(T=1.2, R=39, X=27, F=99);
-
-// #3 teardrop 
-//~ translate([0,0,5])
-//~ tear1half();
-//~ tear1();
-//~ tear1soft();
-
-// #4 flat3 adjusted for carbon fiber and support instead of Flex and PetG
-//~ flat3half();
-//~ translate([0,0,0.3])
-//~ flat3();
-//~ flat3support();
-
-// #5 flat3 adjusted for carbon fiber and support instead of Flex and PetG
-Ztop=0.2;
-Zbottom=0.2;
-
-//~ flat4half();
-//~ translate([0,0,0.3])
-//~ flat4(T=0.8);
-//~ flat4support();
-
-
 //~ flat7(T=0.8);
-flat7support(T=0.8);
+//~ flat7support(T=0.8);
 
-//~ flat5half();
-//~ translate([0,0,0.3])
-//~ flat5();
-//~ flat5support();
-//~ flat5support2();
 
 //===================================================================================
