@@ -305,37 +305,51 @@ module tear2support(T=0.8,R=8,X=5.2,F=99,Z=0.2){
 }
 //-----------------------------------------------------------------------------------
 // teardrop style
-module tear3half(T=0.6,R=8,X=5.2,F=99,Z=0.2){
+module tear3half(T=0.6,R=8,X=5.2,F=99,Z=0.2,side=0){
   
   hull(){
     translate([1.45*X,0,0])
     scale([0.95,1.4,1])
-    #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+    cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
     
     rotate([0,0,115])
     translate([X,0,0])
     scale([0.7,1.95,1])
-    #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+    cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
     
     rotate([0,0,-115])
     translate([X,0,0])
     scale([0.7,1.95,1])
     cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
   }
-
-  translate([0,0,-Z])
-  rotate([0,0,0])
-  scale([23,23,Z])
-  guitarTear2();
+  
+  if(side==0){
+    translate([0,0,-Z])
+    rotate([0,0,0])
+    scale([23,23,Z])
+    guitarTear2();
+  }else{
+    translate([1,0.5,0])
+    rotate([180,0,0])
+    scale([0.037,0.037,Z])
+    guitarTear3();
+    
+    translate([2.5,0,0])
+    rotate([0,0,90])
+    rotate([180,0,0])
+    linear_extrude(height=Z)
+    text(Label, font = "Open Sans:style=Bold", size=6,halign="center",valign="center",spacing=1.1);
+    
+  }
     
 }
 //-----------------------------------------------------------------------------------
 module tear3(T=0.6,R=8,X=5.2,F=99,Z=0.2){
 
-  tear3half(T=T,R=R,X=X,F=F,Z=Zbottom);
+  tear3half(T=T,R=R,X=X,F=F,Z=Zbottom,side=1);
   translate([0,0,T])
   rotate([180,0,0])
-  tear3half(T=T,R=R,X=X,F=F,Z=Ztop);
+  tear3half(T=T,R=R,X=X,F=F,Z=Ztop,side=0);
 
 }
 
@@ -349,12 +363,12 @@ module tear3support(T=0.6,R=8,X=5.2,F=99,Z=0.2){
       hull(){
         translate([1.45*X,0,0])
         scale([0.95,1.4,1])
-        #cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+        cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
         
         rotate([0,0,113])
         translate([X,0,0])
         scale([0.7,1.95,1])
-        #cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+        cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
         
         rotate([0,0,-113])
         translate([X,0,0])
@@ -362,7 +376,7 @@ module tear3support(T=0.6,R=8,X=5.2,F=99,Z=0.2){
         cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
       }
     
-    tear3half();
+    #tear3half(T=T,side=1);
   }
 }
 
@@ -391,10 +405,26 @@ module pickTestB(){
 
 }
 
+//-----------------------------------------------------------------------------------
+module guitarTear3(){
+  
+  render()
+  intersection(){
+    translate([0,0,-0.3])
+    scale([1,1,0.02])
+    surface(file="./guitarTear3.png", center = true);
+    translate([0,0,0.5])
+    cube([800,800,1],center=true);
+  }
+}  
+
 //===================================================================================
 
-Ztop=0.2;
-Zbottom=0.2;
+Zbottom = 0.2;
+Ztop = 0.2;
+
+
+//~ guitarTear3();
 
 //~ pickTestA();
 //~ color("green")
@@ -415,10 +445,17 @@ Zbottom=0.2;
 //~ intersection(){
 //~ translate([0,0,2])
 
+
+Label="F";
+
 //~ scale([1.1,1.1,1])
-//~ tear3(T=1.0);
+//~ tear3half(side=1,T=1.2);
+
+//~ scale([1.1,1.1,1])
+//~ tear3(T=1.5);
+
 scale([1.1,1.1,1])
-tear3support(T=1.0);
+tear3support(T=1.5);
 
 //~ }
 
