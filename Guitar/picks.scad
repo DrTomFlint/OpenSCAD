@@ -383,23 +383,25 @@ module tear3(T=0.6,R=8,X=5.2,F=99,Z=0.2){
 // teardrop style
 module tear3support(T=0.6,R=8,X=5.2,F=99,Z=0.2){
   
+base=0.2;
+  
   difference(){
-    translate([0,0,-Z])
+    translate([0,0,-Z-base])
     scale([1.05,1.05,1])
       hull(){
         translate([1.45*X,0,0])
         scale([0.95,1.4,1])
-        cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+        cylinder(r1=R,r2=1.02*R,h=T/2+Z+base,$fn=F);
         
         rotate([0,0,113])
         translate([X,0,0])
         scale([0.7,1.95,1])
-        cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+        cylinder(r1=0.85*R,r2=0.87*R,h=T/2+Z+base,$fn=F);
         
         rotate([0,0,-113])
         translate([X,0,0])
         scale([0.7,1.95,1])
-        cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+        cylinder(r1=0.85*R,r2=0.87*R,h=T/2+Z+base,$fn=F);
       }
     
     #tear3half(T=T,side=1);
@@ -456,8 +458,8 @@ Label="F";
 scale([1.1,1.1,1])
 tear3(T=1.5);
 
-//~ scale([1.1,1.1,1])
-//~ tear3support(T=1.5);
+scale([1.1,1.1,1])
+tear3support(T=1.5);
 
 //~ }
 

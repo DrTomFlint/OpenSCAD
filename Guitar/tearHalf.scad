@@ -43,17 +43,17 @@ module tearhalf(side=0){
     hull(){
       translate([1.45*X,0,0])
       scale([0.95,1.4,1])
-      cylinder(r1=R,r2=1.02*R,h=T/2,$fn=F);
+      cylinder(r1=R,r2=1.02*R+dz,h=T/2,$fn=F);
       
       rotate([0,0,115])
       translate([X,0,0])
       scale([0.7,1.95,1])
-      cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+      cylinder(r1=0.85*R,r2=0.87*R+dz,h=T/2,$fn=F);
       
       rotate([0,0,-115])
       translate([X,0,0])
       scale([0.7,1.95,1])
-      cylinder(r1=0.85*R,r2=0.87*R,h=T/2,$fn=F);
+      cylinder(r1=0.85*R,r2=0.87*R+dz,h=T/2,$fn=F);
     }
     
     if(side==0){

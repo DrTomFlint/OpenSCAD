@@ -13,14 +13,17 @@
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport7.3mf -D 'Num=3' tearSupport.scad
 
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick8.3mf -D 'Num=4' tearPick.scad
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport4.3mf -D 'Num=4' tearSupport.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport8.3mf -D 'Num=4' tearSupport.scad
 
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickA.3mf -D 'Num=5' tearPick.scad
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportA.3mf -D 'Num=5' tearSupport.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick9.3mf -D 'Num=5' tearPick.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport9.3mf -D 'Num=5' tearSupport.scad
 
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickC.3mf -D 'Num=6' tearPick.scad
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportC.3mf -D 'Num=6' tearSupport.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickA.3mf -D 'Num=6' tearPick.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportA.3mf -D 'Num=6' tearSupport.scad
 
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickF.3mf -D 'Num=7' tearPick.scad
-~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportF.3mf -D 'Num=7' tearSupport.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickC.3mf -D 'Num=7' tearPick.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportC.3mf -D 'Num=7' tearSupport.scad
+
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickF.3mf -D 'Num=8' tearPick.scad
+~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportF.3mf -D 'Num=8' tearSupport.scad
 
