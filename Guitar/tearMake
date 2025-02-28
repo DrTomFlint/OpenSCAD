@@ -1,29 +1,37 @@
 # bash script to call openscad and make all thicknesses of picks and support
-
+echo Pick 4
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick4.3mf -D 'Num=0' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport4.3mf -D 'Num=0' tearSupport.scad
 
+echo Pick 5
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick5.3mf -D 'Num=1' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport5.3mf -D 'Num=1' tearSupport.scad
 
+echo Pick 6
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick6.3mf -D 'Num=2' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport6.3mf -D 'Num=2' tearSupport.scad
 
+echo Pick 7
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick7.3mf -D 'Num=3' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport7.3mf -D 'Num=3' tearSupport.scad
 
+echo Pick 8
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick8.3mf -D 'Num=4' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport8.3mf -D 'Num=4' tearSupport.scad
 
+echo Pick 9
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPick9.3mf -D 'Num=5' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupport9.3mf -D 'Num=5' tearSupport.scad
 
+echo Pick A
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickA.3mf -D 'Num=6' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportA.3mf -D 'Num=6' tearSupport.scad
 
+echo Pick C
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickC.3mf -D 'Num=7' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportC.3mf -D 'Num=7' tearSupport.scad
 
+echo Pick F
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearPickF.3mf -D 'Num=8' tearPick.scad
 ~/Documents/NewOpenScad/openscad --enable fast-csg --enable manifold -o tearSupportF.3mf -D 'Num=8' tearSupport.scad
 

@@ -450,16 +450,16 @@ Ztop = 0.2;
 //~ translate([0,0,2])
 
 
-Label="F";
+Label="4";
 
 //~ scale([1.1,1.1,1])
 //~ tear3half(side=1,T=1.2);
 
 scale([1.1,1.1,1])
-tear3(T=1.5);
+tear3(T=0.4);
 
 scale([1.1,1.1,1])
-tear3support(T=1.5);
+tear3support(T=0.4);
 
 //~ }
 
