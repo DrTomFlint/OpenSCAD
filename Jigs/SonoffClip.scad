@@ -9,7 +9,7 @@
 use <../Parts/rounder.scad>
 use <../Parts/hexcut.scad>
 
-compress=0.5;
+compress=1.5;
 
 F1=299;
 F2=77;
@@ -17,13 +17,23 @@ F2=77;
 //----------------------------------------------------------------------
 module board(tol=0){
 
+  // pcb edge is Origin
   translate([0,0,0])
-  cube([32.3+tol,1.2+tol,9+tol]);
+  cube([32.3+tol,1.2+tol,25+tol]);
   
+  // testpoint pads
   #for(i=[0:5])
-  translate([18+i*12.7/5, 0, 9-1.34])
+  translate([18+i*12.7/5, 0, 25-1.34])
   rotate([90,0,0])
   cylinder(r=1.0,h=0.1,$fn=F2);
+  
+  // relay box
+  translate([4.75,3.8,4.8])
+  cube([23.9+tol,15.5+tol,10+tol]);
+  
+  // horizontal pcb
+  translate([-2,1.2,3.0])
+  cube([34.5+tol,64.0+tol,1.5+tol]);
   
 }
 
@@ -77,19 +87,42 @@ module box(tol=0.15){
 
   // hinge box
   difference(){
-    translate([-3,-9,4])
-    cube([10,12,8]);
+    union(){
+      // lower surrounds relay
+      translate([4.75/2,6,4.8])
+      cube([23.9+4+tol,15+tol,22+tol]);
 
+      // upper surrounds board and arm
+      translate([-2,-16,18.8])
+      cube([36+5+tol,37+tol,9+tol]);
+    }
+    
     // cut for board
     board(tol=0.15);
     
-    // cut for arm
-    translate([-1-tol/2,-9-tol/2,6-tol/2])
-    cube([40+tol,7+tol,4+tol]);
+    // cut to expose testpoints
+    translate([9,-20,15])
+    cube([23,25,20]);
+    translate([10,-20,15])
+    cube([23,15,20]);
+    
+    // cut for the swing arm
+    translate([-4,-16,22-0.2])
+    cube([48,5,4+0.4]);
     
     // cut for peg
-    translate([3.5,-9+3.5,4])
-    cylinder(r=1+tol/2,h=8,$fn=F2);
+    translate([3-tol/2,-16+2.5-tol/2,10])
+    cylinder(r=0.9,h=20,$fn=F2);
+    
+    // cut for pin
+    translate([36,-16+2.5-tol/2,10])
+    cylinder(r=0.9,h=20,$fn=F2);
+    
+    // text
+#    translate([18,12,28-0.3])
+    linear_extrude(height=0.3)
+    text("FLINT", font = "Open Sans:style=Bold", size=7,halign="center",valign="center",spacing=1.16);
+    
   }
 
 }  
@@ -135,30 +168,34 @@ module arm(tol=0){
 
   // arm
   difference(){
-    union(){
-      // arm
-      translate([10-tol/2,-20-tol/2,6-tol/2])
-      cube([25+tol,5+tol,4+tol]);
-      // left
-      translate([10-tol/2,-20-tol/2,6-tol/2])
-      cube([5+tol,25+tol,4+tol]);
-      // right
-      translate([32.5-tol/2,-20-tol/2,6-tol/2])
-      cube([5+tol,25+tol,4+tol]);
-      // back
-      translate([10-tol/2,1,5-tol/2])
-      cube([27.5+tol,5+tol,5+tol]);
+    // arm
+    //~ hull(){
+      //~ translate([3-tol/2,-16+2.5-tol/2,22-tol/2])
+      //~ cylinder(r=2.5+tol,h=4+tol,$fn=F2);
+      
+      //~ translate([13-tol/2,-16-tol/2,22-tol/2])
+      //~ cube([26+tol,5+tol,4+tol]);
+    //~ }
+    hull(){
+      translate([3-tol/2,-16+2.5-tol/2,22-tol/2])
+      cylinder(r=2.5+tol,h=4+tol,$fn=F2);
+      
+      translate([36-tol/2,-16+2.5-tol/2,22-tol/2])
+      cylinder(r=2.5+tol,h=4+tol,$fn=F2);
     }
-    
     // cut for pogos
     for(i=[0,3,4,5])
-    translate([18+i*12.7/5, 0.5, 9-1.34])
+    translate([18+i*12.7/5, compress, 25-1.34])
     rotate([90,0,0])
-    pogo2(tol=0.2);  
+    #pogo2(tol=0.05);  
     
     // cut for peg
-    translate([3.5,-9+3.5,4])
-    cylinder(r=1+0.15,h=8,$fn=F2);
+    translate([3-tol/2,-16+2.5-tol/2,10])
+    cylinder(r=0.9,h=20,$fn=F2);
+    
+    // cut for pin
+    translate([36,-16+2.5-tol/2,10])
+    cylinder(r=0.9,h=20,$fn=F2);
     
     // cut for board
     board(tol=0.2);
@@ -187,10 +224,14 @@ module pogos(){
 
 //======================================================================
 
+//~ color("grey")
+//~ board();
+//~ box();
 
-board();
+color("cyan")
 arm();
-pogos();
+
+//~ pogos();
 
 //~ pogo2();
 

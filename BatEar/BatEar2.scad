@@ -34,6 +34,7 @@ z3 = -70;
 //~ ang3 = 40;
 m3 = 25;
 
+flatten=0.7;
 
 z0 = 55;      // height of lenses
 // location of pivot post
@@ -190,11 +191,13 @@ module tunnel2(T=1.2){
         translate([x1,y1,z1])  
         sphere(r=m1,$fn=F1);
         translate([x2,y2,z2])
+        scale([1,flatten,1])
         sphere(r=m2,$fn=F1);
       }
       // lower tunnel
       hull(){  
         translate([x2,y2,z2])  
+        scale([1,flatten,1])
         sphere(r=m2,$fn=F1);
         translate([x3,y3,z3])
         sphere(r=m3,$fn=F1);
@@ -246,10 +249,12 @@ module tunnel2(T=1.2){
       translate([x1,y1,z1])  
       sphere(r=m1-T,$fn=F1);
       translate([x2,y2,z2])
+      scale([1,flatten,1])
       sphere(r=m2-T,$fn=F1);
     }
     hull(){  
       translate([x2,y2,z2])  
+      scale([1,flatten,1])
       sphere(r=m2-T,$fn=F1);
       translate([x3,y3,z3])
       sphere(r=m3-T,$fn=F1);
@@ -271,7 +276,7 @@ module tunnel2(T=1.2){
     cylinder(r=55,h=100,center=true,$fn=F2);
     
     // version   
-    translate([5,-7,-15])
+    translate([5,-6.8,-15])
     rotate([0,10,0])
     rotate([90,0,0])
     linear_extrude(height=1.5)
@@ -328,7 +333,7 @@ module words(){
 //======================================================================
 
 // choose 1 for design, 0 for print
-design=1;
+design=0;
 
 //---------------------------------------------------------
 if(design==1){
