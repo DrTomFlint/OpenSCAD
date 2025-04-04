@@ -179,6 +179,91 @@ module stopAdjust(tol=0.15){
 
 }
 
+//----------------------------------------------------------------------
+// mounting point onto headloop
+module mount3(){
+
+thick=2;
+ang=14;
+  
+  // main loop
+  intersection(){
+    difference(){
+      hull(){
+        translate([0,0,12.5])
+        rotate([0,90-ang,0])
+        cylinder(r=1.5*thick,h=17+1,center=true,$fn=F2);
+        translate([0,0,-12.5])
+        rotate([0,90+ang,0])
+        cylinder(r=1.5*thick,h=17+1,center=true,$fn=F2);
+      }
+      translate([0,-0.5,0]){
+        hull(){
+          translate([0,0,12.5])
+          rotate([0,90-ang,0])
+          cylinder(r=0.6*thick,h=17+2,center=true,$fn=F2);
+          translate([0,0,-12.5])
+          rotate([0,90+ang,0])
+          cylinder(r=0.6*thick,h=17+2,center=true,$fn=F2);
+        }
+        // extra trim at edges
+        translate([0,0.5,12.5-0.5])
+        rotate([0,90-ang,0])
+        cylinder(r=0.85*thick,h=17+2,center=true,$fn=F2);
+        translate([0,0.5,-12.5+0.5])
+        rotate([0,90+ang,0])
+        cylinder(r=0.85*thick,h=17+2,center=true,$fn=F2);
+        
+        // version number
+        translate([0,1.5*thick,0])
+        rotate([0,0,180])
+        rotate([90,0,0])
+        linear_extrude(height=0.605)
+        text(Version, font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.1);
+
+      }
+    }
+    cube([16,20,40],center=true);
+  }
+  
+  // post
+  intersection(){
+    difference(){
+      union(){
+        // fillet
+        translate([5,-1.5*thick,zpost])
+        rotate([90,0,0])
+        cylinder(r1=4.8,r2=3.9,h=1,$fn=F2);        
+        // main shaft
+        translate([5,-1.5*thick,zpost])
+        rotate([90,0,0])
+        cylinder(r=4,h=5.2,$fn=F2);
+        // inner angle
+        translate([5,-1.5*thick-4.5,zpost])
+        rotate([90,0,0])
+        cylinder(r1=4.0,r2=4.8,h=0.5,$fn=F2);
+        // outer angle
+        translate([5,-1.5*thick-5,zpost])
+        rotate([90,0,0])
+        cylinder(r1=4.8,r2=3.9,h=1,$fn=F2);
+      }
+      translate([5,-1.5*thick-5.5,zpost])
+      cube([20,10,1.5],center=true);
+      translate([5,-1.5*thick-5.5,zpost])
+      cube([1.5,10,20],center=true);
+    }
+  
+    cube([16,20,40],center=true);
+  }
+  
+  // stopper
+  translate([-5.5,-3,-5])
+  rotate([90,0,0])
+  cylinder(r=2,h=5,$fn=10);
+
+  
+}
+
 
 //----------------------------------------------------------------------
 module tunnel2(T=1.2){
@@ -310,13 +395,13 @@ module tunnel2(T=1.2){
     }
     
     // version   
-    translate([5,-6.8,-15])
-    rotate([0,10,0])
-    rotate([90,0,0])
-    linear_extrude(height=1.5)
-    text(Version, font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+    //~ translate([5,-6.8,-15])
+    //~ rotate([0,10,0])
+    //~ rotate([90,0,0])
+    //~ linear_extrude(height=1.5)
+    //~ text(Version, font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
 
-    if(1){
+    if(0){
       words();
     }
     
@@ -367,16 +452,17 @@ module words(){
 //======================================================================
 
 // choose 1 for design, 0 for print
-design=0;
+design=1;
 
 //---------------------------------------------------------
 if(design==1){
 
 thick=2;
 
-mount2();
-stopAdjust();
+//~ mount2();
+//~ stopAdjust();
 
+mount3();
 
 translate([5,-1.5*thick,zpost])
 rotate([0,-flip,0])
@@ -393,7 +479,7 @@ if(0){
 }
 
 // safety glasses approx
-if(1){
+if(0){
   translate([55,71,-22])
   rotate([0,0,-90])
   glassHalf();
@@ -418,8 +504,10 @@ if(1){
 
 //~ mount2();
 //~ stopAdjust();
-//~ tunnel2();
-words();
+tunnel2();
+//~ words();
+
+//~ mount3();
 
 }  
 
