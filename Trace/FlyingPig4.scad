@@ -1,5 +1,5 @@
 //=================================================================================
-// FlyingPig2.scad
+// FlyingPig4.scad
 //
 //
 // Dr Tom Flint, 3 April 2025
@@ -17,7 +17,7 @@ module black(){
   intersection(){
     translate([0,0,80])
     scale([1,1,1])
-    surface(file="./FlyingPigBlack2.png", center = true, invert=true);
+    surface(file="./FlyingPigBlack4.png", center = true, invert=true);
   
     translate([0,0,thick/2])
     cube([800,800,thick],center=true);
@@ -38,7 +38,7 @@ module blackA(){
   intersection(){
     translate([0,0,80])
     scale([1,1,1])
-    surface(file="./FlyingPigBlack2.png", center = true, invert=true);
+    surface(file="./FlyingPigBlack4.png", center = true, invert=true);
   
     translate([0,0,0.9/2])
     cube([800,800,0.9],center=true);
@@ -59,7 +59,7 @@ module blackB(){
   intersection(){
     translate([0,0,80])
     scale([1,1,1])
-    surface(file="./FlyingPigBlack2.png", center = true, invert=true);
+    surface(file="./FlyingPigBlack4.png", center = true, invert=true);
   
     translate([0,0,0.9+0.3/2])
     cube([800,800,0.3],center=true);
@@ -80,7 +80,7 @@ module pink(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigPink2.png", center = true, invert=true);
+    surface(file="./FlyingPigPink4.png", center = true, invert=true);
     
     translate([0,0,thick/2])
     cube([800,800,thick],center=true);
@@ -94,7 +94,7 @@ module pinkA(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigPink2.png", center = true, invert=true);
+    surface(file="./FlyingPigPink4.png", center = true, invert=true);
     
     translate([0,0,0.9/2])
     cube([800,800,0.9],center=true);
@@ -108,7 +108,7 @@ module pinkB(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigPink2.png", center = true, invert=true);
+    surface(file="./FlyingPigPink4.png", center = true, invert=true);
     
     translate([0,0,0.9+0.3/2])
     cube([800,800,0.3],center=true);
@@ -122,7 +122,7 @@ module wings(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigWings2.png", center = true, invert=true);
+    surface(file="./FlyingPigWings4.png", center = true, invert=true);
     
     translate([0,0,thick/2])
     cube([800,800,thick],center=true);
@@ -136,7 +136,7 @@ module wingsA(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigWings2.png", center = true, invert=true);
+    surface(file="./FlyingPigWings4.png", center = true, invert=true);
     
     translate([0,0,0.9/2])
     cube([800,800,0.9],center=true);
@@ -150,7 +150,7 @@ module wingsB(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigWings2.png", center = true, invert=true);
+    surface(file="./FlyingPigWings4.png", center = true, invert=true);
     
     translate([0,0,0.9+0.3/2])
     cube([800,800,0.3],center=true);
@@ -164,7 +164,7 @@ module hooves(){
   intersection(){
     translate([0,0,50])
     scale([1,1,1])
-    surface(file="./FlyingPigHooves2.png", center = true, invert=true);
+    surface(file="./FlyingPigHooves4.png", center = true, invert=true);
     
     translate([0,0,thick/2])
     cube([800,800,thick],center=true);
