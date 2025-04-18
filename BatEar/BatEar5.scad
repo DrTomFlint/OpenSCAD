@@ -11,7 +11,8 @@ use <../Parts/hexcut.scad>
 use <../Parts/threads.scad>
 use <../Gears/gears.scad>
 
-flip=210;
+//~ flip=210;
+flip=0;
 
 // Versionj J params:
 // location of ear
@@ -103,6 +104,39 @@ zpostl=5;
 stopAnglel= 2 * 360/10;
 Versionl="L";
 
+
+// Version M params
+// location of ear
+x1m = -35;
+y1m = -5;
+z1m = -25;
+m1m = 12;
+flat1m = 0.6;
+
+// location of midway
+x2m = 40;
+y2m = 0;
+z2m = -65;
+m2m = 20;
+flat2m = 0.6;
+
+// location of mouth
+x3m = 75;
+y3m = 20;
+z3m = -80;
+m3m = 30;
+flat3m = 0.60;
+
+// move hollow out to account for flattening
+flatfixm = 0.5;
+
+// location of pivot post
+zpostm=0;
+stopAnglem= 2 * 360/10;
+Versionm="M";
+
+
+
 // Version ALL params:
 
 // height of lenses
@@ -110,6 +144,17 @@ z0 = 55;
 
 F1=299;
 F2=55;
+
+//-----------------------------------------------------------------------------------------------
+module wordsj(){
+  
+    translate([5,-17,-44])
+    rotate([0,0,-1])
+    rotate([0,24,0])
+    rotate([90,0,0])
+    linear_extrude(height=0.9)
+    text("How About No", font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.1);
+}
 
 //----------------------------------------------------------------------
 module parabola( 
@@ -640,7 +685,7 @@ translate([0,1.5,0]){
   cylinder(r=2,h=6.5,$fn=10);
 
   // extra tab to lock
-  #translate([7.5,-1.5,0])
+  translate([7.5,-1.5,0])
   cube([1,1,10],center=true);
 
 }  
@@ -1085,7 +1130,7 @@ translate([0,0.75,0]){
       // cuts to make pinchable 
       translate([5,-1.5*thick-10,zpostl])
       translate([-10,0,-0.75])
-      #cube([20,10,1.5]);
+      cube([20,10,1.5]);
             
       translate([5,-1.5*thick,zpostl])
       rotate([90,0,0])
@@ -1113,21 +1158,279 @@ translate([0,0.75,0]){
 }
 
 
-//-----------------------------------------------------------------------------------------------
-module wordsj(){
-  
-    translate([5,-17,-44])
-    rotate([0,0,-1])
-    rotate([0,24,0])
+//----------------------------------------------------------------------
+module tunnelm(T=1.2){
+
+  // tunnel
+  difference(){
+    union(){
+      // upper tunnel
+      hull(){  
+        translate([x1m,y1m,z1m])  
+        scale([1,flat1m,1])
+        sphere(r=m1m,$fn=F1);
+        translate([x2m,y2m,z2m])
+        scale([1,flat2m,1])
+        sphere(r=m2m,$fn=F1);
+
+        translate([x1m,y1m+30,z1m])  
+        sphere(r=m1m,$fn=F1);
+        translate([x2m,y2m+30,z2m])
+        scale([1,flat2m,1])
+        sphere(r=m2m,$fn=F1);
+      }
+      // lower tunnel
+      hull(){  
+        translate([x2m,y2m,z2m])  
+        scale([1,flat2m,1])
+        sphere(r=m2m,$fn=F1);
+        translate([x3m,y3m,z3m])
+        scale([0.5,flat3m,1])
+        sphere(r=m3m,$fn=F1);
+
+        translate([x2m,y2m+40,z2m])  
+        scale([1,flat2m,1])
+        sphere(r=m2m,$fn=F1);
+        translate([x3m,y3m+40,z3m])
+        scale([0.5,flat3m,1])
+        sphere(r=m3m,$fn=F1);
+      }
+
+      // lower attach to post
+      difference(){
+        hull(){
+          // midpoint block
+          translate([0,-5,-7])
+          rotate([0,0,0])
+          cube([10,3,1],center=true);
+          // tunnel block
+          translate([0,-5,-32])
+          rotate([0,24,0])
+          cube([60,3,1],center=true);
+        }
+        // cutaway attach
+        translate([30,0,-16])
+        rotate([90,0,0])
+        cylinder(r=24,h=100,center=true,$fn=F1);
+        translate([-19,0,-9])
+        rotate([90,0,0])
+        cylinder(r=11,h=100,center=true,$fn=F1);
+      }
+    }
+
+    // hollow out
+    hull(){  
+      translate([x1m,y1m+flatfixm,z1m]) 
+      scale([1,flat1m,1])
+      sphere(r=m1m-T,$fn=F1);
+      translate([x2m,y2m+flatfixm,z2m])
+      scale([1,flat2m,1])
+      sphere(r=m2m-T,$fn=F1);
+
+      translate([x1m,y1m+40+flatfixm,z1m])  
+      sphere(r=m1m-T,$fn=F1);
+      translate([x2m,y2m+40+flatfixm,z2m])
+      scale([1,flat2m,1])
+      sphere(r=m2m-T,$fn=F1);
+    }
+    hull(){  
+      translate([x2m,y2m+flatfixm,z2m])  
+      scale([1,flat2m,1])
+      sphere(r=m2m-T,$fn=F1);
+      translate([x3m-flatfixm,y3m+flatfixm,z3m])
+      scale([0.5,flat3m,1])
+      sphere(r=m3m-T,$fn=F1);
+
+      translate([x2m,y2m+40+flatfixm,z2m])  
+      scale([1,flat2m,1])
+      sphere(r=m2m-T,$fn=F1);
+      translate([x3m-flatfixm,y3m+40+flatfixm,z3m])
+      scale([0.5,flat3m,1])
+      sphere(r=m3m-T,$fn=F1);
+    }
+    
+    // cut away near ear
+    hull(){
+      translate([x1m-40,y1m+25,z1m])
+      rotate([10,0,0])
+      rotate([0,20,0])
+      cylinder(r=m1m-T+8,h=50,center=true,$fn=F2);
+      
+      translate([x2m+0,y2m+24,z2m])
+      rotate([10,0,0])
+      rotate([0,20,0])
+      cylinder(r=m2m,h=84,center=true,$fn=F2);
+    }
+
+    // cut away near mouth
+    hull(){
+      translate([x2m,74,z2m])
+      rotate([12,0,0])
+      rotate([0,20,0])
+      cylinder(r=69,h=120,center=true,$fn=F2);
+    
+      translate([x3m,74+20,z2m])
+      rotate([12,0,0])
+      rotate([0,20,0])
+      cylinder(r=65,h=120,center=true,$fn=F2);
+    
+    }
+    
+    // version   
+    translate([-2,-6.2,-19])
+    rotate([0,20,0])
     rotate([90,0,0])
-    linear_extrude(height=0.9)
-    text("How About No", font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.1);
+    linear_extrude(height=1.5)
+    text(Versionm, font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+
+    if(0){
+      words();
+    }
+    
+  }
+        
+  // upper section attach to post
+  thick=2;
+  difference(){  
+    // surround the post
+    translate([0,-1.5*thick,zpostm])
+    rotate([90,0,0])
+    cylinder(r=12,h=4.5,$fn=F1);
+    
+    // cut for pivot
+    translate([0,-1.5*thick,zpostm])
+    rotate([90,0,0])
+    cylinder(r=5.2,h=20,center=true,$fn=F1);
+    
+    // fillet cut
+    translate([0,-1.5*thick,zpostm])
+    rotate([90,0,0])
+    cylinder(r1=5.8,r2=4.9,h=1,$fn=F2);        
+
+    translate([0,-1.5*thick-3.5,zpostm])
+    rotate([90,0,0])
+    cylinder(r2=5.8,r1=4.9,h=1,$fn=F2);        
+  }
+  // upper stop
+  rotate([0,14,0])
+  translate([12,-1.5*thick,zpostm])
+  rotate([90,0,0])
+  cylinder(r=4,h=4.5,$fn=F1);
+
+  
 }
+
+
+//----------------------------------------------------------------------
+// mounting point
+module mountm(){
+
+thick=2.5;
+ang=14;
+translate([0,0.75,0]){  
+    difference(){
+      union(){
+        // main loop
+        hull(){
+          translate([0,0,12.5])
+          rotate([0,90-ang,0])
+          cylinder(r=1.5*thick,h=17+3,center=true,$fn=F2);
+          translate([0,0,-12.5])
+          rotate([0,90+ang,0])
+          cylinder(r=1.5*thick,h=17+7,center=true,$fn=F2);
+        }
+        // lower stop
+        translate([-12,3.75,-11])
+        rotate([90,0,0])
+        cylinder(r=1.5*thick,h=12,$fn=F2);        
+      }
+      translate([0,-0.5,0]){
+        hull(){
+          translate([0,0,12.5])
+          rotate([0,90-ang,0])
+          cylinder(r=1.2,h=50,center=true,$fn=F2);
+          translate([0,0,-12.5])
+          rotate([0,90+ang,0])
+          cylinder(r=1.2,h=50,center=true,$fn=F2);
+        }
+        // extra trim at edges
+        translate([0,0.5,12.5-0.5])
+        rotate([0,90-ang,0])
+        cylinder(r=0.85*thick,h=50,center=true,$fn=F2);
+        translate([0,0.5,-12.5+0.5])
+        rotate([0,90+ang,0])
+        cylinder(r=0.85*thick,h=50,center=true,$fn=F2);
+        
+        // version number
+        translate([0,1.5*thick,0])
+        rotate([0,0,180])
+        rotate([90,0,0])
+        linear_extrude(height=0.605)
+        text(Versionm, font = "Open Sans:style=Bold", size=8,halign="center",valign="center",spacing=1.1);
+
+      }
+      // trim to make printable side
+      translate([16,0,0])
+      cube([16,20,40],center=true);
+
+    }
+  
+  // post
+  intersection(){
+    difference(){
+      union(){
+        // fillet
+        translate([0,-1.5*thick,zpostm])
+        rotate([90,0,0])
+        cylinder(r1=5.8,r2=4.9,h=1,$fn=F2);        
+        // main shaft
+        translate([0,-1.5*thick,zpostm])
+        rotate([90,0,0])
+        cylinder(r=5,h=5.2,$fn=F2);
+        // inner angle
+        translate([0,-1.5*thick-4.5,zpostm])
+        rotate([90,0,0])
+        cylinder(r1=5.0,r2=5.8,h=0.5,$fn=F2);
+        // outer angle
+        translate([0,-1.5*thick-5,zpostm])
+        rotate([90,0,0])
+        cylinder(r1=5.8,r2=4.9,h=1,$fn=F2);
+      }
+      // cuts to make pinchable 
+      translate([0,-1.5*thick-10,zpostm])
+      translate([-10,0,-0.75])
+      cube([20,10,1.5]);
+            
+      translate([0,-1.5*thick,zpostm])
+      rotate([90,0,0])
+      cylinder(r1=3,r2=3,h=6,$fn=F2);        
+    }
+  
+    cube([16,20,40],center=true);
+  }
+  
+  //~ // lower adjustable stop
+  //~ translate([-5.5,-3,-5])
+  //~ rotate([90,0,0])
+  //~ cylinder(r=2,h=6.5,$fn=10);
+
+  //~ // upper stop
+  //~ translate([-5.5,-3,6])
+  //~ rotate([90,0,0])
+  //~ cylinder(r=2,h=5,$fn=10);
+
+  // extra tab to lock
+  translate([7.5,-1.5,0])
+  cube([1,1,10],center=true);
+
+}  
+}
+
 
 //======================================================================
 
 // choose 1 for design, 0 for print
-design=0;
+design=1;
 
 //---------------------------------------------------------
 if(design==1){
@@ -1135,8 +1438,8 @@ if(design==1){
 thick=2;
 
 // Version J
-if(0){
-  translate([0,100,0]){
+if(1){
+  translate([0,300,0]){
     mountj();
 
     translate([5,-1.5*thick,zpostj])
@@ -1167,8 +1470,8 @@ if(0){
 }
 
 // Version K:
-if(0){
-  translate([0,0,0]){
+if(1){
+  translate([0,200,0]){
 
     mountk();
     stopAdjust();
@@ -1205,7 +1508,7 @@ if(0){
 
 // Version L:
 if(1){
-  translate([0,0,0]){
+  translate([0,100,0]){
 
     mountl();
     stopAdjust();
@@ -1219,6 +1522,42 @@ if(1){
     if(0){
       difference(){
         tunnell();
+        translate([0,0,0])
+      cube([300,100,100],center=true);
+      }
+    }
+
+    // safety glasses approx
+    if(0){
+      color("gray")
+      translate([55,71,-22])
+      rotate([0,0,-90])
+      glassHalf();
+      color("gray")
+      mirror([0,1,0])
+      translate([55,-71,-22])
+      rotate([0,0,-90])
+      glassHalf();
+    }
+  }
+}
+
+// Version M:
+if(1){
+  translate([0,0,0]){
+
+    mountm();
+    //~ stopAdjust();
+
+    translate([0,-1.5*thick,zpostm])
+    rotate([0,-flip,0])
+    translate([0,1.5*thick,-zpostm])
+
+    tunnelm();
+
+    if(0){
+      difference(){
+        tunnelm();
         translate([0,0,0])
       cube([300,100,100],center=true);
       }
@@ -1255,8 +1594,10 @@ if(1){
 //~ mountk();
 
 //~ tunnell();
-mountl();
+//~ mountl();
 
+tunnelm();
+//~ mountm();
 
 }  
 
