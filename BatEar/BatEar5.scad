@@ -14,7 +14,7 @@ use <../Gears/gears.scad>
 //~ flip=210;
 flip=0;
 
-// Versionj J params:
+// Versionj J params: ----------------------------------
 // location of ear
 x1j = -35;
 y1j = -5;
@@ -44,7 +44,7 @@ stopAnglej= 2 * 360/10;
 Versionj="J";
 
 
-// Version K params:
+// Version K params: ----------------------------------
 // location of ear
 x1k = -35;
 y1k = -5;
@@ -74,7 +74,7 @@ zpostk=5;
 stopAnglek= 2 * 360/10;
 Versionk="K";
 
-// Version L params
+// Version L params ----------------------------------
 // location of ear
 x1l = -35;
 y1l = -5;
@@ -105,7 +105,7 @@ stopAnglel= 2 * 360/10;
 Versionl="L";
 
 
-// Version M params
+// Version M params ----------------------------------
 // location of ear
 x1m = -35;
 y1m = -5;
@@ -136,7 +136,38 @@ stopAnglem= 2 * 360/10;
 //~ Versionm="M";
 Versionm="N";
 
-// Version ALL params:
+// Version O params ----------------------------------
+// location of ear
+x1O = -35;
+y1O = -5;
+z1O = -25;
+m1O = 12;
+flat1O = 0.6;
+
+// location of midway
+x2O = 40;
+y2O = 0;
+z2O = -65;
+m2O = 20;
+flat2O = 0.6;
+
+// location of mouth
+x3O = 72;
+y3O = 10;
+z3O = -81.5;
+m3O = 24.75;
+flat3O = 0.6;
+
+// move hollow out to account for flattening
+flatfixO = 0.5;
+
+// location of pivot post
+zpostO=0;
+stopAngleO= 2 * 360/10;
+//~ VersionO="M";
+VersionO="O";
+
+// Version ALL params: ----------------------------------
 
 // height of lenses
 z0 = 55;      
@@ -1702,10 +1733,130 @@ module tunnelm(T=1.5){
 
 }
 
+//---------------------------------------------------------------------
+// smooth curves
+module tunnelO(T=1.0){
+
+  difference(){
+    union(){
+      mirror([0,0,1])
+      translate([x1O,y1O,-z1O])  
+      scale([1,flat1O,1])
+      sphere(r=m1O+T-0.1,$fn=F1);
+
+      mirror([0,0,1])
+      translate([x1O,y1O+9,-z1O])
+      scale([1,flat1O,1])
+      rotate([0,75.3,0])
+      linear_extrude(height=120,scale=1.95,twist=120-10,$fn=F1)
+      translate([0,-15,0])
+      circle(r=m1O+T,$fn=F1);
+
+      mirror([0,0,1])
+      translate([x3O,y3O,-z3O])
+      rotate([0,0,25])
+      rotate([-6,0,0])
+      rotate([0,-15,0])
+      scale([0.7,flat3O,1])
+      sphere(r=m3O+T,$fn=F1);
+      
+      // lower attach to post
+      difference(){
+        hull(){
+          // midpoint block
+          translate([0,-5,-7])
+          rotate([0,0,0])
+          cube([10,3,1],center=true);
+          // tunnel block
+          translate([0,-5,-32])
+          rotate([0,24,0])
+          cube([60,3,1],center=true);
+        }
+        // cutaway attach
+        translate([35,0,-14])
+        rotate([90,0,0])
+        cylinder(r=30,h=100,center=true,$fn=F1);
+        translate([-19,0,-9])
+        rotate([90,0,0])
+        cylinder(r=11,h=100,center=true,$fn=F1);
+      }
+      
+    }
+    
+    mirror([0,0,1])
+    translate([x1O,y1O+0.5,-z1O])  
+    scale([1,flat1O,1])
+    sphere(r=m1O-0.25,$fn=F1);
+
+    mirror([0,0,1])
+    translate([x1O,y1O+9+1,-z1O])
+    scale([1,flat1O,1])
+    rotate([0,0,-1])
+    rotate([0,75.3,0])
+    linear_extrude(height=120,scale=1.95,twist=120-10,$fn=F1)
+    translate([0,-15,0])
+    circle(r=m1O-0,$fn=F1);
+
+    mirror([0,0,1])
+    translate([x3O,y3O,-z3O-0.5])
+    rotate([0,0,25])
+    rotate([0,0,0])
+    rotate([0,-15,0])
+    scale([0.7,flat3O,1])
+    sphere(r=m3O-T/2-1,$fn=F1);
+  
+    // single cutaway
+    translate([40,50.5,-50])
+    rotate([0,0,20])
+    scale([1.5,1,1])
+    cylinder(r=50,h=200,center=true,$fn=F2);
+    
+    translate([-30,47,-50])
+    cube([110,100,200],center=true);
+    
+    // version   
+    translate([-2,-6.2,-19])
+    rotate([0,20,0])
+    rotate([90,0,0])
+    linear_extrude(height=1.5)
+    text(VersionO, font = "Open Sans:style=Bold", size=9,halign="center",valign="center",spacing=1.1);
+    
+    }
+
+    // upper section attach to post
+  thick=2;
+  difference(){  
+    // surround the post
+    translate([0,-1.5*thick,zpostO])
+    rotate([90,0,0])
+    cylinder(r=12,h=4.5,$fn=F1);
+    
+    // cut for pivot
+    translate([0,-1.5*thick,zpostO])
+    rotate([90,0,0])
+    cylinder(r=5.2,h=20,center=true,$fn=F1);
+    
+    // fillet cut
+    translate([0,-1.5*thick,zpostO])
+    rotate([90,0,0])
+    cylinder(r1=5.8,r2=4.9,h=1,$fn=F2);        
+
+    translate([0,-1.5*thick-3.5,zpostO])
+    rotate([90,0,0])
+    cylinder(r2=5.8,r1=4.9,h=1,$fn=F2);        
+  }
+  // upper stop
+  rotate([0,14,0])
+  translate([12,-1.5*thick,zpostO])
+  rotate([90,0,0])
+  cylinder(r=4,h=4.5,$fn=F1);
+
+}
+
 //======================================================================
 
 // choose 1 for design, 0 for print
-design=1;
+design=0;
 
 //---------------------------------------------------------
 if(design==1){
@@ -1713,7 +1864,7 @@ if(design==1){
 thick=2;
 
 // Version J
-if(0){
+if(1){
   translate([0,300,0]){
     mountj();
 
@@ -1745,7 +1896,7 @@ if(0){
 }
 
 // Version K:
-if(0){
+if(1){
   translate([0,200,0]){
 
     mountk();
@@ -1782,7 +1933,7 @@ if(0){
 
 
 // Version L:
-if(0){
+if(1){
   translate([0,100,0]){
 
     mountl();
@@ -1853,6 +2004,42 @@ if(1){
   }
 }
 
+// Version O:
+if(1){
+  translate([0,-100,0]){
+
+    mountm();
+
+    translate([0,-1.5*thick,zpostO])
+    rotate([0,-flip,0])
+    translate([0,1.5*thick,-zpostO])
+
+    //~ tunnelm_OLD();
+    tunnelO();
+
+    if(0){
+      difference(){
+        tunnelm();
+        translate([0,0,0])
+      cube([300,100,100],center=true);
+      }
+    }
+
+    // safety glasses approx
+    if(0){
+      color("gray")
+      translate([55,71,-22])
+      rotate([0,0,-90])
+      glassHalf();
+      color("gray")
+      mirror([0,1,0])
+      translate([55,-71,-22])
+      rotate([0,0,-90])
+      glassHalf();
+    }
+  }
+}
+
 
 //---------------------------------------------------------
 }else{
@@ -1871,7 +2058,7 @@ if(1){
 //~ tunnell();
 //~ mountl();
 
-tunnelm();
+tunnelO();
 //~ mountm();
 
 }  

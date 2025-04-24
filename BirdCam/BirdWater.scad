@@ -127,6 +127,11 @@ rotate_extrude($fn=F1){
 
           translate([rx/2-rLip+0.5,rx/2+1*thick])
           circle(r=rx/2+thick,$fn=F1);
+
+          // make shallow part self support
+          translate([0.57*rx,6])
+          rotate(50)
+          square([rx/3,rx/3],center=true);
         }
       }
       translate([0,-100])
@@ -135,10 +140,10 @@ rotate_extrude($fn=F1){
   }
 }
 
-if(1){
+if(2){
   
   tsize=14;
-  thi=0.2;
+  thi=0.3;
   ang=10;
   nWords=20;
   Words=[" ","F","l","i","n","t","s"," ","F","i","n","e","s","t"," ","2","0","2","5"," "];
