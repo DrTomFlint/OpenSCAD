@@ -494,12 +494,12 @@ dy = 50;
 
 // black
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("gray")
     DaisyBlack(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("gray")
     DaisyBlack(sd=s4[k+3]);
@@ -507,13 +507,13 @@ if(0){
 }
 
 // black A
-if(1){
-  for(k=[0:2]){
+if(0){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("gray")
     DaisyBlackA(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("gray")
     DaisyBlackA(sd=s4[k+3]);
@@ -522,12 +522,12 @@ if(1){
 
 // black B
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("gray")
     DaisyBlackB(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("gray")
     DaisyBlackB(sd=s4[k+3]);
@@ -538,12 +538,12 @@ if(0){
 dy2 = [0, -1, -0.3, -0.5, 0, -0.5];
 
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,dy2[k],0])
     color("gray")
     BmfsBlack();
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy+dy2[k+3],0])
     color("gray")
     BmfsBlack();
@@ -552,12 +552,12 @@ if(0){
 
 // BMFS green
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,dy2[k],0])
     color("gray")
     Bmfs();
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy+dy2[k+3],0])
     color("gray")
     Bmfs();
@@ -566,12 +566,12 @@ if(0){
 
 // red solid old
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("red")
     DaisyRed(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("red")
     DaisyRed(sd=s4[k+3]);
@@ -580,12 +580,12 @@ if(0){
 
 // red 2
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("red")
     DaisyRed2(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("red")
     DaisyRed2(sd=s4[k+3]);
@@ -593,12 +593,12 @@ if(0){
 }
 // orange
 if(0){
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("orange")
     DaisyOrange(sd=s4[k]);
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("orange")
     DaisyOrange(sd=s4[k+3]);
@@ -606,13 +606,13 @@ if(0){
 }
 
 // yellow
-if(0){
-  for(k=[0:2]){
+if(1){
+  for(k=[0]){
     translate([dx*k,0,0])
     color("yellow")
     DaisyYellow();
   }
-  for(k=[0:2]){
+  for(k=[0]){
     translate([dx*k,-dy,0])
     color("yellow")
     DaisyYellow();

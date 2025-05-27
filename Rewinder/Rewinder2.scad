@@ -286,16 +286,16 @@ module old(){
 
 //======================================================================
 
-//old();
+old();
 
 //color("gray")
-//spool();
+spool();
 
-//axle();
-//offside();
+axle();
+offside();
 nut();
-//spur();
-//washer();
+spur();
+washer();
 
 //post();
 

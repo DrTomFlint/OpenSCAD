@@ -176,21 +176,21 @@ module spring(mirror=0){
 
 //==================================================================
 
-// un-mirrored parts for left side of the Dusa only
-if(SpringOn){
-  rotate([0,0,180/7])
-  spring(mirror=1);
-}
-if(HousingOn){
-  house(mirror=0);
-}
+//~ // un-mirrored parts for left side of the Dusa only
+//~ if(SpringOn){
+  //~ rotate([0,0,180/7])
+  //~ spring(mirror=1);
+//~ }
+//~ if(HousingOn){
+  //~ house(mirror=0);
+//~ }
 
 // mirrored parts for the MMU and right side of Dusa
-//translate([120,0,0])
-//mirror([1,0,0]) house();
+//~ translate([120,0,0])
+//~ mirror([1,0,0]) house();
 
-//translate([120,0,0])
-//mirror([1,0,0]) spring();
+translate([120,0,0])
+mirror([1,0,0]) spring();
 
 // Use these to show a section view
 if(0){
