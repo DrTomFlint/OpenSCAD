@@ -334,6 +334,69 @@ difference(){
 }
 
 //----------------------------------------------------------------------
+module plateB2(tol=0){
+
+difference(){
+  intersection(){
+    plate();
+    translate([0,0,thick/2])
+    intersection(){
+      cube([2*l-thick,2*l-thick,4*l],center=true);
+      rotate([0,0,45])
+      cube([2.12*l-thick,2.12*l-thick,4*l],center=true);
+    }
+  }
+  rotate([0,0,45])
+  cube([0.75*l+2*thick,0.75*l+2*thick,2*l],center=true);
+
+  rotate([0,0,45])
+  linear_extrude(height=thick,scale=1.1)
+  square([0.75*l+2*thick,0.75*l+2*thick],center=true);
+}
+
+}
+
+//----------------------------------------------------------------------
+module plateB2a(tol=0){
+
+  difference(){
+    plateB2();
+    rotate([0,0,45])
+    linear_extrude(height=thick,scale=1.1)
+    square([1.5*l,1.5*l],center=true);
+  }
+
+}
+
+//----------------------------------------------------------------------
+module plateB2b(tol=0){
+
+  difference(){
+    intersection(){
+      plateB2();
+      rotate([0,0,45])
+      linear_extrude(height=thick,scale=1.1)
+      square([1.5*l,1.5*l],center=true);
+    }
+    rotate([0,0,45])
+    linear_extrude(height=thick,scale=1.1)
+    square([1.1*l,1.1*l],center=true);
+  }
+}
+
+//----------------------------------------------------------------------
+module plateB2c(tol=0){
+
+
+  intersection(){
+    plateB2();
+    rotate([0,0,45])
+    linear_extrude(height=thick,scale=1.1)
+    square([1.1*l,1.1*l],center=true);
+  }
+}
+
+//----------------------------------------------------------------------
 module plateC(tol=0){
 
   intersection(){
@@ -374,6 +437,12 @@ T=2; l=30;
 // cut up plate for multi-color prints
 //~ plateA();     // outer rim and hinge
 //~ plateB();     // inner flat
+//~ plateB2();     // inner flat
+
+plateB2a();     // inner flat
+//~ plateB2b();     // inner flat
+//~ plateB2c();     // inner flat
+
 //~ plateC();     // pyramid tent
 
 //~ translate([0,0,2*thick+0.2])
@@ -381,7 +450,7 @@ T=2; l=30;
 //~ plate();
 
 
-hinge();
+//~ hinge();
 
 //~ cuts8a();
 //~ box8a();
