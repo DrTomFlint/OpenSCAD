@@ -40,12 +40,12 @@ module s7(){
             // remove bottom spikes
             translate([-120,-120,-3])cube([240,240,3]);
         }
-        mirror([0,0,1])
-        difference() {
-            ss(order-1);
-            translate([-120,-120,bottom])
-            cube([240,240,80]);
-        }
+        //~ mirror([0,0,1])
+        //~ difference() {
+            //~ ss(order-1);
+            //~ translate([-120,-120,bottom])
+            //~ cube([240,240,80]);
+        //~ }
         }
         
     }

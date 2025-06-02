@@ -135,14 +135,14 @@ module cuts(T=3,l=90){
 }
 
 //----------------------------------------------------------------------
-module box8a(){
+module box8a(cut=66){
   translate([l/2,-l/2,l/2])
   rotate([-45,0,0])
   rotate([0,-35.5,0])
   difference(){
     //~ box(T=T,l=l);
     menge(T=T,l=l);
-    translate([0,0,66]) cube([400,400,100],center=true);
+    translate([0,0,cut]) cube([400,400,100],center=true);
   }
 }
 
@@ -211,7 +211,7 @@ if(part==3){
   rotate([0,0,i*90])
   translate([-l,-l,0])
   rotate([180,0,0])
-  box8a();
+  box8a(cut=99);
   // upper 4
   translate([0,0,2*thick+0.2])
   for(i=[0:3])
@@ -219,21 +219,32 @@ if(part==3){
   rotate([0,180,0])
   translate([-l,-l,0])
   rotate([180,0,0])
-  box8a();
+  box8a(cut=99);
 }
   
 }
 
+//----------------------------------------------------------------------
+module cuts9(part=3){
+
+  // lowers 4
+  for(i=[0:3])
+  rotate([0,0,i*90])
+  translate([-l,-l,0])
+  rotate([180,0,0])
+  cuts8a();
+
+}
 
 //----------------------------------------------------------------------
-module cuts8a(){
+module cuts8a(cut=66){
   translate([l/2,-l/2,l/2])
   rotate([-45,0,0])
   rotate([0,-35.5,0])
   difference(){
     //~ box(T=T,l=l);
     cuts(T=T,l=l);
-    translate([0,0,66]) cube([400,400,100],center=true);
+    translate([0,0,cut]) cube([400,400,100],center=true);
   }
 }
 //----------------------------------------------------------------------
@@ -356,6 +367,137 @@ module plate(tol=0){
 }
 
 //----------------------------------------------------------------------
+module plate9(tol=0.5){
+
+  // main plate
+  difference(){
+    linear_extrude(height=thick)
+    offset(r=1.5*thick,$fn=F2)
+    square([2*l,2*l],center=true);
+    
+    translate([0,0,thick/2])
+    intersection(){
+      cube([2*l+tol,2*l+tol,thick+1],center=true);
+      rotate([0,0,45])
+      cube([2.12*l+tol,2.12*l+tol,thick+1],center=true);
+    }
+    translate([l,0,thick/2])
+    cube([10,l+0.4,6*thick],center=true);    
+
+    translate([l-6.75,l/2+0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+    translate([l-6.75,-l/2-0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+    
+    // cut for hinge
+    translate([l+4,0.75*l,thick/2])
+    cube([10,l/6,6*thick],center=true); 
+    translate([l+4,-0.75*l,thick/2])
+    cube([10,l/6,6*thick],center=true); 
+           
+  }    
+  
+  // lip
+  difference(){
+    translate([0,0,-thick])
+    linear_extrude(height=2*thick)
+    offset(r=1.5*thick,$fn=F2)
+    square([2*l,2*l],center=true);
+    
+    translate([0,0,-thick])
+    linear_extrude(height=2*thick)
+    offset(r=0.54*thick,$fn=F2)
+    square([2*l,2*l],center=true);
+    
+    translate([l,0,thick/2])
+    cube([10,2*l,6*thick],center=true);    
+
+    translate([l-6.75,l/2+0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+    translate([l-6.75,-l/2-0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+  }    
+
+  // interlocking tabs
+  difference(){
+    cuts9();
+    translate([0,0,-l-thick])
+    cube([3*l,3*l,2*l],center=true);    
+  }
+  
+  // hinge
+  difference(){
+    union(){
+      translate([l+2,0,-thick+0.4])
+      rotate([90,0,0])
+      cylinder(r=2,h=2*l,center=true,$fn=F2);
+      translate([l,0,thick/2])
+      cube([5,2*l,thick],center=true);
+    }
+    translate([l+4,0,thick/2])
+    cube([10,l+0.4,6*thick],center=true);    
+    translate([l,0,thick/2])
+    cube([10,l+0.4,6*thick],center=true);    
+    
+    translate([l+4,0.75*l,thick/2])
+    cube([10,l/6,6*thick],center=true); 
+    translate([l+4,-0.75*l,thick/2])
+    cube([10,l/6,6*thick],center=true); 
+       
+    translate([l+2,0,-thick+0.4])
+    rotate([90,0,0])
+    cylinder(r=1,h=2*l+2,center=true,$fn=F2);
+
+    translate([l-6.75,l/2+0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+    translate([l-6.75,-l/2-0,-thick+0.4])
+    rotate([0,0,45])
+    cube([10,10,10],center=true);    
+  }
+
+
+}
+
+//----------------------------------------------------------------------
+module plate10(tol=0.5){
+
+  // main plate
+  difference(){
+    linear_extrude(height=thick)
+    offset(r=1.5*thick,$fn=F2)
+    square([2*l,2*l],center=true);
+       
+    cylinder(r=0.75*l,h=3*thick,center=true,$fn=F2);
+  }    
+  
+  // lip
+  difference(){
+    translate([0,0,-thick])
+    linear_extrude(height=2*thick)
+    offset(r=1.5*thick,$fn=F2)
+    square([2*l,2*l],center=true);
+    
+    translate([0,0,-thick])
+    linear_extrude(height=2*thick)
+    offset(r=0.54*thick,$fn=F2)
+    square([2*l,2*l],center=true);    
+  }    
+
+  // interlocking tabs
+  difference(){
+    cuts9();
+    translate([0,0,-l-thick])
+    cube([3*l,3*l,2*l],center=true);    
+  }
+  
+}
+
+//----------------------------------------------------------------------
 module hinge(tol=0.2){
 
 Zoff=3.5*thick;
@@ -369,6 +511,32 @@ Zoff=3.5*thick;
       translate([l+2,l/5,-thick+0.4+Zoff])
       rotate([90,0,0])
       cylinder(r=2,h=l/5-tol,center=true,$fn=F2);
+    }
+    
+    translate([l+2,0,-thick+0.4])
+    rotate([90,0,0])
+    cylinder(r=1,h=l+2,center=true,$fn=F2);
+    translate([l+2,0,-thick+0.4+Zoff])
+    rotate([90,0,0])
+    cylinder(r=1,h=l+2,center=true,$fn=F2);
+  }
+
+}
+
+//----------------------------------------------------------------------
+module hinge9(tol=0.2){
+
+Zoff=3.5*thick;
+
+  difference(){
+    hull(){
+      translate([l+2,l/6,-thick+0.4])
+      rotate([90,0,0])
+      cylinder(r=2,h=l/6-tol,center=true,$fn=F2);
+      
+      translate([l+2,l/6,-thick+0.4+Zoff])
+      rotate([90,0,0])
+      cylinder(r=2,h=l/6-tol,center=true,$fn=F2);
     }
     
     translate([l+2,0,-thick+0.4])
@@ -509,15 +677,15 @@ T=2; l=30;
 
 
 // tests for internal space
-box8(part=3);
+//~ box8(part=3);
 
 //~ boxIn(tol=0.4);
 
-plate();
+//~ plate();
 
-translate([0,0,2*thick+0.2])
-rotate([180,0,0])
-plate();
+//~ translate([0,0,2*thick+0.2])
+//~ rotate([180,0,0])
+//~ plate();
 
 
 // cut up plate for multi-color prints
@@ -540,6 +708,14 @@ plate();
 //~ cuts8();
 
 
-box9(part=3);
+//~ box9(part=1);
+
+//~ plate9();
+//~ hinge9();
+
+plate10();
+
+
+//~ cuts9();
 
 //======================================================================

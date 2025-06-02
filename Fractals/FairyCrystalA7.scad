@@ -73,7 +73,7 @@ echo(n,k);
   scale([k,1,1])    
   difference(){
     union(){
-//      rotate([0,0,45])
+      rotate([0,0,45])    // This line enables Star instead of Pyramid
       difference(){
           ss(order-1);
           // remove bottom spikes
@@ -108,6 +108,12 @@ ang1=360/sides;
 }
 
 //=====================================================================
+sides=7;
+peak=2.075;
+
+//~ sA(n=sides,k=peak);
+//~ scale([1,1,1.8])
+//~ sB(sides=7,peak=2.075);
 
 if(1){
 
