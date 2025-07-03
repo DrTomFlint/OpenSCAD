@@ -39,8 +39,34 @@ module TentPoleTop()
     
 }
 
+
+//---------------------------------------------------------------------
+module TentPoleBase()
+{
+
+rx=26.4/2;
+thick2=2.4;
+tol=0.1;
+
+  difference(){
+    union(){
+      cylinder(r=rx+thick2,h=12+thick2, $fn=F2);
+      translate([0,0,12+thick2])
+      cylinder(r1=rx+thick2,r2=rx,h=thick2, $fn=F2);
+    }
+    translate([0,0,thick2])
+    cylinder(r1=rx-tol,r2=rx+tol,h=15+thick2, $fn=F2);
+    // drain hole
+    translate([0,0,-thick2])
+    cylinder(r=2,h=15+thick2, $fn=F2);
+  }
+  
+
+}
+
 //=====================================================================
 
-TentPoleTop();
+//~ TentPoleTop();
+TentPoleBase();
 
 //=====================================================================
