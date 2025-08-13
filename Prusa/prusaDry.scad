@@ -284,7 +284,7 @@ module set(){
 }
 
 //-------------------------------------------------------------------------------
-module plug(){
+module plug(ang=0){
 
   difference(){
     union(){
@@ -300,13 +300,17 @@ module plug(){
     cube([20,20,8.2+0.4],center=true);
 
     translate([0,4,0])
-    cylinder(r=2.15,h=8.2+5,center=true,$fn=F2);
+    rotate([0,ang,0])
+    cylinder(r=2.15,h=8.2+15,center=true,$fn=F2);
   }  
 }
 
 //==================================================================================
 
-plug();
+//~ plug();
+
+plug(ang=12.5);
+
 //~ endBlock();
 //~ centerBlock();
 

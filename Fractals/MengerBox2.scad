@@ -15,7 +15,7 @@ Ztab=1.2;     // depth of tabs into menge
 F2=55;
 
 //----------------------------------------------------------------------
-module led(leads=10,tol=0){
+module led(leads=10,tol=0,short=2){
 
   difference(){    
     cylinder(r=3.8/2+tol,h=1.25+tol,$fn=F2);
@@ -27,8 +27,10 @@ module led(leads=10,tol=0){
   sphere(r=3.0/2+tol,$fn=F2);
 
 
-  translate([1.0,0,-leads/2])
-  cube([0.5+tol,0.5+tol,leads],center=true);
+  translate([1.0,0,-(leads-short)/2])
+  cube([0.5+tol,0.5+tol,leads-short],center=true);
+  
+  color("red")
   translate([-1.0,0,-leads/2])
   cube([0.5+tol,0.5+tol,leads],center=true);
 }
@@ -276,6 +278,49 @@ s2=0.575*l-tol;
   cylinder(r1=s1,r2=0.01,h=s2,$fn=4);
   translate([0,0,0])
   cylinder(r1=s1,r2=0.01,h=s2,$fn=4);
+}
+
+//----------------------------------------------------------------------
+module boxLeds(tol=0.15,showleds=0){
+
+s1=0.575*l-tol;
+s2=0.575*l-tol;
+zled=2.8;
+zled2=2.22;
+
+
+  difference(){
+  cylinder(r1=s1,r2=0.01,h=s2,$fn=4);
+
+    // 4 leds
+    for(i=[0:3])
+    translate([0,0,zled2])
+    rotate([0,0,45+90*i])
+    rotate([55,0,0])
+    translate([0,0,zled])
+    rotate([0,0,45]){
+      cylinder(r=3.8/2+tol,h=1.25+tol,$fn=F2);
+      cylinder(r=3.0/2+tol,h=14+tol,$fn=F2);
+      translate([0,0,4.2])
+      cylinder(r1=3.0/2+tol,r2=4,h=1.5+tol,$fn=F2);
+    }
+    // cut for wiring
+    cylinder(r1=0.45*s1,r2=0.01,h=0.45*s2,$fn=4);
+    #cylinder(r1=0.2*s1,r2=0.35*s1,h=s2,$fn=4);
+  }
+  
+  // leds
+  if(showleds==1){
+    for(i=[0:3])
+    translate([0,0,zled2])
+    rotate([0,0,45+90*i])
+    rotate([55,0,0])
+    translate([0,0,zled])
+    rotate([0,0,45])
+    led(leads=3.8,tol=0.2);
+  }
+
+  
 }
 
 //----------------------------------------------------------------------
@@ -677,9 +722,10 @@ T=2; l=30;
 
 
 // tests for internal space
-//~ box8(part=3);
+box8(part=3);
 
 //~ boxIn(tol=0.4);
+//~ boxLeds(tol=0.2,showleds=0);
 
 //~ plate();
 
@@ -713,7 +759,7 @@ T=2; l=30;
 //~ plate9();
 //~ hinge9();
 
-plate10();
+//~ plate10();
 
 
 //~ cuts9();
