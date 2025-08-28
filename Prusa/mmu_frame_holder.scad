@@ -190,6 +190,55 @@ module frame3(){
 }
 
 //----------------------------------------------------------------------
+module frame4(){
+
+  // first bar
+  translate([9.5,-3,0])  
+  rotate([0,0,-45])
+  translate([-6,0,0])
+  difference(){
+    cube([x1-2,wide,thick],center=true);
+    // bore
+    translate([7,10,0])  
+    rotate([0,0,90])
+    rotate([0,90,0])
+    cylinder(r=1.7,h=6*thick,$fn=22,center=true);
+    // countersink
+    translate([7,3,0])  
+    rotate([0,0,90])
+    rotate([0,90,0])
+    cylinder(r=3,h=3,$fn=22,center=true);
+  }
+  
+  // mmu bar
+  translate([-25-15.2,26+3.4,0])  
+  rotate([0,0,15])
+  difference(){
+    translate([x1/2+3.5,-22+110/2,0])  
+    cube([wide,110,thick],center=true);
+    
+    // bore
+    translate([x1/2,10,0])  
+    rotate([0,90,0])
+    cylinder(r=1.7,h=3*thick,$fn=22,center=true);
+    // countersink
+    translate([x1/2,10,0])  
+    rotate([0,90,0])
+    cylinder(r=3,h=3,$fn=22,center=true);
+  
+    // bore
+    translate([x1/2,10+63.5,0])  
+    rotate([0,90,0])
+    cylinder(r=1.7,h=3*thick,$fn=22,center=true);
+    // countersink
+    translate([x1/2,10+63.5,0])  
+    rotate([0,90,0])
+    cylinder(r=3,h=3,$fn=22,center=true);
+  }
+  
+}
+
+//----------------------------------------------------------------------
 module bump(){
 
 R = 45;
@@ -270,13 +319,43 @@ intersection(){
 
 }
 
+//----------------------------------------------------------------------
+module screwGuide(){
+
+Rout = 3.5;
+Rin=1.7;
+
+H = 10;
+X=6;
+
+difference(){
+  hull(){
+    cylinder(r=Rout,h=H,$fn=F2);
+    translate([X,0,0])
+    cylinder(r=Rout,h=H,$fn=F2);
+  }
+  cylinder(r=Rin,h=H,$fn=F2);
+  translate([X,0,0])
+  cylinder(r=Rin,h=H,$fn=F2);
+}
+
+
+}
+
 //======================================================================
 
 //~ frame();
 //~ frame2();
+//~ color("gray")
+//~ translate([0,0,-40])
 //~ frame3();
+frame4();
 
-bump();
+
+//~ Ebump();
+
+//~ screwGuide();
+
 
 //~ color("red")
 //~ translate([0,-7,0])
