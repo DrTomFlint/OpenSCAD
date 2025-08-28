@@ -496,35 +496,42 @@ module hook8(){
       offset(r=1,$fn=F1)
       square([4,6.5]);
       // arm
-      translate([2,-9.5,0])
-      cube([20.5-2,8,2]);
+      translate([2,-9,0])
+      cube([20.5-2,7,1.5]);
       translate([15+1/2,-9,0])
-      cube([7.5-1,15,2]);
+      cube([7.5-1,15,1.5]);
       // post
       translate([15+1/2,1.5,0])
-      cube([7.5-1,4.5+0,8]);
+      cube([7.5-1,4.5,7]);
     }
     
     // pillar main pivots
     translate([1.5,-5,12.0])
-    cylinder(r1=2,r2=1.5,h=2.5,$fn=F1);
+    cylinder(r1=2,r2=1.75,h=2.5,$fn=F1);
     translate([1.5,-5,0])
-    cylinder(r1=1.5,r2=2,h=2.5,$fn=F1);
+    cylinder(r1=1.75,r2=2,h=2.5,$fn=F1);
     
     // arm trim corner
     translate([25,-10,-1])
     rotate([0,0,45])
     cube([12,12,16],center=true);
     
-    // post cut for magnet
-    translate([18,3.75,5.5])
-    rotate([0,90,0])
-    cylinder(r1=1.8,r2=1.6,h=6,$fn=F1,center=true);
-    translate([19,3.75,7])
-    cube([10,0.5,4],center=true);
+    // post cut for original magnet
+    //~ translate([18,3.75,5.5])
+    //~ rotate([0,90,0])
+    //~ cylinder(r1=1.8,r2=1.6,h=6,$fn=F1,center=true);
+    //~ translate([19,3.75,7])
+    //~ cube([10,0.5,4],center=true);
+
+    // post cut for cube magnet
+    translate([15+1.5,1,4])
+    cube([3.2,5,5]);
+    translate([15+1.5,2.1,3])
+    cube([3.3,4,5]);
+
     
     // cuts for tension screws
-    translate([0,0.5,0.5]){
+    translate([0,0.5,0.25]){
       translate([0,-5,4])
       rotate([0,90,0])
       cylinder(r=1.5,h=Z,center=true,$fn=F1);
@@ -532,16 +539,92 @@ module hook8(){
       rotate([0,90,0])
       cylinder(r=1.5,h=Z,center=true,$fn=F1);
     }    
-    translate([-7.5,0.5,0.5]){
-      translate([0,-5,4])
-      rotate([0,90,0])
-      cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
-      translate([0,-5,10])
-      rotate([0,90,0])
-      cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
-    }    
+    //~ translate([-7.5,0.5,0.25]){
+      //~ translate([0,-5,4])
+      //~ rotate([0,90,0])
+      //~ cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
+      //~ translate([0,-5,10])
+      //~ rotate([0,90,0])
+      //~ cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
+    //~ }    
+
     // bevel the post
     translate([15,7.5,-4])
+    rotate([55,0,0])
+    cube([20,10,10],center=true);
+
+  }
+  
+}
+
+
+//----------------------------------------------------------------------------------
+// magnet arm for filament sensor, Core One, Nextruder MMU mod
+module hook9(){
+  
+  // union all parts first, then take diffs
+  difference(){
+    union(){
+      // block
+      translate([-1,-8.5,0])
+      linear_extrude(height=Z+2)
+      offset(r=1,$fn=F1)
+      square([4,6.5]);
+      // arm
+      translate([2,-9,0])
+      cube([20.5-2,7,1.5]);
+      translate([15+1/2,-9,0])
+      cube([7.5-1,15,1.5]);
+      // post
+      translate([15+1/2,1.5,0])
+      cube([7.5-1,4.5,7]);
+    }
+    
+    // pillar main pivots
+    translate([1.5,-5,12.0])
+    cylinder(r1=2,r2=1.75,h=2.5,$fn=F1);
+    translate([1.5,-5,0])
+    cylinder(r1=1.75,r2=2,h=2.5,$fn=F1);
+    
+    // arm trim corner
+    translate([25,-10,-1])
+    rotate([0,0,45])
+    cube([12,12,16],center=true);
+    
+    // post cut for original magnet
+    //~ translate([18,3.75,5.5])
+    //~ rotate([0,90,0])
+    //~ cylinder(r1=1.8,r2=1.6,h=6,$fn=F1,center=true);
+    //~ translate([19,3.75,7])
+    //~ cube([10,0.5,4],center=true);
+
+    // post cut for cube magnet
+    translate([15+1.5,1,4])
+    cube([3.2,5,5]);
+    translate([15+1.5,2.1,3])
+    cube([3.3,4,5]);
+
+    
+    // cuts for tension screws
+    translate([0,0.5,0.0]){
+      translate([0,-5,4])
+      rotate([0,90,0])
+      cylinder(r=1.5,h=Z,center=true,$fn=F1);
+      translate([0,-5,10])
+      rotate([0,90,0])
+      cylinder(r=1.5,h=Z,center=true,$fn=F1);
+    }    
+    //~ translate([-7.5,0.5,0.25]){
+      //~ translate([0,-5,4])
+      //~ rotate([0,90,0])
+      //~ cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
+      //~ translate([0,-5,10])
+      //~ rotate([0,90,0])
+      //~ cylinder(r=5.8/2,h=Z,center=true,$fn=F1);
+    //~ }    
+
+    // bevel the post
+    translate([15,7.5,-3])
     rotate([55,0,0])
     cube([20,10,10],center=true);
 
@@ -647,14 +730,16 @@ W=0.4;    // thickness of the washers
       }
       
       // tab prevents rollers touching the gobblin
-      translate([-31/2-13.5,-14,(10-Z)/2])
-      cube([11,30,Z]);  
+      translate([-31/2-13.5-2,-14,(10-Z)/2])
+      cube([13,30,Z]);  
+      
+      // lock 
       intersection(){
-        translate([-31/2-19.5-2,-14,(10-Z)/2])
+        translate([-31/2-19.5-2,-10,(10-Z)/2])
         cube([8,45,Z]);  
-        translate([-31/2-7,31/2+3,(10-Z)/2])
+        translate([-31/2-7,31/2+6,(10-Z)/2])
         scale([1,0.8,1])
-        cylinder(r=13,h=Z,$fn=F1);
+        cylinder(r=14,h=Z,$fn=F1);
       }
     }
     
@@ -663,18 +748,18 @@ W=0.4;    // thickness of the washers
     cylinder(r=3.8/2+0.15,h=Z+1,$fn=F1);
 
     // cut low roller
-    translate([-31/2+X-0.5,-31/2+11,(10-4-2*W)/2])
-    cylinder(r=8/2+0.8,h=4+2*W,$fn=F1);
+    translate([-31/2+X-0.5,-31/2+11,(10-4.2-2*W)/2])    //
+    cylinder(r=8/2+0.8,h=4.2+2*W,$fn=F1);
     
-    translate([-31/2+X-0.5,-31/2+11,(10-9)/2])
-    cylinder(r=2.9/2+0.2,h=9,$fn=F1);
+    translate([-31/2+X-0.5,-31/2+11,(10-9.4)/2])
+    cylinder(r=2.9/2+0.2,h=9.4,$fn=F1);                //
       
     // cut high roller
-    translate([-31/2+X,-31/2+20,(10-4-2*W)/2])
-    cylinder(r=8/2+0.8,h=4+2*W,$fn=F1);
+    translate([-31/2+X,-31/2+20,(10-4.2-2*W)/2])
+    cylinder(r=8/2+0.8,h=4.2+2*W,$fn=F1);
     
-    translate([-31/2+X,-31/2+20,(10-9)/2])
-    cylinder(r=2.9/2+0.2,h=9,$fn=F1);
+    translate([-31/2+X,-31/2+20,(10-9.4)/2])
+    cylinder(r=2.9/2+0.2,h=9.4,$fn=F1);
 
     // cut filament tube
     translate([-21+8.5,-21+12.5,5])
@@ -688,11 +773,11 @@ W=0.4;    // thickness of the washers
     cylinder(r=3.0/2+0.2,h=12.5,$fn=F1);
 
     // dent for the roller
-    translate([-34.5,24.5,(10-Z)/2])
+    translate([-34.5,27.5,(10-Z)/2])
     cylinder(r=3.2,h=Z,$fn=F1);
 
     // trim corner
-    translate([-34,-35,0])
+    translate([-36,-32,0])
     rotate([0,0,20])
     cube([20,40,10]);
     
@@ -705,33 +790,33 @@ W=0.4;    // thickness of the washers
   
   // add back low washers
   difference(){
-    translate([-31/2+X-0.5,-31/2+11,(10-4)/2-W])
+    translate([-31/2+X-0.5,-31/2+11,(10-4.2)/2-W])
     cylinder(r=2.9/2+0.7,h=W,$fn=F1);
-    translate([-31/2+X-0.5,-31/2+11,(10-4)/2-W])
+    translate([-31/2+X-0.5,-31/2+11,(10-4.2)/2-W])
     cylinder(r=2.9/2+0.1,h=1,$fn=F1);
   }
   
-  translate([0,0,4-0.4])
+  translate([0,0,4-0.2])
   difference(){
-    translate([-31/2+X-0.5,-31/2+11,(10-4)/2+W])
+    translate([-31/2+X-0.5,-31/2+11,(10-4.2)/2+W])
     cylinder(r=2.9/2+0.7,h=W,$fn=F1);
-    translate([-31/2+X-0.5,-31/2+11,(10-4)/2+W])
+    translate([-31/2+X-0.5,-31/2+11,(10-4.2)/2+W])
     cylinder(r=2.9/2+0.1,h=1,$fn=F1);
   }
 
   // add back high washers
   difference(){
-    translate([-31/2+X,-31/2+20,(10-4)/2-W])
+    translate([-31/2+X,-31/2+20,(10-4.2)/2-W])
     cylinder(r=2.9/2+0.7,h=W,$fn=F1);
-    translate([-31/2+X,-31/2+20,(10-4)/2-W])
+    translate([-31/2+X,-31/2+20,(10-4.2)/2-W])
     cylinder(r=2.9/2+0.1,h=1,$fn=F1);
   }
   
-  translate([0,0,4-0.4])
+  translate([0,0,4-0.2])
   difference(){
-    translate([-31/2+X,-31/2+20,(10-4)/2+W])
+    translate([-31/2+X,-31/2+20,(10-4.2)/2+W])
     cylinder(r=2.9/2+0.7,h=W,$fn=F1);
-    translate([-31/2+X,-31/2+20,(10-4)/2+W])
+    translate([-31/2+X,-31/2+20,(10-4.2)/2+W])
     cylinder(r=2.9/2+0.1,h=1,$fn=F1);
   }
 
@@ -850,9 +935,9 @@ fit=0;
 
 //~ translate([-22,20,12])
 //~ rotate([180,0,0])
-//~ hook8();
+//~ hook9();
 
-lock8();
+//~ lock8();
 
 //~ lock();
 
@@ -863,6 +948,6 @@ lock8();
 //~ arm();
 
 //~ armA();
-//~ armB();
+armB();
 
 //=================================================================================
