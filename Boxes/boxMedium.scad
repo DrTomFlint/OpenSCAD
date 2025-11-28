@@ -398,12 +398,12 @@ cube([30,5,15],center=true);
 //~ mirror([1,0,0])
 //~ panel();
 
-//~ panelTop();
+panelTop();
 
 // For Design
 
 // Show the box itself
-if(1){
+if(0){
   color("cyan")
   boxTop(a=0);
 
@@ -412,13 +412,13 @@ if(1){
 }
 
 // Show the trim
-if(1){
+if(0){
   top2();
   base1();
 }
 
 // Add a topside corner protector where the velvet paper gets worn out
-if(1){
+if(0){
   translate([0,-ybox,5])
   rotate([-90,0,0])
   panelTop();
