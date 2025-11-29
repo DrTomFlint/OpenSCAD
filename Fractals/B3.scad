@@ -1013,7 +1013,9 @@ if(0){
  }
 }
 
-s7();
+
+// This is the crystal 
+//~ s7();
 
 
 //color("cyan")
@@ -1043,7 +1045,7 @@ s7();
 //bigSide2();
 
 
-if(0){
+if(1){
     difference(){
         union(){
             translate([0,0,zfoot]){
