@@ -71,7 +71,7 @@ showPi=0;
 showCam=1;
 
 Version="E";
-CamID="4";
+CamID="5";
 
 //----------------------------------------------------------------------
 // camera and spur gear with pivots
@@ -1782,7 +1782,7 @@ module rail(tol=0){
 
 //======================================================================
 
-Design=1;
+Design=0;
 
 // Design List:
 // parts are aligned for assembly, duplicates are shown
@@ -1892,6 +1892,8 @@ union(){
 // Printing List:
 // parts are not aligned for assembly
 if(Design==0){
+
+// Black Parts:
   
 //~ camHolderA();
 //~ camHolderB();
@@ -1899,28 +1901,32 @@ if(Design==0){
 //~ servoGearA();
 //~ servoGearB();
 //~ servoGearC();
-servoGearD();
+//~ servoGearD();
 //~ servoWasher();
 //~ servoSpline2();
 //~ panPostA(bearing=0);
 //~ panPostB(bearing=0);
-//~ panRing();
 //~ panIdler();
+
+//~ chassisA();
+//~ chassisB();
+//~ rail();
+//~ rail2();
+
+// White Parts:
+
+//~ panRing();
 //~ panLock();
 
 //~ arm4(bearing=0);
 //~ arm4block();
 
-//~ chassisA();
-//~ chassisB();
 
-//~ rail();
-//~ rail2();
 
 //~ shellA();
 //~ shellA1();
 //~ shellA2();
-//~ shellB();
+shellB();
 
 
   //~ // support blocker for wallMount2

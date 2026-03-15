@@ -27,10 +27,14 @@ use <./DancingShadow4.scad>
 use <./DancingShadow5.scad>
 
 mag=42;
-thick=1.2;
+layer=0.3;
+thick=4*layer;
+
+//~ thick=1.2;
 
 fx=42;
 fy=38;
+loop=1;
 
 //----------------------------------------------------------------------
 module bear(num=1){
@@ -39,22 +43,57 @@ module bear(num=1){
     if(num==1){
       scale([mag,mag,thick])  
       DancingBear1();
+      if(loop==1){
+        translate([0,20.5,0])
+        difference(){
+          cylinder(r=2,h=thick,$fn=55);
+          cylinder(r=1,h=3*thick,center=true,$fn=55);
+        }  
+      }
     }
     if(num==2){
       scale([mag,mag,thick])  
       DancingBear2();
+      if(loop==1){
+        translate([0,20,0])
+        difference(){
+          cylinder(r=2,h=thick,$fn=55);
+          cylinder(r=1,h=3*thick,center=true,$fn=55);
+        }  
+      }
     }
     if(num==3){
       scale([mag,mag,thick])  
       DancingBear3();
+      if(loop==1){
+        translate([0,20,0])
+        difference(){
+          cylinder(r=2,h=thick,$fn=55);
+          cylinder(r=1,h=3*thick,center=true,$fn=55);
+        }  
+      }
     }
     if(num==4){
       scale([mag,mag,thick])  
       DancingBear4();
+      if(loop==1){
+        translate([0,20.5,0])
+        difference(){
+          cylinder(r=2,h=thick,$fn=55);
+          cylinder(r=1,h=3*thick,center=true,$fn=55);
+        }  
+      }
     }
     if(num==5){
       scale([mag,mag,thick])  
       DancingBear5();
+      if(loop==1){
+        translate([3,20,0])
+        difference(){
+          cylinder(r=2,h=thick,$fn=55);
+          cylinder(r=1,h=3*thick,center=true,$fn=55);
+        }  
+      }
     }
     translate([mag/2,mag/2,-1])
     cylinder(r=mag/8,h=thick+2);
@@ -375,19 +414,41 @@ module dispurser(num){
   
 }
 
+//----------------------------------------------------------------------
+module black(i=1){
+  
+  intersection(){    
+    bear(num=i);
+    translate([0,0,1*layer/2])
+    cube([300,300,1*layer],center=true);
+  }
+}
+
+//----------------------------------------------------------------------
+module sparkle(){
+  
+  intersection(){    
+    bear(num=i);
+    translate([0,0,1*layer+4*layer/2])
+    cube([300,300,4*layer],center=true);
+  }
+}
+
 //======================================================================
 
-
-for(i=[5:5]){
-  translate([(i-1)*45,0,0]){
+mirror([1,0,0])
+for(i=[5]){
+  translate([(i-1)*40,0,0]){
     //~ field(num=i);
     //~ bear(num=i);
+    //~ black(i=i);
+    sparkle(i=i);
     //~ body(num=i);
     //~ bib(num=i);
     //~ tab();
     //~ back(num=i);
     
-    dispurser(num=i);
+    //~ dispurser(num=i);
   }
 }
 

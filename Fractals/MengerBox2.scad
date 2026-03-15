@@ -701,6 +701,17 @@ module plateC(tol=0){
   
 }
 
+//----------------------------------------------------------------------
+// Add a cut for LED wires
+module box8b(){
+  
+  difference(){
+    box8a();
+    cylinder(r=4,h=100,$fn=55,center=true);
+  }
+  
+}
+
 //======================================================================
 
 // Order
@@ -720,9 +731,14 @@ T=2; l=30;
 //~ }
 
 
+box8a();
+//~ box8b();
+
 
 // tests for internal space
-box8(part=3);
+//~ box8(part=1);
+//~ box8(part=2);
+//~ box8(part=3);
 
 //~ boxIn(tol=0.4);
 //~ boxLeds(tol=0.2,showleds=0);

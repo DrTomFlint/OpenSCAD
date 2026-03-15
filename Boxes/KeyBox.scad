@@ -117,15 +117,18 @@ xcut=100;
 ycut=0;
 zcut=-30;
 
-difference(){
-  union(){
-    color("cyan")
+//~ difference(){
+  //~ union(){
+    //~ color("cyan")
     //~ KeyBox();
-    KeyLid();
-  }
-  translate([xcut-100,ycut-50,zcut-25])
-  cube([200,100,50],center=true);
-}
+    //~ KeyLid();
+  //~ }
+  //~ translate([xcut-100,ycut-50,zcut-25])
+  //~ cube([200,100,50],center=true);
+//~ }
+
+//~ KeyLid();
+KeyBox();
 
 //=================================================================================
 

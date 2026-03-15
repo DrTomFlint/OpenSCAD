@@ -8,7 +8,8 @@ use <./Lightning1white.scad>
 use <./Lightning1blue.scad>
 use <./Lightning1red.scad>
 
-thick = 1.5;    // thickness of the blades
+layer = 0.3;
+thick = 5*layer;    // thickness of the blades
 
 mag=40;
 R0=16;
@@ -79,8 +80,8 @@ module L1black(){
     cylinder(r=R0-1.6,h=thick, $fn=222);
 
     // hanger hole
-    translate([0,0.6+R0+0.5,0])
-    cylinder(r=0.8,h=3*thick, center=true, $fn=222);
+    translate([0,0.6+R0+0.1,0])
+    cylinder(r=1,h=3*thick, center=true, $fn=222);
   }
 
 }
@@ -164,12 +165,37 @@ mag3=100;
 
 }
 
+//----------------------------------------------------------------------
+module L1black1(){
+  
+  intersection(){    
+    L1black();
+    translate([0,0,1*layer/2])
+    cube([300,300,1*layer],center=true);
+  }
+}
+
+//----------------------------------------------------------------------
+module L1sparkle1(){
+  
+  intersection(){    
+    L1black();
+    translate([0,0,1*layer+4*layer/2])
+    cube([300,300,4*layer],center=true);
+  }
+}
+
+
 //===============================================================
 
 //~ L1white();
 //~ L1blue();
 //~ L1red();
-L1black();    // with hanger hole
+//~ L1black();    // with hanger hole
+
+
+L1black1();
+//~ L1sparkle1();
 
 //L1blackB();   // no hanger hole
 
