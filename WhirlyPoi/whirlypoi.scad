@@ -20,6 +20,8 @@ F2=55;
 // axle 
 alen = 40;
 athick = 2;
+tangle=45;
+
 
 // whirly1
 wlen = 88;
@@ -167,7 +169,7 @@ module roller(tol=0.15){
       cylinder(r2=6+athick,r1=6+athick+6,h=6,center=true,$fn=F2);
     }
     rotate([0,90,0])
-    cylinder(r=5,h=alen+3.5+2*tol,center=true,$fn=F2);
+    cylinder(r=4.5,h=alen+3.5+2*tol,center=true,$fn=F2);
 
     translate([alen/2,0,0])
     bearing();
@@ -225,16 +227,14 @@ module axle(tol=0.15){
       mirror([1,0,0])
       metric_thread (diameter=7, pitch=2, length=12, internal=false, n_starts=1,
                       thread_size=-1, groove=false, square=false, rectangle=0,
-                      angle=30, taper=0, leadin=2, leadfac=1.0, test=false);
+                      angle=tangle, taper=0, leadin=2, leadfac=1.0, test=false);
     }
     
     // Center bore
     translate([0,0,0])
     rotate([0,90,0])
-    cylinder(r=1,h=3*alen,center=true,$fn=F2);
+    cylinder(r=0.5,h=10*alen,center=true,$fn=F2);
 
-    translate([alen/2+3.5/2+3/2+9/2+6,0,0])
-    cube([10,60,2],center=true);
   }
 }
 
@@ -265,7 +265,7 @@ module handle(tol=0.15){
       mirror([1,0,0])
       metric_thread (diameter=7+1, pitch=2, length=17, internal=true, n_starts=1,
                       thread_size=-1, groove=false, square=false, rectangle=0,
-                      angle=30, taper=0, leadin=0, leadfac=1.0, test=false);
+                      angle=tangle, taper=0, leadin=0, leadfac=1.0, test=false);
 
 
           translate([-alen/2-7/2-5-12-10,0,-10])
@@ -381,6 +381,62 @@ thick=3;
 
 }
 //----------------------------------------------------------------------
+module whirly3(tol=0.15){
+  
+  difference(){
+    hull(){
+      for (i=[0:3]){
+        rotate([0,0,90*i+45])
+        translate([wlen+21,0,0])
+        cylinder(r=12,h=wthick,$fn=F2);
+      }  
+    }
+
+    for (i=[0:3]){
+      rotate([0,0,90*i])
+      translate([0,0,-1])
+      cutter3();
+    }
+
+    // tip tabs
+    for (i=[0:3]){
+      rotate([0,0,90*i+59])
+      translate([0.93*wlen,0,0])
+      cylinder(r=2,h=10,$fn=F2,center=true);
+    }
+    
+    // center hole
+    cylinder(r=7,h=10,$fn=F2,center=true);
+    
+    // center tabs
+    for (i=[0:7]){
+      rotate([0,0,45*i+30])
+      translate([0.13*wlen,0,0])
+      cylinder(r=2,h=10,$fn=F2,center=true);
+    }
+    
+  }
+}
+
+//----------------------------------------------------------------------
+module cutter3(){
+
+mag=0.1;
+thick=3;
+
+  render()
+  intersection(){
+    translate([0,0,1])
+    scale([mag,mag,3])
+    surface(file="./Whirly3.png", center = true, invert=true);
+  
+    translate([0,0,thick/2])
+    cube([1000,1000,thick],center=true);
+  }
+
+}
+
+//----------------------------------------------------------------------
 module whirly1a(tol=0.15){
 
   difference(){
@@ -474,18 +530,147 @@ module whirly1e(tol=0.15){
   }
 }  
 
+//----------------------------------------------------------------------
+module whirly2a(tol=0.15){
+
+  intersection(){
+    whirly2();
+    
+    translate([-100,-100,0])
+    cube([200,200,0.15]);
+  }
+  
+}  
 
 //----------------------------------------------------------------------
-module rollerA(tol=0.15){
+module whirly2b(tol=0.15){
+
+  intersection(){
+    whirly2();
+    
+    translate([-100,-100,0.15])
+    cube([200,200,0.15]);
+  }
+}  
+
+//----------------------------------------------------------------------
+module whirly2b1(tol=0.15){
+
+
+  difference(){
+    whirly2b();
+    
+    translate([0,0,-1])
+    linear_extrude(height=3)
+    offset(r=-2)
+    projection()
+    whirly2b();
+  }
+}
+
+//----------------------------------------------------------------------
+module whirly2b2(tol=0.15){
+
+
+  intersection(){
+    whirly2b();
+    
+    translate([0,0,-1])
+    linear_extrude(height=3)
+    offset(r=-2)
+    projection()
+    whirly2b();
+  }
+}
+
+//----------------------------------------------------------------------
+module whirly2c(tol=0.15){
+
+  intersection(){
+    whirly2();
+    
+    translate([-100,-100,0.30])
+    cube([200,200,0.15]);
+  }
+}  
+
+//----------------------------------------------------------------------
+module whirly2d(tol=0.15){
+
+  difference(){
+    whirly2b2();
+    
+    for (i=[0:3]){
+      rotate([0,0,90*i+30])
+      translate([20,0,0])
+      rotate([0,0,20])
+      scale([2,1,1])
+      cylinder(r=20,h=wthick,$fn=F2);
+    }
+  }
+
+ }  
+
+//----------------------------------------------------------------------
+module whirly2e(tol=0.15){
+
+ intersection(){
+    difference(){
+      whirly2b2();
+
+      for (i=[0:3]){
+        rotate([0,0,90*i+30])
+        translate([20,0,0])
+        rotate([0,0,20])
+        scale([2,1,1])
+        cylinder(r=13,h=wthick,$fn=F2);
+      }
+    }
+
+    union(){
+      for (i=[0:3]){
+        rotate([0,0,90*i+30])
+        translate([20,0,0])
+        rotate([0,0,20])
+        scale([2,1,1])
+        cylinder(r=20,h=wthick,$fn=F2);
+      }
+    }
+  }
+}  
+
+//----------------------------------------------------------------------
+module whirly2f(tol=0.15){
+
+ intersection(){
+    difference(){
+      whirly2b2();
+
+    }
+
+    union(){
+      for (i=[0:3]){
+        rotate([0,0,90*i+30])
+        translate([20,0,0])
+        rotate([0,0,20])
+        scale([2,1,1])
+        cylinder(r=13,h=wthick,$fn=F2);
+      }
+    }
+  }
+}  
+
+//----------------------------------------------------------------------
+module rollerA(tol=0.25){
 
     intersection(){
       roller();
       
       union(){
         rotate([0,90,0])
-        cylinder(r=40,h=26,center=true,$fn=8);
+        cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.5-tol,h=34-tol,center=true,$fn=8);
+        cylinder(r=6.25-tol,h=32-tol,center=true,$fn=8);
       }
     }
     
@@ -499,9 +684,9 @@ module rollerB(tol=0.15){
       
       union(){
         rotate([0,90,0])
-        cylinder(r=40,h=26,center=true,$fn=8);
+        cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.5,h=34,center=true,$fn=8);
+        cylinder(r=6.25,h=32,center=true,$fn=8);
       }
       
       translate([50,0,0])
@@ -517,9 +702,9 @@ module rollerC(tol=0.15){
       
       union(){
         rotate([0,90,0])
-        cylinder(r=40,h=26,center=true,$fn=8);
+        cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.5,h=34,center=true,$fn=8);
+        cylinder(r=6.25,h=32,center=true,$fn=8);
       }
       
       translate([-50,0,0])
@@ -528,6 +713,52 @@ module rollerC(tol=0.15){
     
 }
 
+//----------------------------------------------------------------------
+module axleA(tol=0.15){
+
+    difference(){
+      axle();
+            
+      translate([50+alen/2,0,0])
+      cube([100,100,100],center=true);
+    }
+    
+    difference(){
+      translate([alen/2+10,0,0])
+      rotate([0,-90,0])
+      mirror([1,0,0])
+      metric_thread (diameter=7, pitch=2, length=12, internal=false, n_starts=1,
+                        thread_size=-1, groove=false, square=false, rectangle=0,
+                        angle=tangle, taper=0, leadin=2, leadfac=1.0, test=false);
+
+      // Center bore
+      translate([0,0,0])
+      rotate([0,90,0])
+      cylinder(r=0.5,h=10*alen,center=true,$fn=F2);
+    }
+}
+
+//----------------------------------------------------------------------
+module axleB(tol=0.15){
+
+    difference(){
+      axle();
+            
+      translate([-50+alen/2+2,0,0])
+      cube([100,100,100],center=true);
+
+      translate([alen/2+10,0,0])
+      rotate([0,-90,0])
+      mirror([1,0,0])
+      metric_thread (diameter=7+1, pitch=2, length=12, internal=true, n_starts=1,
+                        thread_size=-1, groove=false, square=false, rectangle=0,
+                        angle=tangle, taper=0, leadin=2, leadfac=1.0, test=false);
+
+}
+    
+    
+    
+}
 //======================================================================
 
 //~ wing1();
@@ -563,19 +794,33 @@ module rollerC(tol=0.15){
 
 //~ whirly1();
 
-translate([-alen/2-2-0.4,0,0])
-rotate([0,90,0])
-whirly2();
+//~ translate([-alen/2-2-0.4,0,0])
+//~ rotate([0,90,0])
+//~ whirly2();
 
-translate([-alen/2-2-0.4,0,0])
-rotate([0,90,0])
-translate([0,0,-0.5])
-rotate([0,0,45])
-whirly2();
+//~ whirly2a();
+//~ whirly2b();
+//~ whirly2b1();
+//~ whirly2b2();
+
+//~ whirly2c();
+
+//~ whirly2d();
+//~ whirly2e();
+//~ whirly2f();
+
+//~ translate([-alen/2-2-0.4,0,0])
+//~ rotate([0,90,0])
+//~ translate([0,0,-0.5])
+//~ rotate([0,0,45])
+//~ whirly2();
+
 
 //~ translate([0,0,0.25])
 //~ rotate([0,0,45])
 //~ whirly2();
+
+//~ whirly3();
 
 //~ whirly1b();
 
@@ -584,26 +829,29 @@ whirly2();
 //~ whirly1d();
 //~ whirly1e();
 
-difference(){
-  union(){
+//~ difference(){
+  //~ union(){
 
     //~ roller();
-    rollerA();
-    rollerB();
-    rollerC();
-    axle();
-    translate([-0.1,0,0])
-    handle();
+    //~ rollerA();
+    //~ rollerB();
+    //~ rollerC();
+    //~ translate([0,20,0])
+    //~ axle();
+    axleA();
+    //~ axleB();
+    //~ translate([-0.1,0,0])
+    //~ handle();
 
-    translate([alen/2,0,0])
-    bearing(tol=0);
-    translate([-alen/2,0,0])
-    bearing(tol=0);
+    //~ translate([alen/2,0,0])
+    //~ bearing(tol=0);
+    //~ translate([-alen/2,0,0])
+    //~ bearing(tol=0);
 
-  }
-  translate([0,-50,0])
-  cube([200,100,100],center=true);
-}
+  //~ }
+  //~ translate([0,-50,0])
+  //~ cube([200,100,100],center=true);
+//~ }
 
 
 //======================================================================
