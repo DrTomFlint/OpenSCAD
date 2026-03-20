@@ -18,7 +18,7 @@ F1=299;
 F2=155;
 
 // axle 
-alen = 40;
+alen = 40+4.5;
 athick = 2;
 tangle=45;
 
@@ -179,9 +179,19 @@ module roller(tol=0.15){
       translate([-(alen/2+athick/2-2.25),0,0])
       rotate([0,90,0])
       cylinder(r2=6+athick,r1=6+athick+6,h=6,center=true,$fn=F2);
+
+      // decorative twist
+      for(i=[1:12]){
+        rotate([i*360/12,0,0])
+        rotate([0,90,0])
+        linear_extrude(height=alen,center=true,twist=90,$fn=F2)
+        translate([6,0,0])
+        circle(r=3,$fn=F2);
+      }
     }
+    // main bore
     rotate([0,90,0])
-    cylinder(r=5,h=alen+3.5+2*tol,center=true,$fn=F2);
+    cylinder(r=5.5,h=alen+3.5+2*tol,center=true,$fn=F2);
 
     translate([alen/2,0,0])
     bearing();
@@ -203,13 +213,13 @@ module roller(tol=0.15){
     rotate([0,-90,0])
     for (i=[0:7]){
       rotate([0,0,45*i-30])
-      translate([0.13*wlen,0,-0.5])
-      cylinder(r2=1.9,r1=2.1,h=2,$fn=F2,center=true);
+      translate([0.13*wlen,0,-0.75])
+      cylinder(r2=1.9,r1=2.1,h=3,$fn=F2,center=true);
       
       
     }
   
-  
+
 }
 
 
@@ -226,18 +236,18 @@ module axle(tol=0.15){
       // front side washer
       translate([alen/2+3.5/2+7/2,0,0])
       rotate([0,90,0])
-      cylinder(r1=9.5/2+tol,r2=9.5/2+2,h=7,center=true,$fn=F2);
+      cylinder(r1=9.0/2+tol,r2=9.0/2+2,h=7,center=true,$fn=F2);
 
       // front side button
-      translate([alen/2+3.5/2+5/2+9/2+4,0,0])
+      translate([alen/2+3.5/2+5/2+9/2+2,0,0])
       rotate([0,90,0])
-      cylinder(r1=14,r2=12,h=9,center=true,$fn=F2);
+      cylinder(r1=16,r2=14,h=5,center=true,$fn=F2);
       
       
       translate([-alen/2,0,0])
       rotate([0,-90,0])
       //~ mirror([1,0,0])
-      metric_thread (diameter=6.5, pitch=3, length=15, internal=false, n_starts=1,
+      metric_thread (diameter=6.5, pitch=3, length=18, internal=false, n_starts=1,
                       thread_size=-1, groove=false, square=false, rectangle=0,
                       angle=tangle, taper=0, leadin=2, leadfac=1.0, test=false);
     }
@@ -246,7 +256,7 @@ module axle(tol=0.15){
     rotate([0,90,0])
     for(i=[0:5]){
       rotate([0,0,360/6*i])
-      translate([17,0,0])
+      translate([19,0,0])
       cylinder(r1=6,r2=7,h=15,center=true, $fn=F2);
     }      
     
@@ -271,7 +281,7 @@ module handle(tol=0.15){
       union(){
         translate([-alen/2-5/2-3.5/2-2,0,0])
         rotate([0,-90,0])
-        cylinder(r1=9.5/2+tol,r2=9.5/2+2,h=9,$fn=F2,center=true);
+        cylinder(r1=9.0/2+tol,r2=9.0/2+2,h=9,$fn=F2,center=true);
       
         translate([-alen/2-7/2-8-9,0,0])
         rotate([0,-90,0])
@@ -281,11 +291,11 @@ module handle(tol=0.15){
 
         translate([-alen/2-7/2-13,0,0])
         rotate([0,-90,0])
-        cylinder(r1=14,r2=14-10,h=10,$fn=F2,center=true);
+        cylinder(r1=16,r2=16-10,h=10,$fn=F2,center=true);
 
         translate([-alen/2-7/2-7,0,0])
         rotate([0,-90,0])
-        cylinder(r=14,h=2,$fn=F2,center=true);
+        cylinder(r=16,h=2,$fn=F2,center=true);
 
 
         translate([-10,0,0])
@@ -707,7 +717,7 @@ module rollerA(tol=0.25){
         rotate([0,90,0])
         cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.75-tol,h=32-tol,center=true,$fn=8);
+        cylinder(r=7.5-tol,h=32-tol,center=true,$fn=8);
       }
     }
     
@@ -723,7 +733,7 @@ module rollerB(tol=0.15){
         rotate([0,90,0])
         cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.75,h=32,center=true,$fn=8);
+        cylinder(r=7.5,h=32,center=true,$fn=8);
       }
       
       translate([50,0,0])
@@ -741,7 +751,7 @@ module rollerC(tol=0.15){
         rotate([0,90,0])
         cylinder(r=40,h=24,center=true,$fn=8);
         rotate([0,90,0])
-        cylinder(r=6.75,h=32,center=true,$fn=8);
+        cylinder(r=7.5,h=32,center=true,$fn=8);
       }
       
       translate([-50,0,0])
@@ -761,7 +771,7 @@ module axleA(tol=0.15){
     }
     
     difference(){
-      translate([alen/2+16,0,0])
+      translate([alen/2+12,0,0])
       rotate([0,-90,0])
       //~ mirror([1,0,0])
       metric_thread (diameter=6.5, pitch=3, length=20, internal=false, n_starts=1,
@@ -867,29 +877,29 @@ module axleB(tol=0.15){
 //~ whirly1d();
 //~ whirly1e();
 
-difference(){
-  union(){
+//~ difference(){
+  //~ union(){
 
     //~ roller();
-    rollerA();
-    rollerB();
-    rollerC();
+    //~ rollerA();
+    //~ rollerB();
+    //~ rollerC();
     //~ translate([0,20,0])
     //~ axle();
-    axleA();
-    axleB();
-    translate([-0.1,0,0])
+    //~ axleA();
+    //~ axleB();
+    //~ translate([-0.1,0,0])
     handle();
 
-    translate([alen/2,0,0])
-    bearing(tol=0);
-    translate([-alen/2,0,0])
-    bearing(tol=0);
+    //~ translate([alen/2,0,0])
+    //~ bearing(tol=0);
+    //~ translate([-alen/2,0,0])
+    //~ bearing(tol=0);
 
-  }
-  translate([0,-50,0])
-  cube([200,100,100],center=true);
-}
+  //~ }
+  //~ translate([0,-50,0])
+  //~ cube([200,100,100],center=true);
+//~ }
 
 
 //======================================================================
