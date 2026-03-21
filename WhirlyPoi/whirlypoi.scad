@@ -6,6 +6,7 @@
 //======================================================================
 
 use <../Parts/threads.scad>
+use <../Fractals/Lsystem.scad>
 
 thick=1.2;    // thickness of holder walls
 
@@ -475,46 +476,125 @@ thick=3;
 }
 
 //----------------------------------------------------------------------
-module whirly1a(tol=0.15){
+module whirly4(tol=0.15){
+  
+  //~ difference(){
+    //~ hull(){
+      //~ for (i=[0:3]){
+        //~ rotate([0,0,90*i+45])
+        //~ translate([wlen+21,0,0])
+        //~ cylinder(r=12,h=wthick,$fn=F2);
+      //~ }  
+    //~ }
+
+    //~ translate([0,0,-0.1])
+    //~ cutter4();
 
   difference(){
-    whirly1();
+    union(){
+      for(i=[0:3])
+      rotate([0,0,i*90])
+      cutter4b();
+    }
+
+
+    // tip tabs
+    for (i=[0:3]){
+      rotate([0,0,90*i+59])
+      translate([0.93*wlen,0,0])
+      cylinder(r=2,h=10,$fn=F2,center=true);
+    }
+    
+    // center hole
+    cylinder(r=7,h=10,$fn=F2,center=true);
+    
+    // center tabs
+    for (i=[0:7]){
+      rotate([0,0,45*i+30])
+      translate([0.13*wlen,0,0])
+      cylinder(r=2,h=10,$fn=F2,center=true);
+    }
+    
+  }
+}
+
+//----------------------------------------------------------------------
+module cutter4(){
+
+mag=0.1;
+thick=3;
+
+  render()
+  difference(){
+    translate([0,0,thick/2])
+    //~ cube([175,175,thick],center=true);
+    cube([200,200,thick],center=true);
+
+    translate([0,0,0])
+    scale([mag,mag,10])
+    surface(file="./Whirly4.png", center = true, invert=true);
+  
+  }
+
+}
+
+//----------------------------------------------------------------------
+module cutter4b(){
+
+mag=0.1;
+thick=2*0.15;
+
+  render()
+  difference(){
+    translate([0,0,thick/2])
+    cube([175,175,thick],center=true);
+    //~ cube([200,200,thick],center=true);
+
+    translate([0,0,0])
+    scale([mag,mag,10])
+    surface(file="./Whirly4b.png", center = true, invert=true);
+  
+  }
+
+}
+
+//----------------------------------------------------------------------
+module whirly4a(tol=0.15){
+
+  difference(){
+    whirly4();
     
     translate([0,0,-1])
     linear_extrude(height=3)
     offset(r=-2)
     projection()
-    whirly1();
+    whirly4();
   }
   
 }  
 
 //----------------------------------------------------------------------
-module whirly1b(tol=0.15){
+module whirly4b(tol=0.15){
 
   difference(){
-    whirly1();
-    whirly1a();
+    whirly4();
+    whirly4a();
   }
   
 }  
 
 //----------------------------------------------------------------------
-module whirly1c(tol=0.15){
+module whirly4c(tol=0.15){
 
   difference(){
-    whirly1();
-    whirly1a();
-    
-    for (i=[0:3]){
-      rotate([0,0,90*i+30])
-      translate([20,0,0])
-      rotate([0,0,20])
-      scale([2,1,1])
-      cylinder(r=20,h=wthick,$fn=F2);
-    }
+    whirly4();
+    whirly4a();
   }
   
+  rotate([0,0,35])
+  translate([55,0,0])
+  scale([5,5,2])
+  penrose_tiling(n=5, angle=36, w=0.2);
 }  
 
 //----------------------------------------------------------------------
@@ -861,6 +941,16 @@ module axleB(tol=0.15){
 
 //~ whirly3();
 
+whirly4();
+//~ whirly4a();
+//~ whirly4b();
+
+
+//~ cutter4();
+//~ cutter4b();
+
+
+
 //~ whirly1b();
 
 //~ whirly1a();
@@ -868,13 +958,13 @@ module axleB(tol=0.15){
 //~ whirly1d();
 //~ whirly1e();
 
-difference(){
-  union(){
+//~ difference(){
+  //~ union(){
 
     //~ roller();
-    rollerA();
-    rollerB();
-    rollerC();
+    //~ rollerA();
+    //~ rollerB();
+    //~ rollerC();
     //~ translate([0,20,0])
     //~ axle();
     //~ axleA();
@@ -887,10 +977,10 @@ difference(){
     //~ translate([-alen/2,0,0])
     //~ bearing(tol=0);
 
-  }
-  translate([0,-50,0])
-  cube([200,100,100],center=true);
-}
+  //~ }
+  //~ translate([0,-50,0])
+  //~ cube([200,100,100],center=true);
+//~ }
 
 
 //======================================================================
