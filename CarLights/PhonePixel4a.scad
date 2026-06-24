@@ -318,8 +318,11 @@ if(0){
 
 }    
 
+// This is the long clip
 clip2();
-//clip2(Cdeep=11.6);
+
+// This is the short clip
+//~ clip2(Cdeep=11.6);
 
 //hinge1();
 //color("orange") clip1();

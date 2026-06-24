@@ -586,16 +586,173 @@ module whirly4b(tol=0.15){
 //----------------------------------------------------------------------
 module whirly4c(tol=0.15){
 
+  intersection(){
+    intersection(){
+      whirly4b();
+      cutter4b();
+    }
+    
+    rotate([0,0,35+90-2])
+    translate([55,0,0])
+    scale([8,8,1])
+    linear_extrude(height=3)
+    penrose_tiling(n=5, angle=36, w=0.2);
+  }  
+}  
+
+
+//----------------------------------------------------------------------
+module whirly4d1(tol=0.15){
+
+  intersection(){
+    union(){
+      whirly4a();
+      for(i=[0:3]){
+        rotate([0,0,i*90])
+        whirly4c();
+      }
+    }
+    // Slice off 1st layer
+    translate([0, 0, 0.15/2+0.0])
+    cube([300,300,0.15],center=true);
+  }
+    
+}
+
+//----------------------------------------------------------------------
+module whirly4d2(tol=0.15){
+
+  intersection(){
+    union(){
+      whirly4a();
+      for(i=[0:3]){
+        rotate([0,0,i*90])
+        whirly4c();
+      }
+    }
+    // Slice off 2nd layer
+    translate([0, 0, 0.15/2+0.15])
+    cube([300,300,0.15],center=true);
+  }
+    
+}
+//----------------------------------------------------------------------
+module whirly4e(tol=0.15){
+  
+  intersection(){
+
+    difference(){
+      whirly4b();
+      for(i=[0:3]){
+        rotate([0,0,i*90+33])
+        translate([55,0,0])
+        cylinder(r=12.5,h=3,center=true,$fn=F2);
+      }
+    }
+    
+    // Slice off first layer
+    translate([0, 0, 0.15/2+0])
+    cube([300,300,0.15],center=true);
+  }
+}  
+//----------------------------------------------------------------------
+module cutter4yellow(){
+
+mag=0.1;
+thick=1*0.15;
+
+  render()
   difference(){
-    whirly4();
-    whirly4a();
+    translate([0,0,thick/2])
+    cube([175,175,thick],center=true);
+    //~ cube([200,200,thick],center=true);
+
+    translate([0,0,0])
+    scale([mag,mag,10])
+    surface(file="./Whirly4yellow.png", center = true, invert=true);
+  
+  }
+
+}
+
+//----------------------------------------------------------------------
+module whirly4yellow(){
+  
+  
+  for(i=[0:4]){
+    rotate([0,0,i*90])
+    cutter4yellow();
   }
   
-  rotate([0,0,35])
-  translate([55,0,0])
-  scale([5,5,2])
-  penrose_tiling(n=5, angle=36, w=0.2);
-}  
+  // add the border line to yellow
+  whirly4d1();
+  
+}
+
+//----------------------------------------------------------------------
+module cutter4blue(){
+
+mag=0.1;
+thick=1*0.15;
+
+  render()
+  difference(){
+    translate([0,0,thick/2])
+    cube([175,175,thick],center=true);
+    //~ cube([200,200,thick],center=true);
+
+    translate([0,0,0])
+    scale([mag,mag,10])
+    surface(file="./Whirly4blue.png", center = true, invert=true);
+  
+    // cut out the border line
+    whirly4d1();
+  }
+
+}
+
+//----------------------------------------------------------------------
+module whirly4blue(){
+  
+  
+  for(i=[0:4]){
+    rotate([0,0,i*90])
+    cutter4blue();
+  }
+}
+
+//----------------------------------------------------------------------
+module cutter4green(){
+
+mag=0.1;
+thick=1*0.15;
+
+  render()
+  difference(){
+    translate([0,0,thick/2])
+    cube([175,175,thick],center=true);
+    //~ cube([200,200,thick],center=true);
+
+    translate([0,0,0])
+    scale([mag,mag,10])
+    surface(file="./Whirly4green.png", center = true, invert=true);
+  
+    // cut out the border line
+    whirly4d1();
+  }
+
+}
+
+//----------------------------------------------------------------------
+module whirly4green(){
+  
+  
+  for(i=[0:4]){
+    rotate([0,0,i*90])
+    cutter4green();
+  }
+}
+
 
 //----------------------------------------------------------------------
 module whirly1d(tol=0.15){
@@ -941,10 +1098,23 @@ module axleB(tol=0.15){
 
 //~ whirly3();
 
-whirly4();
+//~ whirly4();
 //~ whirly4a();
 //~ whirly4b();
+//~ whirly4c();
 
+whirly4d1();
+whirly4d2();
+
+//~ whirly4e();
+
+//~ cutter4yellow();
+
+//~ whirly4yellow();
+
+//~ whirly4blue();
+
+//~ whirly4green();
 
 //~ cutter4();
 //~ cutter4b();

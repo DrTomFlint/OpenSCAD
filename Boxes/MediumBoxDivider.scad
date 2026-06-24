@@ -8,6 +8,7 @@
 
 use <../Parts/rounder.scad>
 use <../Parts/threads.scad>
+use <../Parts/hexcut.scad>
 
 F1=200;
 F2=77;
@@ -103,11 +104,66 @@ module divider(){
 
 
 }
+//----------------------------------------------------------------------
+module walls(){
+
+  difference(){
+    union(){
+      // cuts for foam
+      translate([0,0,-3])
+      cube([2,130,36],center=true);
+      translate([91,0,-3])
+      cube([2,130,36],center=true);
+      translate([-91,0,-3])
+      cube([2,130,36],center=true);
+
+      translate([0,22.3-1,-3])
+      cube([180,2,36],center=true);
+      translate([0,67-1,-3])
+      cube([184,2,36],center=true);
+
+      translate([0,-22.3+1,-3])
+      cube([180,2,36],center=true);
+      translate([0,-67+1,-3])
+      cube([184,2,36],center=true);
+    }
+    // short walls
+    translate([-100,-15,-3])
+    rotate([0,90,0])
+    #hexcut1(R=5.0,x0=0,y0=0,h0=300,N0=4,wall=0.8);
+    translate([-100,-15+44,-3])
+    rotate([0,90,0])
+    hexcut1(R=5.0,x0=0,y0=0,h0=300,N0=4,wall=0.8);
+    translate([-100,-15-44,-3])
+    rotate([0,90,0])
+    hexcut1(R=5.0,x0=0,y0=0,h0=300,N0=4,wall=0.8);
+    
+    // long walls
+    translate([-10,100,-3])
+    rotate([90,0,0])
+    rotate([0,0,90])
+    hexcut1(R=5.0,x0=0,y0=0,h0=300,N0=8,wall=0.8);
+    translate([-10+90,100,-3])
+    rotate([90,0,0])
+    rotate([0,0,90])
+    hexcut1(R=5.0,x0=0,y0=0,h0=300,N0=8,wall=0.8);
+
+  }
+      
+
+}
 
 //======================================================================
 
+//~ intersection(){
 //~ box();
-translate([0,0,10])
-divider();
+//~ translate([0,0,10])
+//~ divider();
+
+translate([0,0,-6])
+walls();
+
+//~ }
+
 
 //======================================================================
