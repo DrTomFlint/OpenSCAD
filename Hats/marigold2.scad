@@ -6,13 +6,13 @@
 
 rout = 120/2;
 rin =  rout-12;
-thick = 1.2;
+thick = 1.5;
 
 rholes1=1.8;
 rholes2=2.4;
 roff=2.4;
 
-rstem=6;
+rstem=7.5;
 N=13;
 
 F1=200;
@@ -201,12 +201,13 @@ if(0){
   }
 }
 
-//hat1();
+hat1();
 
-//strip1
-strip2();
-translate([0,30,0])
-mirror([0,1,0])
-strip2();
+//~ strip1
+
+//~ strip2();
+//~ translate([0,30,0])
+//~ mirror([0,1,0])
+//~ strip2();
 
 //============================================================
